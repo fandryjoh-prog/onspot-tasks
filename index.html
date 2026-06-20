@@ -150,6 +150,23 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .btn-primary:hover{background:var(--ocean-deep)}
 
 .hidden{display:none!important}
+.role-badge{font-size:11px;font-weight:600;padding:4px 10px;border-radius:99px;background:var(--amber-dim,#FCF1D6);color:#8A6A0F;margin-left:8px;letter-spacing:.2px}
+#app.role-admin{border-left:4px solid var(--ocean,#2B4C7E)}
+#tab-team,#tab-admin{display:inline-flex}
+.admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.admin-card{background:var(--surface,#fff);border:1px solid var(--border,#E2E8F0);border-radius:12px;overflow:hidden}
+.admin-card-header{padding:14px 18px;border-bottom:1px solid var(--border,#E2E8F0);display:flex;align-items:center;justify-content:space-between}
+.admin-card-header h3{font-size:14px;font-weight:600;font-family:var(--display,inherit)}
+.team-row{display:flex;align-items:center;gap:10px;padding:12px 18px;border-bottom:1px solid var(--border,#EEF2F6)}
+.team-row:last-of-type{border-bottom:none}
+.team-row-name{font-size:13px;font-weight:500}
+.team-row-role{font-size:11px;color:var(--text2,#6B7C93)}
+.admin-note{padding:10px 18px;font-size:11px;color:var(--text3,#A0AAB8);font-style:italic}
+.treatment-add-row{display:flex;gap:8px;padding:14px 18px;border-bottom:1px solid var(--border,#EEF2F6)}
+.treatment-add-row .form-input{flex:1}
+.treatment-row{display:flex;align-items:center;justify-content:space-between;padding:9px 18px;font-size:13px;border-bottom:1px solid var(--border,#EEF2F6)}
+.treatment-row:last-child{border-bottom:none}
+@media (max-width:900px){.admin-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -172,6 +189,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     <div class="topbar-logo">OnSpot</div>
     <div class="topbar-sep">/</div>
     <div class="topbar-title">Time Tracker</div>
+    <span class="role-badge hidden" id="role-badge"></span>
     <div class="topbar-right">
       <div class="user-pill"><div class="mini-avatar" id="topbar-avatar"></div><span id="topbar-name"></span></div>
       <button class="btn btn-ghost" onclick="logout()">Déconnexion</button>
@@ -193,8 +211,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 
   <!-- QUICK START -->
   <div class="quickstart">
-    <button class="qs-btn" onclick="quickStart('ringover')"><span class="qs-dot" style="background:var(--accent)"></span>RingOver</button>
-    <button class="qs-btn" onclick="quickStart('crisp')"><span class="qs-dot" style="background:var(--purple)"></span>Crisp ticket</button>
+    <button class="qs-btn" onclick="quickStart('ringover')"><span class="qs-dot" style="background:var(--ocean)"></span>RingOver</button>
+    <button class="qs-btn" onclick="quickStart('crisp')"><span class="qs-dot" style="background:var(--clay)"></span>Crisp ticket</button>
     <button class="qs-btn" onclick="quickStart('manual')"><span class="qs-dot" style="background:var(--text2)"></span>Tâche manuelle</button>
     <button class="qs-btn" onclick="syncRingover()"><span class="qs-dot" style="background:var(--green)"></span>Sync RingOver (auto)</button>
   </div>
@@ -208,12 +226,12 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     </div>
     <div class="stat-card">
       <div class="stat-label">RingOver</div>
-      <div class="stat-value" id="s-ringover" style="color:var(--accent)">0h00</div>
+      <div class="stat-value" id="s-ringover" style="color:var(--ocean)">0h00</div>
       <div class="stat-sub" id="s-ringover-count">0 appels</div>
     </div>
     <div class="stat-card">
       <div class="stat-label">Crisp</div>
-      <div class="stat-value" id="s-crisp" style="color:var(--purple)">0h00</div>
+      <div class="stat-value" id="s-crisp" style="color:var(--clay)">0h00</div>
       <div class="stat-sub" id="s-crisp-count">0 tickets</div>
     </div>
     <div class="stat-card">
@@ -226,7 +244,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   <div class="tabs">
     <button class="tab active" onclick="switchTab('today',this)">Aujourd'hui</button>
     <button class="tab" onclick="switchTab('week',this)">Cette semaine</button>
-    <button class="tab" onclick="switchTab('team',this)">Équipe</button>
+    <button class="tab" id="tab-team" onclick="switchTab('team',this)">Équipe</button>
+    <button class="tab" id="tab-admin" onclick="switchTab('admin',this)">Administration</button>
   </div>
 
   <div class="content">
@@ -258,6 +277,53 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
         </thead>
         <tbody id="entries-body"></tbody>
       </table>
+    </div>
+
+    <!-- ADMIN PANEL -->
+    <div id="admin-panel" class="hidden">
+      <div class="admin-grid">
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <h3>Comptes équipe</h3>
+            <span class="count-badge" id="team-count">0 comptes</span>
+          </div>
+          <div id="team-list"></div>
+        </div>
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <h3>Types de traitement</h3>
+            <span class="count-badge" id="treatment-count">0 types</span>
+          </div>
+          <div class="treatment-add-row">
+            <input class="form-input" id="new-treatment-input" placeholder="Nouveau type...">
+            <button class="btn btn-primary" onclick="addTreatmentType()">Ajouter</button>
+          </div>
+          <div id="treatment-list"></div>
+        </div>
+      </div>
+      <div class="admin-card" style="margin-top:16px">
+        <div class="admin-card-header">
+          <h3>Statistiques globales</h3>
+        </div>
+        <div class="stats-grid" style="margin:0;padding:16px">
+          <div class="stat-card">
+            <div class="stat-label">Total équipe (semaine)</div>
+            <div class="stat-value" id="admin-s-total">0h00</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Entrées enregistrées</div>
+            <div class="stat-value" id="admin-s-count">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Agents actifs</div>
+            <div class="stat-value" id="admin-s-active">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Export</div>
+            <button class="btn btn-ghost" onclick="exportCSV()" style="margin-top:4px">↓ Télécharger CSV</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -296,11 +362,18 @@ const FIREBASE_API_KEY = "AIzaSyD1Weyc2zdtdaO7JgrMRskXZaDOGTIbyqc";
 const BASE_URL = `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/databases/(default)/documents`;
 
 const TEAM = [
-  { id:'patrick', name:'Patrick', pin:'1111', color:'#2B4C7E', initials:'PK' },
-  { id:'gaelle',  name:'Gaelle',  pin:'2222', color:'#3B8C6E', initials:'GN' },
-  { id:'johnr',   name:'John R.', pin:'3333', color:'#DCAE1D', initials:'JR' },
-  { id:'crystella',name:'Crystella',pin:'4444',color:'#C9604F',initials:'CR' },
-  { id:'john',    name:'John (moi)', pin:'5555', color:'#A8527A', initials:'JF' },
+  { id:'patrick', name:'Patrick', pin:'1111', color:'#2B4C7E', initials:'PK', role:'agent' },
+  { id:'gaelle',  name:'Gaelle',  pin:'2222', color:'#3B8C6E', initials:'GN', role:'agent' },
+  { id:'johnr',   name:'John R.', pin:'3333', color:'#DCAE1D', initials:'JR', role:'agent' },
+  { id:'crystella',name:'Crystella',pin:'4444',color:'#C9604F',initials:'CR', role:'agent' },
+  { id:'supervisor', name:'Superviseur', pin:'6666', color:'#DCAE1D', initials:'SV', role:'supervisor' },
+  { id:'john',    name:'John', pin:'5555', color:'#2B4C7E', initials:'JF', role:'admin' },
+];
+
+const TREATMENT_TYPES_DEFAULT = [
+  'Confirmation','Reservations','Conseils/suggestions','Follow-up','Lost and found','Car rental',
+  'Additionnels services','Train','Health','Activities','Transferts','DMC','Itinerary',
+  'Accommodation','Luggage','Flights','Welcome call','Goodbye call'
 ];
 
 let currentUser = null;
@@ -337,8 +410,34 @@ function doLogin() {
   av.textContent = user.initials; av.style.background = user.color+'20'; av.style.color = user.color;
   document.getElementById('topbar-name').textContent = user.name;
   populateFilters();
+  applyRoleUI();
   checkActiveTimer();
   loadEntries();
+}
+
+function applyRoleUI() {
+  const role = currentUser.role;
+  const badge = document.getElementById('role-badge');
+  const app = document.getElementById('app');
+  app.classList.remove('role-agent','role-supervisor','role-admin');
+  app.classList.add('role-' + role);
+
+  if (role === 'agent') badge.textContent = 'Agent';
+  if (role === 'supervisor') badge.textContent = 'Superviseur · Vue élargie';
+  if (role === 'admin') badge.textContent = 'Admin · Contrôle total';
+  badge.classList.toggle('hidden', role === 'agent');
+
+  document.getElementById('tab-team').classList.toggle('hidden', role === 'agent');
+  document.getElementById('tab-admin').classList.toggle('hidden', role !== 'admin');
+
+  // Filtre agent verrouillé pour les agents : ils ne voient que leurs propres entrées
+  const agentFilter = document.getElementById('filter-agent');
+  if (role === 'agent') {
+    agentFilter.value = currentUser.id;
+    agentFilter.disabled = true;
+  } else {
+    agentFilter.disabled = false;
+  }
 }
 document.getElementById('pin-input').addEventListener('keydown', e => { if (e.key==='Enter') doLogin(); });
 function logout() {
@@ -583,6 +682,7 @@ function renderStats(filtered) {
 }
 function renderTable(filtered) {
   const body = document.getElementById('entries-body');
+  const canEdit = currentUser.role === 'supervisor' || currentUser.role === 'admin';
   if (!filtered.length) {
     body.innerHTML = '<tr><td colspan="6"><div class="empty">Aucune entrée pour cette période.</div></td></tr>';
     return;
@@ -591,18 +691,130 @@ function renderTable(filtered) {
     <tr>
       <td class="dur-cell">${fmtTime(e.startTime)}</td>
       <td>${sourceTag(e.source)}</td>
-      <td>${e.desc}</td>
+      <td id="desc-${e.id}">${e.desc}</td>
       <td>${agentCell(e.agent)}</td>
       <td class="dur-cell">${fmtDuration(e.durationSec)}</td>
-      <td><div class="row-actions"><button class="icon-btn" onclick="deleteEntry('${e.id}')">✕</button></div></td>
+      <td><div class="row-actions">
+        ${canEdit ? `<button class="icon-btn" onclick="editEntry('${e.id}')" title="Modifier">✎</button>` : ''}
+        ${canEdit ? `<button class="icon-btn" onclick="deleteEntry('${e.id}')" title="Supprimer">✕</button>` : ''}
+      </div></td>
     </tr>`).join('');
+}
+
+function editEntry(id) {
+  const entry = entries.find(e => e.id === id);
+  if (!entry) return;
+  const cell = document.getElementById('desc-' + id);
+  const current = entry.desc;
+  cell.innerHTML = `<input class="form-input" id="edit-input-${id}" value="${current.replace(/"/g,'&quot;')}" style="padding:5px 8px;font-size:13px" />`;
+  const input = document.getElementById('edit-input-' + id);
+  input.focus();
+  input.select();
+  const save = async () => {
+    const newDesc = input.value.trim() || current;
+    entry.desc = newDesc;
+    cell.textContent = newDesc;
+    await saveEntryToFirestore(entry);
+  };
+  input.addEventListener('blur', save);
+  input.addEventListener('keydown', e => { if (e.key==='Enter') input.blur(); });
 }
 function switchTab(view, btn) {
   currentView = view;
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   btn.classList.add('active');
+  const isAdminView = view === 'admin';
+  document.querySelector('.toolbar').classList.toggle('hidden', isAdminView);
+  document.querySelector('.entries-table').classList.toggle('hidden', isAdminView);
+  document.getElementById('admin-panel').classList.toggle('hidden', !isAdminView);
+  if (isAdminView) { renderAdminPanel(); return; }
   renderAll();
 }
+// ===== ADMIN PANEL =====
+let customTreatmentTypes = [...TREATMENT_TYPES_DEFAULT];
+
+function renderAdminPanel() {
+  renderTeamList();
+  renderTreatmentList();
+  renderAdminStats();
+}
+
+function renderTeamList() {
+  document.getElementById('team-count').textContent = TEAM.length + ' comptes';
+  document.getElementById('team-list').innerHTML = TEAM.map(u => `
+    <div class="team-row">
+      <div class="mini-avatar" style="background:${u.color}20;color:${u.color}">${u.initials}</div>
+      <div class="team-row-info">
+        <div class="team-row-name">${u.name}</div>
+        <div class="team-row-role">${roleLabel(u.role)} · PIN ${u.pin}</div>
+      </div>
+    </div>`).join('') +
+    '<div class="admin-note">Pour ajouter ou retirer un compte, modifie le tableau TEAM dans le code.</div>';
+}
+
+function roleLabel(role) {
+  if (role === 'admin') return 'Admin';
+  if (role === 'supervisor') return 'Superviseur';
+  return 'Agent';
+}
+
+function renderTreatmentList() {
+  document.getElementById('treatment-count').textContent = customTreatmentTypes.length + ' types';
+  document.getElementById('treatment-list').innerHTML = customTreatmentTypes.map((t,i) => `
+    <div class="treatment-row">
+      <span>${t}</span>
+      <button class="icon-btn" onclick="removeTreatmentType(${i})">✕</button>
+    </div>`).join('');
+}
+
+function addTreatmentType() {
+  const input = document.getElementById('new-treatment-input');
+  const val = input.value.trim();
+  if (!val) return;
+  customTreatmentTypes.push(val);
+  input.value = '';
+  renderTreatmentList();
+}
+
+function removeTreatmentType(i) {
+  customTreatmentTypes.splice(i,1);
+  renderTreatmentList();
+}
+
+function renderAdminStats() {
+  const now = new Date();
+  const weekStart = new Date(now); weekStart.setDate(now.getDate()-now.getDay()+1); weekStart.setHours(0,0,0,0);
+  const weekEntries = entries.filter(e => new Date(e.startTime) >= weekStart);
+  const total = weekEntries.reduce((s,e)=>s+e.durationSec,0);
+  const activeAgents = new Set(entries.filter(e=>isToday(e.startTime)).map(e=>e.agent));
+
+  document.getElementById('admin-s-total').textContent = fmtDuration(total);
+  document.getElementById('admin-s-count').textContent = entries.length;
+  document.getElementById('admin-s-active').textContent = activeAgents.size;
+}
+
+function exportCSV() {
+  const rows = [['Date','Heure','Source','Description','Agent','Durée (sec)']];
+  entries.forEach(e => {
+    const d = new Date(e.startTime);
+    rows.push([
+      d.toLocaleDateString('fr-FR'),
+      fmtTime(e.startTime),
+      e.source,
+      e.desc,
+      (TEAM.find(t=>t.id===e.agent)||{}).name || e.agent,
+      e.durationSec
+    ]);
+  });
+  const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'onspot-time-entries-' + new Date().toISOString().split('T')[0] + '.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
 renderAvatars();
 </script>
 </body>
