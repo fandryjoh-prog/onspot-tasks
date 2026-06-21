@@ -225,10 +225,15 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   <div class="login-card">
     <div class="login-logo">OnSpot</div>
     <div class="login-title">Time Tracker</div>
-    <div class="login-sub">Choisis ton profil et entre ton PIN</div>
-    <div class="avatars" id="avatar-list"></div>
-    <div class="pin-label">Mot de passe</div>
-    <input class="pin-input" type="password" id="pin-input" placeholder="Mot de passe" autocomplete="current-password">
+    <div class="login-sub">Connecte-toi avec ton email et ton mot de passe</div>
+    <div class="form-row">
+      <label class="form-label">Email</label>
+      <input class="form-input" type="email" id="login-email" placeholder="prenom@onspot.travel" autocomplete="username">
+    </div>
+    <div class="form-row">
+      <label class="form-label">Mot de passe</label>
+      <input class="form-input" type="password" id="login-password" placeholder="••••••••" autocomplete="current-password">
+    </div>
     <div class="login-error" id="login-error"></div>
     <button class="login-btn" onclick="doLogin()">Se connecter</button>
   </div>
@@ -446,6 +451,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
             <h3>Comptes équipe</h3>
             <span class="count-badge" id="team-count">0 comptes</span>
           </div>
+          <button class="btn btn-primary" style="width:100%;margin-bottom:12px" onclick="openCreateAccountModal()">+ Ajouter un compte</button>
           <div id="team-list"></div>
         </div>
         <div class="admin-card">
@@ -532,15 +538,47 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
           <option value="admin">Admin</option>
         </select>
       </div>
-      <div class="form-row">
-        <label class="form-label">Nouveau mot de passe</label>
-        <input class="form-input" type="password" id="account-password-input" placeholder="Laisser vide pour ne pas changer">
-      </div>
       <div class="form-row" id="account-error" style="color:var(--red);font-size:12px;min-height:16px"></div>
     </div>
     <div class="modal-footer">
       <button class="btn btn-ghost" onclick="closeAccountEditModal()">Annuler</button>
       <button class="btn btn-primary" onclick="saveAccountEdit()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay hidden" id="create-account-overlay" onclick="closeCreateAccountModalOutside(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Ajouter un compte</div>
+      <button class="modal-close" onclick="closeCreateAccountModal()">×</button>
+    </div>
+    <div class="modal-body" id="create-account-form">
+      <div class="form-row">
+        <label class="form-label">Nom affiché</label>
+        <input class="form-input" id="new-account-name" placeholder="Ex: Miora">
+      </div>
+      <div class="form-row">
+        <label class="form-label">Email</label>
+        <input class="form-input" type="email" id="new-account-email" placeholder="prenom@onspot.travel">
+      </div>
+      <div class="form-row" id="create-account-error" style="color:var(--red);font-size:12px;min-height:16px"></div>
+    </div>
+    <div class="modal-body hidden" id="create-account-result">
+      <div class="form-row" style="text-align:center">
+        <div style="font-size:13px;color:var(--text2);margin-bottom:10px">Compte créé. Transmets ces identifiants à la personne :</div>
+        <div style="background:var(--surface2);border-radius:10px;padding:14px;text-align:left">
+          <div style="font-size:11px;color:var(--text2);margin-bottom:2px">Email</div>
+          <div style="font-family:var(--mono);font-size:13px;margin-bottom:10px" id="result-email"></div>
+          <div style="font-size:11px;color:var(--text2);margin-bottom:2px">Mot de passe temporaire</div>
+          <div style="font-family:var(--mono);font-size:15px;font-weight:600;color:var(--ocean)" id="result-password"></div>
+        </div>
+        <button class="btn btn-ghost" style="margin-top:10px" onclick="copyCreatedCredentials()">Copier email + mot de passe</button>
+      </div>
+    </div>
+    <div class="modal-footer" id="create-account-footer">
+      <button class="btn btn-ghost" onclick="closeCreateAccountModal()">Annuler</button>
+      <button class="btn btn-primary" id="create-account-submit" onclick="submitCreateAccount()">Créer le compte</button>
     </div>
   </div>
 </div>
@@ -610,16 +648,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 const FIREBASE_PROJECT_ID = "trackingcallro";
 const FIREBASE_API_KEY = "AIzaSyD1Weyc2zdtdaO7JgrMRskXZaDOGTIbyqc";
 const BASE_URL = `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/databases/(default)/documents`;
+const AUTH_BASE = `https://identitytoolkit.googleapis.com/v1`;
 
-const TEAM_DEFAULTS = [
-  { id:'patrick', name:'Patrick', password:'1111', color:'#2B4C7E', initials:'PK', role:'agent', photo:'' },
-  { id:'gaelle',  name:'Gaelle',  password:'2222', color:'#3B8C6E', initials:'GN', role:'agent', photo:'' },
-  { id:'johnr',   name:'John R.', password:'3333', color:'#DCAE1D', initials:'JR', role:'agent', photo:'' },
-  { id:'crystella',name:'Crystella',password:'4444',color:'#C9604F',initials:'CR', role:'agent', photo:'' },
-  { id:'supervisor', name:'Superviseur', password:'6666', color:'#DCAE1D', initials:'SV', role:'supervisor', photo:'' },
-  { id:'john',    name:'John', password:'5555', color:'#2B4C7E', initials:'JF', role:'admin', photo:'' },
-];
-let TEAM = TEAM_DEFAULTS.map(u => ({...u}));
+// TEAM est maintenant peuplé depuis Firestore (collection "accounts", clé = uid Firebase Auth)
+let TEAM = [];
 
 const SOURCE_DMT_DEFAULT = { ringover: 300, crisp: 480, manual: 600 };
 let sourceDMT = {...SOURCE_DMT_DEFAULT};
@@ -637,28 +669,55 @@ let timerInterval = null;
 let selectedSource = 'manual';
 let currentView = 'today';
 
-function renderAvatars() {
-  document.getElementById('avatar-list').innerHTML = TEAM.map(u => `
-    <button class="avatar-btn" onclick="selectUser('${u.id}')" id="av-${u.id}">
-      <div class="avatar-icon" style="background:${u.color}20;color:${u.color}">${u.initials}</div>
-      <span>${u.name}</span>
-    </button>`).join('');
-}
-let selectedUserId = null;
-function selectUser(id) {
-  selectedUserId = id;
-  document.querySelectorAll('.avatar-btn').forEach(b => b.classList.remove('selected'));
-  document.getElementById('av-' + id).classList.add('selected');
-  document.getElementById('pin-input').focus();
-}
-function doLogin() {
-  const pin = document.getElementById('pin-input').value;
+async function doLogin() {
+  const email = document.getElementById('login-email').value.trim();
+  const password = document.getElementById('login-password').value;
   const err = document.getElementById('login-error');
-  if (!selectedUserId) { err.textContent = 'Choisis ton profil.'; return; }
-  const user = TEAM.find(u => u.id === selectedUserId && u.password === pin);
-  if (!user) { err.textContent = 'Mot de passe incorrect.'; return; }
-  localStorage.setItem('onspot_session_user', user.id);
-  enterApp(user);
+  err.textContent = '';
+  if (!email || !password) { err.textContent = 'Entre ton email et ton mot de passe.'; return; }
+
+  try {
+    const res = await fetch(`${AUTH_BASE}/accounts:signInWithPassword?key=${FIREBASE_API_KEY}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password, returnSecureToken: true })
+    });
+    const data = await res.json();
+    if (data.error) {
+      err.textContent = 'Email ou mot de passe incorrect.';
+      return;
+    }
+    localStorage.setItem('onspot_idToken', data.idToken);
+    localStorage.setItem('onspot_uid', data.localId);
+    const user = await fetchAccountProfile(data.localId);
+    if (!user) {
+      err.textContent = "Ce compte n'a pas encore de profil. Contacte un admin.";
+      return;
+    }
+    enterApp(user);
+  } catch(e) {
+    err.textContent = 'Erreur de connexion. Réessaie.';
+    console.error(e);
+  }
+}
+
+async function fetchAccountProfile(uid) {
+  try {
+    const res = await fetch(`${BASE_URL}/accounts/${uid}?key=${FIREBASE_API_KEY}`);
+    if (!res.ok) return null;
+    const doc = await res.json();
+    if (!doc.fields) return null;
+    const f = doc.fields;
+    return {
+      id: uid,
+      name: f.name?.stringValue || 'Sans nom',
+      email: f.email?.stringValue || '',
+      color: f.color?.stringValue || '#2B4C7E',
+      initials: f.initials?.stringValue || '??',
+      role: f.role?.stringValue || 'agent',
+      photo: f.photo?.stringValue || '',
+    };
+  } catch(e) { console.error('Erreur profil compte:', e); return null; }
 }
 
 function enterApp(user) {
@@ -708,11 +767,12 @@ function updateThemeToggleIcon(theme) {
   if (btn) btn.textContent = theme === 'dark' ? '☀' : '☾';
 }
 
-function tryRestoreSession() {
-  const savedId = localStorage.getItem('onspot_session_user');
-  if (!savedId) return false;
-  const user = TEAM.find(u => u.id === savedId);
-  if (!user) return false;
+async function tryRestoreSession() {
+  const idToken = localStorage.getItem('onspot_idToken');
+  const uid = localStorage.getItem('onspot_uid');
+  if (!idToken || !uid) return false;
+  const user = await fetchAccountProfile(uid);
+  if (!user) { localStorage.removeItem('onspot_idToken'); localStorage.removeItem('onspot_uid'); return false; }
   enterApp(user);
   return true;
 }
@@ -767,14 +827,16 @@ function applyRoleUI() {
     document.querySelector('.entries-table').classList.add('hidden');
   }
 }
-document.getElementById('pin-input').addEventListener('keydown', e => { if (e.key==='Enter') doLogin(); });
+document.getElementById('login-password').addEventListener('keydown', e => { if (e.key==='Enter') doLogin(); });
 function logout() {
   if (activeTimer) { alert('Arrête le timer en cours avant de te déconnecter.'); return; }
-  localStorage.removeItem('onspot_session_user');
-  currentUser = null; selectedUserId = null; entries = [];
+  localStorage.removeItem('onspot_idToken');
+  localStorage.removeItem('onspot_uid');
+  currentUser = null; entries = [];
   document.getElementById('login-screen').style.display = 'flex';
   document.getElementById('app').style.display = 'none';
-  document.getElementById('pin-input').value = '';
+  document.getElementById('login-email').value = '';
+  document.getElementById('login-password').value = '';
 }
 function populateFilters() {
   const sel = document.getElementById('filter-agent');
@@ -1398,32 +1460,26 @@ async function loadAccountsFromFirestore() {
     const res = await fetch(`${BASE_URL}/accounts?key=${FIREBASE_API_KEY}`);
     const data = await res.json();
     const docs = data.documents || [];
-    if (!docs.length) { await seedAccountsToFirestore(); return; }
     TEAM = docs.map(doc => {
       const f = doc.fields || {};
       const id = doc.name.split('/').pop();
-      const defaults = TEAM_DEFAULTS.find(d => d.id === id) || {};
       return {
         id,
-        name: f.name?.stringValue || defaults.name,
-        password: f.password?.stringValue || defaults.password,
-        color: f.color?.stringValue || defaults.color,
-        initials: f.initials?.stringValue || defaults.initials,
-        role: f.role?.stringValue || defaults.role,
+        name: f.name?.stringValue || 'Sans nom',
+        email: f.email?.stringValue || '',
+        color: f.color?.stringValue || '#2B4C7E',
+        initials: f.initials?.stringValue || '??',
+        role: f.role?.stringValue || 'agent',
         photo: f.photo?.stringValue || '',
       };
     });
   } catch(e) { console.error('Erreur chargement comptes:', e); }
 }
 
-async function seedAccountsToFirestore() {
-  for (const u of TEAM_DEFAULTS) { await saveAccountToFirestore(u); }
-}
-
 async function saveAccountToFirestore(user) {
   const body = { fields: {
     name: { stringValue: user.name },
-    password: { stringValue: user.password },
+    email: { stringValue: user.email || '' },
     color: { stringValue: user.color },
     initials: { stringValue: user.initials },
     role: { stringValue: user.role },
@@ -1484,11 +1540,27 @@ function removeProfilePhoto() {
 async function saveProfile() {
   const newName = document.getElementById('profile-name-input').value.trim();
   const newPassword = document.getElementById('profile-password-input').value.trim();
-  if (!newName) { document.getElementById('profile-error').textContent = 'Le nom ne peut pas être vide.'; return; }
+  const errEl = document.getElementById('profile-error');
+  errEl.textContent = '';
+  if (!newName) { errEl.textContent = 'Le nom ne peut pas être vide.'; return; }
+  if (newPassword && newPassword.length < 6) { errEl.textContent = 'Le mot de passe doit faire au moins 6 caractères.'; return; }
+
+  if (newPassword) {
+    const idToken = localStorage.getItem('onspot_idToken');
+    try {
+      const res = await fetch(`${AUTH_BASE}/accounts:update?key=${FIREBASE_API_KEY}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ idToken, password: newPassword, returnSecureToken: true })
+      });
+      const data = await res.json();
+      if (data.error) { errEl.textContent = "Erreur lors du changement de mot de passe."; return; }
+      localStorage.setItem('onspot_idToken', data.idToken);
+    } catch(e) { errEl.textContent = 'Erreur réseau.'; console.error(e); return; }
+  }
 
   currentUser.name = newName;
   currentUser.photo = pendingProfilePhoto || '';
-  if (newPassword) currentUser.password = newPassword;
 
   const idx = TEAM.findIndex(u => u.id === currentUser.id);
   if (idx >= 0) TEAM[idx] = currentUser;
@@ -1496,6 +1568,7 @@ async function saveProfile() {
   await saveAccountToFirestore(currentUser);
   renderTopbarIdentity();
   populateFilters();
+  document.getElementById('profile-password-input').value = '';
   closeProfileModal();
 }
 
@@ -1515,7 +1588,6 @@ function openAccountEditModal(accountId) {
   document.getElementById('account-modal-title').textContent = 'Modifier · ' + acc.name;
   document.getElementById('account-name-input').value = acc.name;
   document.getElementById('account-role-input').value = acc.role;
-  document.getElementById('account-password-input').value = '';
   document.getElementById('account-error').textContent = '';
   renderAccountPhotoPreview(acc);
   document.getElementById('account-modal-overlay').classList.remove('hidden');
@@ -1561,19 +1633,101 @@ async function saveAccountEdit() {
   if (!acc) return;
   const newName = document.getElementById('account-name-input').value.trim();
   const newRole = document.getElementById('account-role-input').value;
-  const newPassword = document.getElementById('account-password-input').value.trim();
   if (!newName) { document.getElementById('account-error').textContent = 'Le nom ne peut pas être vide.'; return; }
 
   acc.name = newName;
   acc.role = newRole;
   acc.photo = pendingAccountPhoto || '';
-  if (newPassword) acc.password = newPassword;
 
   await saveAccountToFirestore(acc);
   closeAccountEditModal();
   renderTeamList();
   populateFilters();
   if (currentUser.id === acc.id) { currentUser = acc; renderTopbarIdentity(); }
+}
+
+// ===== CREATE ACCOUNT (admin only) =====
+function genTempPassword() {
+  const adjectives = ['Voyage','Ocean','Clay','Bloom','Atlas','Compass'];
+  const word = adjectives[Math.floor(Math.random()*adjectives.length)];
+  const digits = Math.floor(1000 + Math.random()*9000);
+  return `${word}-${digits}`;
+}
+
+function openCreateAccountModal() {
+  document.getElementById('new-account-name').value = '';
+  document.getElementById('new-account-email').value = '';
+  document.getElementById('create-account-error').textContent = '';
+  document.getElementById('create-account-form').classList.remove('hidden');
+  document.getElementById('create-account-result').classList.add('hidden');
+  document.getElementById('create-account-footer').classList.remove('hidden');
+  document.getElementById('create-account-overlay').classList.remove('hidden');
+}
+function closeCreateAccountModal() { document.getElementById('create-account-overlay').classList.add('hidden'); }
+function closeCreateAccountModalOutside(e) { if (e.target.id === 'create-account-overlay') closeCreateAccountModal(); }
+
+async function submitCreateAccount() {
+  const name = document.getElementById('new-account-name').value.trim();
+  const email = document.getElementById('new-account-email').value.trim();
+  const errEl = document.getElementById('create-account-error');
+  errEl.textContent = '';
+  if (!name) { errEl.textContent = 'Le nom est requis.'; return; }
+  if (!email || !email.includes('@')) { errEl.textContent = 'Email invalide.'; return; }
+
+  const submitBtn = document.getElementById('create-account-submit');
+  submitBtn.disabled = true; submitBtn.textContent = 'Création...';
+
+  // On garde la session admin de côté : signUp connecte automatiquement le nouveau compte
+  const adminIdToken = localStorage.getItem('onspot_idToken');
+  const adminUid = localStorage.getItem('onspot_uid');
+  const tempPassword = genTempPassword();
+
+  try {
+    const res = await fetch(`${AUTH_BASE}/accounts:signUp?key=${FIREBASE_API_KEY}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password: tempPassword, returnSecureToken: true })
+    });
+    const data = await res.json();
+    if (data.error) {
+      errEl.textContent = data.error.message === 'EMAIL_EXISTS' ? 'Cet email est déjà utilisé.' : 'Erreur lors de la création.';
+      submitBtn.disabled = false; submitBtn.textContent = 'Créer le compte';
+      return;
+    }
+
+    const newUid = data.localId;
+    const initials = name.trim().split(/\s+/).map(w=>w[0]).join('').toUpperCase().slice(0,2) || '??';
+    const palette = ['#2B4C7E','#3B8C6E','#DCAE1D','#C9604F','#A8527A'];
+    const color = palette[Math.floor(Math.random()*palette.length)];
+
+    const newAccount = { id: newUid, name, email, color, initials, role: 'agent', photo: '' };
+    await saveAccountToFirestore(newAccount);
+    TEAM.push(newAccount);
+
+    // Restaure la session admin (signUp avait connecté le nouveau compte à sa place)
+    localStorage.setItem('onspot_idToken', adminIdToken);
+    localStorage.setItem('onspot_uid', adminUid);
+
+    document.getElementById('result-email').textContent = email;
+    document.getElementById('result-password').textContent = tempPassword;
+    document.getElementById('create-account-form').classList.add('hidden');
+    document.getElementById('create-account-result').classList.remove('hidden');
+    document.getElementById('create-account-footer').classList.add('hidden');
+    renderTeamList();
+    populateFilters();
+
+  } catch(e) {
+    errEl.textContent = 'Erreur réseau.';
+    console.error(e);
+  } finally {
+    submitBtn.disabled = false; submitBtn.textContent = 'Créer le compte';
+  }
+}
+
+function copyCreatedCredentials() {
+  const email = document.getElementById('result-email').textContent;
+  const pass = document.getElementById('result-password').textContent;
+  navigator.clipboard.writeText(`Email : ${email}\nMot de passe temporaire : ${pass}`);
 }
 
 // ===== EVOLUTION CHART (Admin) =====
@@ -1619,8 +1773,7 @@ function renderEvolutionChart() {
   document.getElementById('evolution-chart').innerHTML = `<div class="evo-bars">${barsHtml}</div>`;
 }
 
-renderAvatars();
-  if (!tryRestoreSession()) {
+  if (!(await tryRestoreSession())) {
     document.getElementById('login-screen').style.display = 'flex';
   }
 })();
