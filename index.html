@@ -35,7 +35,25 @@
   --font:'Public Sans',system-ui,sans-serif;
   --mono:'Spline Sans Mono',monospace;
 }
-body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;font-size:14px}
+[data-theme="dark"]{
+  --ocean-dim:#1A2740;
+  --clay-dim:#3A2420;
+  --bloom-dim:#3A2530;
+  --amber-dim:#3A2E0E;
+  --bg:#11161F;
+  --surface:#171D29;
+  --surface2:#1E2531;
+  --border:#2A3344;
+  --border2:#384258;
+  --text:#EBEEF3;
+  --text2:#9AA6B8;
+  --text3:#69748A;
+  --red-dim:#3A2220;
+  --green-dim:#152A22;
+}
+.theme-toggle-btn{width:32px;height:32px;border-radius:50%;border:1px solid var(--border2);background:var(--surface2);color:var(--text2);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center}
+.theme-toggle-btn:hover{border-color:var(--ocean);color:var(--ocean)}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;transition:background .2s,color .2s}
 
 /* LOGIN */
 #login-screen{position:fixed;inset:0;background:var(--ocean-deep);display:flex;align-items:center;justify-content:center;z-index:100}
@@ -49,7 +67,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .avatar-btn.selected{border-color:var(--ocean);background:var(--ocean-dim)}
 .avatar-icon{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;font-family:var(--font)}
 .pin-label{font-size:12px;color:var(--text2);margin-bottom:8px}
-.pin-input{width:100%;padding:11px;background:var(--surface2);border:1px solid var(--border);border-radius:9px;color:var(--text);font-family:var(--mono);font-size:18px;letter-spacing:8px;text-align:center;outline:none}
+.pin-input{width:100%;padding:11px;background:var(--surface2);border:1px solid var(--border);border-radius:9px;color:var(--text);font-family:var(--font);font-size:14px;text-align:center;outline:none}
 .pin-input:focus{border-color:var(--ocean)}
 .login-btn{width:100%;margin-top:16px;padding:12px;background:var(--ocean);color:#fff;border:none;border-radius:9px;font-family:var(--font);font-size:14px;font-weight:600;cursor:pointer}
 .login-btn:hover{background:var(--ocean-deep)}
@@ -140,6 +158,24 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .modal-body{padding:20px 24px}
 .modal-footer{padding:16px 24px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end}
 .form-row{margin-bottom:16px}
+.profile-photo-row{display:flex;align-items:center;gap:16px;margin-bottom:20px}
+.dmt-row{display:flex;align-items:center;gap:10px;padding:10px 18px;border-bottom:1px solid var(--border)}
+.dmt-label{flex:1;font-size:13px;color:var(--text)}
+.dmt-input{width:90px;flex:none}
+.dmt-unit{font-size:11px;color:var(--text2)}
+.dur-warn{color:#B8860B;font-weight:600}
+.dur-over{color:var(--red);font-weight:700}
+.chart-toolbar{display:flex;gap:8px;padding:14px 18px;border-bottom:1px solid var(--border)}
+.evolution-chart{padding:20px 18px}
+.evo-bars{display:flex;align-items:flex-end;gap:8px;height:140px;padding:0 4px}
+.evo-bar-col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:6px;height:100%}
+.evo-bar{width:100%;border-radius:4px 4px 0 0;background:var(--ocean);min-height:2px;position:relative}
+.evo-bar-label{font-family:var(--mono);font-size:9px;color:var(--text2)}
+.evo-bar-value{font-family:var(--mono);font-size:9px;color:var(--text2);margin-bottom:2px}
+.evo-legend{display:flex;gap:14px;padding:10px 18px 0;flex-wrap:wrap}
+.evo-legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text2)}
+.evo-legend-dot{width:8px;height:8px;border-radius:2px}
+.profile-photo-preview{width:64px;height:64px;border-radius:50%;background:var(--surface2);background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:600;font-size:20px;color:var(--ocean);flex-shrink:0;border:1px solid var(--border)}
 .form-label{display:block;font-size:11px;color:var(--text2);margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:.4px}
 .form-input,.form-select{width:100%;padding:10px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:9px;color:var(--text);font-family:var(--font);font-size:13px;outline:none}
 .form-input:focus,.form-select:focus{border-color:var(--ocean)}
@@ -191,8 +227,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     <div class="login-title">Time Tracker</div>
     <div class="login-sub">Choisis ton profil et entre ton PIN</div>
     <div class="avatars" id="avatar-list"></div>
-    <div class="pin-label">PIN (4 chiffres)</div>
-    <input class="pin-input" type="password" id="pin-input" maxlength="4" placeholder="••••" inputmode="numeric">
+    <div class="pin-label">Mot de passe</div>
+    <input class="pin-input" type="password" id="pin-input" placeholder="Mot de passe" autocomplete="current-password">
     <div class="login-error" id="login-error"></div>
     <button class="login-btn" onclick="doLogin()">Se connecter</button>
   </div>
@@ -205,7 +241,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     <div class="topbar-title">Time Tracker</div>
     <span class="role-badge hidden" id="role-badge"></span>
     <div class="topbar-right">
-      <div class="user-pill"><div class="mini-avatar" id="topbar-avatar"></div><span id="topbar-name"></span></div>
+      <button class="theme-toggle-btn" id="theme-toggle" onclick="toggleTheme()" title="Changer de thème">☾</button>
+      <div class="user-pill" onclick="openProfileModal()" style="cursor:pointer"><div class="mini-avatar" id="topbar-avatar"></div><span id="topbar-name"></span></div>
       <button class="btn btn-ghost" onclick="logout()">Déconnexion</button>
     </div>
   </div>
@@ -336,6 +373,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       <select class="filter-select" id="filter-agent" onchange="renderAll()">
         <option value="">Tous les agents</option>
       </select>
+      <select class="filter-select" id="filter-treatment" onchange="renderAll()">
+        <option value="">Tous traitements</option>
+      </select>
       <input class="search-input" id="search-input" placeholder="Rechercher..." oninput="renderAll()">
       <span class="count-badge" id="entry-count">0 entrées</span>
     </div>
@@ -358,12 +398,43 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 
     <!-- TEAM LIVE PANEL (Supervisor home/team, Admin home) -->
     <div id="team-live-panel" class="hidden">
-      <div class="admin-card">
+      <div class="admin-card" style="margin-bottom:16px">
+        <div class="admin-card-header">
+          <h3>DMT par source</h3>
+          <span class="count-badge">Durée moyenne de traitement cible</span>
+        </div>
+        <div class="dmt-row">
+          <span class="dmt-label">RingOver</span>
+          <input class="form-input dmt-input" id="dmt-ringover" type="number" min="0">
+          <span class="dmt-unit">secondes</span>
+        </div>
+        <div class="dmt-row">
+          <span class="dmt-label">Crisp</span>
+          <input class="form-input dmt-input" id="dmt-crisp" type="number" min="0">
+          <span class="dmt-unit">secondes</span>
+        </div>
+        <div class="dmt-row">
+          <span class="dmt-label">Ticket OS / Manuel</span>
+          <input class="form-input dmt-input" id="dmt-manual" type="number" min="0">
+          <span class="dmt-unit">secondes</span>
+        </div>
+        <div style="padding:12px 18px"><button class="btn btn-primary" onclick="saveDMT()">Enregistrer les DMT</button></div>
+      </div>
+
+      <div class="admin-card" style="margin-bottom:16px">
         <div class="admin-card-header">
           <h3>Équipe en direct</h3>
           <span class="count-badge" id="team-live-count"></span>
         </div>
         <div id="team-live-list"></div>
+      </div>
+
+      <div class="admin-card">
+        <div class="admin-card-header"><h3>Extraction des données</h3></div>
+        <div style="padding:14px 18px;display:flex;gap:8px">
+          <button class="btn btn-ghost" onclick="exportCSV()">↓ Export CSV</button>
+          <button class="btn btn-ghost" onclick="exportExcel()">↓ Export Excel</button>
+        </div>
       </div>
     </div>
 
@@ -408,10 +479,101 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
           </div>
           <div class="stat-card">
             <div class="stat-label">Export</div>
-            <button class="btn btn-ghost" onclick="exportCSV()" style="margin-top:4px">↓ Télécharger CSV</button>
+            <button class="btn btn-ghost" onclick="exportCSV()" style="margin-top:4px">↓ CSV</button>
+            <button class="btn btn-ghost" onclick="exportExcel()" style="margin-top:4px">↓ Excel</button>
           </div>
         </div>
       </div>
+
+      <div class="admin-card" style="margin-top:16px">
+        <div class="admin-card-header">
+          <h3>Courbe d'évolution</h3>
+        </div>
+        <div class="chart-toolbar">
+          <select class="filter-select" id="chart-scope" onchange="renderEvolutionChart()">
+            <option value="team">Équipe entière</option>
+          </select>
+          <select class="filter-select" id="chart-period" onchange="renderEvolutionChart()">
+            <option value="week">Cette semaine</option>
+            <option value="month">Ce mois</option>
+          </select>
+        </div>
+        <div id="evolution-chart" class="evolution-chart"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ACCOUNT EDIT MODAL (admin only) -->
+<div class="modal-overlay hidden" id="account-modal-overlay" onclick="closeAccountModalOutside(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="account-modal-title">Modifier le compte</div>
+      <button class="modal-close" onclick="closeAccountEditModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="profile-photo-row">
+        <div class="profile-photo-preview" id="account-photo-preview"></div>
+        <div>
+          <input type="file" id="account-photo-input" accept="image/*" class="hidden" onchange="onAccountPhotoSelected(event)">
+          <button class="btn btn-ghost" onclick="document.getElementById('account-photo-input').click()">Changer la photo</button>
+          <button class="btn btn-ghost" onclick="removeAccountPhoto()" style="margin-left:6px">Retirer</button>
+        </div>
+      </div>
+      <div class="form-row">
+        <label class="form-label">Nom affiché</label>
+        <input class="form-input" id="account-name-input">
+      </div>
+      <div class="form-row">
+        <label class="form-label">Rôle</label>
+        <select class="form-select" id="account-role-input">
+          <option value="agent">Agent</option>
+          <option value="supervisor">Superviseur</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label class="form-label">Nouveau mot de passe</label>
+        <input class="form-input" type="password" id="account-password-input" placeholder="Laisser vide pour ne pas changer">
+      </div>
+      <div class="form-row" id="account-error" style="color:var(--red);font-size:12px;min-height:16px"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeAccountEditModal()">Annuler</button>
+      <button class="btn btn-primary" onclick="saveAccountEdit()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- PROFILE MODAL -->
+<div class="modal-overlay hidden" id="profile-modal-overlay" onclick="closeProfileModalOutside(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Mon profil</div>
+      <button class="modal-close" onclick="closeProfileModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="profile-photo-row">
+        <div class="profile-photo-preview" id="profile-photo-preview"></div>
+        <div>
+          <input type="file" id="profile-photo-input" accept="image/*" class="hidden" onchange="onProfilePhotoSelected(event)">
+          <button class="btn btn-ghost" onclick="document.getElementById('profile-photo-input').click()">Changer la photo</button>
+          <button class="btn btn-ghost" id="profile-photo-remove" onclick="removeProfilePhoto()" style="margin-left:6px">Retirer</button>
+        </div>
+      </div>
+      <div class="form-row">
+        <label class="form-label">Nom affiché</label>
+        <input class="form-input" id="profile-name-input">
+      </div>
+      <div class="form-row">
+        <label class="form-label">Nouveau mot de passe</label>
+        <input class="form-input" type="password" id="profile-password-input" placeholder="Laisser vide pour ne pas changer">
+      </div>
+      <div class="form-row" id="profile-error" style="color:var(--red);font-size:12px;min-height:16px"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeProfileModal()">Annuler</button>
+      <button class="btn btn-primary" onclick="saveProfile()">Enregistrer</button>
     </div>
   </div>
 </div>
@@ -449,14 +611,18 @@ const FIREBASE_PROJECT_ID = "trackingcallro";
 const FIREBASE_API_KEY = "AIzaSyD1Weyc2zdtdaO7JgrMRskXZaDOGTIbyqc";
 const BASE_URL = `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/databases/(default)/documents`;
 
-const TEAM = [
-  { id:'patrick', name:'Patrick', pin:'1111', color:'#2B4C7E', initials:'PK', role:'agent' },
-  { id:'gaelle',  name:'Gaelle',  pin:'2222', color:'#3B8C6E', initials:'GN', role:'agent' },
-  { id:'johnr',   name:'John R.', pin:'3333', color:'#DCAE1D', initials:'JR', role:'agent' },
-  { id:'crystella',name:'Crystella',pin:'4444',color:'#C9604F',initials:'CR', role:'agent' },
-  { id:'supervisor', name:'Superviseur', pin:'6666', color:'#DCAE1D', initials:'SV', role:'supervisor' },
-  { id:'john',    name:'John', pin:'5555', color:'#2B4C7E', initials:'JF', role:'admin' },
+const TEAM_DEFAULTS = [
+  { id:'patrick', name:'Patrick', password:'1111', color:'#2B4C7E', initials:'PK', role:'agent', photo:'' },
+  { id:'gaelle',  name:'Gaelle',  password:'2222', color:'#3B8C6E', initials:'GN', role:'agent', photo:'' },
+  { id:'johnr',   name:'John R.', password:'3333', color:'#DCAE1D', initials:'JR', role:'agent', photo:'' },
+  { id:'crystella',name:'Crystella',password:'4444',color:'#C9604F',initials:'CR', role:'agent', photo:'' },
+  { id:'supervisor', name:'Superviseur', password:'6666', color:'#DCAE1D', initials:'SV', role:'supervisor', photo:'' },
+  { id:'john',    name:'John', password:'5555', color:'#2B4C7E', initials:'JF', role:'admin', photo:'' },
 ];
+let TEAM = TEAM_DEFAULTS.map(u => ({...u}));
+
+const SOURCE_DMT_DEFAULT = { ringover: 300, crisp: 480, manual: 600 };
+let sourceDMT = {...SOURCE_DMT_DEFAULT};
 
 const TREATMENT_TYPES_DEFAULT = [
   'Confirmation','Reservations','Conseils/suggestions','Follow-up','Lost and found','Car rental',
@@ -489,18 +655,66 @@ function doLogin() {
   const pin = document.getElementById('pin-input').value;
   const err = document.getElementById('login-error');
   if (!selectedUserId) { err.textContent = 'Choisis ton profil.'; return; }
-  const user = TEAM.find(u => u.id === selectedUserId && u.pin === pin);
-  if (!user) { err.textContent = 'PIN incorrect.'; return; }
+  const user = TEAM.find(u => u.id === selectedUserId && u.password === pin);
+  if (!user) { err.textContent = 'Mot de passe incorrect.'; return; }
+  localStorage.setItem('onspot_session_user', user.id);
+  enterApp(user);
+}
+
+function enterApp(user) {
   currentUser = user;
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('app').style.display = 'block';
-  const av = document.getElementById('topbar-avatar');
-  av.textContent = user.initials; av.style.background = user.color+'20'; av.style.color = user.color;
-  document.getElementById('topbar-name').textContent = user.name;
+  applyUserTheme();
+  renderTopbarIdentity();
   populateFilters();
   applyRoleUI();
   checkActiveTimer();
   loadEntries();
+}
+
+function renderTopbarIdentity() {
+  const av = document.getElementById('topbar-avatar');
+  if (currentUser.photo) {
+    av.style.backgroundImage = `url(${currentUser.photo})`;
+    av.style.backgroundSize = 'cover';
+    av.style.backgroundPosition = 'center';
+    av.textContent = '';
+  } else {
+    av.style.backgroundImage = '';
+    av.textContent = currentUser.initials;
+    av.style.background = currentUser.color+'20'; av.style.color = currentUser.color;
+  }
+  document.getElementById('topbar-name').textContent = currentUser.name;
+}
+
+function applyUserTheme() {
+  const saved = localStorage.getItem('onspot_theme_' + currentUser.id) || 'light';
+  document.documentElement.setAttribute('data-theme', saved);
+  updateThemeToggleIcon(saved);
+}
+
+function toggleTheme() {
+  if (!currentUser) return;
+  const current = document.documentElement.getAttribute('data-theme') || 'light';
+  const next = current === 'light' ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('onspot_theme_' + currentUser.id, next);
+  updateThemeToggleIcon(next);
+}
+
+function updateThemeToggleIcon(theme) {
+  const btn = document.getElementById('theme-toggle');
+  if (btn) btn.textContent = theme === 'dark' ? '☀' : '☾';
+}
+
+function tryRestoreSession() {
+  const savedId = localStorage.getItem('onspot_session_user');
+  if (!savedId) return false;
+  const user = TEAM.find(u => u.id === savedId);
+  if (!user) return false;
+  enterApp(user);
+  return true;
 }
 
 function applyRoleUI() {
@@ -556,6 +770,7 @@ function applyRoleUI() {
 document.getElementById('pin-input').addEventListener('keydown', e => { if (e.key==='Enter') doLogin(); });
 function logout() {
   if (activeTimer) { alert('Arrête le timer en cours avant de te déconnecter.'); return; }
+  localStorage.removeItem('onspot_session_user');
   currentUser = null; selectedUserId = null; entries = [];
   document.getElementById('login-screen').style.display = 'flex';
   document.getElementById('app').style.display = 'none';
@@ -563,7 +778,9 @@ function logout() {
 }
 function populateFilters() {
   const sel = document.getElementById('filter-agent');
-  sel.innerHTML = '<option value="">Tous les agents</option>' + TEAM.map(u=>`<option value="${u.id}">${u.name}</option>`).join('');
+  sel.innerHTML = '<option value="">Tous les agents</option>' + agentsOnly().map(u=>`<option value="${u.id}">${u.name}</option>`).join('');
+  const tSel = document.getElementById('filter-treatment');
+  if (tSel) tSel.innerHTML = '<option value="">Tous traitements</option>' + customTreatmentTypes.map(t=>`<option value="${t}">${t}</option>`).join('');
 }
 
 // ===== TIMER LOGIC =====
@@ -745,6 +962,7 @@ function docToEntry(doc) {
     rawId: f.rawId?.stringValue || '',
     source: f.source?.stringValue || 'manual',
     desc: f.desc?.stringValue || '',
+    treatment: f.treatment?.stringValue || '',
     agent: f.agent?.stringValue || '',
     startTime: f.startTime?.stringValue || '',
     durationSec: parseInt(f.durationSec?.integerValue || 0),
@@ -802,6 +1020,7 @@ function isThisWeek(iso) {
 function getFiltered() {
   const source = document.getElementById('filter-source').value;
   const agent = document.getElementById('filter-agent').value;
+  const treatment = document.getElementById('filter-treatment')?.value || '';
   const search = document.getElementById('search-input').value.toLowerCase();
   let list = entries;
   if (currentView === 'today') list = list.filter(e=>isToday(e.startTime));
@@ -809,6 +1028,7 @@ function getFiltered() {
   return list.filter(e =>
     (!source || e.source===source) &&
     (!agent || e.agent===agent) &&
+    (!treatment || e.treatment===treatment || e.desc.includes(treatment)) &&
     (!search || e.desc.toLowerCase().includes(search))
   );
 }
@@ -839,18 +1059,25 @@ function renderTable(filtered) {
     body.innerHTML = '<tr><td colspan="6"><div class="empty">Aucune entrée pour cette période.</div></td></tr>';
     return;
   }
-  body.innerHTML = filtered.map(e => `
+  body.innerHTML = filtered.map(e => {
+    const dmt = sourceDMT[e.source] ?? sourceDMT.manual;
+    const ratio = dmt ? e.durationSec / dmt : 0;
+    let durClass = '';
+    if (ratio > 1.2) durClass = 'dur-over';
+    else if (ratio > 1) durClass = 'dur-warn';
+    return `
     <tr>
       <td class="dur-cell">${fmtTime(e.startTime)}</td>
       <td>${sourceTag(e.source)}</td>
       <td id="desc-${e.id}">${e.desc}</td>
       <td>${agentCell(e.agent)}</td>
-      <td class="dur-cell">${fmtDuration(e.durationSec)}</td>
+      <td class="dur-cell ${durClass}" title="DMT cible : ${fmtDuration(dmt)}">${fmtDuration(e.durationSec)}</td>
       <td><div class="row-actions">
         ${canEdit ? `<button class="icon-btn" onclick="editEntry('${e.id}')" title="Modifier">✎</button>` : ''}
         ${canEdit ? `<button class="icon-btn" onclick="deleteEntry('${e.id}')" title="Supprimer">✕</button>` : ''}
       </div></td>
-    </tr>`).join('');
+    </tr>`;
+  }).join('');
 }
 
 function editEntry(id) {
@@ -897,19 +1124,21 @@ function renderAdminPanel() {
   renderTeamList();
   renderTreatmentList();
   renderAdminStats();
+  populateChartScopeSelect();
+  renderEvolutionChart();
 }
 
 function renderTeamList() {
   document.getElementById('team-count').textContent = TEAM.length + ' comptes';
   document.getElementById('team-list').innerHTML = TEAM.map(u => `
-    <div class="team-row">
-      <div class="mini-avatar" style="background:${u.color}20;color:${u.color}">${u.initials}</div>
+    <div class="team-row" onclick="openAccountEditModal('${u.id}')" style="cursor:pointer">
+      <div class="mini-avatar" style="background:${u.color}20;color:${u.color}${u.photo?`;background-image:url(${u.photo});background-size:cover`:''}">${u.photo?'':u.initials}</div>
       <div class="team-row-info">
         <div class="team-row-name">${u.name}</div>
-        <div class="team-row-role">${roleLabel(u.role)} · PIN ${u.pin}</div>
+        <div class="team-row-role">${roleLabel(u.role)}</div>
       </div>
-    </div>`).join('') +
-    '<div class="admin-note">Pour ajouter ou retirer un compte, modifie le tableau TEAM dans le code.</div>';
+      <span style="font-size:11px;color:var(--ocean);font-weight:600">Modifier →</span>
+    </div>`).join('');
 }
 
 function roleLabel(role) {
@@ -971,6 +1200,26 @@ function exportCSV() {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url; a.download = 'onspot-time-entries-' + new Date().toISOString().split('T')[0] + '.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function exportExcel() {
+  const header = ['Date','Heure','Source','Description','Agent','Durée (min)'];
+  let html = '<table><tr>' + header.map(h=>`<th>${h}</th>`).join('') + '</tr>';
+  entries.forEach(e => {
+    const d = new Date(e.startTime);
+    const agentName = (TEAM.find(t=>t.id===e.agent)||{}).name || e.agent;
+    html += '<tr>' + [
+      d.toLocaleDateString('fr-FR'), fmtTime(e.startTime), e.source, e.desc, agentName,
+      Math.round(e.durationSec/60)
+    ].map(c=>`<td>${c}</td>`).join('') + '</tr>';
+  });
+  html += '</table>';
+  const blob = new Blob(['\ufeff' + html], {type:'application/vnd.ms-excel;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'onspot-time-entries-' + new Date().toISOString().split('T')[0] + '.xls';
   a.click();
   URL.revokeObjectURL(url);
 }
@@ -1066,7 +1315,7 @@ function renderTeamLiveList(activeTimers) {
       const mins = Math.floor(elapsed/60);
       const secs = elapsed%60;
       const timeStr = mins + ':' + String(secs).padStart(2,'0');
-      return `<div class="team-row">
+      return `<div class="team-row" onclick="viewAgentDetail('${a.id}')" style="cursor:pointer">
         <div class="mini-avatar" style="background:${a.color}20;color:${a.color}">${a.initials}</div>
         <div class="team-row-info">
           <div class="team-row-name">${a.name}</div>
@@ -1075,7 +1324,7 @@ function renderTeamLiveList(activeTimers) {
         <span class="team-row-timer">${timeStr}</span>
       </div>`;
     }
-    return `<div class="team-row">
+    return `<div class="team-row" onclick="viewAgentDetail('${a.id}')" style="cursor:pointer">
       <div class="mini-avatar" style="background:var(--border2,#E2E8F0);color:var(--text2,#6B7C93)">${a.initials}</div>
       <div class="team-row-info">
         <div class="team-row-name">${a.name}</div>
@@ -1086,7 +1335,295 @@ function renderTeamLiveList(activeTimers) {
   }).join('');
 }
 
+function viewAgentDetail(agentId) {
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelector('.tab.agent-only').classList.remove('hidden');
+  document.querySelector('.tab.agent-only').classList.add('active');
+  currentView = 'today';
+  document.getElementById('team-live-panel').classList.add('hidden');
+  document.getElementById('admin-panel').classList.add('hidden');
+  document.querySelector('.toolbar').classList.remove('hidden');
+  document.querySelector('.entries-table').classList.remove('hidden');
+  document.getElementById('filter-agent').value = agentId;
+  renderAll();
+}
+
+// ===== DMT (durée moyenne de traitement cible par source) =====
+async function loadDMT() {
+  try {
+    const res = await fetch(`${BASE_URL}/settings/dmt?key=${FIREBASE_API_KEY}`);
+    if (res.status === 404) { renderDMTInputs(); return; }
+    const data = await res.json();
+    const f = data.fields || {};
+    sourceDMT = {
+      ringover: parseInt(f.ringover?.integerValue ?? SOURCE_DMT_DEFAULT.ringover),
+      crisp: parseInt(f.crisp?.integerValue ?? SOURCE_DMT_DEFAULT.crisp),
+      manual: parseInt(f.manual?.integerValue ?? SOURCE_DMT_DEFAULT.manual),
+    };
+  } catch(e) { console.error('Erreur chargement DMT:', e); }
+  renderDMTInputs();
+}
+
+function renderDMTInputs() {
+  const r = document.getElementById('dmt-ringover');
+  const c = document.getElementById('dmt-crisp');
+  const m = document.getElementById('dmt-manual');
+  if (r) r.value = sourceDMT.ringover;
+  if (c) c.value = sourceDMT.crisp;
+  if (m) m.value = sourceDMT.manual;
+}
+
+async function saveDMT() {
+  sourceDMT = {
+    ringover: parseInt(document.getElementById('dmt-ringover').value) || SOURCE_DMT_DEFAULT.ringover,
+    crisp: parseInt(document.getElementById('dmt-crisp').value) || SOURCE_DMT_DEFAULT.crisp,
+    manual: parseInt(document.getElementById('dmt-manual').value) || SOURCE_DMT_DEFAULT.manual,
+  };
+  const body = { fields: {
+    ringover: { integerValue: String(sourceDMT.ringover) },
+    crisp: { integerValue: String(sourceDMT.crisp) },
+    manual: { integerValue: String(sourceDMT.manual) },
+  }};
+  try {
+    await fetch(`${BASE_URL}/settings/dmt?key=${FIREBASE_API_KEY}`, {
+      method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body)
+    });
+    renderAll();
+  } catch(e) { console.error('Erreur sauvegarde DMT:', e); }
+}
+
+// ===== ACCOUNTS PERSISTENCE (Firestore) =====
+async function loadAccountsFromFirestore() {
+  try {
+    const res = await fetch(`${BASE_URL}/accounts?key=${FIREBASE_API_KEY}`);
+    const data = await res.json();
+    const docs = data.documents || [];
+    if (!docs.length) { await seedAccountsToFirestore(); return; }
+    TEAM = docs.map(doc => {
+      const f = doc.fields || {};
+      const id = doc.name.split('/').pop();
+      const defaults = TEAM_DEFAULTS.find(d => d.id === id) || {};
+      return {
+        id,
+        name: f.name?.stringValue || defaults.name,
+        password: f.password?.stringValue || defaults.password,
+        color: f.color?.stringValue || defaults.color,
+        initials: f.initials?.stringValue || defaults.initials,
+        role: f.role?.stringValue || defaults.role,
+        photo: f.photo?.stringValue || '',
+      };
+    });
+  } catch(e) { console.error('Erreur chargement comptes:', e); }
+}
+
+async function seedAccountsToFirestore() {
+  for (const u of TEAM_DEFAULTS) { await saveAccountToFirestore(u); }
+}
+
+async function saveAccountToFirestore(user) {
+  const body = { fields: {
+    name: { stringValue: user.name },
+    password: { stringValue: user.password },
+    color: { stringValue: user.color },
+    initials: { stringValue: user.initials },
+    role: { stringValue: user.role },
+    photo: { stringValue: user.photo || '' },
+  }};
+  try {
+    await fetch(`${BASE_URL}/accounts/${user.id}?key=${FIREBASE_API_KEY}`, {
+      method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body)
+    });
+  } catch(e) { console.error('Erreur sauvegarde compte:', e); }
+}
+
+// ===== PROFILE MODAL (self-service for any role) =====
+let pendingProfilePhoto = null;
+
+function openProfileModal() {
+  pendingProfilePhoto = currentUser.photo || null;
+  document.getElementById('profile-name-input').value = currentUser.name;
+  document.getElementById('profile-password-input').value = '';
+  document.getElementById('profile-error').textContent = '';
+  renderProfilePhotoPreview();
+  document.getElementById('profile-modal-overlay').classList.remove('hidden');
+}
+function closeProfileModal() { document.getElementById('profile-modal-overlay').classList.add('hidden'); }
+function closeProfileModalOutside(e) { if (e.target.id === 'profile-modal-overlay') closeProfileModal(); }
+
+function renderProfilePhotoPreview() {
+  const el = document.getElementById('profile-photo-preview');
+  if (pendingProfilePhoto) {
+    el.style.backgroundImage = `url(${pendingProfilePhoto})`;
+    el.textContent = '';
+  } else {
+    el.style.backgroundImage = '';
+    el.textContent = currentUser.initials;
+  }
+}
+
+function onProfilePhotoSelected(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  if (file.size > 1.5 * 1024 * 1024) {
+    document.getElementById('profile-error').textContent = 'Image trop lourde (max 1.5 Mo).';
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    pendingProfilePhoto = e.target.result;
+    renderProfilePhotoPreview();
+  };
+  reader.readAsDataURL(file);
+}
+
+function removeProfilePhoto() {
+  pendingProfilePhoto = '';
+  renderProfilePhotoPreview();
+}
+
+async function saveProfile() {
+  const newName = document.getElementById('profile-name-input').value.trim();
+  const newPassword = document.getElementById('profile-password-input').value.trim();
+  if (!newName) { document.getElementById('profile-error').textContent = 'Le nom ne peut pas être vide.'; return; }
+
+  currentUser.name = newName;
+  currentUser.photo = pendingProfilePhoto || '';
+  if (newPassword) currentUser.password = newPassword;
+
+  const idx = TEAM.findIndex(u => u.id === currentUser.id);
+  if (idx >= 0) TEAM[idx] = currentUser;
+
+  await saveAccountToFirestore(currentUser);
+  renderTopbarIdentity();
+  populateFilters();
+  closeProfileModal();
+}
+
+(async function init() {
+  await loadAccountsFromFirestore();
+  await loadDMT();
+  // ===== ACCOUNT EDIT MODAL (admin only) =====
+let editingAccountId = null;
+let pendingAccountPhoto = null;
+
+function openAccountEditModal(accountId) {
+  if (currentUser.role !== 'admin') return;
+  const acc = TEAM.find(u => u.id === accountId);
+  if (!acc) return;
+  editingAccountId = accountId;
+  pendingAccountPhoto = acc.photo || null;
+  document.getElementById('account-modal-title').textContent = 'Modifier · ' + acc.name;
+  document.getElementById('account-name-input').value = acc.name;
+  document.getElementById('account-role-input').value = acc.role;
+  document.getElementById('account-password-input').value = '';
+  document.getElementById('account-error').textContent = '';
+  renderAccountPhotoPreview(acc);
+  document.getElementById('account-modal-overlay').classList.remove('hidden');
+}
+function closeAccountEditModal() { document.getElementById('account-modal-overlay').classList.add('hidden'); editingAccountId = null; }
+function closeAccountModalOutside(e) { if (e.target.id === 'account-modal-overlay') closeAccountEditModal(); }
+
+function renderAccountPhotoPreview(acc) {
+  const el = document.getElementById('account-photo-preview');
+  if (pendingAccountPhoto) {
+    el.style.backgroundImage = `url(${pendingAccountPhoto})`;
+    el.textContent = '';
+  } else {
+    el.style.backgroundImage = '';
+    el.textContent = acc.initials;
+  }
+}
+
+function onAccountPhotoSelected(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  if (file.size > 1.5 * 1024 * 1024) {
+    document.getElementById('account-error').textContent = 'Image trop lourde (max 1.5 Mo).';
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    pendingAccountPhoto = e.target.result;
+    document.getElementById('account-photo-preview').style.backgroundImage = `url(${pendingAccountPhoto})`;
+    document.getElementById('account-photo-preview').textContent = '';
+  };
+  reader.readAsDataURL(file);
+}
+function removeAccountPhoto() {
+  pendingAccountPhoto = '';
+  const acc = TEAM.find(u => u.id === editingAccountId);
+  document.getElementById('account-photo-preview').style.backgroundImage = '';
+  document.getElementById('account-photo-preview').textContent = acc ? acc.initials : '';
+}
+
+async function saveAccountEdit() {
+  const acc = TEAM.find(u => u.id === editingAccountId);
+  if (!acc) return;
+  const newName = document.getElementById('account-name-input').value.trim();
+  const newRole = document.getElementById('account-role-input').value;
+  const newPassword = document.getElementById('account-password-input').value.trim();
+  if (!newName) { document.getElementById('account-error').textContent = 'Le nom ne peut pas être vide.'; return; }
+
+  acc.name = newName;
+  acc.role = newRole;
+  acc.photo = pendingAccountPhoto || '';
+  if (newPassword) acc.password = newPassword;
+
+  await saveAccountToFirestore(acc);
+  closeAccountEditModal();
+  renderTeamList();
+  populateFilters();
+  if (currentUser.id === acc.id) { currentUser = acc; renderTopbarIdentity(); }
+}
+
+// ===== EVOLUTION CHART (Admin) =====
+function populateChartScopeSelect() {
+  const sel = document.getElementById('chart-scope');
+  if (!sel) return;
+  sel.innerHTML = '<option value="team">Équipe entière</option>' +
+    agentsOnly().map(a => `<option value="${a.id}">${a.name}</option>`).join('');
+}
+
+function renderEvolutionChart() {
+  const scope = document.getElementById('chart-scope').value;
+  const period = document.getElementById('chart-period').value;
+  const days = period === 'week' ? 7 : 30;
+
+  const buckets = [];
+  for (let i = days - 1; i >= 0; i--) {
+    const d = new Date(); d.setDate(d.getDate() - i); d.setHours(0,0,0,0);
+    buckets.push({ date: d, totalSec: 0 });
+  }
+
+  const scoped = scope === 'team' ? entries : entries.filter(e => e.agent === scope);
+  scoped.forEach(e => {
+    const d = new Date(e.startTime);
+    const bucket = buckets.find(b => b.date.toDateString() === d.toDateString());
+    if (bucket) bucket.totalSec += e.durationSec;
+  });
+
+  const maxSec = Math.max(...buckets.map(b=>b.totalSec), 60);
+  const showEvery = days > 14 ? Math.ceil(days/12) : 1;
+
+  const barsHtml = buckets.map((b,i) => {
+    const heightPct = Math.max((b.totalSec / maxSec) * 100, b.totalSec>0?3:0);
+    const showLabel = i % showEvery === 0 || i === buckets.length-1;
+    const label = showLabel ? b.date.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit'}) : '';
+    return `<div class="evo-bar-col">
+      <span class="evo-bar-value">${b.totalSec>0?fmtDuration(b.totalSec):''}</span>
+      <div class="evo-bar" style="height:${heightPct}%"></div>
+      <span class="evo-bar-label">${label}</span>
+    </div>`;
+  }).join('');
+
+  document.getElementById('evolution-chart').innerHTML = `<div class="evo-bars">${barsHtml}</div>`;
+}
+
 renderAvatars();
+  if (!tryRestoreSession()) {
+    document.getElementById('login-screen').style.display = 'flex';
+  }
+})();
 </script>
 </body>
 </html>
