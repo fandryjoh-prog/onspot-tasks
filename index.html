@@ -85,7 +85,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .btn-ghost{background:rgba(255,255,255,.08);color:#D8E2EE;border:1px solid rgba(255,255,255,.15)}
 .btn-ghost:hover{color:#fff;background:rgba(255,255,255,.16)}
 
-/* TIMER BANNER — signature pulse ring */
+/* TIMER BANNER */
 .timer-banner{margin:20px 24px 0;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px 26px;display:flex;align-items:center;gap:22px}
 .timer-banner.active{border-color:var(--clay)}
 .timer-clock{font-family:var(--mono);font-size:30px;font-weight:600;letter-spacing:0.5px;min-width:140px}
@@ -137,9 +137,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .entries-table tr:last-child td{border-bottom:none}
 .entries-table tr:hover td{background:var(--surface2)}
 .source-tag{display:inline-flex;align-items:center;gap:5px;font-size:11px;padding:3px 8px;border-radius:6px;font-weight:600}
-.src-ringover{background:var(--ocean-dim);color:var(--ocean)}
-.src-crisp{background:var(--clay-dim);color:#A8503F}
-.src-manual{background:var(--amber-dim);color:#8A6A0F}
+.src-ringover, .src-inbound, .src-outbound{background:var(--ocean-dim);color:var(--ocean)}
+.src-crisp, .src-chat, .src-email{background:var(--clay-dim);color:#A8503F}
+.src-manual, .src-ticket{background:var(--amber-dim);color:#8A6A0F}
 .dur-cell{font-family:var(--mono);font-size:12px;color:var(--text2)}
 .agent-cell{display:flex;align-items:center;gap:8px}
 .mini-avatar{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0;font-family:var(--font)}
@@ -180,8 +180,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .form-input,.form-select{width:100%;padding:10px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:9px;color:var(--text);font-family:var(--font);font-size:13px;outline:none}
 .form-input:focus,.form-select:focus{border-color:var(--ocean)}
 .source-picker{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
-.source-opt{padding:12px;border:1px solid var(--border);border-radius:9px;text-align:center;cursor:pointer;font-size:12px;font-weight:600;transition:all .15s}
-.source-opt.selected{border-color:var(--ocean);background:var(--ocean-dim);color:var(--ocean)}
 .btn-primary{background:var(--ocean);color:#fff;border:none}
 .btn-primary:hover{background:var(--ocean-deep)}
 
@@ -217,6 +215,60 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .role-banner-metric-label{font-size:10px;color:var(--text2,#6B7C93);text-transform:uppercase;letter-spacing:.4px;margin-top:2px}
 .role-banner-link{background:none;border:none;color:var(--ocean,#2B4C7E);font-size:11px;font-weight:600;cursor:pointer;font-family:var(--font)}
 .team-row-timer{font-family:var(--mono,monospace);font-size:12px;color:var(--ocean,#2B4C7E)}
+
+/* NOUVELLES SOURCES */
+.source-opt {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  padding: 10px 8px; border: 1px solid transparent; border-radius: 9px;
+  font-size: 12px; font-weight: 600; cursor: pointer; transition: all .15s;
+}
+.opt-inbound { background: #4D2D2D; color: #E58787; }
+.opt-inbound.selected { border-color: #E58787; background: #663939; }
+.opt-outbound { background: #4A3E1B; color: #D6A848; }
+.opt-outbound.selected { border-color: #D6A848; background: #635222; }
+.opt-chat { background: #2A3B52; color: #84A9DE; }
+.opt-chat.selected { border-color: #84A9DE; background: #354B69; }
+.opt-email { background: #EAF3FC; color: #2A61A3; }
+.opt-email.selected { border-color: #2A61A3; background: #FFFFFF; }
+.opt-ticket { background: #1E3B1E; color: #6DB36D; }
+.opt-ticket.selected { border-color: #6DB36D; background: #274D27; }
+
+/* TIME PICKER ROULETTE */
+.time-dropdown {
+  position: absolute; top: 100%; left: 0; width: 140px; height: 160px;
+  background: var(--surface); border: 1px solid var(--ocean); border-radius: 9px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.15); z-index: 300; display: flex;
+  margin-top: 6px; overflow: hidden;
+}
+.time-col {
+  flex: 1; overflow-y: auto; scroll-snap-type: y mandatory; scrollbar-width: none;
+  position: relative;
+}
+.time-col::-webkit-scrollbar { display: none; }
+.time-sep {
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; color: var(--text2); padding-bottom: 2px;
+}
+.time-opt {
+  height: 36px; display: flex; align-items: center; justify-content: center;
+  scroll-snap-align: center; font-size: 14px; font-family: var(--mono); color: var(--text2); cursor: pointer; transition: all .1s;
+}
+.time-opt.active { color: var(--ocean); font-weight: 700; font-size: 16px; background: var(--ocean-dim); }
+.time-spacer { height: 62px; }
+
+/* EMOJI PICKER */
+.emoji-picker {
+  position: absolute; top: 100%; left: 0; margin-top: 4px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  padding: 10px; display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.15); z-index: 100;
+}
+.emoji-btn {
+  background: transparent; border: none; font-size: 18px; cursor: pointer;
+  border-radius: 6px; padding: 6px; transition: background 0.15s;
+  display: flex; align-items: center; justify-content: center;
+}
+.emoji-btn:hover { background: var(--surface2); transform: scale(1.1); }
 </style>
 </head>
 <body>
@@ -252,7 +304,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     </div>
   </div>
 
-  <!-- TIMER BANNER (Agent only) -->
   <div class="timer-banner agent-only" id="timer-banner">
     <div class="timer-clock idle" id="timer-clock">00:00:00</div>
     <div class="timer-info">
@@ -265,7 +316,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     </div>
   </div>
 
-  <!-- SUPERVISOR BANNER -->
   <div class="role-banner supervisor-banner hidden" id="supervisor-banner">
     <div class="role-banner-avatars" id="sup-banner-avatars"></div>
     <div class="role-banner-info">
@@ -275,7 +325,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     <div class="role-banner-dot" id="sup-banner-dot"></div>
   </div>
 
-  <!-- ADMIN BANNER -->
   <div class="role-banner admin-banner hidden" id="admin-banner">
     <div class="role-banner-metric">
       <div class="role-banner-metric-value" id="adm-banner-total">0h</div>
@@ -288,15 +337,13 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     <button class="role-banner-link" onclick="switchTab('admin', document.getElementById('tab-admin'))">Détails →</button>
   </div>
 
-  <!-- QUICK START (Agent only) -->
   <div class="quickstart agent-only">
-    <button class="qs-btn" onclick="quickStart('ringover')"><span class="qs-dot" style="background:var(--ocean)"></span>RingOver</button>
-    <button class="qs-btn" onclick="quickStart('crisp')"><span class="qs-dot" style="background:var(--clay)"></span>Crisp ticket</button>
-    <button class="qs-btn" onclick="quickStart('manual')"><span class="qs-dot" style="background:var(--text2)"></span>Tâche manuelle</button>
-    <button class="qs-btn" onclick="syncRingover()"><span class="qs-dot" style="background:var(--green)"></span>Sync RingOver (auto)</button>
+    <button class="qs-btn" onclick="quickStart('inbound')"><span class="qs-dot" style="background:#E58787"></span>Appel entrant</button>
+    <button class="qs-btn" onclick="quickStart('chat')"><span class="qs-dot" style="background:#84A9DE"></span>Crisp Chat</button>
+    <button class="qs-btn" onclick="quickStart('ticket')"><span class="qs-dot" style="background:#6DB36D"></span>Tâche manuelle</button>
+    <button class="qs-btn" onclick="syncRingover()"><span class="qs-dot" style="background:var(--ocean)"></span>Sync RingOver (auto)</button>
   </div>
 
-  <!-- STATS (Agent) -->
   <div class="stats-grid agent-only" id="stats-grid-agent">
     <div class="stat-card">
       <div class="stat-label">Temps total aujourd'hui</div>
@@ -304,7 +351,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       <div class="stat-sub">toutes sources</div>
     </div>
     <div class="stat-card">
-      <div class="stat-label">RingOver</div>
+      <div class="stat-label">Appels (RO)</div>
       <div class="stat-value" id="s-ringover" style="color:var(--ocean)">0h00</div>
       <div class="stat-sub" id="s-ringover-count">0 appels</div>
     </div>
@@ -314,13 +361,12 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       <div class="stat-sub" id="s-crisp-count">0 tickets</div>
     </div>
     <div class="stat-card">
-      <div class="stat-label">Manuel</div>
+      <div class="stat-label">Manuel / Ticket</div>
       <div class="stat-value" id="s-manual" style="color:var(--text2)">0h00</div>
       <div class="stat-sub" id="s-manual-count">0 tâches</div>
     </div>
   </div>
 
-  <!-- STATS (Supervisor) -->
   <div class="stats-grid hidden" id="stats-grid-supervisor" style="grid-template-columns:repeat(3,1fr)">
     <div class="stat-card">
       <div class="stat-label">Actifs maintenant</div>
@@ -339,7 +385,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     </div>
   </div>
 
-  <!-- STATS (Admin) -->
   <div class="stats-grid hidden" id="stats-grid-admin-home" style="grid-template-columns:repeat(3,1fr)">
     <div class="stat-card">
       <div class="stat-label">Total semaine</div>
@@ -366,14 +411,15 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     <button class="tab" id="tab-admin" onclick="switchTab('admin',this)">Administration</button>
   </div>
 
-
   <div class="content">
     <div class="toolbar">
       <select class="filter-select" id="filter-source" onchange="renderAll()">
         <option value="">Toutes sources</option>
-        <option value="ringover">RingOver</option>
-        <option value="crisp">Crisp</option>
-        <option value="manual">Manuel</option>
+        <option value="inbound">Appel entrant</option>
+        <option value="outbound">Appel sortant</option>
+        <option value="chat">Crisp Chat</option>
+        <option value="email">Crisp Email</option>
+        <option value="ticket">Ticket / Manuel</option>
       </select>
       <select class="filter-select" id="filter-agent" onchange="renderAll()">
         <option value="">Tous les agents</option>
@@ -381,7 +427,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       <select class="filter-select" id="filter-treatment" onchange="renderAll()">
         <option value="">Tous traitements</option>
       </select>
-      <input class="search-input" id="search-input" placeholder="Rechercher..." oninput="renderAll()">
+      <input class="search-input" id="search-input" placeholder="Rechercher..." oninput="onSearchInput()">
       <span class="count-badge" id="entry-count">0 entrées</span>
     </div>
 
@@ -401,7 +447,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       </table>
     </div>
 
-    <!-- TEAM LIVE PANEL (Supervisor home/team, Admin home) -->
     <div id="team-live-panel" class="hidden">
       <div class="admin-card" style="margin-bottom:16px">
         <div class="admin-card-header">
@@ -409,12 +454,12 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
           <span class="count-badge">Durée moyenne de traitement cible</span>
         </div>
         <div class="dmt-row">
-          <span class="dmt-label">RingOver</span>
+          <span class="dmt-label">Appels (Inbound/Outbound)</span>
           <input class="form-input dmt-input" id="dmt-ringover" type="number" min="0">
           <span class="dmt-unit">secondes</span>
         </div>
         <div class="dmt-row">
-          <span class="dmt-label">Crisp</span>
+          <span class="dmt-label">Crisp (Chat/Email)</span>
           <input class="form-input dmt-input" id="dmt-crisp" type="number" min="0">
           <span class="dmt-unit">secondes</span>
         </div>
@@ -443,7 +488,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       </div>
     </div>
 
-    <!-- ADMIN PANEL -->
     <div id="admin-panel" class="hidden">
       <div class="admin-grid">
         <div class="admin-card">
@@ -459,10 +503,14 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
             <h3>Types de traitement</h3>
             <span class="count-badge" id="treatment-count">0 types</span>
           </div>
-          <div class="treatment-add-row">
-            <input class="form-input" id="new-treatment-input" placeholder="Nouveau type...">
+          
+          <div class="treatment-add-row" style="position:relative; align-items:center;">
+            <button class="btn btn-ghost" onclick="toggleEmojiPicker(event)" title="Ajouter un emoji" style="padding: 8px 10px; font-size: 16px;">😀</button>
+            <input class="form-input" id="new-treatment-input" placeholder="Nouveau type (ex: ✈️ Vols)..." onkeydown="if(event.key==='Enter') addTreatmentType()">
             <button class="btn btn-primary" onclick="addTreatmentType()">Ajouter</button>
+            <div class="emoji-picker hidden" id="emoji-picker" onclick="event.stopPropagation()"></div>
           </div>
+          
           <div id="treatment-list"></div>
         </div>
       </div>
@@ -510,7 +558,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   </div>
 </div>
 
-<!-- ACCOUNT EDIT MODAL (admin only) -->
 <div class="modal-overlay hidden" id="account-modal-overlay" onclick="closeAccountModalOutside(event)">
   <div class="modal">
     <div class="modal-header">
@@ -583,7 +630,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   </div>
 </div>
 
-<!-- PROFILE MODAL -->
 <div class="modal-overlay hidden" id="profile-modal-overlay" onclick="closeProfileModalOutside(event)">
   <div class="modal">
     <div class="modal-header">
@@ -616,7 +662,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   </div>
 </div>
 
-<!-- MODAL -->
 <div class="modal-overlay hidden" id="modal-overlay" onclick="closeModalOutside(event)">
   <div class="modal">
     <div class="modal-header">
@@ -627,11 +672,35 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       <div class="form-row">
         <label class="form-label">Source</label>
         <div class="source-picker">
-          <div class="source-opt selected" id="src-manual" onclick="selectSource('manual')">Manuel</div>
-          <div class="source-opt" id="src-ringover" onclick="selectSource('ringover')">RingOver</div>
-          <div class="source-opt" id="src-crisp" onclick="selectSource('crisp')">Crisp</div>
+          <div class="source-opt opt-inbound selected" id="src-inbound" onclick="selectSource('inbound')">
+            <span>📞↘</span> Appel entrant
+          </div>
+          <div class="source-opt opt-outbound" id="src-outbound" onclick="selectSource('outbound')">
+            <span>📞↗</span> Appel sortant
+          </div>
+          <div class="source-opt opt-chat" id="src-chat" onclick="selectSource('chat')">
+            <span>💬</span> Crisp (chat)
+          </div>
+          <div class="source-opt opt-email" id="src-email" onclick="selectSource('email')">
+            <span>✉️</span> Crisp (email)
+          </div>
+          <div class="source-opt opt-ticket" id="src-ticket" onclick="selectSource('ticket')">
+            <span>🎫</span> Traitement ticket
+          </div>
         </div>
       </div>
+      
+      <div class="form-row" id="time-picker-container" style="position:relative;">
+        <label class="form-label">Inbound time (Heure de début)</label>
+        <input class="form-input" id="inbound-time-input" readonly onclick="toggleTimePicker(event)" style="cursor:pointer; font-family:var(--mono);" placeholder="--:--">
+        
+        <div class="time-dropdown hidden" id="time-dropdown" onclick="event.stopPropagation()">
+          <div class="time-col" id="col-hours" onscroll="handleTimeScroll(this, 'h')"></div>
+          <div class="time-sep">:</div>
+          <div class="time-col" id="col-mins" onscroll="handleTimeScroll(this, 'm')"></div>
+        </div>
+      </div>
+      
       <div class="form-row">
         <label class="form-label">Description / Ticket</label>
         <input class="form-input" id="f-desc" placeholder="Ex: Ticket #68554 ou description de la tâche">
@@ -650,12 +719,9 @@ const FIREBASE_API_KEY = "AIzaSyD1Weyc2zdtdaO7JgrMRskXZaDOGTIbyqc";
 const BASE_URL = `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/databases/(default)/documents`;
 const AUTH_BASE = `https://identitytoolkit.googleapis.com/v1`;
 
-// TEAM est maintenant peuplé depuis Firestore (collection "accounts", clé = uid Firebase Auth)
 let TEAM = [];
-
 const SOURCE_DMT_DEFAULT = { ringover: 300, crisp: 480, manual: 600 };
 let sourceDMT = {...SOURCE_DMT_DEFAULT};
-
 const TREATMENT_TYPES_DEFAULT = [
   'Confirmation','Reservations','Conseils/suggestions','Follow-up','Lost and found','Car rental',
   'Additionnels services','Train','Health','Activities','Transferts','DMC','Itinerary',
@@ -664,10 +730,11 @@ const TREATMENT_TYPES_DEFAULT = [
 
 let currentUser = null;
 let entries = [];
-let activeTimer = null; // { source, desc, startTime }
+let activeTimer = null; 
 let timerInterval = null;
-let selectedSource = 'manual';
+let selectedSource = 'inbound';
 let currentView = 'today';
+let searchTimeout = null;
 
 async function doLogin() {
   const email = document.getElementById('login-email').value.trim();
@@ -683,22 +750,13 @@ async function doLogin() {
       body: JSON.stringify({ email, password, returnSecureToken: true })
     });
     const data = await res.json();
-    if (data.error) {
-      err.textContent = 'Email ou mot de passe incorrect.';
-      return;
-    }
+    if (data.error) { err.textContent = 'Email ou mot de passe incorrect.'; return; }
     localStorage.setItem('onspot_idToken', data.idToken);
     localStorage.setItem('onspot_uid', data.localId);
     const user = await fetchAccountProfile(data.localId);
-    if (!user) {
-      err.textContent = "Ce compte n'a pas encore de profil. Contacte un admin.";
-      return;
-    }
+    if (!user) { err.textContent = "Ce compte n'a pas encore de profil. Contacte un admin."; return; }
     enterApp(user);
-  } catch(e) {
-    err.textContent = 'Erreur de connexion. Réessaie.';
-    console.error(e);
-  }
+  } catch(e) { err.textContent = 'Erreur de connexion. Réessaie.'; console.error(e); }
 }
 
 async function fetchAccountProfile(uid) {
@@ -709,13 +767,9 @@ async function fetchAccountProfile(uid) {
     if (!doc.fields) return null;
     const f = doc.fields;
     return {
-      id: uid,
-      name: f.name?.stringValue || 'Sans nom',
-      email: f.email?.stringValue || '',
-      color: f.color?.stringValue || '#2B4C7E',
-      initials: f.initials?.stringValue || '??',
-      role: f.role?.stringValue || 'agent',
-      photo: f.photo?.stringValue || '',
+      id: uid, name: f.name?.stringValue || 'Sans nom', email: f.email?.stringValue || '',
+      color: f.color?.stringValue || '#2B4C7E', initials: f.initials?.stringValue || '??',
+      role: f.role?.stringValue || 'agent', photo: f.photo?.stringValue || '',
     };
   } catch(e) { console.error('Erreur profil compte:', e); return null; }
 }
@@ -724,24 +778,16 @@ function enterApp(user) {
   currentUser = user;
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('app').style.display = 'block';
-  applyUserTheme();
-  renderTopbarIdentity();
-  populateFilters();
-  applyRoleUI();
-  checkActiveTimer();
-  loadEntries();
+  applyUserTheme(); renderTopbarIdentity(); populateFilters(); applyRoleUI(); checkActiveTimer(); loadEntries();
 }
 
 function renderTopbarIdentity() {
   const av = document.getElementById('topbar-avatar');
   if (currentUser.photo) {
-    av.style.backgroundImage = `url(${currentUser.photo})`;
-    av.style.backgroundSize = 'cover';
-    av.style.backgroundPosition = 'center';
-    av.textContent = '';
+    av.style.backgroundImage = `url(${currentUser.photo})`; av.style.backgroundSize = 'cover';
+    av.style.backgroundPosition = 'center'; av.textContent = '';
   } else {
-    av.style.backgroundImage = '';
-    av.textContent = currentUser.initials;
+    av.style.backgroundImage = ''; av.textContent = currentUser.initials;
     av.style.background = currentUser.color+'20'; av.style.color = currentUser.color;
   }
   document.getElementById('topbar-name').textContent = currentUser.name;
@@ -795,18 +841,15 @@ function applyRoleUI() {
   document.getElementById('tab-week-role').classList.toggle('hidden', role === 'agent');
   document.querySelector('.tab.agent-only').classList.toggle('hidden', role !== 'agent');
 
-  // Bandeau : un seul visible à la fois
   document.getElementById('timer-banner').classList.toggle('hidden', role !== 'agent');
   document.getElementById('supervisor-banner').classList.toggle('hidden', role !== 'supervisor');
   document.getElementById('admin-banner').classList.toggle('hidden', role !== 'admin');
   document.querySelector('.quickstart').classList.toggle('hidden', role !== 'agent');
 
-  // Grille de stats : une seule visible à la fois
   document.getElementById('stats-grid-agent').classList.toggle('hidden', role !== 'agent');
   document.getElementById('stats-grid-supervisor').classList.toggle('hidden', role !== 'supervisor');
   document.getElementById('stats-grid-admin-home').classList.toggle('hidden', role !== 'admin');
 
-  // Filtre agent verrouillé pour les agents : ils ne voient que leurs propres entrées
   const agentFilter = document.getElementById('filter-agent');
   if (role === 'agent') {
     agentFilter.value = currentUser.id;
@@ -815,7 +858,6 @@ function applyRoleUI() {
     agentFilter.disabled = false;
   }
 
-  // Onglet d'atterrissage par défaut
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   if (role === 'agent') {
     currentView = 'today';
@@ -830,13 +872,11 @@ function applyRoleUI() {
 document.getElementById('login-password').addEventListener('keydown', e => { if (e.key==='Enter') doLogin(); });
 function logout() {
   if (activeTimer) { alert('Arrête le timer en cours avant de te déconnecter.'); return; }
-  localStorage.removeItem('onspot_idToken');
-  localStorage.removeItem('onspot_uid');
+  localStorage.removeItem('onspot_idToken'); localStorage.removeItem('onspot_uid');
   currentUser = null; entries = [];
   document.getElementById('login-screen').style.display = 'flex';
   document.getElementById('app').style.display = 'none';
-  document.getElementById('login-email').value = '';
-  document.getElementById('login-password').value = '';
+  document.getElementById('login-email').value = ''; document.getElementById('login-password').value = '';
 }
 function populateFilters() {
   const sel = document.getElementById('filter-agent');
@@ -849,7 +889,14 @@ function populateFilters() {
 function openModal() {
   document.getElementById('modal-overlay').classList.remove('hidden');
   document.getElementById('f-desc').value = '';
-  selectSource('manual');
+  selectSource('inbound');
+  
+  const d = new Date();
+  d.setMinutes(d.getMinutes() + 1);
+  pickerHour = String(d.getHours()).padStart(2, '0');
+  pickerMin = String(d.getMinutes()).padStart(2, '0');
+  document.getElementById('inbound-time-input').value = `${pickerHour}:${pickerMin}`;
+  
   document.getElementById('f-desc').focus();
 }
 function closeModal() { document.getElementById('modal-overlay').classList.add('hidden'); }
@@ -861,49 +908,50 @@ function selectSource(s) {
 }
 function quickStart(source) {
   if (activeTimer) { alert('Un timer est déjà actif. Arrête-le avant d\'en démarrer un autre.'); return; }
-  if (source === 'manual') { openModal(); return; }
+  if (source === 'ticket') { openModal(); return; }
   selectedSource = source;
   openModal();
   selectSource(source);
 }
 function startTimer() {
-  const desc = document.getElementById('f-desc').value.trim() || (selectedSource==='manual'?'Tâche manuelle':selectedSource);
-  activeTimer = { source: selectedSource, desc, startTime: Date.now() };
+  const desc = document.getElementById('f-desc').value.trim() || (selectedSource==='ticket'?'Tâche manuelle':selectedSource);
+  
+  const d = new Date();
+  d.setHours(parseInt(pickerHour, 10), parseInt(pickerMin, 10), 0, 0);
+  
+  activeTimer = { source: selectedSource, desc, startTime: d.getTime() };
   closeModal();
   document.getElementById('timer-banner').classList.add('active');
-  document.getElementById('timer-clock').classList.remove('idle'); document.getElementById('timer-clock').classList.add('active');
-  document.getElementById('timer-task').textContent = desc; document.getElementById('timer-task').classList.remove('placeholder');
+  document.getElementById('timer-clock').classList.remove('idle'); 
+  document.getElementById('timer-clock').classList.add('active');
+  document.getElementById('timer-task').textContent = desc; 
+  document.getElementById('timer-task').classList.remove('placeholder');
   document.getElementById('play-btn').classList.add('hidden');
   document.getElementById('stop-btn').classList.remove('hidden');
+  
   localStorage.setItem('activeTimer_'+currentUser.id, JSON.stringify(activeTimer));
   saveActiveTimerToFirestore();
   timerInterval = setInterval(updateClock, 1000);
   updateClock();
 }
 async function saveActiveTimerToFirestore() {
-  const body = { fields: {
-    source: { stringValue: activeTimer.source },
-    desc: { stringValue: activeTimer.desc },
-    startTime: { integerValue: String(activeTimer.startTime) },
-  }};
-  try {
-    await fetch(`${BASE_URL}/active_timers/${currentUser.id}?key=${FIREBASE_API_KEY}`, {
-      method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body)
-    });
-  } catch(e) { console.error('Erreur sauvegarde timer actif:', e); }
+  const body = { fields: { source: { stringValue: activeTimer.source }, desc: { stringValue: activeTimer.desc }, startTime: { integerValue: String(activeTimer.startTime) } }};
+  try { await fetch(`${BASE_URL}/active_timers/${currentUser.id}?key=${FIREBASE_API_KEY}`, { method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) }); } catch(e) { console.error(e); }
 }
 async function clearActiveTimerFromFirestore() {
-  try {
-    await fetch(`${BASE_URL}/active_timers/${currentUser.id}?key=${FIREBASE_API_KEY}`, { method:'DELETE' });
-  } catch(e) { console.error('Erreur suppression timer actif:', e); }
+  try { await fetch(`${BASE_URL}/active_timers/${currentUser.id}?key=${FIREBASE_API_KEY}`, { method:'DELETE' }); } catch(e) { console.error(e); }
 }
 function updateClock() {
   if (!activeTimer) return;
-  const elapsed = Math.floor((Date.now() - activeTimer.startTime)/1000);
+  const ms = Date.now() - activeTimer.startTime;
+  const isFuture = ms < 0; 
+  const elapsed = Math.floor(Math.abs(ms) / 1000);
+  
   const h = String(Math.floor(elapsed/3600)).padStart(2,'0');
   const m = String(Math.floor((elapsed%3600)/60)).padStart(2,'0');
   const s = String(elapsed%60).padStart(2,'0');
-  document.getElementById('timer-clock').textContent = `${h}:${m}:${s}`;
+  
+  document.getElementById('timer-clock').textContent = (isFuture ? '-' : '') + `${h}:${m}:${s}`;
 }
 async function stopTimer() {
   if (!activeTimer) return;
@@ -918,18 +966,21 @@ async function stopTimer() {
     durationSec
   };
   entries.unshift(entry);
-  await saveEntryToFirestore(entry);
+
   activeTimer = null;
   localStorage.removeItem('activeTimer_'+currentUser.id);
-  await clearActiveTimerFromFirestore();
   document.getElementById('timer-banner').classList.remove('active');
-  document.getElementById('timer-clock').classList.add('idle'); document.getElementById('timer-clock').classList.remove('active');
+  document.getElementById('timer-clock').classList.add('idle'); 
+  document.getElementById('timer-clock').classList.remove('active');
   document.getElementById('timer-clock').textContent = '00:00:00';
   document.getElementById('timer-task').textContent = 'Aucun timer actif — démarre une tâche ci-dessous';
   document.getElementById('timer-task').classList.add('placeholder');
   document.getElementById('play-btn').classList.remove('hidden');
   document.getElementById('stop-btn').classList.add('hidden');
   renderAll();
+
+  saveEntryToFirestore(entry);
+  clearActiveTimerFromFirestore();
 }
 function checkActiveTimer() {
   const saved = localStorage.getItem('activeTimer_'+currentUser.id);
@@ -945,65 +996,42 @@ function checkActiveTimer() {
   }
 }
 
-// ===== ACTIVE TIMERS (for supervisor/admin live view) =====
+// ===== ACTIVE TIMERS =====
 async function loadActiveTimers() {
   try {
     const res = await fetch(`${BASE_URL}/active_timers?key=${FIREBASE_API_KEY}`);
     const data = await res.json();
     return (data.documents || []).map(doc => {
       const f = doc.fields || {};
-      return {
-        agentId: doc.name.split('/').pop(),
-        source: f.source?.stringValue || 'manual',
-        desc: f.desc?.stringValue || '',
-        startTime: parseInt(f.startTime?.integerValue || 0),
-      };
+      return { agentId: doc.name.split('/').pop(), source: f.source?.stringValue || 'ticket', desc: f.desc?.stringValue || '', startTime: parseInt(f.startTime?.integerValue || 0) };
     });
-  } catch(e) { console.error('Erreur chargement timers actifs:', e); return []; }
+  } catch(e) { return []; }
 }
 
-// ===== RINGOVER SYNC (semi-auto via token) =====
+// ===== RINGOVER SYNC =====
 async function syncRingover() {
   const token = prompt('Colle ton token RingOver (depuis DevTools → Network → calls → Headers → Authorization):');
   if (!token) return;
   try {
-    const now = new Date();
-    const start = new Date(now); start.setHours(0,0,0,0);
+    const now = new Date(); const start = new Date(now); start.setHours(0,0,0,0);
     const res = await fetch('https://api-us.ringover.com/v4/aud/dashboard/logs/calls', {
-      method: 'POST',
-      headers: { 'Content-Type':'application/json', 'Authorization':'Bearer '+token },
-      body: JSON.stringify({
-        filter:"ALL", start_date:start.toISOString(), end_date:now.toISOString(),
-        limit_count:100, limit_offset:0, handle_call:"all",
-        users:[],tags:[],alpha2_codes:[],accounts:[],call_type:[],channels:[],groups:[],
-        ivrs:[],notes:[],numbers:[],scenarios:[],stars:[],handle_call_response_type:["CALL","SMS","EMAIL"]
-      })
+      method: 'POST', headers: { 'Content-Type':'application/json', 'Authorization':'Bearer '+token },
+      body: JSON.stringify({ filter:"ALL", start_date:start.toISOString(), end_date:now.toISOString(), limit_count:100, limit_offset:0, handle_call:"all", users:[],tags:[],alpha2_codes:[],accounts:[],call_type:[],channels:[],groups:[], ivrs:[],notes:[],numbers:[],scenarios:[],stars:[],handle_call_response_type:["CALL","SMS","EMAIL"] })
     });
-    if (!res.ok) { alert('Erreur RingOver: ' + res.status + '. Token invalide ou expiré.'); return; }
-    const data = await res.json();
-    const calls = data.call_list || data.calls || data.data || [];
+    if (!res.ok) { alert('Erreur RingOver: ' + res.status); return; }
+    const data = await res.json(); const calls = data.call_list || data.calls || data.data || [];
     let imported = 0;
     for (const c of calls) {
-      const exists = entries.find(e => e.source==='ringover' && e.rawId === String(c.call_id));
+      const exists = entries.find(e => (e.source==='ringover'||e.source==='inbound'||e.source==='outbound') && e.rawId === String(c.call_id));
       if (exists) continue;
       const entry = {
-        id: 'ro_' + (c.call_id || Date.now()),
-        rawId: String(c.call_id||''),
-        source: 'ringover',
-        desc: 'Appel ' + (c.bnumber || c.anumber || ''),
-        agent: currentUser.id,
-        startTime: c.call_start_time || new Date().toISOString(),
-        durationSec: c.in_call_duration || 0
+        id: 'ro_' + (c.call_id || Date.now()), rawId: String(c.call_id||''), source: 'inbound', desc: 'Appel ' + (c.bnumber || c.anumber || ''),
+        agent: currentUser.id, startTime: c.call_start_time || new Date().toISOString(), durationSec: c.in_call_duration || 0
       };
-      entries.unshift(entry);
-      await saveEntryToFirestore(entry);
-      imported++;
+      entries.unshift(entry); await saveEntryToFirestore(entry); imported++;
     }
-    renderAll();
-    alert(imported + ' appel(s) importé(s) depuis RingOver.');
-  } catch(e) {
-    alert('Erreur de connexion à RingOver: ' + e.message);
-  }
+    renderAll(); alert(imported + ' appel(s) importé(s) depuis RingOver.');
+  } catch(e) { alert('Erreur de connexion à RingOver'); }
 }
 
 // ===== FIRESTORE =====
@@ -1020,28 +1048,14 @@ async function loadEntries() {
 function docToEntry(doc) {
   const f = doc.fields || {};
   return {
-    id: doc.name.split('/').pop(),
-    rawId: f.rawId?.stringValue || '',
-    source: f.source?.stringValue || 'manual',
-    desc: f.desc?.stringValue || '',
-    treatment: f.treatment?.stringValue || '',
-    agent: f.agent?.stringValue || '',
-    startTime: f.startTime?.stringValue || '',
-    durationSec: parseInt(f.durationSec?.integerValue || 0),
+    id: doc.name.split('/').pop(), rawId: f.rawId?.stringValue || '', source: f.source?.stringValue || 'ticket',
+    desc: f.desc?.stringValue || '', treatment: f.treatment?.stringValue || '', agent: f.agent?.stringValue || '',
+    startTime: f.startTime?.stringValue || '', durationSec: parseInt(f.durationSec?.integerValue || 0),
   };
 }
 async function saveEntryToFirestore(entry) {
-  const body = { fields: {
-    rawId: { stringValue: entry.rawId || '' },
-    source: { stringValue: entry.source },
-    desc: { stringValue: entry.desc },
-    agent: { stringValue: entry.agent },
-    startTime: { stringValue: entry.startTime },
-    durationSec: { integerValue: String(entry.durationSec) },
-  }};
-  await fetch(`${BASE_URL}/time_entries/${entry.id}?key=${FIREBASE_API_KEY}`, {
-    method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body)
-  });
+  const body = { fields: { rawId: { stringValue: entry.rawId || '' }, source: { stringValue: entry.source }, desc: { stringValue: entry.desc }, agent: { stringValue: entry.agent }, startTime: { stringValue: entry.startTime }, durationSec: { integerValue: String(entry.durationSec) } }};
+  await fetch(`${BASE_URL}/time_entries/${entry.id}?key=${FIREBASE_API_KEY}`, { method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
 }
 async function deleteEntry(id) {
   if (!confirm('Supprimer cette entrée ?')) return;
@@ -1061,9 +1075,11 @@ function fmtTime(iso) {
   return new Date(iso).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
 }
 function sourceTag(s) {
-  if (s==='ringover') return '<span class="source-tag src-ringover">RingOver</span>';
-  if (s==='crisp') return '<span class="source-tag src-crisp">Crisp</span>';
-  return '<span class="source-tag src-manual">Manuel</span>';
+  if (s==='inbound' || s==='ringover') return '<span class="source-tag src-inbound">📞↘ Appel entrant</span>';
+  if (s==='outbound') return '<span class="source-tag src-outbound">📞↗ Appel sortant</span>';
+  if (s==='chat' || s==='crisp') return '<span class="source-tag src-chat">💬 Crisp Chat</span>';
+  if (s==='email') return '<span class="source-tag src-email">✉️ Crisp Email</span>';
+  return '<span class="source-tag src-ticket">🎫 Ticket/Manuel</span>';
 }
 function agentCell(id) {
   const u = TEAM.find(t=>t.id===id);
@@ -1079,14 +1095,26 @@ function isThisWeek(iso) {
   const start = new Date(now); start.setDate(now.getDate()-now.getDay()+1); start.setHours(0,0,0,0);
   return d >= start;
 }
+
+function onSearchInput() {
+  clearTimeout(searchTimeout);
+  searchTimeout = setTimeout(renderAll, 300);
+}
+
 function getFiltered() {
   const source = document.getElementById('filter-source').value;
-  const agent = document.getElementById('filter-agent').value;
+  let agent = document.getElementById('filter-agent').value;
   const treatment = document.getElementById('filter-treatment')?.value || '';
   const search = document.getElementById('search-input').value.toLowerCase();
+  
   let list = entries;
+  if (currentUser.role === 'agent') {
+    agent = currentUser.id;
+  }
+
   if (currentView === 'today') list = list.filter(e=>isToday(e.startTime));
   else if (currentView === 'week') list = list.filter(e=>isThisWeek(e.startTime));
+  
   return list.filter(e =>
     (!source || e.source===source) &&
     (!agent || e.agent===agent) &&
@@ -1094,48 +1122,64 @@ function getFiltered() {
     (!search || e.desc.toLowerCase().includes(search))
   );
 }
+
 function renderAll() {
   const filtered = getFiltered();
   document.getElementById('entry-count').textContent = filtered.length + ' entrée' + (filtered.length!==1?'s':'');
   renderStats(filtered);
   renderTable(filtered);
 }
+
 function renderStats(filtered) {
-  const todayEntries = entries.filter(e=>isToday(e.startTime));
+  let baseEntries = entries;
+  if (currentUser.role === 'agent') {
+    baseEntries = entries.filter(e => e.agent === currentUser.id);
+  }
+
+  const todayEntries = baseEntries.filter(e=>isToday(e.startTime));
   const total = todayEntries.reduce((s,e)=>s+e.durationSec,0);
-  const ro = todayEntries.filter(e=>e.source==='ringover');
-  const cr = todayEntries.filter(e=>e.source==='crisp');
-  const man = todayEntries.filter(e=>e.source==='manual');
+  const ro = todayEntries.filter(e=>e.source==='ringover' || e.source==='inbound' || e.source==='outbound');
+  const cr = todayEntries.filter(e=>e.source==='crisp' || e.source==='chat' || e.source==='email');
+  const man = todayEntries.filter(e=>e.source==='manual' || e.source==='ticket');
+  
   document.getElementById('s-total').textContent = fmtDuration(total);
   document.getElementById('s-ringover').textContent = fmtDuration(ro.reduce((s,e)=>s+e.durationSec,0));
   document.getElementById('s-ringover-count').textContent = ro.length + ' appels';
   document.getElementById('s-crisp').textContent = fmtDuration(cr.reduce((s,e)=>s+e.durationSec,0));
-  document.getElementById('s-crisp-count').textContent = cr.length + ' tickets';
+  document.getElementById('s-crisp-count').textContent = cr.length + ' chats/emails';
   document.getElementById('s-manual').textContent = fmtDuration(man.reduce((s,e)=>s+e.durationSec,0));
   document.getElementById('s-manual-count').textContent = man.length + ' tâches';
 }
+
 function renderTable(filtered) {
   const body = document.getElementById('entries-body');
-  const canEdit = currentUser.role === 'supervisor' || currentUser.role === 'admin';
+  const canEdit = currentUser.role === 'admin';
+  
   if (!filtered.length) {
     body.innerHTML = '<tr><td colspan="6"><div class="empty">Aucune entrée pour cette période.</div></td></tr>';
     return;
   }
+  
   body.innerHTML = filtered.map(e => {
-    const dmt = sourceDMT[e.source] ?? sourceDMT.manual;
+    let sourceKey = 'manual';
+    if(e.source==='ringover'||e.source==='inbound'||e.source==='outbound') sourceKey = 'ringover';
+    else if(e.source==='crisp'||e.source==='chat'||e.source==='email') sourceKey = 'crisp';
+    
+    const dmt = sourceDMT[sourceKey] ?? sourceDMT.manual;
     const ratio = dmt ? e.durationSec / dmt : 0;
     let durClass = '';
     if (ratio > 1.2) durClass = 'dur-over';
     else if (ratio > 1) durClass = 'dur-warn';
+    
     return `
     <tr>
       <td class="dur-cell">${fmtTime(e.startTime)}</td>
       <td>${sourceTag(e.source)}</td>
-      <td id="desc-${e.id}">${e.desc}</td>
+      <td id="desc-${e.id}" style="width:40%">${e.desc}</td>
       <td>${agentCell(e.agent)}</td>
       <td class="dur-cell ${durClass}" title="DMT cible : ${fmtDuration(dmt)}">${fmtDuration(e.durationSec)}</td>
       <td><div class="row-actions">
-        ${canEdit ? `<button class="icon-btn" onclick="editEntry('${e.id}')" title="Modifier">✎</button>` : ''}
+        ${canEdit ? `<button class="icon-btn" onclick="editEntry('${e.id}')" title="Ajouter une référence / Modifier">✎</button>` : ''}
         ${canEdit ? `<button class="icon-btn" onclick="deleteEntry('${e.id}')" title="Supprimer">✕</button>` : ''}
       </div></td>
     </tr>`;
@@ -1143,24 +1187,34 @@ function renderTable(filtered) {
 }
 
 function editEntry(id) {
+  if (currentUser.role !== 'admin') return;
   const entry = entries.find(e => e.id === id);
   if (!entry) return;
+  
   const cell = document.getElementById('desc-' + id);
   const current = entry.desc;
-  cell.innerHTML = `<input class="form-input" id="edit-input-${id}" value="${current.replace(/"/g,'&quot;')}" style="padding:5px 8px;font-size:13px" />`;
+  
+  cell.innerHTML = `<input class="form-input" id="edit-input-${id}" value="${current.replace(/"/g,'&quot;')}" placeholder="Ex: Ticket #68554 ou détails..." style="padding:5px 8px; font-size:13px; width:100%; box-sizing:border-box;" />`;
+  
   const input = document.getElementById('edit-input-' + id);
   input.focus();
-  input.select();
+  input.setSelectionRange(input.value.length, input.value.length);
+  
   const save = async () => {
     const newDesc = input.value.trim() || current;
     entry.desc = newDesc;
     cell.textContent = newDesc;
-    await saveEntryToFirestore(entry);
+    saveEntryToFirestore(entry);
   };
+  
   input.addEventListener('blur', save);
-  input.addEventListener('keydown', e => { if (e.key==='Enter') input.blur(); });
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') input.blur(); });
 }
+
 function switchTab(view, btn) {
+  if (currentUser.role === 'agent' && (view === 'admin' || view === 'team' || view === 'home')) {
+    return;
+  }
   currentView = view;
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   if (btn) btn.classList.add('active');
@@ -1179,470 +1233,285 @@ function switchTab(view, btn) {
   if (isHomeView || isTeamView) { renderRoleHome(); return; }
   renderAll();
 }
+
 // ===== ADMIN PANEL =====
 let customTreatmentTypes = [...TREATMENT_TYPES_DEFAULT];
 
 function renderAdminPanel() {
-  renderTeamList();
-  renderTreatmentList();
-  renderAdminStats();
-  populateChartScopeSelect();
-  renderEvolutionChart();
+  renderTeamList(); renderTreatmentList(); renderAdminStats(); populateChartScopeSelect(); renderEvolutionChart();
 }
-
 function renderTeamList() {
   document.getElementById('team-count').textContent = TEAM.length + ' comptes';
   document.getElementById('team-list').innerHTML = TEAM.map(u => `
     <div class="team-row" onclick="openAccountEditModal('${u.id}')" style="cursor:pointer">
       <div class="mini-avatar" style="background:${u.color}20;color:${u.color}${u.photo?`;background-image:url(${u.photo});background-size:cover`:''}">${u.photo?'':u.initials}</div>
-      <div class="team-row-info">
-        <div class="team-row-name">${u.name}</div>
-        <div class="team-row-role">${roleLabel(u.role)}</div>
-      </div>
+      <div class="team-row-info"><div class="team-row-name">${u.name}</div><div class="team-row-role">${roleLabel(u.role)}</div></div>
       <span style="font-size:11px;color:var(--ocean);font-weight:600">Modifier →</span>
     </div>`).join('');
 }
-
 function roleLabel(role) {
   if (role === 'admin') return 'Admin';
   if (role === 'supervisor') return 'Superviseur';
   return 'Agent';
 }
-
 function renderTreatmentList() {
   document.getElementById('treatment-count').textContent = customTreatmentTypes.length + ' types';
   document.getElementById('treatment-list').innerHTML = customTreatmentTypes.map((t,i) => `
-    <div class="treatment-row">
-      <span>${t}</span>
-      <button class="icon-btn" onclick="removeTreatmentType(${i})">✕</button>
-    </div>`).join('');
+    <div class="treatment-row"><span>${t}</span><button class="icon-btn" onclick="removeTreatmentType(${i})">✕</button></div>`).join('');
 }
 
-function addTreatmentType() {
+async function addTreatmentType() {
   const input = document.getElementById('new-treatment-input');
   const val = input.value.trim();
   if (!val) return;
   customTreatmentTypes.push(val);
   input.value = '';
   renderTreatmentList();
+  populateFilters();
+  await saveTreatmentsToFirestore();
 }
-
-function removeTreatmentType(i) {
-  customTreatmentTypes.splice(i,1);
+async function removeTreatmentType(i) {
+  if (!confirm('Voulez-vous vraiment supprimer ce type de traitement ?')) return;
+  customTreatmentTypes.splice(i, 1);
   renderTreatmentList();
+  populateFilters();
+  await saveTreatmentsToFirestore();
+}
+async function saveTreatmentsToFirestore() {
+  const values = customTreatmentTypes.map(t => ({ stringValue: t }));
+  const body = { fields: { list: { arrayValue: { values } } } };
+  try { await fetch(`${BASE_URL}/settings/treatments?key=${FIREBASE_API_KEY}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }); } catch(e) { console.error(e); }
+}
+async function loadTreatmentsFromFirestore() {
+  try {
+    const res = await fetch(`${BASE_URL}/settings/treatments?key=${FIREBASE_API_KEY}`);
+    if (res.status === 404) return;
+    const data = await res.json();
+    const values = data.fields?.list?.arrayValue?.values || [];
+    if (values.length > 0) { customTreatmentTypes = values.map(v => v.stringValue); }
+  } catch(e) { console.error(e); }
 }
 
 function renderAdminStats() {
-  const now = new Date();
-  const weekStart = new Date(now); weekStart.setDate(now.getDate()-now.getDay()+1); weekStart.setHours(0,0,0,0);
+  const now = new Date(); const weekStart = new Date(now); weekStart.setDate(now.getDate()-now.getDay()+1); weekStart.setHours(0,0,0,0);
   const weekEntries = entries.filter(e => new Date(e.startTime) >= weekStart);
   const total = weekEntries.reduce((s,e)=>s+e.durationSec,0);
   const activeAgents = new Set(entries.filter(e=>isToday(e.startTime)).map(e=>e.agent));
-
   document.getElementById('admin-s-total').textContent = fmtDuration(total);
   document.getElementById('admin-s-count').textContent = entries.length;
   document.getElementById('admin-s-active').textContent = activeAgents.size;
 }
-
 function exportCSV() {
   const rows = [['Date','Heure','Source','Description','Agent','Durée (sec)']];
   entries.forEach(e => {
     const d = new Date(e.startTime);
-    rows.push([
-      d.toLocaleDateString('fr-FR'),
-      fmtTime(e.startTime),
-      e.source,
-      e.desc,
-      (TEAM.find(t=>t.id===e.agent)||{}).name || e.agent,
-      e.durationSec
-    ]);
+    rows.push([d.toLocaleDateString('fr-FR'), fmtTime(e.startTime), e.source, e.desc, (TEAM.find(t=>t.id===e.agent)||{}).name || e.agent, e.durationSec]);
   });
   const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
   const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url; a.download = 'onspot-time-entries-' + new Date().toISOString().split('T')[0] + '.csv';
-  a.click();
-  URL.revokeObjectURL(url);
+  a.click(); URL.revokeObjectURL(url);
 }
-
 function exportExcel() {
   const header = ['Date','Heure','Source','Description','Agent','Durée (min)'];
   let html = '<table><tr>' + header.map(h=>`<th>${h}</th>`).join('') + '</tr>';
   entries.forEach(e => {
     const d = new Date(e.startTime);
     const agentName = (TEAM.find(t=>t.id===e.agent)||{}).name || e.agent;
-    html += '<tr>' + [
-      d.toLocaleDateString('fr-FR'), fmtTime(e.startTime), e.source, e.desc, agentName,
-      Math.round(e.durationSec/60)
-    ].map(c=>`<td>${c}</td>`).join('') + '</tr>';
+    html += '<tr>' + [d.toLocaleDateString('fr-FR'), fmtTime(e.startTime), e.source, e.desc, agentName, Math.round(e.durationSec/60)].map(c=>`<td>${c}</td>`).join('') + '</tr>';
   });
   html += '</table>';
   const blob = new Blob(['\ufeff' + html], {type:'application/vnd.ms-excel;charset=utf-8;'});
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url; a.download = 'onspot-time-entries-' + new Date().toISOString().split('T')[0] + '.xls';
-  a.click();
-  URL.revokeObjectURL(url);
+  a.click(); URL.revokeObjectURL(url);
 }
 
-// ===== ROLE HOME (Supervisor / Admin) =====
+// ===== ROLE HOME =====
 async function renderRoleHome() {
   const activeTimers = await loadActiveTimers();
-  if (currentUser.role === 'supervisor') {
-    renderSupervisorBanner(activeTimers);
-    renderSupervisorStats(activeTimers);
-  }
-  if (currentUser.role === 'admin') {
-    renderAdminBanner();
-    renderAdminHomeStats();
-  }
+  if (currentUser.role === 'supervisor') { renderSupervisorBanner(activeTimers); renderSupervisorStats(activeTimers); }
+  if (currentUser.role === 'admin') { renderAdminBanner(); renderAdminHomeStats(); }
   renderTeamLiveList(activeTimers);
 }
-
-function agentsOnly() {
-  return TEAM.filter(u => u.role === 'agent');
-}
-
+function agentsOnly() { return TEAM.filter(u => u.role === 'agent'); }
 function renderSupervisorBanner(activeTimers) {
-  const agents = agentsOnly();
-  const activeIds = new Set(activeTimers.map(t => t.agentId));
+  const agents = agentsOnly(); const activeIds = new Set(activeTimers.map(t => t.agentId));
   const activeAgents = agents.filter(a => activeIds.has(a.id));
-
-  const avatarsHtml = activeAgents.slice(0,3).map(a =>
-    `<div class="role-banner-avatar" style="background:${a.color};margin-right:-8px">${a.initials}</div>`
-  ).join('') + (agents.length > 3 ? `<div class="role-banner-avatar role-banner-avatar-more">+${agents.length-3}</div>` : '');
-
+  const avatarsHtml = activeAgents.slice(0,3).map(a => `<div class="role-banner-avatar" style="background:${a.color};margin-right:-8px">${a.initials}</div>`).join('') + (agents.length > 3 ? `<div class="role-banner-avatar role-banner-avatar-more">+${agents.length-3}</div>` : '');
   document.getElementById('sup-banner-avatars').innerHTML = avatarsHtml || '<div class="role-banner-avatar role-banner-avatar-more">0</div>';
   document.getElementById('sup-banner-title').textContent = `${activeAgents.length} sur ${agents.length} agents actifs`;
-
   const idleAgent = findLongestIdleAgent(agents, activeIds);
   document.getElementById('sup-banner-sub').textContent = idleAgent || 'Tout le monde est à jour';
   document.getElementById('sup-banner-dot').style.background = activeAgents.length > 0 ? '#3B8C6E' : '#A0AAB8';
 }
-
 function findLongestIdleAgent(agents, activeIds) {
   const idle = agents.filter(a => !activeIds.has(a.id));
   if (!idle.length) return null;
-  const name = idle[0].name;
-  return `${name} inactif`;
+  return `${idle[0].name} inactif`;
 }
-
 function renderSupervisorStats(activeTimers) {
-  const agents = agentsOnly();
-  const activeIds = new Set(activeTimers.map(t => t.agentId));
+  const agents = agentsOnly(); const activeIds = new Set(activeTimers.map(t => t.agentId));
   document.getElementById('sup-s-active').textContent = activeIds.size;
   document.getElementById('sup-s-active-sub').textContent = `sur ${agents.length} agents`;
-
   const todayEntries = entries.filter(e => isToday(e.startTime) && agents.some(a=>a.id===e.agent));
   const total = todayEntries.reduce((s,e)=>s+e.durationSec,0);
   document.getElementById('sup-s-total').textContent = fmtDuration(total);
-
   document.getElementById('sup-s-idle').textContent = agents.length - activeIds.size;
 }
-
 function renderAdminBanner() {
-  const now = new Date();
-  const weekStart = new Date(now); weekStart.setDate(now.getDate()-now.getDay()+1); weekStart.setHours(0,0,0,0);
+  const now = new Date(); const weekStart = new Date(now); weekStart.setDate(now.getDate()-now.getDay()+1); weekStart.setHours(0,0,0,0);
   const weekEntries = entries.filter(e => new Date(e.startTime) >= weekStart);
   const total = weekEntries.reduce((s,e)=>s+e.durationSec,0);
-
   document.getElementById('adm-banner-total').textContent = fmtDuration(total);
   document.getElementById('adm-banner-title').textContent = `${agentsOnly().length} agents · ${customTreatmentTypes.length} types de traitement`;
   document.getElementById('adm-banner-sub').textContent = '';
 }
-
 function renderAdminHomeStats() {
-  const now = new Date();
-  const weekStart = new Date(now); weekStart.setDate(now.getDate()-now.getDay()+1); weekStart.setHours(0,0,0,0);
+  const now = new Date(); const weekStart = new Date(now); weekStart.setDate(now.getDate()-now.getDay()+1); weekStart.setHours(0,0,0,0);
   const weekEntries = entries.filter(e => new Date(e.startTime) >= weekStart);
   const total = weekEntries.reduce((s,e)=>s+e.durationSec,0);
   const activeToday = new Set(entries.filter(e=>isToday(e.startTime)).map(e=>e.agent));
-
   document.getElementById('adm-home-total').textContent = fmtDuration(total);
   document.getElementById('adm-home-entries').textContent = entries.length;
   document.getElementById('adm-home-active').textContent = activeToday.size;
 }
-
 function renderTeamLiveList(activeTimers) {
-  const agents = agentsOnly();
-  document.getElementById('team-live-count').textContent = agents.length + ' agents';
-  const timerByAgent = {};
-  activeTimers.forEach(t => timerByAgent[t.agentId] = t);
-
+  const agents = agentsOnly(); document.getElementById('team-live-count').textContent = agents.length + ' agents';
+  const timerByAgent = {}; activeTimers.forEach(t => timerByAgent[t.agentId] = t);
   document.getElementById('team-live-list').innerHTML = agents.map(a => {
     const t = timerByAgent[a.id];
     if (t) {
-      const elapsed = Math.floor((Date.now() - t.startTime)/1000);
-      const mins = Math.floor(elapsed/60);
-      const secs = elapsed%60;
+      const elapsed = Math.floor((Date.now() - t.startTime)/1000); const mins = Math.floor(elapsed/60); const secs = elapsed%60;
       const timeStr = mins + ':' + String(secs).padStart(2,'0');
       return `<div class="team-row" onclick="viewAgentDetail('${a.id}')" style="cursor:pointer">
         <div class="mini-avatar" style="background:${a.color}20;color:${a.color}">${a.initials}</div>
-        <div class="team-row-info">
-          <div class="team-row-name">${a.name}</div>
-          <div class="team-row-role">${t.desc}</div>
-        </div>
-        <span class="team-row-timer">${timeStr}</span>
-      </div>`;
+        <div class="team-row-info"><div class="team-row-name">${a.name}</div><div class="team-row-role">${t.desc}</div></div>
+        <span class="team-row-timer">${timeStr}</span></div>`;
     }
     return `<div class="team-row" onclick="viewAgentDetail('${a.id}')" style="cursor:pointer">
       <div class="mini-avatar" style="background:var(--border2,#E2E8F0);color:var(--text2,#6B7C93)">${a.initials}</div>
-      <div class="team-row-info">
-        <div class="team-row-name">${a.name}</div>
-        <div class="team-row-role" style="color:var(--text3,#A0AAB8)">Inactif</div>
-      </div>
-      <span class="team-row-timer" style="color:var(--text3,#A0AAB8)">—</span>
-    </div>`;
+      <div class="team-row-info"><div class="team-row-name">${a.name}</div><div class="team-row-role" style="color:var(--text3,#A0AAB8)">Inactif</div></div>
+      <span class="team-row-timer" style="color:var(--text3,#A0AAB8)">—</span></div>`;
   }).join('');
 }
-
 function viewAgentDetail(agentId) {
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.querySelector('.tab.agent-only').classList.remove('hidden');
-  document.querySelector('.tab.agent-only').classList.add('active');
+  document.querySelector('.tab.agent-only').classList.remove('hidden'); document.querySelector('.tab.agent-only').classList.add('active');
   currentView = 'today';
-  document.getElementById('team-live-panel').classList.add('hidden');
-  document.getElementById('admin-panel').classList.add('hidden');
-  document.querySelector('.toolbar').classList.remove('hidden');
-  document.querySelector('.entries-table').classList.remove('hidden');
+  document.getElementById('team-live-panel').classList.add('hidden'); document.getElementById('admin-panel').classList.add('hidden');
+  document.querySelector('.toolbar').classList.remove('hidden'); document.querySelector('.entries-table').classList.remove('hidden');
   document.getElementById('filter-agent').value = agentId;
   renderAll();
 }
 
-// ===== DMT (durée moyenne de traitement cible par source) =====
+// ===== DMT =====
 async function loadDMT() {
   try {
     const res = await fetch(`${BASE_URL}/settings/dmt?key=${FIREBASE_API_KEY}`);
     if (res.status === 404) { renderDMTInputs(); return; }
-    const data = await res.json();
-    const f = data.fields || {};
-    sourceDMT = {
-      ringover: parseInt(f.ringover?.integerValue ?? SOURCE_DMT_DEFAULT.ringover),
-      crisp: parseInt(f.crisp?.integerValue ?? SOURCE_DMT_DEFAULT.crisp),
-      manual: parseInt(f.manual?.integerValue ?? SOURCE_DMT_DEFAULT.manual),
-    };
-  } catch(e) { console.error('Erreur chargement DMT:', e); }
+    const data = await res.json(); const f = data.fields || {};
+    sourceDMT = { ringover: parseInt(f.ringover?.integerValue ?? SOURCE_DMT_DEFAULT.ringover), crisp: parseInt(f.crisp?.integerValue ?? SOURCE_DMT_DEFAULT.crisp), manual: parseInt(f.manual?.integerValue ?? SOURCE_DMT_DEFAULT.manual) };
+  } catch(e) { console.error(e); }
   renderDMTInputs();
 }
-
 function renderDMTInputs() {
-  const r = document.getElementById('dmt-ringover');
-  const c = document.getElementById('dmt-crisp');
-  const m = document.getElementById('dmt-manual');
-  if (r) r.value = sourceDMT.ringover;
-  if (c) c.value = sourceDMT.crisp;
-  if (m) m.value = sourceDMT.manual;
+  const r = document.getElementById('dmt-ringover'); const c = document.getElementById('dmt-crisp'); const m = document.getElementById('dmt-manual');
+  if (r) r.value = sourceDMT.ringover; if (c) c.value = sourceDMT.crisp; if (m) m.value = sourceDMT.manual;
 }
-
 async function saveDMT() {
-  sourceDMT = {
-    ringover: parseInt(document.getElementById('dmt-ringover').value) || SOURCE_DMT_DEFAULT.ringover,
-    crisp: parseInt(document.getElementById('dmt-crisp').value) || SOURCE_DMT_DEFAULT.crisp,
-    manual: parseInt(document.getElementById('dmt-manual').value) || SOURCE_DMT_DEFAULT.manual,
-  };
-  const body = { fields: {
-    ringover: { integerValue: String(sourceDMT.ringover) },
-    crisp: { integerValue: String(sourceDMT.crisp) },
-    manual: { integerValue: String(sourceDMT.manual) },
-  }};
-  try {
-    await fetch(`${BASE_URL}/settings/dmt?key=${FIREBASE_API_KEY}`, {
-      method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body)
-    });
-    renderAll();
-  } catch(e) { console.error('Erreur sauvegarde DMT:', e); }
+  sourceDMT = { ringover: parseInt(document.getElementById('dmt-ringover').value) || SOURCE_DMT_DEFAULT.ringover, crisp: parseInt(document.getElementById('dmt-crisp').value) || SOURCE_DMT_DEFAULT.crisp, manual: parseInt(document.getElementById('dmt-manual').value) || SOURCE_DMT_DEFAULT.manual };
+  const body = { fields: { ringover: { integerValue: String(sourceDMT.ringover) }, crisp: { integerValue: String(sourceDMT.crisp) }, manual: { integerValue: String(sourceDMT.manual) } }};
+  try { await fetch(`${BASE_URL}/settings/dmt?key=${FIREBASE_API_KEY}`, { method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) }); renderAll(); } catch(e) { console.error(e); }
 }
 
-// ===== ACCOUNTS PERSISTENCE (Firestore) =====
+// ===== ACCOUNTS PERSISTENCE =====
 async function loadAccountsFromFirestore() {
   try {
     const res = await fetch(`${BASE_URL}/accounts?key=${FIREBASE_API_KEY}`);
     const data = await res.json();
-    const docs = data.documents || [];
-    TEAM = docs.map(doc => {
+    TEAM = (data.documents || []).map(doc => {
       const f = doc.fields || {};
-      const id = doc.name.split('/').pop();
-      return {
-        id,
-        name: f.name?.stringValue || 'Sans nom',
-        email: f.email?.stringValue || '',
-        color: f.color?.stringValue || '#2B4C7E',
-        initials: f.initials?.stringValue || '??',
-        role: f.role?.stringValue || 'agent',
-        photo: f.photo?.stringValue || '',
-      };
+      return { id: doc.name.split('/').pop(), name: f.name?.stringValue || 'Sans nom', email: f.email?.stringValue || '', color: f.color?.stringValue || '#2B4C7E', initials: f.initials?.stringValue || '??', role: f.role?.stringValue || 'agent', photo: f.photo?.stringValue || '' };
     });
-  } catch(e) { console.error('Erreur chargement comptes:', e); }
+  } catch(e) { console.error(e); }
 }
-
 async function saveAccountToFirestore(user) {
-  const body = { fields: {
-    name: { stringValue: user.name },
-    email: { stringValue: user.email || '' },
-    color: { stringValue: user.color },
-    initials: { stringValue: user.initials },
-    role: { stringValue: user.role },
-    photo: { stringValue: user.photo || '' },
-  }};
-  try {
-    await fetch(`${BASE_URL}/accounts/${user.id}?key=${FIREBASE_API_KEY}`, {
-      method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body)
-    });
-  } catch(e) { console.error('Erreur sauvegarde compte:', e); }
+  const body = { fields: { name: { stringValue: user.name }, email: { stringValue: user.email || '' }, color: { stringValue: user.color }, initials: { stringValue: user.initials }, role: { stringValue: user.role }, photo: { stringValue: user.photo || '' } }};
+  try { await fetch(`${BASE_URL}/accounts/${user.id}?key=${FIREBASE_API_KEY}`, { method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) }); } catch(e) { console.error(e); }
 }
 
-// ===== PROFILE MODAL (self-service for any role) =====
+// ===== PROFILE MODAL =====
 let pendingProfilePhoto = null;
-
 function openProfileModal() {
   pendingProfilePhoto = currentUser.photo || null;
-  document.getElementById('profile-name-input').value = currentUser.name;
-  document.getElementById('profile-password-input').value = '';
-  document.getElementById('profile-error').textContent = '';
-  renderProfilePhotoPreview();
-  document.getElementById('profile-modal-overlay').classList.remove('hidden');
+  document.getElementById('profile-name-input').value = currentUser.name; document.getElementById('profile-password-input').value = ''; document.getElementById('profile-error').textContent = '';
+  renderProfilePhotoPreview(); document.getElementById('profile-modal-overlay').classList.remove('hidden');
 }
 function closeProfileModal() { document.getElementById('profile-modal-overlay').classList.add('hidden'); }
 function closeProfileModalOutside(e) { if (e.target.id === 'profile-modal-overlay') closeProfileModal(); }
-
 function renderProfilePhotoPreview() {
   const el = document.getElementById('profile-photo-preview');
-  if (pendingProfilePhoto) {
-    el.style.backgroundImage = `url(${pendingProfilePhoto})`;
-    el.textContent = '';
-  } else {
-    el.style.backgroundImage = '';
-    el.textContent = currentUser.initials;
-  }
+  if (pendingProfilePhoto) { el.style.backgroundImage = `url(${pendingProfilePhoto})`; el.textContent = ''; } else { el.style.backgroundImage = ''; el.textContent = currentUser.initials; }
 }
-
 function onProfilePhotoSelected(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-  if (file.size > 1.5 * 1024 * 1024) {
-    document.getElementById('profile-error').textContent = 'Image trop lourde (max 1.5 Mo).';
-    return;
-  }
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    pendingProfilePhoto = e.target.result;
-    renderProfilePhotoPreview();
-  };
-  reader.readAsDataURL(file);
+  const file = event.target.files[0]; if (!file) return;
+  if (file.size > 1.5 * 1024 * 1024) { document.getElementById('profile-error').textContent = 'Image trop lourde (max 1.5 Mo).'; return; }
+  const reader = new FileReader(); reader.onload = (e) => { pendingProfilePhoto = e.target.result; renderProfilePhotoPreview(); }; reader.readAsDataURL(file);
 }
-
-function removeProfilePhoto() {
-  pendingProfilePhoto = '';
-  renderProfilePhotoPreview();
-}
-
+function removeProfilePhoto() { pendingProfilePhoto = ''; renderProfilePhotoPreview(); }
 async function saveProfile() {
-  const newName = document.getElementById('profile-name-input').value.trim();
-  const newPassword = document.getElementById('profile-password-input').value.trim();
-  const errEl = document.getElementById('profile-error');
-  errEl.textContent = '';
+  const newName = document.getElementById('profile-name-input').value.trim(); const newPassword = document.getElementById('profile-password-input').value.trim();
+  const errEl = document.getElementById('profile-error'); errEl.textContent = '';
   if (!newName) { errEl.textContent = 'Le nom ne peut pas être vide.'; return; }
   if (newPassword && newPassword.length < 6) { errEl.textContent = 'Le mot de passe doit faire au moins 6 caractères.'; return; }
-
   if (newPassword) {
     const idToken = localStorage.getItem('onspot_idToken');
     try {
-      const res = await fetch(`${AUTH_BASE}/accounts:update?key=${FIREBASE_API_KEY}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ idToken, password: newPassword, returnSecureToken: true })
-      });
+      const res = await fetch(`${AUTH_BASE}/accounts:update?key=${FIREBASE_API_KEY}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ idToken, password: newPassword, returnSecureToken: true }) });
       const data = await res.json();
       if (data.error) { errEl.textContent = "Erreur lors du changement de mot de passe."; return; }
       localStorage.setItem('onspot_idToken', data.idToken);
-    } catch(e) { errEl.textContent = 'Erreur réseau.'; console.error(e); return; }
+    } catch(e) { errEl.textContent = 'Erreur réseau.'; return; }
   }
-
-  currentUser.name = newName;
-  currentUser.photo = pendingProfilePhoto || '';
-
-  const idx = TEAM.findIndex(u => u.id === currentUser.id);
-  if (idx >= 0) TEAM[idx] = currentUser;
-
-  await saveAccountToFirestore(currentUser);
-  renderTopbarIdentity();
-  populateFilters();
-  document.getElementById('profile-password-input').value = '';
-  closeProfileModal();
+  currentUser.name = newName; currentUser.photo = pendingProfilePhoto || '';
+  const idx = TEAM.findIndex(u => u.id === currentUser.id); if (idx >= 0) TEAM[idx] = currentUser;
+  await saveAccountToFirestore(currentUser); renderTopbarIdentity(); populateFilters(); document.getElementById('profile-password-input').value = ''; closeProfileModal();
 }
 
-(async function init() {
-  await loadAccountsFromFirestore();
-  await loadDMT();
-  // ===== ACCOUNT EDIT MODAL (admin only) =====
-let editingAccountId = null;
-let pendingAccountPhoto = null;
-
+// ===== ACCOUNT EDIT MODAL (admin only) =====
+let editingAccountId = null; let pendingAccountPhoto = null;
 function openAccountEditModal(accountId) {
   if (currentUser.role !== 'admin') return;
-  const acc = TEAM.find(u => u.id === accountId);
-  if (!acc) return;
-  editingAccountId = accountId;
-  pendingAccountPhoto = acc.photo || null;
-  document.getElementById('account-modal-title').textContent = 'Modifier · ' + acc.name;
-  document.getElementById('account-name-input').value = acc.name;
-  document.getElementById('account-role-input').value = acc.role;
-  document.getElementById('account-error').textContent = '';
-  renderAccountPhotoPreview(acc);
-  document.getElementById('account-modal-overlay').classList.remove('hidden');
+  const acc = TEAM.find(u => u.id === accountId); if (!acc) return;
+  editingAccountId = accountId; pendingAccountPhoto = acc.photo || null;
+  document.getElementById('account-modal-title').textContent = 'Modifier · ' + acc.name; document.getElementById('account-name-input').value = acc.name; document.getElementById('account-role-input').value = acc.role; document.getElementById('account-error').textContent = '';
+  renderAccountPhotoPreview(acc); document.getElementById('account-modal-overlay').classList.remove('hidden');
 }
 function closeAccountEditModal() { document.getElementById('account-modal-overlay').classList.add('hidden'); editingAccountId = null; }
 function closeAccountModalOutside(e) { if (e.target.id === 'account-modal-overlay') closeAccountEditModal(); }
-
 function renderAccountPhotoPreview(acc) {
   const el = document.getElementById('account-photo-preview');
-  if (pendingAccountPhoto) {
-    el.style.backgroundImage = `url(${pendingAccountPhoto})`;
-    el.textContent = '';
-  } else {
-    el.style.backgroundImage = '';
-    el.textContent = acc.initials;
-  }
+  if (pendingAccountPhoto) { el.style.backgroundImage = `url(${pendingAccountPhoto})`; el.textContent = ''; } else { el.style.backgroundImage = ''; el.textContent = acc.initials; }
 }
-
 function onAccountPhotoSelected(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-  if (file.size > 1.5 * 1024 * 1024) {
-    document.getElementById('account-error').textContent = 'Image trop lourde (max 1.5 Mo).';
-    return;
-  }
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    pendingAccountPhoto = e.target.result;
-    document.getElementById('account-photo-preview').style.backgroundImage = `url(${pendingAccountPhoto})`;
-    document.getElementById('account-photo-preview').textContent = '';
-  };
-  reader.readAsDataURL(file);
+  const file = event.target.files[0]; if (!file) return;
+  if (file.size > 1.5 * 1024 * 1024) { document.getElementById('account-error').textContent = 'Image trop lourde (max 1.5 Mo).'; return; }
+  const reader = new FileReader(); reader.onload = (e) => { pendingAccountPhoto = e.target.result; document.getElementById('account-photo-preview').style.backgroundImage = `url(${pendingAccountPhoto})`; document.getElementById('account-photo-preview').textContent = ''; }; reader.readAsDataURL(file);
 }
 function removeAccountPhoto() {
-  pendingAccountPhoto = '';
-  const acc = TEAM.find(u => u.id === editingAccountId);
-  document.getElementById('account-photo-preview').style.backgroundImage = '';
-  document.getElementById('account-photo-preview').textContent = acc ? acc.initials : '';
+  pendingAccountPhoto = ''; const acc = TEAM.find(u => u.id === editingAccountId);
+  document.getElementById('account-photo-preview').style.backgroundImage = ''; document.getElementById('account-photo-preview').textContent = acc ? acc.initials : '';
 }
-
 async function saveAccountEdit() {
-  const acc = TEAM.find(u => u.id === editingAccountId);
-  if (!acc) return;
-  const newName = document.getElementById('account-name-input').value.trim();
-  const newRole = document.getElementById('account-role-input').value;
+  const acc = TEAM.find(u => u.id === editingAccountId); if (!acc) return;
+  const newName = document.getElementById('account-name-input').value.trim(); const newRole = document.getElementById('account-role-input').value;
   if (!newName) { document.getElementById('account-error').textContent = 'Le nom ne peut pas être vide.'; return; }
-
-  acc.name = newName;
-  acc.role = newRole;
-  acc.photo = pendingAccountPhoto || '';
-
-  await saveAccountToFirestore(acc);
-  closeAccountEditModal();
-  renderTeamList();
-  populateFilters();
+  acc.name = newName; acc.role = newRole; acc.photo = pendingAccountPhoto || '';
+  await saveAccountToFirestore(acc); closeAccountEditModal(); renderTeamList(); populateFilters();
   if (currentUser.id === acc.id) { currentUser = acc; renderTopbarIdentity(); }
 }
 
@@ -1653,130 +1522,157 @@ function genTempPassword() {
   const digits = Math.floor(1000 + Math.random()*9000);
   return `${word}-${digits}`;
 }
-
 function openCreateAccountModal() {
-  document.getElementById('new-account-name').value = '';
-  document.getElementById('new-account-email').value = '';
-  document.getElementById('create-account-error').textContent = '';
-  document.getElementById('create-account-form').classList.remove('hidden');
-  document.getElementById('create-account-result').classList.add('hidden');
-  document.getElementById('create-account-footer').classList.remove('hidden');
-  document.getElementById('create-account-overlay').classList.remove('hidden');
+  document.getElementById('new-account-name').value = ''; document.getElementById('new-account-email').value = ''; document.getElementById('create-account-error').textContent = '';
+  document.getElementById('create-account-form').classList.remove('hidden'); document.getElementById('create-account-result').classList.add('hidden'); document.getElementById('create-account-footer').classList.remove('hidden'); document.getElementById('create-account-overlay').classList.remove('hidden');
 }
 function closeCreateAccountModal() { document.getElementById('create-account-overlay').classList.add('hidden'); }
 function closeCreateAccountModalOutside(e) { if (e.target.id === 'create-account-overlay') closeCreateAccountModal(); }
-
 async function submitCreateAccount() {
-  const name = document.getElementById('new-account-name').value.trim();
-  const email = document.getElementById('new-account-email').value.trim();
-  const errEl = document.getElementById('create-account-error');
-  errEl.textContent = '';
-  if (!name) { errEl.textContent = 'Le nom est requis.'; return; }
-  if (!email || !email.includes('@')) { errEl.textContent = 'Email invalide.'; return; }
-
-  const submitBtn = document.getElementById('create-account-submit');
-  submitBtn.disabled = true; submitBtn.textContent = 'Création...';
-
-  // On garde la session admin de côté : signUp connecte automatiquement le nouveau compte
-  const adminIdToken = localStorage.getItem('onspot_idToken');
-  const adminUid = localStorage.getItem('onspot_uid');
-  const tempPassword = genTempPassword();
-
+  const name = document.getElementById('new-account-name').value.trim(); const email = document.getElementById('new-account-email').value.trim();
+  const errEl = document.getElementById('create-account-error'); errEl.textContent = '';
+  if (!name) { errEl.textContent = 'Le nom est requis.'; return; } if (!email || !email.includes('@')) { errEl.textContent = 'Email invalide.'; return; }
+  const submitBtn = document.getElementById('create-account-submit'); submitBtn.disabled = true; submitBtn.textContent = 'Création...';
+  const adminIdToken = localStorage.getItem('onspot_idToken'); const adminUid = localStorage.getItem('onspot_uid'); const tempPassword = genTempPassword();
   try {
-    const res = await fetch(`${AUTH_BASE}/accounts:signUp?key=${FIREBASE_API_KEY}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password: tempPassword, returnSecureToken: true })
-    });
+    const res = await fetch(`${AUTH_BASE}/accounts:signUp?key=${FIREBASE_API_KEY}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: tempPassword, returnSecureToken: true }) });
     const data = await res.json();
-    if (data.error) {
-      errEl.textContent = data.error.message === 'EMAIL_EXISTS' ? 'Cet email est déjà utilisé.' : 'Erreur lors de la création.';
-      submitBtn.disabled = false; submitBtn.textContent = 'Créer le compte';
-      return;
-    }
-
-    const newUid = data.localId;
-    const initials = name.trim().split(/\s+/).map(w=>w[0]).join('').toUpperCase().slice(0,2) || '??';
-    const palette = ['#2B4C7E','#3B8C6E','#DCAE1D','#C9604F','#A8527A'];
-    const color = palette[Math.floor(Math.random()*palette.length)];
-
+    if (data.error) { errEl.textContent = data.error.message === 'EMAIL_EXISTS' ? 'Cet email est déjà utilisé.' : 'Erreur lors de la création.'; submitBtn.disabled = false; submitBtn.textContent = 'Créer le compte'; return; }
+    const newUid = data.localId; const initials = name.trim().split(/\s+/).map(w=>w[0]).join('').toUpperCase().slice(0,2) || '??';
+    const palette = ['#2B4C7E','#3B8C6E','#DCAE1D','#C9604F','#A8527A']; const color = palette[Math.floor(Math.random()*palette.length)];
     const newAccount = { id: newUid, name, email, color, initials, role: 'agent', photo: '' };
-    await saveAccountToFirestore(newAccount);
-    TEAM.push(newAccount);
-
-    // Restaure la session admin (signUp avait connecté le nouveau compte à sa place)
-    localStorage.setItem('onspot_idToken', adminIdToken);
-    localStorage.setItem('onspot_uid', adminUid);
-
-    document.getElementById('result-email').textContent = email;
-    document.getElementById('result-password').textContent = tempPassword;
-    document.getElementById('create-account-form').classList.add('hidden');
-    document.getElementById('create-account-result').classList.remove('hidden');
-    document.getElementById('create-account-footer').classList.add('hidden');
-    renderTeamList();
-    populateFilters();
-
-  } catch(e) {
-    errEl.textContent = 'Erreur réseau.';
-    console.error(e);
-  } finally {
-    submitBtn.disabled = false; submitBtn.textContent = 'Créer le compte';
-  }
+    await saveAccountToFirestore(newAccount); TEAM.push(newAccount);
+    localStorage.setItem('onspot_idToken', adminIdToken); localStorage.setItem('onspot_uid', adminUid);
+    document.getElementById('result-email').textContent = email; document.getElementById('result-password').textContent = tempPassword;
+    document.getElementById('create-account-form').classList.add('hidden'); document.getElementById('create-account-result').classList.remove('hidden'); document.getElementById('create-account-footer').classList.add('hidden');
+    renderTeamList(); populateFilters();
+  } catch(e) { errEl.textContent = 'Erreur réseau.'; } finally { submitBtn.disabled = false; submitBtn.textContent = 'Créer le compte'; }
 }
-
 function copyCreatedCredentials() {
-  const email = document.getElementById('result-email').textContent;
-  const pass = document.getElementById('result-password').textContent;
+  const email = document.getElementById('result-email').textContent; const pass = document.getElementById('result-password').textContent;
   navigator.clipboard.writeText(`Email : ${email}\nMot de passe temporaire : ${pass}`);
 }
 
-// ===== EVOLUTION CHART (Admin) =====
+// ===== EVOLUTION CHART =====
 function populateChartScopeSelect() {
-  const sel = document.getElementById('chart-scope');
-  if (!sel) return;
-  sel.innerHTML = '<option value="team">Équipe entière</option>' +
-    agentsOnly().map(a => `<option value="${a.id}">${a.name}</option>`).join('');
+  const sel = document.getElementById('chart-scope'); if (!sel) return;
+  sel.innerHTML = '<option value="team">Équipe entière</option>' + agentsOnly().map(a => `<option value="${a.id}">${a.name}</option>`).join('');
 }
-
 function renderEvolutionChart() {
-  const scope = document.getElementById('chart-scope').value;
-  const period = document.getElementById('chart-period').value;
-  const days = period === 'week' ? 7 : 30;
-
+  const scope = document.getElementById('chart-scope').value; const period = document.getElementById('chart-period').value; const days = period === 'week' ? 7 : 30;
   const buckets = [];
-  for (let i = days - 1; i >= 0; i--) {
-    const d = new Date(); d.setDate(d.getDate() - i); d.setHours(0,0,0,0);
-    buckets.push({ date: d, totalSec: 0 });
-  }
-
+  for (let i = days - 1; i >= 0; i--) { const d = new Date(); d.setDate(d.getDate() - i); d.setHours(0,0,0,0); buckets.push({ date: d, totalSec: 0 }); }
   const scoped = scope === 'team' ? entries : entries.filter(e => e.agent === scope);
-  scoped.forEach(e => {
-    const d = new Date(e.startTime);
-    const bucket = buckets.find(b => b.date.toDateString() === d.toDateString());
-    if (bucket) bucket.totalSec += e.durationSec;
-  });
-
-  const maxSec = Math.max(...buckets.map(b=>b.totalSec), 60);
-  const showEvery = days > 14 ? Math.ceil(days/12) : 1;
-
+  scoped.forEach(e => { const d = new Date(e.startTime); const bucket = buckets.find(b => b.date.toDateString() === d.toDateString()); if (bucket) bucket.totalSec += e.durationSec; });
+  const maxSec = Math.max(...buckets.map(b=>b.totalSec), 60); const showEvery = days > 14 ? Math.ceil(days/12) : 1;
   const barsHtml = buckets.map((b,i) => {
-    const heightPct = Math.max((b.totalSec / maxSec) * 100, b.totalSec>0?3:0);
-    const showLabel = i % showEvery === 0 || i === buckets.length-1;
-    const label = showLabel ? b.date.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit'}) : '';
-    return `<div class="evo-bar-col">
-      <span class="evo-bar-value">${b.totalSec>0?fmtDuration(b.totalSec):''}</span>
-      <div class="evo-bar" style="height:${heightPct}%"></div>
-      <span class="evo-bar-label">${label}</span>
-    </div>`;
+    const heightPct = Math.max((b.totalSec / maxSec) * 100, b.totalSec>0?3:0); const showLabel = i % showEvery === 0 || i === buckets.length-1; const label = showLabel ? b.date.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit'}) : '';
+    return `<div class="evo-bar-col"><span class="evo-bar-value">${b.totalSec>0?fmtDuration(b.totalSec):''}</span><div class="evo-bar" style="height:${heightPct}%"></div><span class="evo-bar-label">${label}</span></div>`;
   }).join('');
-
   document.getElementById('evolution-chart').innerHTML = `<div class="evo-bars">${barsHtml}</div>`;
 }
 
+// --- LOGIQUE INBOUND TIME PICKER ---
+let pickerHour = "00", pickerMin = "00";
+let isScrolling = false;
+
+function initTimePickerUI() {
+  const hCol = document.getElementById('col-hours'); const mCol = document.getElementById('col-mins');
+  let hHtml = '<div class="time-spacer"></div>', mHtml = '<div class="time-spacer"></div>';
+  for(let i=0; i<24; i++) hHtml += `<div class="time-opt" data-val="${String(i).padStart(2,'0')}" onclick="clickTimeOpt('col-hours', ${i})">${String(i).padStart(2,'0')}</div>`;
+  for(let i=0; i<60; i++) mHtml += `<div class="time-opt" data-val="${String(i).padStart(2,'0')}" onclick="clickTimeOpt('col-mins', ${i})">${String(i).padStart(2,'0')}</div>`;
+  hHtml += '<div class="time-spacer"></div>'; mHtml += '<div class="time-spacer"></div>';
+  hCol.innerHTML = hHtml; mCol.innerHTML = mHtml;
+}
+
+function toggleTimePicker(e) {
+  e?.stopPropagation();
+  const drop = document.getElementById('time-dropdown');
+  drop.classList.toggle('hidden');
+  if (!drop.classList.contains('hidden')) syncPickerScroll();
+}
+
+function handleTimeScroll(col, type) {
+  if (isScrolling) return;
+  const opts = col.querySelectorAll('.time-opt');
+  const center = col.scrollTop + col.clientHeight / 2;
+  let closest = null, minDiff = Infinity;
+  opts.forEach(opt => {
+    const optCenter = opt.offsetTop + opt.offsetHeight / 2;
+    const diff = Math.abs(center - optCenter);
+    if (diff < minDiff) { minDiff = diff; closest = opt; }
+  });
+  if (closest) {
+    opts.forEach(o => o.classList.remove('active')); closest.classList.add('active');
+    if (type === 'h') pickerHour = closest.dataset.val; else pickerMin = closest.dataset.val;
+    document.getElementById('inbound-time-input').value = `${pickerHour}:${pickerMin}`;
+  }
+}
+
+function syncPickerScroll() {
+  isScrolling = true;
+  const hCol = document.getElementById('col-hours'); const mCol = document.getElementById('col-mins');
+  const hTarget = hCol.querySelector(`[data-val="${pickerHour}"]`); const mTarget = mCol.querySelector(`[data-val="${pickerMin}"]`);
+  if (hTarget) hCol.scrollTop = hTarget.offsetTop - hCol.clientHeight/2 + hTarget.offsetHeight/2;
+  if (mTarget) mCol.scrollTop = mTarget.offsetTop - mCol.clientHeight/2 + mTarget.offsetHeight/2;
+  setTimeout(() => isScrolling = false, 50);
+}
+
+function clickTimeOpt(colId, index) {
+  const col = document.getElementById(colId);
+  const target = col.querySelectorAll('.time-opt')[index];
+  col.scrollTo({ top: target.offsetTop - col.clientHeight/2 + target.offsetHeight/2, behavior: 'smooth' });
+}
+
+// --- LOGIQUE EMOJI PICKER ---
+const QUICK_EMOJIS = ['✈️','🏨','🚗','🚆','🎫','📞','💬','📧','✅','❌','⚠️','📝','💼','🩺','🔍','💳','💡','🎉'];
+
+function initEmojiPicker() {
+  const picker = document.getElementById('emoji-picker');
+  if (!picker) return;
+  picker.innerHTML = QUICK_EMOJIS.map(e => `<button class="emoji-btn" type="button" onclick="insertEmoji('${e}')">${e}</button>`).join('');
+}
+
+function toggleEmojiPicker(e) {
+  e?.stopPropagation();
+  document.getElementById('emoji-picker').classList.toggle('hidden');
+}
+
+function insertEmoji(emoji) {
+  const input = document.getElementById('new-treatment-input');
+  input.value += emoji;
+  input.focus();
+  document.getElementById('emoji-picker').classList.add('hidden');
+}
+
+// Fermer les popups (Temps et Emojis) au clic à l'extérieur
+document.addEventListener('click', (e) => {
+  const timeDrop = document.getElementById('time-dropdown');
+  if (timeDrop && !timeDrop.classList.contains('hidden') && !e.target.closest('#time-picker-container')) {
+    timeDrop.classList.add('hidden');
+  }
+  
+  const emojiDrop = document.getElementById('emoji-picker');
+  if (emojiDrop && !emojiDrop.classList.contains('hidden') && !e.target.closest('.treatment-add-row')) {
+    emojiDrop.classList.add('hidden');
+  }
+});
+
+initTimePickerUI();
+initEmojiPicker();
+
+async function initApp() {
+  await loadAccountsFromFirestore();
+  await loadDMT();
+  await loadTreatmentsFromFirestore();
+  
   if (!(await tryRestoreSession())) {
     document.getElementById('login-screen').style.display = 'flex';
   }
-})();
+}
+
+// Lancement de l'application
+initApp();
 </script>
 </body>
 </html>
