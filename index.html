@@ -55,7 +55,7 @@
 .theme-toggle-btn:hover{border-color:var(--ocean);color:var(--ocean)}
 body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;transition:background .2s,color .2s}
 
-/* LOGIN (Exactement comme ton original) */
+/* LOGIN */
 #login-screen{position:fixed;inset:0;background:var(--ocean-deep);display:flex;align-items:center;justify-content:center;z-index:100}
 .login-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:44px;width:360px}
 .login-logo-img{width:64px;height:64px;border-radius:12px;margin-bottom:12px;display:block;object-fit:cover;}
@@ -386,7 +386,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 
   <details class="team-accordion hidden" id="team-accordion" style="margin-top:20px;">
     <summary class="team-summary">Vue Globale Équipe & KPIs</summary>
-    <div class="stats-grid hidden" id="stats-grid-supervisor" style="grid-template-columns:repeat(4,1fr); padding-bottom:20px; border-bottom:1px solid var(--border);">
+    <div class="stats-grid" id="stats-grid-supervisor" style="grid-template-columns:repeat(4,1fr); padding-bottom:20px; border-bottom:1px solid var(--border);">
       <div class="stat-card">
         <div class="stat-label">Total Équipe (Jour)</div>
         <div class="stat-value" id="sup-s-total" style="color:var(--ocean)">0h00</div>
@@ -467,9 +467,22 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
           <tr class="filter-row hidden" id="table-filters">
             <th><input type="text" class="filter-input-tbl" id="f-inb" placeholder="Filtrer..." oninput="onSearchInput()"></th>
             <th><input type="text" class="filter-input-tbl" id="f-start" placeholder="Filtrer..." oninput="onSearchInput()"></th>
-            <th><input type="text" class="filter-input-tbl" id="f-src" placeholder="Filtrer..." oninput="onSearchInput()"></th>
+            <th>
+              <select class="filter-input-tbl" id="f-src" onchange="onSearchInput()">
+                <option value="">Toutes sources</option>
+                <option value="inbound">Appel entrant</option>
+                <option value="outbound">Appel sortant</option>
+                <option value="chat">Crisp Chat</option>
+                <option value="email">Crisp Email</option>
+                <option value="ticket">Ticket / Manuel</option>
+              </select>
+            </th>
             <th><input type="text" class="filter-input-tbl" id="f-desc" placeholder="Filtrer..." oninput="onSearchInput()"></th>
-            <th><input type="text" class="filter-input-tbl" id="f-agt" placeholder="Filtrer..." oninput="onSearchInput()"></th>
+            <th>
+              <select class="filter-input-tbl" id="f-agt" onchange="onSearchInput()">
+                <option value="">Tous les agents</option>
+              </select>
+            </th>
             <th><input type="text" class="filter-input-tbl" id="f-dur" placeholder="Filtrer..." oninput="onSearchInput()"></th>
             <th></th>
           </tr>
@@ -734,7 +747,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       
       <div class="form-row">
         <label class="form-label">Description / Ticket</label>
-        <input class="form-input" id="f-desc" placeholder="Ex: Ticket #68554 ou description de la tâche">
+        <input class="form-input" id="modal-desc" placeholder="Ex: Ticket #68554 ou description de la tâche">
       </div>
     </div>
     <div class="modal-footer">
@@ -754,9 +767,9 @@ let TEAM = [];
 const SOURCE_DMT_DEFAULT = { ringover: 300, crisp: 480, manual: 600 };
 let sourceDMT = {...SOURCE_DMT_DEFAULT};
 const TREATMENT_TYPES_DEFAULT = [
-  'Confirmation','Reservations','Conseils/suggestions','Follow-up','Lost and found','Car rental',
-  'Additionnels services','Train','Health','Activities','Transferts','DMC','Itinerary',
-  'Accommodation','Luggage','Flights','Welcome call','Goodbye call'
+  '✅ Confirmation','🎫 Reservations','💡 Conseils/suggestions','🔄 Follow-up','🔍 Lost and found','🚗 Car rental',
+  '➕ Additionnels services','🚆 Train','🩺 Health','🎯 Activities','🚐 Transferts','🗺️ DMC','🗓️ Itinerary',
+  '🏨 Accommodation','🧳 Luggage','✈️ Flights','👋 Welcome call','👋 Goodbye call'
 ];
 
 let currentUser = null;
@@ -787,7 +800,7 @@ async function doLogin() {
     localStorage.setItem('onspot_uid', data.localId);
     const user = await fetchAccountProfile(data.localId);
     if (!user) { err.textContent = "Ce compte n'a pas encore de profil. Contacte un admin."; return; }
-    enterApp(user);
+    await enterApp(user);
   } catch(e) { err.textContent = 'Erreur de connexion. Réessaie.'; console.error(e); }
 }
 
@@ -806,11 +819,15 @@ async function fetchAccountProfile(uid) {
   } catch(e) { console.error('Erreur profil compte:', e); return null; }
 }
 
-function enterApp(user) {
+async function enterApp(user) {
   currentUser = user;
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('app').style.display = 'block';
-  applyUserTheme(); renderTopbarIdentity(); populateFilters(); applyRoleUI(); checkActiveTimer(); refreshApp();
+  applyUserTheme(); 
+  renderTopbarIdentity(); 
+  await refreshApp(); // On attend le chargement complet des données Firebase (Admin/0 comptes fix)
+  applyRoleUI(); 
+  checkActiveTimer(); 
 }
 
 function renderTopbarIdentity() {
@@ -851,11 +868,10 @@ async function tryRestoreSession() {
   if (!idToken || !uid) return false;
   const user = await fetchAccountProfile(uid);
   if (!user) { localStorage.removeItem('onspot_idToken'); localStorage.removeItem('onspot_uid'); return false; }
-  enterApp(user);
+  await enterApp(user);
   return true;
 }
 
-// RESTAURATION STRICTE DU switchTab ET applyRoleUI D'ORIGINE
 function applyRoleUI() {
   const role = currentUser.role;
   const badge = document.getElementById('role-badge');
@@ -874,19 +890,29 @@ function applyRoleUI() {
   document.getElementById('tab-week-role').classList.toggle('hidden', role === 'agent');
   document.querySelector('.tab.agent-only').classList.toggle('hidden', role !== 'agent');
 
-  document.getElementById('timer-banner').classList.toggle('hidden', role !== 'agent');
+  // Sécurité Panel Admin et suppression du timer pour Sup/Admin
+  if (role !== 'admin') {
+    document.getElementById('admin-panel').style.display = 'none';
+  } else {
+    document.getElementById('admin-panel').style.display = '';
+  }
+
+  if (role !== 'agent') {
+    document.getElementById('timer-banner').style.display = 'none';
+    document.querySelector('.quickstart').style.display = 'none';
+  } else {
+    document.getElementById('timer-banner').style.display = 'flex';
+    document.querySelector('.quickstart').style.display = 'flex';
+  }
+
   document.getElementById('supervisor-banner').classList.toggle('hidden', role !== 'supervisor');
   document.getElementById('admin-banner').classList.toggle('hidden', role !== 'admin');
-  document.querySelector('.quickstart').classList.toggle('hidden', role !== 'agent');
 
   document.getElementById('stats-grid-agent').classList.toggle('hidden', role !== 'agent');
   document.getElementById('team-accordion').classList.toggle('hidden', role === 'agent');
   document.getElementById('stats-grid-admin-home').classList.toggle('hidden', role !== 'admin');
   
-  // Le Dashboard Permanent pour Sup/Admin
   document.getElementById('permanent-live-panel').classList.toggle('hidden', role === 'agent');
-
-  // Ligne de filtres tableau (Sup/Admin)
   document.getElementById('table-filters').classList.toggle('hidden', role === 'agent');
 
   const agentFilter = document.getElementById('filter-agent');
@@ -898,6 +924,8 @@ function applyRoleUI() {
   }
 
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  
+  // Par défaut "Aujourd'hui" si agent, "home" sinon
   if (role === 'agent') {
     currentView = 'today';
     document.querySelector('.tab.agent-only').classList.add('active');
@@ -907,7 +935,6 @@ function applyRoleUI() {
     document.querySelector('.toolbar').classList.add('hidden');
     document.querySelector('.entries-table').classList.add('hidden');
     
-    // Démarrage de l'actualisation du dashboard live permanent
     setInterval(fetchPermanentLiveAgents, 15000);
     fetchPermanentLiveAgents();
   }
@@ -925,12 +952,15 @@ function logout() {
 
 function populateFilters() {
   const sel = document.getElementById('filter-agent');
-  sel.innerHTML = '<option value="">Tous les agents</option>' + agentsOnly().map(u=>`<option value="${u.id}">${u.name}</option>`).join('');
+  const tblAgt = document.getElementById('f-agt');
+  const agentOptions = '<option value="">Tous les agents</option>' + agentsOnly().map(u=>`<option value="${u.id}">${u.name}</option>`).join('');
+  if (sel) sel.innerHTML = agentOptions;
+  if (tblAgt) tblAgt.innerHTML = agentOptions;
+
   const tSel = document.getElementById('filter-treatment');
   if (tSel) tSel.innerHTML = '<option value="">Tous traitements</option>' + customTreatmentTypes.map(t=>`<option value="${t}">${t}</option>`).join('');
 }
 
-// Fonction "Actualiser" (Remplace l'ancienne chargeData)
 async function refreshApp() {
   await loadAccountsFromFirestore();
   populateFilters();
@@ -941,7 +971,7 @@ async function refreshApp() {
 // ===== TIMER LOGIC =====
 function openModal() {
   document.getElementById('modal-overlay').classList.remove('hidden');
-  document.getElementById('f-desc').value = '';
+  document.getElementById('modal-desc').value = '';
   selectSource('inbound');
   
   const d = new Date();
@@ -950,7 +980,7 @@ function openModal() {
   pickerMin = String(d.getMinutes()).padStart(2, '0');
   document.getElementById('inbound-time-input').value = `${pickerHour}:${pickerMin}`;
   
-  document.getElementById('f-desc').focus();
+  document.getElementById('modal-desc').focus();
 }
 function closeModal() { document.getElementById('modal-overlay').classList.add('hidden'); }
 function closeModalOutside(e) { if (e.target === document.getElementById('modal-overlay')) closeModal(); }
@@ -967,7 +997,7 @@ function quickStart(source) {
   selectSource(source);
 }
 function startTimer() {
-  const desc = document.getElementById('f-desc').value.trim() || (selectedSource==='ticket'?'Tâche manuelle':selectedSource);
+  const desc = document.getElementById('modal-desc').value.trim() || (selectedSource==='ticket'?'Tâche manuelle':selectedSource);
   
   const d = new Date();
   d.setHours(parseInt(pickerHour, 10), parseInt(pickerMin, 10), 0, 0);
@@ -1116,11 +1146,14 @@ async function loadEntries() {
 }
 function docToEntry(doc) {
   const f = doc.fields || {};
+  let sTime = f.startTime?.stringValue || new Date().toISOString();
+  // Sécurisation de la date Firebase
+  if (isNaN(new Date(sTime).getTime())) sTime = new Date().toISOString();
   return {
     id: doc.name.split('/').pop(), rawId: f.rawId?.stringValue || '', source: f.source?.stringValue || 'ticket',
     desc: f.desc?.stringValue || '', treatment: f.treatment?.stringValue || '', agent: f.agent?.stringValue || '',
     inboundTime: f.inboundTime?.stringValue || '--:--',
-    startTimeStr: f.startTime?.stringValue || new Date().toISOString(), durationSec: parseInt(f.durationSec?.integerValue || 0),
+    startTimeStr: sTime, durationSec: parseInt(f.durationSec?.integerValue || 0),
   };
 }
 async function saveEntryToFirestore(entry) {
@@ -1175,9 +1208,9 @@ function getFiltered() {
   
   const fInb = document.getElementById('f-inb')?.value.toLowerCase();
   const fStart = document.getElementById('f-start')?.value.toLowerCase();
-  const fSrc = document.getElementById('f-src')?.value.toLowerCase();
+  const fSrc = document.getElementById('f-src')?.value;
   const fDesc = document.getElementById('f-desc')?.value.toLowerCase();
-  const fAgt = document.getElementById('f-agt')?.value.toLowerCase();
+  const fAgt = document.getElementById('f-agt')?.value;
   const fDur = document.getElementById('f-dur')?.value.toLowerCase();
   
   let list = entries;
@@ -1188,8 +1221,6 @@ function getFiltered() {
   
   return list.filter(e => {
     const startStr = new Date(e.startTimeStr).toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
-    const agentObj = TEAM.find(t => t.id === e.agent);
-    const agentName = agentObj ? agentObj.name.toLowerCase() : e.agent.toLowerCase();
     const durStr = Math.ceil(e.durationSec / 60) + ' min';
 
     if (source && e.source!==source) return false;
@@ -1199,9 +1230,9 @@ function getFiltered() {
 
     if (fInb && !(e.inboundTime||'--:--').toLowerCase().includes(fInb)) return false;
     if (fStart && !startStr.includes(fStart)) return false;
-    if (fSrc && !e.source.toLowerCase().includes(fSrc)) return false;
+    if (fSrc && e.source !== fSrc) return false;
     if (fDesc && !e.desc.toLowerCase().includes(fDesc)) return false;
-    if (fAgt && !agentName.includes(fAgt)) return false;
+    if (fAgt && e.agent !== fAgt) return false;
     if (fDur && !durStr.includes(fDur)) return false;
 
     return true;
@@ -1323,7 +1354,6 @@ function editEntry(id) {
   input.addEventListener('keydown', e => { if (e.key === 'Enter') input.blur(); });
 }
 
-// RESTAURATION EXACTE DE SWITCHTAB
 function switchTab(view, btn) {
   if (currentUser.role === 'agent' && (view === 'admin' || view === 'team' || view === 'home')) {
     return;
@@ -1428,7 +1458,7 @@ function exportCSV() {
   a.href = url; a.download = 'onspot-time-entries-' + new Date().toISOString().split('T')[0] + '.csv';
   a.click(); URL.revokeObjectURL(url);
 }
-function exportExcel() { exportCSV(); } // CSV covers the need
+function exportExcel() { exportCSV(); } 
 
 // ===== ROLE HOME =====
 async function renderRoleHome() {
