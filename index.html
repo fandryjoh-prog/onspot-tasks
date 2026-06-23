@@ -1,1678 +1,530 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OnSpot Time Tracker</title>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&family=Spline+Sans+Mono:wght@500;600&display=swap');
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task'in - Dashboard</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Inter:wght@400;500;600&display=swap');
 
-*{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --ocean:#2B4C7E;
-  --ocean-dim:#E6EDF6;
-  --ocean-deep:#1E3760;
-  --clay:#E98A7D;
-  --clay-dim:#FBE9E6;
-  --bloom:#F3B0C3;
-  --bloom-dim:#FBEAF0;
-  --amber:#DCAE1D;
-  --amber-dim:#FCF1D6;
-  --bg:#F0F4F8;
-  --surface:#FFFFFF;
-  --surface2:#F7FAFC;
-  --border:#E2E8F0;
-  --border2:#D3DDE8;
-  --text:#1E2A3A;
-  --text2:#6B7C93;
-  --text3:#A0AAB8;
-  --red:#C9604F;
-  --red-dim:#FBE9E6;
-  --green:#3B8C6E;
-  --green-dim:#E1F3EC;
-  --radius:12px;
-  --display:'Fraunces',serif;
-  --font:'Public Sans',system-ui,sans-serif;
-  --mono:'Spline Sans Mono',monospace;
-}
-[data-theme="dark"]{
-  --ocean-dim:#1A2740;
-  --clay-dim:#3A2420;
-  --bloom-dim:#3A2530;
-  --amber-dim:#3A2E0E;
-  --bg:#11161F;
-  --surface:#171D29;
-  --surface2:#1E2531;
-  --border:#2A3344;
-  --border2:#384258;
-  --text:#EBEEF3;
-  --text2:#9AA6B8;
-  --text3:#69748A;
-  --red-dim:#3A2220;
-  --green-dim:#152A22;
-}
-.theme-toggle-btn{width:32px;height:32px;border-radius:50%;border:1px solid var(--border2);background:var(--surface2);color:var(--text2);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center}
-.theme-toggle-btn:hover{border-color:var(--ocean);color:var(--ocean)}
-body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;transition:background .2s,color .2s}
+        :root {
+            --primary: #2B4C7E; --primary-dark: #1E3760; --primary-light: #E6EDF6;
+            --accent: #3B8C6E; --accent-light: #E1F3EC;
+            --danger: #C9604F; --danger-light: #FBE9E6;
+            --bg: #F4F7FA; --surface: #FFFFFF; --border: #E2E8F0;
+            --text-main: #1E2A3A; --text-muted: #6B7C93;
+            --font-ui: 'Inter', sans-serif; --font-serif: 'Fraunces', serif;
+        }
 
-/* LOGIN */
-#login-screen{position:fixed;inset:0;background:var(--ocean-deep);display:flex;align-items:center;justify-content:center;z-index:100}
-.login-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:44px;width:360px}
-.login-logo{font-family:var(--display);font-weight:600;font-size:13px;letter-spacing:1px;color:var(--ocean);margin-bottom:10px}
-.login-title{font-family:var(--display);font-size:28px;font-weight:600;margin-bottom:6px;letter-spacing:-0.5px;color:var(--text)}
-.login-sub{font-size:13px;color:var(--text2);margin-bottom:32px}
-.avatars{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:24px}
-.avatar-btn{padding:12px;border:1px solid var(--border);border-radius:10px;background:transparent;cursor:pointer;color:var(--text);font-family:var(--font);font-size:13px;display:flex;align-items:center;gap:10px;transition:all .15s}
-.avatar-btn:hover{border-color:var(--ocean)}
-.avatar-btn.selected{border-color:var(--ocean);background:var(--ocean-dim)}
-.avatar-icon{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;font-family:var(--font)}
-.pin-label{font-size:12px;color:var(--text2);margin-bottom:8px}
-.pin-input{width:100%;padding:11px;background:var(--surface2);border:1px solid var(--border);border-radius:9px;color:var(--text);font-family:var(--font);font-size:14px;text-align:center;outline:none}
-.pin-input:focus{border-color:var(--ocean)}
-.login-btn{width:100%;margin-top:16px;padding:12px;background:var(--ocean);color:#fff;border:none;border-radius:9px;font-family:var(--font);font-size:14px;font-weight:600;cursor:pointer}
-.login-btn:hover{background:var(--ocean-deep)}
-.login-error{font-size:12px;color:var(--red);margin-top:8px;text-align:center;min-height:18px}
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font-ui); background-color: var(--bg); color: var(--text-main); font-size: 14px; }
+        .hidden { display: none !important; }
+        
+        /* AUTHENTIFICATION */
+        #login-view { height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--primary); }
+        .login-box { background: var(--surface); padding: 40px; border-radius: 16px; width: 360px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; }
+        .login-logo { width: 120px; margin-bottom: 20px; border-radius: 12px; }
+        .login-box h1 { font-family: var(--font-serif); color: var(--primary); margin-bottom: 24px; font-size: 28px; }
+        .form-control { width: 100%; padding: 12px; margin-bottom: 16px; border: 1px solid var(--border); border-radius: 8px; font-family: var(--font-ui); }
+        .btn-main { width: 100%; padding: 12px; background: var(--accent); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+        .btn-main:hover { background: #2f735a; }
 
-/* APP */
-#app{display:none}
-.topbar{height:56px;background:var(--ocean);border-bottom:1px solid var(--ocean-deep);display:flex;align-items:center;padding:0 24px;gap:16px;position:sticky;top:0;z-index:50}
-.topbar-logo{font-family:var(--display);font-size:16px;font-weight:600;letter-spacing:-0.2px;color:#fff}
-.topbar-sep{color:#5A7AA8;font-size:18px}
-.topbar-title{font-size:11px;color:#B9CCE6;font-weight:600;text-transform:uppercase;letter-spacing:1px;border-left:1px solid #4A6A99;padding-left:14px}
-.topbar-right{margin-left:auto;display:flex;align-items:center;gap:12px}
-.user-pill{display:flex;align-items:center;gap:8px;padding:6px 12px;border-radius:99px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);font-size:12px;font-weight:500;color:#fff}
-.btn{padding:8px 16px;border-radius:9px;border:none;cursor:pointer;font-family:var(--font);font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:7px;transition:all .15s}
-.btn-ghost{background:rgba(255,255,255,.08);color:#D8E2EE;border:1px solid rgba(255,255,255,.15)}
-.btn-ghost:hover{color:#fff;background:rgba(255,255,255,.16)}
+        /* TOP NAV */
+        .navbar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 12px 24px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
+        .nav-brand { display: flex; align-items: center; gap: 12px; font-family: var(--font-serif); font-size: 20px; font-weight: 700; color: var(--primary); }
+        .nav-brand img { height: 32px; border-radius: 6px; }
+        .nav-actions { display: flex; align-items: center; gap: 16px; }
+        .btn-refresh { background: var(--primary-light); color: var(--primary); border: none; padding: 8px 16px; border-radius: 6px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: 0.2s; }
+        .btn-refresh:hover { background: #d0ddec; }
+        .user-badge { display: flex; align-items: center; gap: 10px; font-weight: 500; }
+        .avatar { width: 32px; height: 32px; background: var(--accent); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        .btn-logout { background: transparent; border: none; color: var(--danger); cursor: pointer; font-weight: 600; }
 
-/* TIMER BANNER */
-.timer-banner{margin:20px 24px 0;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px 26px;display:flex;align-items:center;gap:22px}
-.timer-banner.active{border-color:var(--clay)}
-.timer-clock{font-family:var(--mono);font-size:30px;font-weight:600;letter-spacing:0.5px;min-width:140px}
-.timer-clock.idle{color:var(--text3)}
-.timer-clock.active{color:var(--ocean)}
-.timer-info{flex:1}
-.timer-label{font-family:var(--font);font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;font-weight:600}
-.timer-task{font-size:14px;font-weight:500;color:var(--text)}
-.timer-task.placeholder{color:var(--text3);font-weight:400}
-.timer-controls{display:flex;gap:8px}
-.timer-btn{width:54px;height:54px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;transition:transform .15s;position:relative}
-.timer-btn-play{background:var(--ocean);color:#fff}
-.timer-btn-play:hover{transform:scale(1.06)}
-.timer-btn-stop{background:var(--ocean);color:#fff;box-shadow:0 0 0 3px var(--clay-dim)}
-.timer-btn-stop:hover{transform:scale(1.04)}
-.timer-btn-stop::before{content:'';position:absolute;inset:-6px;border-radius:50%;border:2.5px solid var(--clay);border-top-color:transparent;animation:pulse-spin 2.2s linear infinite}
-@keyframes pulse-spin{to{transform:rotate(360deg)}}
-@media (prefers-reduced-motion:reduce){.timer-btn-stop::before{animation:none;border-top-color:var(--clay)}}
+        /* MAIN LAYOUT */
+        .dashboard-container { max-width: 1400px; margin: 0 auto; padding: 24px; }
 
-/* QUICK START */
-.quickstart{display:flex;gap:8px;margin:14px 24px 0;flex-wrap:wrap}
-.qs-btn{padding:9px 14px;border-radius:9px;border:1px solid var(--border);background:var(--surface);color:var(--text2);font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:7px;transition:all .15s}
-.qs-btn:hover{border-color:var(--ocean);color:var(--ocean)}
-.qs-dot{width:7px;height:7px;border-radius:50%}
+        /* QUICK START BAR */
+        .quick-start-bar { display: flex; gap: 12px; margin-bottom: 24px; overflow-x: auto; padding-bottom: 8px; }
+        .quick-start-bar::-webkit-scrollbar { height: 6px; }
+        .quick-start-bar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 6px; }
+        .qs-btn { display: flex; align-items: center; gap: 8px; padding: 10px 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; font-weight: 600; color: var(--text-main); cursor: pointer; white-space: nowrap; transition: 0.15s; }
+        .qs-btn:hover { border-color: var(--primary); box-shadow: 0 2px 6px rgba(0,0,0,0.05); transform: translateY(-1px); }
+        .qs-icon { font-size: 16px; }
 
-/* STATS */
-.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:20px 24px 0}
-.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px}
-.stat-label{font-size:11px;color:var(--text2);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px;font-weight:600}
-.stat-value{font-family:var(--display);font-size:25px;font-weight:600;letter-spacing:-0.3px;color:var(--text)}
-.stat-sub{font-size:11px;color:var(--text2);margin-top:4px}
+        /* LIVE DASHBOARD (SUPERVISEUR/ADMIN) */
+        .live-header { background: var(--primary-dark); border-radius: 12px; padding: 24px; margin-bottom: 24px; color: white; }
+        .live-title { font-family: var(--font-serif); font-size: 20px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+        .live-pulse { width: 10px; height: 10px; background: #4CAF50; border-radius: 50%; box-shadow: 0 0 0 0 rgba(76,175,80,0.4); animation: pulse 1.5s infinite; }
+        .live-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px; }
+        .live-card { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 16px; }
+        .live-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .live-card-name { font-weight: 600; font-size: 14px; }
+        .live-card-time { font-family: var(--font-ui); font-weight: bold; color: #84A9DE; }
+        .live-card-task { font-size: 13px; opacity: 0.9; }
 
-/* TABS + TOOLBAR */
-.tabs{display:flex;gap:2px;padding:24px 24px 0;border-bottom:1px solid var(--border)}
-.tab{padding:9px 16px;border-radius:9px 9px 0 0;font-size:13px;font-weight:600;cursor:pointer;color:var(--text2);border:1px solid transparent;border-bottom:none;background:transparent;font-family:var(--font)}
-.tab.active{background:var(--surface);color:var(--ocean);border-color:var(--border)}
-.content{padding:20px 24px}
-.toolbar{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap}
-.filter-select,.search-input{padding:7px 11px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--font);font-size:13px;outline:none}
-.search-input{width:200px}
-.filter-select:focus,.search-input:focus{border-color:var(--ocean)}
-.count-badge{font-size:11px;padding:3px 9px;border-radius:99px;background:var(--surface2);color:var(--text2);font-family:var(--mono);margin-left:auto;border:1px solid var(--border)}
+        /* KPIS SECTION */
+        .kpi-section { margin-bottom: 24px; }
+        .kpi-title { font-size: 16px; font-weight: 600; margin-bottom: 12px; color: var(--text-muted); }
+        .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+        .kpi-card { background: var(--surface); padding: 20px; border-radius: 12px; border: 1px solid var(--border); display: flex; flex-direction: column; }
+        .kpi-value { font-family: var(--font-serif); font-size: 28px; font-weight: 700; color: var(--primary); margin-top: 8px; }
+        .kpi-label { font-size: 12px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
 
-/* TABLE */
-.entries-table{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
-.entries-table table{width:100%;border-collapse:collapse}
-.entries-table th{font-size:10px;font-weight:700;color:var(--text2);text-align:left;padding:11px 16px;border-bottom:1px solid var(--border);text-transform:uppercase;letter-spacing:.6px;background:var(--surface2)}
-.entries-table td{font-size:13px;padding:12px 16px;border-bottom:1px solid var(--border)}
-.entries-table tr:last-child td{border-bottom:none}
-.entries-table tr:hover td{background:var(--surface2)}
-.source-tag{display:inline-flex;align-items:center;gap:5px;font-size:11px;padding:3px 8px;border-radius:6px;font-weight:600}
-.src-ringover, .src-inbound, .src-outbound{background:var(--ocean-dim);color:var(--ocean)}
-.src-crisp, .src-chat, .src-email{background:var(--clay-dim);color:#A8503F}
-.src-manual, .src-ticket{background:var(--amber-dim);color:#8A6A0F}
-.dur-cell{font-family:var(--mono);font-size:12px;color:var(--text2)}
-.agent-cell{display:flex;align-items:center;gap:8px}
-.mini-avatar{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0;font-family:var(--font)}
-.row-actions{display:flex;gap:4px;opacity:0;transition:opacity .15s}
-.entries-table tr:hover .row-actions{opacity:1}
-.icon-btn{width:26px;height:26px;border-radius:6px;border:none;background:transparent;color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px}
-.icon-btn:hover{background:var(--border);color:var(--text)}
-.empty{padding:48px;text-align:center;color:var(--text3);font-size:13px}
+        /* ACCORDION EQUIPE */
+        .team-accordion { margin-bottom: 24px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+        .team-summary { padding: 16px 24px; font-weight: 600; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; background: var(--primary-light); color: var(--primary); user-select: none; }
+        .team-summary::-webkit-details-marker { display: none; }
+        .team-summary::after { content: '▼'; font-size: 12px; }
+        .team-accordion[open] .team-summary::after { content: '▲'; }
+        .team-content { padding: 24px; border-top: 1px solid var(--border); }
 
-/* MODAL */
-.modal-overlay{position:fixed;inset:0;background:rgba(30,42,58,.55);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(2px)}
-.modal{background:var(--surface);border:1px solid var(--border);border-radius:16px;width:100%;max-width:480px}
-.modal-header{padding:20px 24px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
-.modal-title{font-family:var(--display);font-size:18px;font-weight:600;color:var(--text)}
-.modal-close{background:transparent;border:none;color:var(--text2);cursor:pointer;font-size:20px;padding:4px}
-.modal-body{padding:20px 24px}
-.modal-footer{padding:16px 24px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end}
-.form-row{margin-bottom:16px}
-.profile-photo-row{display:flex;align-items:center;gap:16px;margin-bottom:20px}
-.dmt-row{display:flex;align-items:center;gap:10px;padding:10px 18px;border-bottom:1px solid var(--border)}
-.dmt-label{flex:1;font-size:13px;color:var(--text)}
-.dmt-input{width:90px;flex:none}
-.dmt-unit{font-size:11px;color:var(--text2)}
-.dur-warn{color:#B8860B;font-weight:600}
-.dur-over{color:var(--red);font-weight:700}
-.chart-toolbar{display:flex;gap:8px;padding:14px 18px;border-bottom:1px solid var(--border)}
-.evolution-chart{padding:20px 18px}
-.evo-bars{display:flex;align-items:flex-end;gap:8px;height:140px;padding:0 4px}
-.evo-bar-col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:6px;height:100%}
-.evo-bar{width:100%;border-radius:4px 4px 0 0;background:var(--ocean);min-height:2px;position:relative}
-.evo-bar-label{font-family:var(--mono);font-size:9px;color:var(--text2)}
-.evo-bar-value{font-family:var(--mono);font-size:9px;color:var(--text2);margin-bottom:2px}
-.evo-legend{display:flex;gap:14px;padding:10px 18px 0;flex-wrap:wrap}
-.evo-legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text2)}
-.evo-legend-dot{width:8px;height:8px;border-radius:2px}
-.profile-photo-preview{width:64px;height:64px;border-radius:50%;background:var(--surface2);background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:600;font-size:20px;color:var(--ocean);flex-shrink:0;border:1px solid var(--border)}
-.form-label{display:block;font-size:11px;color:var(--text2);margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:.4px}
-.form-input,.form-select{width:100%;padding:10px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:9px;color:var(--text);font-family:var(--font);font-size:13px;outline:none}
-.form-input:focus,.form-select:focus{border-color:var(--ocean)}
-.source-picker{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
-.btn-primary{background:var(--ocean);color:#fff;border:none}
-.btn-primary:hover{background:var(--ocean-deep)}
+        /* MAIN TABLE WITH FILTERS */
+        .table-container { background: var(--surface); border-radius: 12px; border: 1px solid var(--border); overflow-x: auto; margin-bottom: 40px; }
+        .table-header-bar { padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); }
+        .table-header-bar h2 { font-size: 18px; color: var(--text-main); }
+        .btn-export { background: #E8F2EC; color: #2E6B4E; border: 1px solid #4E8A63; padding: 6px 12px; border-radius: 6px; font-weight: 600; cursor: pointer; transition: 0.2s;}
+        .btn-export:hover { background: #d0e8db; }
+        
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th { background: var(--surface2); padding: 12px 16px; font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; border-bottom: 1px solid var(--border); }
+        td { padding: 14px 16px; border-bottom: 1px solid var(--border); font-size: 13px; color: var(--text-main); }
+        tr:hover td { background-color: var(--surface2); }
+        
+        /* FILTERS ROW */
+        .filter-row th { padding: 8px 16px; background: var(--surface); border-bottom: 2px solid var(--border); }
+        .filter-input { width: 100%; padding: 6px 8px; border: 1px solid var(--border); border-radius: 4px; font-size: 11px; outline: none; }
+        .filter-input:focus { border-color: var(--primary); }
 
-.hidden{display:none!important}
-.role-badge{font-size:11px;font-weight:600;padding:4px 10px;border-radius:99px;background:var(--amber-dim,#FCF1D6);color:#8A6A0F;margin-left:8px;letter-spacing:.2px}
-#app.role-admin{border-left:4px solid var(--ocean,#2B4C7E)}
-#tab-team,#tab-admin{display:inline-flex}
-.admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.admin-card{background:var(--surface,#fff);border:1px solid var(--border,#E2E8F0);border-radius:12px;overflow:hidden}
-.admin-card-header{padding:14px 18px;border-bottom:1px solid var(--border,#E2E8F0);display:flex;align-items:center;justify-content:space-between}
-.admin-card-header h3{font-size:14px;font-weight:600;font-family:var(--display,inherit)}
-.team-row{display:flex;align-items:center;gap:10px;padding:12px 18px;border-bottom:1px solid var(--border,#EEF2F6)}
-.team-row:last-of-type{border-bottom:none}
-.team-row-name{font-size:13px;font-weight:500}
-.team-row-role{font-size:11px;color:var(--text2,#6B7C93)}
-.admin-note{padding:10px 18px;font-size:11px;color:var(--text3,#A0AAB8);font-style:italic}
-.treatment-add-row{display:flex;gap:8px;padding:14px 18px;border-bottom:1px solid var(--border,#EEF2F6)}
-.treatment-add-row .form-input{flex:1}
-.treatment-row{display:flex;align-items:center;justify-content:space-between;padding:9px 18px;font-size:13px;border-bottom:1px solid var(--border,#EEF2F6)}
-.treatment-row:last-child{border-bottom:none}
-@media (max-width:900px){.admin-grid{grid-template-columns:1fr}}
-.role-banner{background:var(--surface,#fff);border:1px solid var(--border,#E2E8F0);border-radius:14px;margin:20px 24px 0;padding:18px 24px;display:flex;align-items:center}
-.role-banner-avatars{display:flex;align-items:center;padding-right:20px;border-right:1px solid var(--border,#EEF2F6)}
-.role-banner-avatar{width:30px;height:30px;border-radius:50%;border:2px solid var(--bg,#fff);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:#fff}
-.role-banner-avatar-more{background:var(--border2,#E2E8F0)!important;color:var(--text2,#6B7C93)!important}
-.role-banner-info{flex:1;padding-left:20px}
-.role-banner-title{font-family:var(--display,inherit);font-weight:600;font-size:18px;color:var(--text,#1E2A3A)}
-.role-banner-sub{font-size:12px;color:var(--text2,#6B7C93);margin-top:2px}
-.role-banner-alert{color:#C9604F}
-.role-banner-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.role-banner-metric{padding-right:24px;border-right:1px solid var(--border,#EEF2F6)}
-.role-banner-metric-value{font-family:var(--display,inherit);font-weight:700;font-size:24px;color:var(--ocean,#2B4C7E);letter-spacing:-0.5px}
-.role-banner-metric-label{font-size:10px;color:var(--text2,#6B7C93);text-transform:uppercase;letter-spacing:.4px;margin-top:2px}
-.role-banner-link{background:none;border:none;color:var(--ocean,#2B4C7E);font-size:11px;font-weight:600;cursor:pointer;font-family:var(--font)}
-.team-row-timer{font-family:var(--mono,monospace);font-size:12px;color:var(--ocean,#2B4C7E)}
+        .tag { padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; }
+        .dur-cell { font-family: var(--mono); font-weight: 600; }
 
-/* NOUVELLES SOURCES */
-.source-opt {
-  display: flex; align-items: center; justify-content: center; gap: 6px;
-  padding: 10px 8px; border: 1px solid transparent; border-radius: 9px;
-  font-size: 12px; font-weight: 600; cursor: pointer; transition: all .15s;
-}
-.opt-inbound { background: #4D2D2D; color: #E58787; }
-.opt-inbound.selected { border-color: #E58787; background: #663939; }
-.opt-outbound { background: #4A3E1B; color: #D6A848; }
-.opt-outbound.selected { border-color: #D6A848; background: #635222; }
-.opt-chat { background: #2A3B52; color: #84A9DE; }
-.opt-chat.selected { border-color: #84A9DE; background: #354B69; }
-.opt-email { background: #EAF3FC; color: #2A61A3; }
-.opt-email.selected { border-color: #2A61A3; background: #FFFFFF; }
-.opt-ticket { background: #1E3B1E; color: #6DB36D; }
-.opt-ticket.selected { border-color: #6DB36D; background: #274D27; }
-
-/* TIME PICKER ROULETTE */
-.time-dropdown {
-  position: absolute; top: 100%; left: 0; width: 140px; height: 160px;
-  background: var(--surface); border: 1px solid var(--ocean); border-radius: 9px;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.15); z-index: 300; display: flex;
-  margin-top: 6px; overflow: hidden;
-}
-.time-col {
-  flex: 1; overflow-y: auto; scroll-snap-type: y mandatory; scrollbar-width: none;
-  position: relative;
-}
-.time-col::-webkit-scrollbar { display: none; }
-.time-sep {
-  display: flex; align-items: center; justify-content: center;
-  font-weight: 700; color: var(--text2); padding-bottom: 2px;
-}
-.time-opt {
-  height: 36px; display: flex; align-items: center; justify-content: center;
-  scroll-snap-align: center; font-size: 14px; font-family: var(--mono); color: var(--text2); cursor: pointer; transition: all .1s;
-}
-.time-opt.active { color: var(--ocean); font-weight: 700; font-size: 16px; background: var(--ocean-dim); }
-.time-spacer { height: 62px; }
-
-/* EMOJI PICKER */
-.emoji-picker {
-  position: absolute; top: 100%; left: 0; margin-top: 4px;
-  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
-  padding: 10px; display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.15); z-index: 100;
-}
-.emoji-btn {
-  background: transparent; border: none; font-size: 18px; cursor: pointer;
-  border-radius: 6px; padding: 6px; transition: background 0.15s;
-  display: flex; align-items: center; justify-content: center;
-}
-.emoji-btn:hover { background: var(--surface2); transform: scale(1.1); }
-</style>
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(76,175,80,0.4); } 70% { box-shadow: 0 0 0 8px rgba(76,175,80,0); } 100% { box-shadow: 0 0 0 0 rgba(76,175,80,0); } }
+    </style>
 </head>
 <body>
 
-<div id="login-screen">
-  <div class="login-card">
-    <div class="login-logo">OnSpot</div>
-    <div class="login-title">Time Tracker</div>
-    <div class="login-sub">Connecte-toi avec ton email et ton mot de passe</div>
-    <div class="form-row">
-      <label class="form-label">Email</label>
-      <input class="form-input" type="email" id="login-email" placeholder="prenom@onspot.travel" autocomplete="username">
-    </div>
-    <div class="form-row">
-      <label class="form-label">Mot de passe</label>
-      <input class="form-input" type="password" id="login-password" placeholder="••••••••" autocomplete="current-password">
-    </div>
-    <div class="login-error" id="login-error"></div>
-    <button class="login-btn" onclick="doLogin()">Se connecter</button>
-  </div>
-</div>
-
-<div id="app">
-  <div class="topbar">
-    <div class="topbar-logo">OnSpot</div>
-    <div class="topbar-sep">/</div>
-    <div class="topbar-title">Time Tracker</div>
-    <span class="role-badge hidden" id="role-badge"></span>
-    <div class="topbar-right">
-      <button class="theme-toggle-btn" id="theme-toggle" onclick="toggleTheme()" title="Changer de thème">☾</button>
-      <div class="user-pill" onclick="openProfileModal()" style="cursor:pointer"><div class="mini-avatar" id="topbar-avatar"></div><span id="topbar-name"></span></div>
-      <button class="btn btn-ghost" onclick="logout()">Déconnexion</button>
-    </div>
-  </div>
-
-  <div class="timer-banner agent-only" id="timer-banner">
-    <div class="timer-clock idle" id="timer-clock">00:00:00</div>
-    <div class="timer-info">
-      <div class="timer-label">Tâche en cours</div>
-      <div class="timer-task placeholder" id="timer-task">Aucun timer actif — démarre une tâche ci-dessous</div>
-    </div>
-    <div class="timer-controls">
-      <button class="timer-btn timer-btn-play" id="play-btn" onclick="openModal()" title="Démarrer">▶</button>
-      <button class="timer-btn timer-btn-stop hidden" id="stop-btn" onclick="stopTimer()" title="Arrêter">■</button>
-    </div>
-  </div>
-
-  <div class="role-banner supervisor-banner hidden" id="supervisor-banner">
-    <div class="role-banner-avatars" id="sup-banner-avatars"></div>
-    <div class="role-banner-info">
-      <div class="role-banner-title" id="sup-banner-title">— sur — agents actifs</div>
-      <div class="role-banner-sub" id="sup-banner-sub"></div>
-    </div>
-    <div class="role-banner-dot" id="sup-banner-dot"></div>
-  </div>
-
-  <div class="role-banner admin-banner hidden" id="admin-banner">
-    <div class="role-banner-metric">
-      <div class="role-banner-metric-value" id="adm-banner-total">0h</div>
-      <div class="role-banner-metric-label">Cette semaine</div>
-    </div>
-    <div class="role-banner-info">
-      <div class="role-banner-title" id="adm-banner-title" style="font-family:var(--font);font-size:13px;font-weight:400;color:var(--text)"></div>
-      <div class="role-banner-sub role-banner-alert" id="adm-banner-sub"></div>
-    </div>
-    <button class="role-banner-link" onclick="switchTab('admin', document.getElementById('tab-admin'))">Détails →</button>
-  </div>
-
-  <div class="quickstart agent-only">
-    <button class="qs-btn" onclick="quickStart('inbound')"><span class="qs-dot" style="background:#E58787"></span>Appel entrant</button>
-    <button class="qs-btn" onclick="quickStart('chat')"><span class="qs-dot" style="background:#84A9DE"></span>Crisp Chat</button>
-    <button class="qs-btn" onclick="quickStart('ticket')"><span class="qs-dot" style="background:#6DB36D"></span>Tâche manuelle</button>
-    <button class="qs-btn" onclick="syncRingover()"><span class="qs-dot" style="background:var(--ocean)"></span>Sync RingOver (auto)</button>
-  </div>
-
-  <div class="stats-grid agent-only" id="stats-grid-agent">
-    <div class="stat-card">
-      <div class="stat-label">Temps total aujourd'hui</div>
-      <div class="stat-value" id="s-total">0h00</div>
-      <div class="stat-sub">toutes sources</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">Appels (RO)</div>
-      <div class="stat-value" id="s-ringover" style="color:var(--ocean)">0h00</div>
-      <div class="stat-sub" id="s-ringover-count">0 appels</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">Crisp</div>
-      <div class="stat-value" id="s-crisp" style="color:var(--clay)">0h00</div>
-      <div class="stat-sub" id="s-crisp-count">0 tickets</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">Manuel / Ticket</div>
-      <div class="stat-value" id="s-manual" style="color:var(--text2)">0h00</div>
-      <div class="stat-sub" id="s-manual-count">0 tâches</div>
-    </div>
-  </div>
-
-  <div class="stats-grid hidden" id="stats-grid-supervisor" style="grid-template-columns:repeat(3,1fr)">
-    <div class="stat-card">
-      <div class="stat-label">Actifs maintenant</div>
-      <div class="stat-value" id="sup-s-active" style="color:var(--ocean)">0</div>
-      <div class="stat-sub" id="sup-s-active-sub">sur 0 agents</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">Cumulé aujourd'hui</div>
-      <div class="stat-value" id="sup-s-total" style="color:var(--ocean)">0h00</div>
-      <div class="stat-sub">toute l'équipe</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">Inactifs +30min</div>
-      <div class="stat-value" id="sup-s-idle" style="color:var(--red)">0</div>
-      <div class="stat-sub">à vérifier</div>
-    </div>
-  </div>
-
-  <div class="stats-grid hidden" id="stats-grid-admin-home" style="grid-template-columns:repeat(3,1fr)">
-    <div class="stat-card">
-      <div class="stat-label">Total semaine</div>
-      <div class="stat-value" id="adm-home-total" style="color:var(--ocean)">0h00</div>
-      <div class="stat-sub">toute l'équipe</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">Entrées enregistrées</div>
-      <div class="stat-value" id="adm-home-entries" style="color:var(--ocean)">0</div>
-      <div class="stat-sub">au total</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">Agents actifs (jour)</div>
-      <div class="stat-value" id="adm-home-active" style="color:var(--ocean)">0</div>
-      <div class="stat-sub">sur 5</div>
-    </div>
-  </div>
-
-  <div class="tabs">
-    <button class="tab agent-only active" onclick="switchTab('today',this)">Aujourd'hui</button>
-    <button class="tab hidden" id="tab-home" onclick="switchTab('home',this)">Vue d'ensemble</button>
-    <button class="tab hidden" id="tab-week-role" onclick="switchTab('week',this)">Cette semaine</button>
-    <button class="tab" id="tab-team" onclick="switchTab('team',this)">Équipe</button>
-    <button class="tab" id="tab-admin" onclick="switchTab('admin',this)">Administration</button>
-  </div>
-
-  <div class="content">
-    <div class="toolbar">
-      <select class="filter-select" id="filter-source" onchange="renderAll()">
-        <option value="">Toutes sources</option>
-        <option value="inbound">Appel entrant</option>
-        <option value="outbound">Appel sortant</option>
-        <option value="chat">Crisp Chat</option>
-        <option value="email">Crisp Email</option>
-        <option value="ticket">Ticket / Manuel</option>
-      </select>
-      <select class="filter-select" id="filter-agent" onchange="renderAll()">
-        <option value="">Tous les agents</option>
-      </select>
-      <select class="filter-select" id="filter-treatment" onchange="renderAll()">
-        <option value="">Tous traitements</option>
-      </select>
-      <input class="search-input" id="search-input" placeholder="Rechercher..." oninput="onSearchInput()">
-      <span class="count-badge" id="entry-count">0 entrées</span>
-    </div>
-
-    <div class="entries-table">
-      <table>
-        <thead>
-          <tr>
-            <th>Heure</th>
-            <th>Source</th>
-            <th>Description</th>
-            <th>Agent</th>
-            <th>Durée</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody id="entries-body"></tbody>
-      </table>
-    </div>
-
-    <div id="team-live-panel" class="hidden">
-      <div class="admin-card" style="margin-bottom:16px">
-        <div class="admin-card-header">
-          <h3>DMT par source</h3>
-          <span class="count-badge">Durée moyenne de traitement cible</span>
+    <div id="login-view">
+        <div class="login-box">
+            <img src="image_1a1b24.jpg" alt="Task'in Logo" class="login-logo">
+            <h1>Task'in</h1>
+            <input type="email" id="auth-email" class="form-control" placeholder="Email professionnel">
+            <input type="password" id="auth-pwd" class="form-control" placeholder="Mot de passe">
+            <div id="auth-error" style="color:var(--danger); font-size:12px; margin-bottom:12px;"></div>
+            <button class="btn-main" onclick="app.login()">Connexion</button>
         </div>
-        <div class="dmt-row">
-          <span class="dmt-label">Appels (Inbound/Outbound)</span>
-          <input class="form-input dmt-input" id="dmt-ringover" type="number" min="0">
-          <span class="dmt-unit">secondes</span>
-        </div>
-        <div class="dmt-row">
-          <span class="dmt-label">Crisp (Chat/Email)</span>
-          <input class="form-input dmt-input" id="dmt-crisp" type="number" min="0">
-          <span class="dmt-unit">secondes</span>
-        </div>
-        <div class="dmt-row">
-          <span class="dmt-label">Ticket OS / Manuel</span>
-          <input class="form-input dmt-input" id="dmt-manual" type="number" min="0">
-          <span class="dmt-unit">secondes</span>
-        </div>
-        <div style="padding:12px 18px"><button class="btn btn-primary" onclick="saveDMT()">Enregistrer les DMT</button></div>
-      </div>
-
-      <div class="admin-card" style="margin-bottom:16px">
-        <div class="admin-card-header">
-          <h3>Équipe en direct</h3>
-          <span class="count-badge" id="team-live-count"></span>
-        </div>
-        <div id="team-live-list"></div>
-      </div>
-
-      <div class="admin-card">
-        <div class="admin-card-header"><h3>Extraction des données</h3></div>
-        <div style="padding:14px 18px;display:flex;gap:8px">
-          <button class="btn btn-ghost" onclick="exportCSV()">↓ Export CSV</button>
-          <button class="btn btn-ghost" onclick="exportExcel()">↓ Export Excel</button>
-        </div>
-      </div>
     </div>
 
-    <div id="admin-panel" class="hidden">
-      <div class="admin-grid">
-        <div class="admin-card">
-          <div class="admin-card-header">
-            <h3>Comptes équipe</h3>
-            <span class="count-badge" id="team-count">0 comptes</span>
-          </div>
-          <button class="btn btn-primary" style="width:100%;margin-bottom:12px" onclick="openCreateAccountModal()">+ Ajouter un compte</button>
-          <div id="team-list"></div>
-        </div>
-        <div class="admin-card">
-          <div class="admin-card-header">
-            <h3>Types de traitement</h3>
-            <span class="count-badge" id="treatment-count">0 types</span>
-          </div>
-          
-          <div class="treatment-add-row" style="position:relative; align-items:center;">
-            <button class="btn btn-ghost" onclick="toggleEmojiPicker(event)" title="Ajouter un emoji" style="padding: 8px 10px; font-size: 16px;">😀</button>
-            <input class="form-input" id="new-treatment-input" placeholder="Nouveau type (ex: ✈️ Vols)..." onkeydown="if(event.key==='Enter') addTreatmentType()">
-            <button class="btn btn-primary" onclick="addTreatmentType()">Ajouter</button>
-            <div class="emoji-picker hidden" id="emoji-picker" onclick="event.stopPropagation()"></div>
-          </div>
-          
-          <div id="treatment-list"></div>
-        </div>
-      </div>
-      <div class="admin-card" style="margin-top:16px">
-        <div class="admin-card-header">
-          <h3>Statistiques globales</h3>
-        </div>
-        <div class="stats-grid" style="margin:0;padding:16px">
-          <div class="stat-card">
-            <div class="stat-label">Total équipe (semaine)</div>
-            <div class="stat-value" id="admin-s-total">0h00</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">Entrées enregistrées</div>
-            <div class="stat-value" id="admin-s-count">0</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">Agents actifs</div>
-            <div class="stat-value" id="admin-s-active">0</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">Export</div>
-            <button class="btn btn-ghost" onclick="exportCSV()" style="margin-top:4px">↓ CSV</button>
-            <button class="btn btn-ghost" onclick="exportExcel()" style="margin-top:4px">↓ Excel</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="admin-card" style="margin-top:16px">
-        <div class="admin-card-header">
-          <h3>Courbe d'évolution</h3>
-        </div>
-        <div class="chart-toolbar">
-          <select class="filter-select" id="chart-scope" onchange="renderEvolutionChart()">
-            <option value="team">Équipe entière</option>
-          </select>
-          <select class="filter-select" id="chart-period" onchange="renderEvolutionChart()">
-            <option value="week">Cette semaine</option>
-            <option value="month">Ce mois</option>
-          </select>
-        </div>
-        <div id="evolution-chart" class="evolution-chart"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="modal-overlay hidden" id="account-modal-overlay" onclick="closeAccountModalOutside(event)">
-  <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title" id="account-modal-title">Modifier le compte</div>
-      <button class="modal-close" onclick="closeAccountEditModal()">×</button>
-    </div>
-    <div class="modal-body">
-      <div class="profile-photo-row">
-        <div class="profile-photo-preview" id="account-photo-preview"></div>
-        <div>
-          <input type="file" id="account-photo-input" accept="image/*" class="hidden" onchange="onAccountPhotoSelected(event)">
-          <button class="btn btn-ghost" onclick="document.getElementById('account-photo-input').click()">Changer la photo</button>
-          <button class="btn btn-ghost" onclick="removeAccountPhoto()" style="margin-left:6px">Retirer</button>
-        </div>
-      </div>
-      <div class="form-row">
-        <label class="form-label">Nom affiché</label>
-        <input class="form-input" id="account-name-input">
-      </div>
-      <div class="form-row">
-        <label class="form-label">Rôle</label>
-        <select class="form-select" id="account-role-input">
-          <option value="agent">Agent</option>
-          <option value="supervisor">Superviseur</option>
-          <option value="admin">Admin</option>
-        </select>
-      </div>
-      <div class="form-row" id="account-error" style="color:var(--red);font-size:12px;min-height:16px"></div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="closeAccountEditModal()">Annuler</button>
-      <button class="btn btn-primary" onclick="saveAccountEdit()">Enregistrer</button>
-    </div>
-  </div>
-</div>
-
-<div class="modal-overlay hidden" id="create-account-overlay" onclick="closeCreateAccountModalOutside(event)">
-  <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title">Ajouter un compte</div>
-      <button class="modal-close" onclick="closeCreateAccountModal()">×</button>
-    </div>
-    <div class="modal-body" id="create-account-form">
-      <div class="form-row">
-        <label class="form-label">Nom affiché</label>
-        <input class="form-input" id="new-account-name" placeholder="Ex: Miora">
-      </div>
-      <div class="form-row">
-        <label class="form-label">Email</label>
-        <input class="form-input" type="email" id="new-account-email" placeholder="prenom@onspot.travel">
-      </div>
-      <div class="form-row" id="create-account-error" style="color:var(--red);font-size:12px;min-height:16px"></div>
-    </div>
-    <div class="modal-body hidden" id="create-account-result">
-      <div class="form-row" style="text-align:center">
-        <div style="font-size:13px;color:var(--text2);margin-bottom:10px">Compte créé. Transmets ces identifiants à la personne :</div>
-        <div style="background:var(--surface2);border-radius:10px;padding:14px;text-align:left">
-          <div style="font-size:11px;color:var(--text2);margin-bottom:2px">Email</div>
-          <div style="font-family:var(--mono);font-size:13px;margin-bottom:10px" id="result-email"></div>
-          <div style="font-size:11px;color:var(--text2);margin-bottom:2px">Mot de passe temporaire</div>
-          <div style="font-family:var(--mono);font-size:15px;font-weight:600;color:var(--ocean)" id="result-password"></div>
-        </div>
-        <button class="btn btn-ghost" style="margin-top:10px" onclick="copyCreatedCredentials()">Copier email + mot de passe</button>
-      </div>
-    </div>
-    <div class="modal-footer" id="create-account-footer">
-      <button class="btn btn-ghost" onclick="closeCreateAccountModal()">Annuler</button>
-      <button class="btn btn-primary" id="create-account-submit" onclick="submitCreateAccount()">Créer le compte</button>
-    </div>
-  </div>
-</div>
-
-<div class="modal-overlay hidden" id="profile-modal-overlay" onclick="closeProfileModalOutside(event)">
-  <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title">Mon profil</div>
-      <button class="modal-close" onclick="closeProfileModal()">×</button>
-    </div>
-    <div class="modal-body">
-      <div class="profile-photo-row">
-        <div class="profile-photo-preview" id="profile-photo-preview"></div>
-        <div>
-          <input type="file" id="profile-photo-input" accept="image/*" class="hidden" onchange="onProfilePhotoSelected(event)">
-          <button class="btn btn-ghost" onclick="document.getElementById('profile-photo-input').click()">Changer la photo</button>
-          <button class="btn btn-ghost" id="profile-photo-remove" onclick="removeProfilePhoto()" style="margin-left:6px">Retirer</button>
-        </div>
-      </div>
-      <div class="form-row">
-        <label class="form-label">Nom affiché</label>
-        <input class="form-input" id="profile-name-input">
-      </div>
-      <div class="form-row">
-        <label class="form-label">Nouveau mot de passe</label>
-        <input class="form-input" type="password" id="profile-password-input" placeholder="Laisser vide pour ne pas changer">
-      </div>
-      <div class="form-row" id="profile-error" style="color:var(--red);font-size:12px;min-height:16px"></div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="closeProfileModal()">Annuler</button>
-      <button class="btn btn-primary" onclick="saveProfile()">Enregistrer</button>
-    </div>
-  </div>
-</div>
-
-<div class="modal-overlay hidden" id="modal-overlay" onclick="closeModalOutside(event)">
-  <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title">Démarrer un timer</div>
-      <button class="modal-close" onclick="closeModal()">×</button>
-    </div>
-    <div class="modal-body">
-      <div class="form-row">
-        <label class="form-label">Source</label>
-        <div class="source-picker">
-          <div class="source-opt opt-inbound selected" id="src-inbound" onclick="selectSource('inbound')">
-            <span>📞↘</span> Appel entrant
-          </div>
-          <div class="source-opt opt-outbound" id="src-outbound" onclick="selectSource('outbound')">
-            <span>📞↗</span> Appel sortant
-          </div>
-          <div class="source-opt opt-chat" id="src-chat" onclick="selectSource('chat')">
-            <span>💬</span> Crisp (chat)
-          </div>
-          <div class="source-opt opt-email" id="src-email" onclick="selectSource('email')">
-            <span>✉️</span> Crisp (email)
-          </div>
-          <div class="source-opt opt-ticket" id="src-ticket" onclick="selectSource('ticket')">
-            <span>🎫</span> Traitement ticket
-          </div>
-        </div>
-      </div>
-      
-      <div class="form-row" id="time-picker-container" style="position:relative;">
-        <label class="form-label">Inbound time (Heure de début)</label>
-        <input class="form-input" id="inbound-time-input" readonly onclick="toggleTimePicker(event)" style="cursor:pointer; font-family:var(--mono);" placeholder="--:--">
+    <div id="app-view" class="hidden">
         
-        <div class="time-dropdown hidden" id="time-dropdown" onclick="event.stopPropagation()">
-          <div class="time-col" id="col-hours" onscroll="handleTimeScroll(this, 'h')"></div>
-          <div class="time-sep">:</div>
-          <div class="time-col" id="col-mins" onscroll="handleTimeScroll(this, 'm')"></div>
+        <nav class="navbar">
+            <div class="nav-brand">
+                <img src="image_1a1b24.jpg" alt="Task'in">
+                Task'in
+            </div>
+            <div class="nav-actions">
+                <button class="btn-refresh" onclick="app.refreshData()">↻ Actualiser</button>
+                <div class="user-badge">
+                    <div class="avatar" id="nav-avatar">??</div>
+                    <span id="nav-name">Chargement...</span>
+                </div>
+                <button class="btn-logout" onclick="app.logout()">Déconnexion</button>
+            </div>
+        </nav>
+
+        <div class="dashboard-container">
+            
+            <div class="quick-start-bar">
+                <button class="qs-btn" onclick="app.quickStart('inbound', 'Appel entrant')"><span class="qs-icon">📞↘</span> Appel entrant</button>
+                <button class="qs-btn" onclick="app.quickStart('outbound', 'Appel sortant')"><span class="qs-icon">📞↗</span> Appel sortant</button>
+                <button class="qs-btn" onclick="app.quickStart('chat', 'Crisp Chat')"><span class="qs-icon">💬</span> Crisp Chat</button>
+                <button class="qs-btn" onclick="app.quickStart('email', 'Crisp Email')"><span class="qs-icon">✉️</span> Crisp Email</button>
+                <button class="qs-btn" onclick="app.quickStart('ticket', 'Ticket / Manuel')"><span class="qs-icon">🎫</span> Ticket / Manuel</button>
+                <button class="qs-btn" onclick="app.quickStart('ringover', 'Sync RingOver')" style="margin-left:auto; background:var(--primary-light); border-color:var(--primary); color:var(--primary);"><span class="qs-icon">🔄</span> Sync RingOver</button>
+            </div>
+
+            <div id="live-dashboard" class="live-header hidden">
+                <div class="live-title"><div class="live-pulse"></div> Équipe en direct</div>
+                <div class="live-grid" id="live-agents-grid">
+                    <div style="opacity:0.6; font-size:13px;">Chargement des statuts...</div>
+                </div>
+            </div>
+
+            <div class="kpi-section">
+                <div class="kpi-title">Mes Performances (Aujourd'hui)</div>
+                <div class="kpi-grid">
+                    <div class="kpi-card"><span class="kpi-label">Durée Totale</span><span class="kpi-value" id="kpi-my-total">0h00</span></div>
+                    <div class="kpi-card"><span class="kpi-label">DMT (Moyenne)</span><span class="kpi-value" id="kpi-my-dmt">0min</span></div>
+                    <div class="kpi-card"><span class="kpi-label">First Reply Time</span><span class="kpi-value" id="kpi-my-frt">0min</span></div>
+                    <div class="kpi-card"><span class="kpi-label">Tâches traitées</span><span class="kpi-value" id="kpi-my-count">0</span></div>
+                </div>
+            </div>
+
+            <details id="team-accordion" class="team-accordion hidden">
+                <summary class="team-summary">Visibilité Équipe & KPIs Globaux</summary>
+                <div class="team-content">
+                    <div class="kpi-grid">
+                        <div class="kpi-card" style="background:var(--primary-light); border-color:var(--primary);"><span class="kpi-label" style="color:var(--primary)">Total Équipe</span><span class="kpi-value" id="kpi-team-total">0h00</span></div>
+                        <div class="kpi-card"><span class="kpi-label">DMT Global</span><span class="kpi-value" id="kpi-team-dmt">0min</span></div>
+                        <div class="kpi-card"><span class="kpi-label">FRT Global</span><span class="kpi-value" id="kpi-team-frt">0min</span></div>
+                        <div class="kpi-card"><span class="kpi-label">Total Tâches</span><span class="kpi-value" id="kpi-team-count">0</span></div>
+                    </div>
+                </div>
+            </details>
+
+            <div class="table-container">
+                <div class="table-header-bar">
+                    <h2>Historique des entrées</h2>
+                    <button class="btn-export hidden" id="btn-export" onclick="app.exportCSV()">↓ Exporter CSV</button>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th width="10%">Inbound Time</th>
+                            <th width="10%">Start Time</th>
+                            <th width="15%">Source</th>
+                            <th width="30%">Description / Traitement</th>
+                            <th width="15%">Agent</th>
+                            <th width="10%">Durée</th>
+                            <th width="10%" class="col-actions hidden">Actions</th>
+                        </tr>
+                        <tr class="filter-row hidden" id="table-filters">
+                            <th><input type="text" class="filter-input" data-col="inbound" placeholder="Filtrer..." onkeyup="app.filterTable()"></th>
+                            <th><input type="text" class="filter-input" data-col="start" placeholder="Filtrer..." onkeyup="app.filterTable()"></th>
+                            <th><input type="text" class="filter-input" data-col="source" placeholder="Filtrer..." onkeyup="app.filterTable()"></th>
+                            <th><input type="text" class="filter-input" data-col="desc" placeholder="Filtrer..." onkeyup="app.filterTable()"></th>
+                            <th><input type="text" class="filter-input" data-col="agent" placeholder="Filtrer..." onkeyup="app.filterTable()"></th>
+                            <th><input type="text" class="filter-input" data-col="dur" placeholder="Filtrer..." onkeyup="app.filterTable()"></th>
+                            <th class="col-actions hidden"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body">
+                        <tr><td colspan="7" style="text-align:center; padding:20px; color:var(--text-muted);">Chargement des données...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
         </div>
-      </div>
-      
-      <div class="form-row">
-        <label class="form-label">Description / Ticket</label>
-        <input class="form-input" id="f-desc" placeholder="Ex: Ticket #68554 ou description de la tâche">
-      </div>
     </div>
-    <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="closeModal()">Annuler</button>
-      <button class="btn btn-primary" onclick="startTimer()">Démarrer le timer</button>
-    </div>
-  </div>
-</div>
 
-<script>
-const FIREBASE_PROJECT_ID = "trackingcallro";
-const FIREBASE_API_KEY = "AIzaSyD1Weyc2zdtdaO7JgrMRskXZaDOGTIbyqc";
-const BASE_URL = `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/databases/(default)/documents`;
-const AUTH_BASE = `https://identitytoolkit.googleapis.com/v1`;
+    <script>
+        const FIREBASE_PROJECT_ID = "trackingcallro";
+        const FIREBASE_API_KEY = "AIzaSyD1Weyc2zdtdaO7JgrMRskXZaDOGTIbyqc";
+        const BASE_URL = `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/databases/(default)/documents`;
+        const AUTH_BASE = `https://identitytoolkit.googleapis.com/v1`;
 
-let TEAM = [];
-const SOURCE_DMT_DEFAULT = { ringover: 300, crisp: 480, manual: 600 };
-let sourceDMT = {...SOURCE_DMT_DEFAULT};
-const TREATMENT_TYPES_DEFAULT = [
-  'Confirmation','Reservations','Conseils/suggestions','Follow-up','Lost and found','Car rental',
-  'Additionnels services','Train','Health','Activities','Transferts','DMC','Itinerary',
-  'Accommodation','Luggage','Flights','Welcome call','Goodbye call'
-];
+        const app = {
+            user: null,
+            entries: [],
+            liveInterval: null,
 
-let currentUser = null;
-let entries = [];
-let activeTimer = null; 
-let timerInterval = null;
-let selectedSource = 'inbound';
-let currentView = 'today';
-let searchTimeout = null;
+            // INIT & AUTHENTIFICATION
+            init: async function() {
+                const uid = localStorage.getItem('taskin_uid');
+                if (uid) {
+                    await this.loadUserProfile(uid);
+                } else {
+                    document.getElementById('login-view').classList.remove('hidden');
+                }
+            },
 
-async function doLogin() {
-  const email = document.getElementById('login-email').value.trim();
-  const password = document.getElementById('login-password').value;
-  const err = document.getElementById('login-error');
-  err.textContent = '';
-  if (!email || !password) { err.textContent = 'Entre ton email et ton mot de passe.'; return; }
+            login: async function() {
+                const email = document.getElementById('auth-email').value.trim();
+                const pwd = document.getElementById('auth-pwd').value;
+                const err = document.getElementById('auth-error');
+                err.textContent = "Connexion en cours...";
+                
+                try {
+                    const res = await fetch(`${AUTH_BASE}/accounts:signInWithPassword?key=${FIREBASE_API_KEY}`, {
+                        method: 'POST', headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email, password: pwd, returnSecureToken: true })
+                    });
+                    const data = await res.json();
+                    if (data.error) { err.textContent = 'Identifiants incorrects.'; return; }
+                    
+                    localStorage.setItem('taskin_idToken', data.idToken);
+                    localStorage.setItem('taskin_uid', data.localId);
+                    await this.loadUserProfile(data.localId);
+                } catch(e) { err.textContent = 'Erreur réseau.'; }
+            },
 
-  try {
-    const res = await fetch(`${AUTH_BASE}/accounts:signInWithPassword?key=${FIREBASE_API_KEY}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password, returnSecureToken: true })
-    });
-    const data = await res.json();
-    if (data.error) { err.textContent = 'Email ou mot de passe incorrect.'; return; }
-    localStorage.setItem('onspot_idToken', data.idToken);
-    localStorage.setItem('onspot_uid', data.localId);
-    const user = await fetchAccountProfile(data.localId);
-    if (!user) { err.textContent = "Ce compte n'a pas encore de profil. Contacte un admin."; return; }
-    enterApp(user);
-  } catch(e) { err.textContent = 'Erreur de connexion. Réessaie.'; console.error(e); }
-}
+            logout: function() {
+                localStorage.removeItem('taskin_idToken');
+                localStorage.removeItem('taskin_uid');
+                window.location.reload();
+            },
 
-async function fetchAccountProfile(uid) {
-  try {
-    const res = await fetch(`${BASE_URL}/accounts/${uid}?key=${FIREBASE_API_KEY}`);
-    if (!res.ok) return null;
-    const doc = await res.json();
-    if (!doc.fields) return null;
-    const f = doc.fields;
-    return {
-      id: uid, name: f.name?.stringValue || 'Sans nom', email: f.email?.stringValue || '',
-      color: f.color?.stringValue || '#2B4C7E', initials: f.initials?.stringValue || '??',
-      role: f.role?.stringValue || 'agent', photo: f.photo?.stringValue || '',
-    };
-  } catch(e) { console.error('Erreur profil compte:', e); return null; }
-}
+            loadUserProfile: async function(uid) {
+                this.user = { id: uid, name: 'Agent Taskin', initials: 'AT', role: 'agent' };
+                
+                try {
+                    const res = await fetch(`${BASE_URL}/accounts/${uid}?key=${FIREBASE_API_KEY}`);
+                    if (res.ok) {
+                        const doc = await res.json();
+                        if (doc.fields) {
+                            this.user.name = doc.fields.name?.stringValue || 'Utilisateur';
+                            this.user.initials = doc.fields.initials?.stringValue || '??';
+                            this.user.role = doc.fields.role?.stringValue || 'agent';
+                        }
+                    }
+                } catch(e) {}
 
-function enterApp(user) {
-  currentUser = user;
-  document.getElementById('login-screen').style.display = 'none';
-  document.getElementById('app').style.display = 'block';
-  applyUserTheme(); renderTopbarIdentity(); populateFilters(); applyRoleUI(); checkActiveTimer(); loadEntries();
-}
+                this.applyRolePermissions();
+                this.refreshData();
+            },
 
-function renderTopbarIdentity() {
-  const av = document.getElementById('topbar-avatar');
-  if (currentUser.photo) {
-    av.style.backgroundImage = `url(${currentUser.photo})`; av.style.backgroundSize = 'cover';
-    av.style.backgroundPosition = 'center'; av.textContent = '';
-  } else {
-    av.style.backgroundImage = ''; av.textContent = currentUser.initials;
-    av.style.background = currentUser.color+'20'; av.style.color = currentUser.color;
-  }
-  document.getElementById('topbar-name').textContent = currentUser.name;
-}
+            applyRolePermissions: function() {
+                document.getElementById('login-view').classList.add('hidden');
+                document.getElementById('app-view').classList.remove('hidden');
+                document.getElementById('nav-name').textContent = this.user.name;
+                document.getElementById('nav-avatar').textContent = this.user.initials;
 
-function applyUserTheme() {
-  const saved = localStorage.getItem('onspot_theme_' + currentUser.id) || 'light';
-  document.documentElement.setAttribute('data-theme', saved);
-  updateThemeToggleIcon(saved);
-}
+                const isSupOrAdmin = ['superviseur', 'admin'].includes(this.user.role);
 
-function toggleTheme() {
-  if (!currentUser) return;
-  const current = document.documentElement.getAttribute('data-theme') || 'light';
-  const next = current === 'light' ? 'dark' : 'light';
-  document.documentElement.setAttribute('data-theme', next);
-  localStorage.setItem('onspot_theme_' + currentUser.id, next);
-  updateThemeToggleIcon(next);
-}
+                if (isSupOrAdmin) {
+                    document.getElementById('live-dashboard').classList.remove('hidden');
+                    document.getElementById('team-accordion').classList.remove('hidden');
+                    document.getElementById('table-filters').classList.remove('hidden');
+                    document.getElementById('btn-export').classList.remove('hidden');
+                    
+                    if (this.user.role === 'admin') {
+                        document.querySelectorAll('.col-actions').forEach(el => el.classList.remove('hidden'));
+                    }
+                    
+                    this.fetchLiveAgents();
+                    this.liveInterval = setInterval(() => this.fetchLiveAgents(), 15000);
+                }
+            },
 
-function updateThemeToggleIcon(theme) {
-  const btn = document.getElementById('theme-toggle');
-  if (btn) btn.textContent = theme === 'dark' ? '☀' : '☾';
-}
+            // DONNEES ET ACTUALISATION (ANTI-BUG)
+            refreshData: async function() {
+                const btn = document.querySelector('.btn-refresh');
+                btn.innerHTML = "Actualisation..."; btn.disabled = true;
+                
+                try {
+                    const res = await fetch(`${BASE_URL}/time_entries?key=${FIREBASE_API_KEY}&pageSize=1000`);
+                    const data = await res.json();
+                    const docs = data.documents || [];
+                    
+                    const todayStr = new Date().toDateString();
+                    
+                    this.entries = docs.map(doc => {
+                        const f = doc.fields || {};
+                        return {
+                            id: doc.name.split('/').pop(),
+                            source: f.source?.stringValue || 'Inconnu',
+                            desc: f.desc?.stringValue || '',
+                            agent: f.agent?.stringValue || 'Inconnu',
+                            inboundTime: f.inboundTime?.stringValue || '--:--',
+                            startTimeStr: f.startTime?.stringValue || new Date().toISOString(),
+                            durationSec: parseInt(f.durationSec?.integerValue || 0)
+                        };
+                    }).filter(e => new Date(e.startTimeStr).toDateString() === todayStr)
+                      .sort((a,b) => new Date(b.startTimeStr) - new Date(a.startTimeStr));
 
-async function tryRestoreSession() {
-  const idToken = localStorage.getItem('onspot_idToken');
-  const uid = localStorage.getItem('onspot_uid');
-  if (!idToken || !uid) return false;
-  const user = await fetchAccountProfile(uid);
-  if (!user) { localStorage.removeItem('onspot_idToken'); localStorage.removeItem('onspot_uid'); return false; }
-  enterApp(user);
-  return true;
-}
+                    this.calculateKPIs();
+                    this.renderTable(this.entries);
+                    if (['superviseur', 'admin'].includes(this.user.role)) this.fetchLiveAgents();
 
-function applyRoleUI() {
-  const role = currentUser.role;
-  const badge = document.getElementById('role-badge');
-  const app = document.getElementById('app');
-  app.classList.remove('role-agent','role-supervisor','role-admin');
-  app.classList.add('role-' + role);
+                } catch(e) { console.error("Erreur de chargement", e); }
+                
+                btn.innerHTML = "↻ Actualiser"; btn.disabled = false;
+            },
 
-  if (role === 'agent') badge.textContent = 'Agent';
-  if (role === 'supervisor') badge.textContent = 'Superviseur · Vue élargie';
-  if (role === 'admin') badge.textContent = 'Admin · Contrôle total';
-  badge.classList.toggle('hidden', role === 'agent');
+            // CALCUL DES KPIs (FRT, DMT, DUREE)
+            calculateKPIs: function() {
+                const myEntries = this.entries.filter(e => e.agent === this.user.id);
+                const teamEntries = this.entries;
 
-  document.getElementById('tab-team').classList.toggle('hidden', role === 'agent');
-  document.getElementById('tab-admin').classList.toggle('hidden', role !== 'admin');
-  document.getElementById('tab-home').classList.toggle('hidden', role === 'agent');
-  document.getElementById('tab-week-role').classList.toggle('hidden', role === 'agent');
-  document.querySelector('.tab.agent-only').classList.toggle('hidden', role !== 'agent');
+                const calcSet = (entries) => {
+                    if (entries.length === 0) return { total: '0h00', dmt: '0min', frt: '0min', count: 0 };
+                    
+                    let totalSec = 0; let validFrtSec = 0; let frtCount = 0;
 
-  document.getElementById('timer-banner').classList.toggle('hidden', role !== 'agent');
-  document.getElementById('supervisor-banner').classList.toggle('hidden', role !== 'supervisor');
-  document.getElementById('admin-banner').classList.toggle('hidden', role !== 'admin');
-  document.querySelector('.quickstart').classList.toggle('hidden', role !== 'agent');
+                    entries.forEach(e => {
+                        totalSec += e.durationSec;
+                        // Calcul FRT (Start Time - Inbound Time)
+                        if (e.inboundTime && e.inboundTime !== '--:--') {
+                            const [inH, inM] = e.inboundTime.split(':').map(Number);
+                            if(!isNaN(inH) && !isNaN(inM)) {
+                                const startDt = new Date(e.startTimeStr);
+                                const inDt = new Date(startDt);
+                                inDt.setHours(inH, inM, 0, 0);
+                                
+                                let diff = Math.floor((startDt - inDt)/1000);
+                                if (diff >= 0 && diff < 86400) { 
+                                    validFrtSec += diff;
+                                    frtCount++;
+                                }
+                            }
+                        }
+                    });
 
-  document.getElementById('stats-grid-agent').classList.toggle('hidden', role !== 'agent');
-  document.getElementById('stats-grid-supervisor').classList.toggle('hidden', role !== 'supervisor');
-  document.getElementById('stats-grid-admin-home').classList.toggle('hidden', role !== 'admin');
+                    const dmtSec = Math.floor(totalSec / entries.length);
+                    const frtSec = frtCount > 0 ? Math.floor(validFrtSec / frtCount) : 0;
 
-  const agentFilter = document.getElementById('filter-agent');
-  if (role === 'agent') {
-    agentFilter.value = currentUser.id;
-    agentFilter.disabled = true;
-  } else {
-    agentFilter.disabled = false;
-  }
+                    return {
+                        total: this.formatSecToHM(totalSec),
+                        dmt: Math.floor(dmtSec/60) + 'min',
+                        frt: Math.floor(frtSec/60) + 'min',
+                        count: entries.length
+                    };
+                };
 
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  if (role === 'agent') {
-    currentView = 'today';
-    document.querySelector('.tab.agent-only').classList.add('active');
-  } else {
-    currentView = 'home';
-    document.getElementById('tab-home').classList.add('active');
-    document.querySelector('.toolbar').classList.add('hidden');
-    document.querySelector('.entries-table').classList.add('hidden');
-  }
-}
-document.getElementById('login-password').addEventListener('keydown', e => { if (e.key==='Enter') doLogin(); });
-function logout() {
-  if (activeTimer) { alert('Arrête le timer en cours avant de te déconnecter.'); return; }
-  localStorage.removeItem('onspot_idToken'); localStorage.removeItem('onspot_uid');
-  currentUser = null; entries = [];
-  document.getElementById('login-screen').style.display = 'flex';
-  document.getElementById('app').style.display = 'none';
-  document.getElementById('login-email').value = ''; document.getElementById('login-password').value = '';
-}
-function populateFilters() {
-  const sel = document.getElementById('filter-agent');
-  sel.innerHTML = '<option value="">Tous les agents</option>' + agentsOnly().map(u=>`<option value="${u.id}">${u.name}</option>`).join('');
-  const tSel = document.getElementById('filter-treatment');
-  if (tSel) tSel.innerHTML = '<option value="">Tous traitements</option>' + customTreatmentTypes.map(t=>`<option value="${t}">${t}</option>`).join('');
-}
+                const myKpi = calcSet(myEntries);
+                document.getElementById('kpi-my-total').textContent = myKpi.total;
+                document.getElementById('kpi-my-dmt').textContent = myKpi.dmt;
+                document.getElementById('kpi-my-frt').textContent = myKpi.frt;
+                document.getElementById('kpi-my-count').textContent = myKpi.count;
 
-// ===== TIMER LOGIC =====
-function openModal() {
-  document.getElementById('modal-overlay').classList.remove('hidden');
-  document.getElementById('f-desc').value = '';
-  selectSource('inbound');
-  
-  const d = new Date();
-  d.setMinutes(d.getMinutes() + 1);
-  pickerHour = String(d.getHours()).padStart(2, '0');
-  pickerMin = String(d.getMinutes()).padStart(2, '0');
-  document.getElementById('inbound-time-input').value = `${pickerHour}:${pickerMin}`;
-  
-  document.getElementById('f-desc').focus();
-}
-function closeModal() { document.getElementById('modal-overlay').classList.add('hidden'); }
-function closeModalOutside(e) { if (e.target === document.getElementById('modal-overlay')) closeModal(); }
-function selectSource(s) {
-  selectedSource = s;
-  document.querySelectorAll('.source-opt').forEach(o => o.classList.remove('selected'));
-  document.getElementById('src-' + s).classList.add('selected');
-}
-function quickStart(source) {
-  if (activeTimer) { alert('Un timer est déjà actif. Arrête-le avant d\'en démarrer un autre.'); return; }
-  if (source === 'ticket') { openModal(); return; }
-  selectedSource = source;
-  openModal();
-  selectSource(source);
-}
-function startTimer() {
-  const desc = document.getElementById('f-desc').value.trim() || (selectedSource==='ticket'?'Tâche manuelle':selectedSource);
-  
-  const d = new Date();
-  d.setHours(parseInt(pickerHour, 10), parseInt(pickerMin, 10), 0, 0);
-  
-  activeTimer = { source: selectedSource, desc, startTime: d.getTime() };
-  closeModal();
-  document.getElementById('timer-banner').classList.add('active');
-  document.getElementById('timer-clock').classList.remove('idle'); 
-  document.getElementById('timer-clock').classList.add('active');
-  document.getElementById('timer-task').textContent = desc; 
-  document.getElementById('timer-task').classList.remove('placeholder');
-  document.getElementById('play-btn').classList.add('hidden');
-  document.getElementById('stop-btn').classList.remove('hidden');
-  
-  localStorage.setItem('activeTimer_'+currentUser.id, JSON.stringify(activeTimer));
-  saveActiveTimerToFirestore();
-  timerInterval = setInterval(updateClock, 1000);
-  updateClock();
-}
-async function saveActiveTimerToFirestore() {
-  const body = { fields: { source: { stringValue: activeTimer.source }, desc: { stringValue: activeTimer.desc }, startTime: { integerValue: String(activeTimer.startTime) } }};
-  try { await fetch(`${BASE_URL}/active_timers/${currentUser.id}?key=${FIREBASE_API_KEY}`, { method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) }); } catch(e) { console.error(e); }
-}
-async function clearActiveTimerFromFirestore() {
-  try { await fetch(`${BASE_URL}/active_timers/${currentUser.id}?key=${FIREBASE_API_KEY}`, { method:'DELETE' }); } catch(e) { console.error(e); }
-}
-function updateClock() {
-  if (!activeTimer) return;
-  const ms = Date.now() - activeTimer.startTime;
-  const isFuture = ms < 0; 
-  const elapsed = Math.floor(Math.abs(ms) / 1000);
-  
-  const h = String(Math.floor(elapsed/3600)).padStart(2,'0');
-  const m = String(Math.floor((elapsed%3600)/60)).padStart(2,'0');
-  const s = String(elapsed%60).padStart(2,'0');
-  
-  document.getElementById('timer-clock').textContent = (isFuture ? '-' : '') + `${h}:${m}:${s}`;
-}
-async function stopTimer() {
-  if (!activeTimer) return;
-  clearInterval(timerInterval);
-  const durationSec = Math.floor((Date.now() - activeTimer.startTime)/1000);
-  const entry = {
-    id: Date.now().toString(),
-    source: activeTimer.source,
-    desc: activeTimer.desc,
-    agent: currentUser.id,
-    startTime: new Date(activeTimer.startTime).toISOString(),
-    durationSec
-  };
-  entries.unshift(entry);
+                if (['superviseur', 'admin'].includes(this.user.role)) {
+                    const teamKpi = calcSet(teamEntries);
+                    document.getElementById('kpi-team-total').textContent = teamKpi.total;
+                    document.getElementById('kpi-team-dmt').textContent = teamKpi.dmt;
+                    document.getElementById('kpi-team-frt').textContent = teamKpi.frt;
+                    document.getElementById('kpi-team-count').textContent = teamKpi.count;
+                }
+            },
 
-  activeTimer = null;
-  localStorage.removeItem('activeTimer_'+currentUser.id);
-  document.getElementById('timer-banner').classList.remove('active');
-  document.getElementById('timer-clock').classList.add('idle'); 
-  document.getElementById('timer-clock').classList.remove('active');
-  document.getElementById('timer-clock').textContent = '00:00:00';
-  document.getElementById('timer-task').textContent = 'Aucun timer actif — démarre une tâche ci-dessous';
-  document.getElementById('timer-task').classList.add('placeholder');
-  document.getElementById('play-btn').classList.remove('hidden');
-  document.getElementById('stop-btn').classList.add('hidden');
-  renderAll();
+            // LIVE DASHBOARD (SUPERVISEUR)
+            fetchLiveAgents: async function() {
+                try {
+                    const res = await fetch(`${BASE_URL}/active_timers?key=${FIREBASE_API_KEY}`);
+                    const data = await res.json();
+                    const docs = data.documents || [];
+                    const grid = document.getElementById('live-agents-grid');
+                    
+                    if (docs.length === 0) {
+                        grid.innerHTML = '<div style="opacity:0.6; padding:10px;">Aucun agent actif pour le moment.</div>';
+                        return;
+                    }
 
-  saveEntryToFirestore(entry);
-  clearActiveTimerFromFirestore();
-}
-function checkActiveTimer() {
-  const saved = localStorage.getItem('activeTimer_'+currentUser.id);
-  if (saved) {
-    activeTimer = JSON.parse(saved);
-    document.getElementById('timer-banner').classList.add('active');
-    document.getElementById('timer-clock').classList.remove('idle'); document.getElementById('timer-clock').classList.add('active');
-    document.getElementById('timer-task').textContent = activeTimer.desc; document.getElementById('timer-task').classList.remove('placeholder');
-    document.getElementById('play-btn').classList.add('hidden');
-    document.getElementById('stop-btn').classList.remove('hidden');
-    timerInterval = setInterval(updateClock, 1000);
-    updateClock();
-  }
-}
+                    let html = '';
+                    docs.forEach(doc => {
+                        const f = doc.fields || {};
+                        const uid = doc.name.split('/').pop();
+                        const startTime = parseInt(f.startTime?.integerValue || Date.now());
+                        const elapsedMin = Math.floor((Date.now() - startTime) / 60000);
+                        const source = f.source?.stringValue || 'Tâche';
+                        const desc = f.desc?.stringValue || 'En cours...';
+                        
+                        const timeColor = elapsedMin > 15 ? '#C9604F' : '#84A9DE';
 
-// ===== ACTIVE TIMERS =====
-async function loadActiveTimers() {
-  try {
-    const res = await fetch(`${BASE_URL}/active_timers?key=${FIREBASE_API_KEY}`);
-    const data = await res.json();
-    return (data.documents || []).map(doc => {
-      const f = doc.fields || {};
-      return { agentId: doc.name.split('/').pop(), source: f.source?.stringValue || 'ticket', desc: f.desc?.stringValue || '', startTime: parseInt(f.startTime?.integerValue || 0) };
-    });
-  } catch(e) { return []; }
-}
+                        html += `
+                        <div class="live-card">
+                            <div class="live-card-header">
+                                <span class="live-card-name">👤 Agent (${uid.substring(0,4)})</span>
+                                <span class="live-card-time" style="color:${timeColor}">${elapsedMin} min</span>
+                            </div>
+                            <div class="live-card-task"><strong>${source}</strong><br>${desc}</div>
+                        </div>`;
+                    });
+                    grid.innerHTML = html;
+                } catch(e) {}
+            },
 
-// ===== RINGOVER SYNC =====
-async function syncRingover() {
-  const token = prompt('Colle ton token RingOver (depuis DevTools → Network → calls → Headers → Authorization):');
-  if (!token) return;
-  try {
-    const now = new Date(); const start = new Date(now); start.setHours(0,0,0,0);
-    const res = await fetch('https://api-us.ringover.com/v4/aud/dashboard/logs/calls', {
-      method: 'POST', headers: { 'Content-Type':'application/json', 'Authorization':'Bearer '+token },
-      body: JSON.stringify({ filter:"ALL", start_date:start.toISOString(), end_date:now.toISOString(), limit_count:100, limit_offset:0, handle_call:"all", users:[],tags:[],alpha2_codes:[],accounts:[],call_type:[],channels:[],groups:[], ivrs:[],notes:[],numbers:[],scenarios:[],stars:[],handle_call_response_type:["CALL","SMS","EMAIL"] })
-    });
-    if (!res.ok) { alert('Erreur RingOver: ' + res.status); return; }
-    const data = await res.json(); const calls = data.call_list || data.calls || data.data || [];
-    let imported = 0;
-    for (const c of calls) {
-      const exists = entries.find(e => (e.source==='ringover'||e.source==='inbound'||e.source==='outbound') && e.rawId === String(c.call_id));
-      if (exists) continue;
-      const entry = {
-        id: 'ro_' + (c.call_id || Date.now()), rawId: String(c.call_id||''), source: 'inbound', desc: 'Appel ' + (c.bnumber || c.anumber || ''),
-        agent: currentUser.id, startTime: c.call_start_time || new Date().toISOString(), durationSec: c.in_call_duration || 0
-      };
-      entries.unshift(entry); await saveEntryToFirestore(entry); imported++;
-    }
-    renderAll(); alert(imported + ' appel(s) importé(s) depuis RingOver.');
-  } catch(e) { alert('Erreur de connexion à RingOver'); }
-}
+            // TABLEAU ET FILTRES
+            renderTable: function(dataToRender) {
+                const tbody = document.getElementById('table-body');
+                const isAdmin = this.user.role === 'admin';
+                
+                const data = (this.user.role === 'agent') ? dataToRender.filter(e => e.agent === this.user.id) : dataToRender;
 
-// ===== FIRESTORE =====
-async function loadEntries() {
-  try {
-    const res = await fetch(`${BASE_URL}/time_entries?key=${FIREBASE_API_KEY}`);
-    const data = await res.json();
-    entries = (data.documents || []).map(docToEntry).sort((a,b)=> new Date(b.startTime)-new Date(a.startTime));
-    if (currentView === 'home' || currentView === 'team') renderRoleHome();
-    else if (currentView === 'admin') renderAdminPanel();
-    else renderAll();
-  } catch(e) { console.error(e); }
-}
-function docToEntry(doc) {
-  const f = doc.fields || {};
-  return {
-    id: doc.name.split('/').pop(), rawId: f.rawId?.stringValue || '', source: f.source?.stringValue || 'ticket',
-    desc: f.desc?.stringValue || '', treatment: f.treatment?.stringValue || '', agent: f.agent?.stringValue || '',
-    startTime: f.startTime?.stringValue || '', durationSec: parseInt(f.durationSec?.integerValue || 0),
-  };
-}
-async function saveEntryToFirestore(entry) {
-  const body = { fields: { rawId: { stringValue: entry.rawId || '' }, source: { stringValue: entry.source }, desc: { stringValue: entry.desc }, agent: { stringValue: entry.agent }, startTime: { stringValue: entry.startTime }, durationSec: { integerValue: String(entry.durationSec) } }};
-  await fetch(`${BASE_URL}/time_entries/${entry.id}?key=${FIREBASE_API_KEY}`, { method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
-}
-async function deleteEntry(id) {
-  if (!confirm('Supprimer cette entrée ?')) return;
-  entries = entries.filter(e=>e.id!==id);
-  renderAll();
-  await fetch(`${BASE_URL}/time_entries/${id}?key=${FIREBASE_API_KEY}`, { method:'DELETE' });
-}
+                if (data.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:20px; color:var(--text-muted);">Aucune donnée à afficher.</td></tr>';
+                    return;
+                }
 
-// ===== RENDER =====
-function fmtDuration(sec) {
-  const h = Math.floor(sec/3600), m = Math.floor((sec%3600)/60);
-  if (h>0) return `${h}h${String(m).padStart(2,'0')}`;
-  return `${m}min`;
-}
-function fmtTime(iso) {
-  if (!iso) return '—';
-  return new Date(iso).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
-}
-function sourceTag(s) {
-  if (s==='inbound' || s==='ringover') return '<span class="source-tag src-inbound">📞↘ Appel entrant</span>';
-  if (s==='outbound') return '<span class="source-tag src-outbound">📞↗ Appel sortant</span>';
-  if (s==='chat' || s==='crisp') return '<span class="source-tag src-chat">💬 Crisp Chat</span>';
-  if (s==='email') return '<span class="source-tag src-email">✉️ Crisp Email</span>';
-  return '<span class="source-tag src-ticket">🎫 Ticket/Manuel</span>';
-}
-function agentCell(id) {
-  const u = TEAM.find(t=>t.id===id);
-  if (!u) return '—';
-  return `<div class="agent-cell"><div class="mini-avatar" style="background:${u.color}20;color:${u.color}">${u.initials}</div>${u.name}</div>`;
-}
-function isToday(iso) {
-  const d = new Date(iso), now = new Date();
-  return d.toDateString() === now.toDateString();
-}
-function isThisWeek(iso) {
-  const d = new Date(iso), now = new Date();
-  const start = new Date(now); start.setDate(now.getDate()-now.getDay()+1); start.setHours(0,0,0,0);
-  return d >= start;
-}
+                let html = '';
+                data.forEach(e => {
+                    const startDt = new Date(e.startTimeStr);
+                    const startStr = startDt.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
+                    
+                    let srcBg = '#F4F7FA'; let srcCol = '#6B7C93';
+                    if(e.source.includes('inbound') || e.source.includes('entrant')) { srcBg = '#FDE9E6'; srcCol = '#C9604F'; }
+                    if(e.source.includes('outbound') || e.source.includes('sortant')) { srcBg = '#FCF1D6'; srcCol = '#DCAE1D'; }
+                    if(e.source.includes('chat') || e.source.includes('email')) { srcBg = '#E1F0FF'; srcCol = '#3B99FC'; }
 
-function onSearchInput() {
-  clearTimeout(searchTimeout);
-  searchTimeout = setTimeout(renderAll, 300);
-}
+                    const durM = Math.ceil(e.durationSec / 60);
 
-function getFiltered() {
-  const source = document.getElementById('filter-source').value;
-  let agent = document.getElementById('filter-agent').value;
-  const treatment = document.getElementById('filter-treatment')?.value || '';
-  const search = document.getElementById('search-input').value.toLowerCase();
-  
-  let list = entries;
-  if (currentUser.role === 'agent') {
-    agent = currentUser.id;
-  }
+                    html += `
+                    <tr>
+                        <td style="font-weight:600;">${e.inboundTime || '--:--'}</td>
+                        <td>${startStr}</td>
+                        <td><span class="tag" style="background:${srcBg}; color:${srcCol}">${e.source}</span></td>
+                        <td>${e.desc}</td>
+                        <td><span style="opacity:0.7; font-size:11px;">👤</span> ${e.agent}</td>
+                        <td class="dur-cell">${durM} min</td>
+                        ${isAdmin ? `
+                        <td class="col-actions">
+                            <button onclick="app.deleteEntry('${e.id}')" style="border:none; background:transparent; color:var(--danger); cursor:pointer;" title="Supprimer">🗑️ Supprimer</button>
+                        </td>` : '<td class="col-actions hidden"></td>'}
+                    </tr>`;
+                });
+                tbody.innerHTML = html;
+            },
 
-  if (currentView === 'today') list = list.filter(e=>isToday(e.startTime));
-  else if (currentView === 'week') list = list.filter(e=>isThisWeek(e.startTime));
-  
-  return list.filter(e =>
-    (!source || e.source===source) &&
-    (!agent || e.agent===agent) &&
-    (!treatment || e.treatment===treatment || e.desc.includes(treatment)) &&
-    (!search || e.desc.toLowerCase().includes(search))
-  );
-}
+            filterTable: function() {
+                const inputs = document.querySelectorAll('.filter-input');
+                let filters = {};
+                inputs.forEach(inp => { if(inp.value.trim()) filters[inp.dataset.col] = inp.value.toLowerCase(); });
 
-function renderAll() {
-  const filtered = getFiltered();
-  document.getElementById('entry-count').textContent = filtered.length + ' entrée' + (filtered.length!==1?'s':'');
-  renderStats(filtered);
-  renderTable(filtered);
-}
+                const filteredData = this.entries.filter(e => {
+                    const startStr = new Date(e.startTimeStr).toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
+                    const durM = Math.ceil(e.durationSec / 60) + ' min';
 
-function renderStats(filtered) {
-  let baseEntries = entries;
-  if (currentUser.role === 'agent') {
-    baseEntries = entries.filter(e => e.agent === currentUser.id);
-  }
+                    if (filters.inbound && !(e.inboundTime||'').toLowerCase().includes(filters.inbound)) return false;
+                    if (filters.start && !startStr.includes(filters.start)) return false;
+                    if (filters.source && !e.source.toLowerCase().includes(filters.source)) return false;
+                    if (filters.desc && !e.desc.toLowerCase().includes(filters.desc)) return false;
+                    if (filters.agent && !e.agent.toLowerCase().includes(filters.agent)) return false;
+                    if (filters.dur && !durM.includes(filters.dur)) return false;
+                    return true;
+                });
 
-  const todayEntries = baseEntries.filter(e=>isToday(e.startTime));
-  const total = todayEntries.reduce((s,e)=>s+e.durationSec,0);
-  const ro = todayEntries.filter(e=>e.source==='ringover' || e.source==='inbound' || e.source==='outbound');
-  const cr = todayEntries.filter(e=>e.source==='crisp' || e.source==='chat' || e.source==='email');
-  const man = todayEntries.filter(e=>e.source==='manual' || e.source==='ticket');
-  
-  document.getElementById('s-total').textContent = fmtDuration(total);
-  document.getElementById('s-ringover').textContent = fmtDuration(ro.reduce((s,e)=>s+e.durationSec,0));
-  document.getElementById('s-ringover-count').textContent = ro.length + ' appels';
-  document.getElementById('s-crisp').textContent = fmtDuration(cr.reduce((s,e)=>s+e.durationSec,0));
-  document.getElementById('s-crisp-count').textContent = cr.length + ' chats/emails';
-  document.getElementById('s-manual').textContent = fmtDuration(man.reduce((s,e)=>s+e.durationSec,0));
-  document.getElementById('s-manual-count').textContent = man.length + ' tâches';
-}
+                this.renderTable(filteredData);
+            },
 
-function renderTable(filtered) {
-  const body = document.getElementById('entries-body');
-  const canEdit = currentUser.role === 'admin';
-  
-  if (!filtered.length) {
-    body.innerHTML = '<tr><td colspan="6"><div class="empty">Aucune entrée pour cette période.</div></td></tr>';
-    return;
-  }
-  
-  body.innerHTML = filtered.map(e => {
-    let sourceKey = 'manual';
-    if(e.source==='ringover'||e.source==='inbound'||e.source==='outbound') sourceKey = 'ringover';
-    else if(e.source==='crisp'||e.source==='chat'||e.source==='email') sourceKey = 'crisp';
-    
-    const dmt = sourceDMT[sourceKey] ?? sourceDMT.manual;
-    const ratio = dmt ? e.durationSec / dmt : 0;
-    let durClass = '';
-    if (ratio > 1.2) durClass = 'dur-over';
-    else if (ratio > 1) durClass = 'dur-warn';
-    
-    return `
-    <tr>
-      <td class="dur-cell">${fmtTime(e.startTime)}</td>
-      <td>${sourceTag(e.source)}</td>
-      <td id="desc-${e.id}" style="width:40%">${e.desc}</td>
-      <td>${agentCell(e.agent)}</td>
-      <td class="dur-cell ${durClass}" title="DMT cible : ${fmtDuration(dmt)}">${fmtDuration(e.durationSec)}</td>
-      <td><div class="row-actions">
-        ${canEdit ? `<button class="icon-btn" onclick="editEntry('${e.id}')" title="Ajouter une référence / Modifier">✎</button>` : ''}
-        ${canEdit ? `<button class="icon-btn" onclick="deleteEntry('${e.id}')" title="Supprimer">✕</button>` : ''}
-      </div></td>
-    </tr>`;
-  }).join('');
-}
+            // ACTIONS
+            quickStart: async function(source, text) {
+                const d = new Date();
+                const body = { fields: { source: { stringValue: source }, desc: { stringValue: text }, startTime: { integerValue: String(d.getTime()) } }};
+                await fetch(`${BASE_URL}/active_timers/${this.user.id}?key=${FIREBASE_API_KEY}`, { method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
+                alert(`Tâche rapide démarrée : ${text}`);
+                if(['superviseur', 'admin'].includes(this.user.role)) this.fetchLiveAgents();
+            },
 
-function editEntry(id) {
-  if (currentUser.role !== 'admin') return;
-  const entry = entries.find(e => e.id === id);
-  if (!entry) return;
-  
-  const cell = document.getElementById('desc-' + id);
-  const current = entry.desc;
-  
-  cell.innerHTML = `<input class="form-input" id="edit-input-${id}" value="${current.replace(/"/g,'&quot;')}" placeholder="Ex: Ticket #68554 ou détails..." style="padding:5px 8px; font-size:13px; width:100%; box-sizing:border-box;" />`;
-  
-  const input = document.getElementById('edit-input-' + id);
-  input.focus();
-  input.setSelectionRange(input.value.length, input.value.length);
-  
-  const save = async () => {
-    const newDesc = input.value.trim() || current;
-    entry.desc = newDesc;
-    cell.textContent = newDesc;
-    saveEntryToFirestore(entry);
-  };
-  
-  input.addEventListener('blur', save);
-  input.addEventListener('keydown', e => { if (e.key === 'Enter') input.blur(); });
-}
+            deleteEntry: async function(id) {
+                if(confirm("Êtes-vous sûr de vouloir supprimer cette entrée ?")) {
+                    await fetch(`${BASE_URL}/time_entries/${id}?key=${FIREBASE_API_KEY}`, { method:'DELETE' });
+                    this.refreshData();
+                }
+            },
 
-function switchTab(view, btn) {
-  if (currentUser.role === 'agent' && (view === 'admin' || view === 'team' || view === 'home')) {
-    return;
-  }
-  currentView = view;
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  if (btn) btn.classList.add('active');
+            exportCSV: function() {
+                const rows = [["Inbound Time", "Start Time", "Source", "Description", "Agent", "Duree (sec)", "Duree (min)"]];
+                this.entries.forEach(e => {
+                    const startStr = new Date(e.startTimeStr).toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
+                    rows.push([e.inboundTime||'--:--', startStr, e.source, e.desc.replace(/,/g, ' '), e.agent, e.durationSec, Math.ceil(e.durationSec/60)]);
+                });
+                const csvContent = "data:text/csv;charset=utf-8," + rows.map(e => e.join(",")).join("\n");
+                const encodedUri = encodeURI(csvContent);
+                const link = document.createElement("a");
+                link.setAttribute("href", encodedUri);
+                link.setAttribute("download", `Taskin_Export_${new Date().toISOString().slice(0,10)}.csv`);
+                document.body.appendChild(link);
+                link.click();
+            },
 
-  const isAdminView = view === 'admin';
-  const isHomeView = view === 'home';
-  const isTeamView = view === 'team';
-  const showTable = !isAdminView && !isHomeView;
+            formatSecToHM: function(totalSec) {
+                const h = Math.floor(totalSec / 3600);
+                const m = Math.floor((totalSec % 3600) / 60);
+                if (h > 0) return `${h}h${String(m).padStart(2,'0')}`;
+                return `${m}m`;
+            }
+        };
 
-  document.querySelector('.toolbar').classList.toggle('hidden', !showTable);
-  document.querySelector('.entries-table').classList.toggle('hidden', !showTable);
-  document.getElementById('admin-panel').classList.toggle('hidden', !isAdminView);
-  document.getElementById('team-live-panel').classList.toggle('hidden', !isHomeView && !isTeamView);
-
-  if (isAdminView) { renderAdminPanel(); return; }
-  if (isHomeView || isTeamView) { renderRoleHome(); return; }
-  renderAll();
-}
-
-// ===== ADMIN PANEL =====
-let customTreatmentTypes = [...TREATMENT_TYPES_DEFAULT];
-
-function renderAdminPanel() {
-  renderTeamList(); renderTreatmentList(); renderAdminStats(); populateChartScopeSelect(); renderEvolutionChart();
-}
-function renderTeamList() {
-  document.getElementById('team-count').textContent = TEAM.length + ' comptes';
-  document.getElementById('team-list').innerHTML = TEAM.map(u => `
-    <div class="team-row" onclick="openAccountEditModal('${u.id}')" style="cursor:pointer">
-      <div class="mini-avatar" style="background:${u.color}20;color:${u.color}${u.photo?`;background-image:url(${u.photo});background-size:cover`:''}">${u.photo?'':u.initials}</div>
-      <div class="team-row-info"><div class="team-row-name">${u.name}</div><div class="team-row-role">${roleLabel(u.role)}</div></div>
-      <span style="font-size:11px;color:var(--ocean);font-weight:600">Modifier →</span>
-    </div>`).join('');
-}
-function roleLabel(role) {
-  if (role === 'admin') return 'Admin';
-  if (role === 'supervisor') return 'Superviseur';
-  return 'Agent';
-}
-function renderTreatmentList() {
-  document.getElementById('treatment-count').textContent = customTreatmentTypes.length + ' types';
-  document.getElementById('treatment-list').innerHTML = customTreatmentTypes.map((t,i) => `
-    <div class="treatment-row"><span>${t}</span><button class="icon-btn" onclick="removeTreatmentType(${i})">✕</button></div>`).join('');
-}
-
-async function addTreatmentType() {
-  const input = document.getElementById('new-treatment-input');
-  const val = input.value.trim();
-  if (!val) return;
-  customTreatmentTypes.push(val);
-  input.value = '';
-  renderTreatmentList();
-  populateFilters();
-  await saveTreatmentsToFirestore();
-}
-async function removeTreatmentType(i) {
-  if (!confirm('Voulez-vous vraiment supprimer ce type de traitement ?')) return;
-  customTreatmentTypes.splice(i, 1);
-  renderTreatmentList();
-  populateFilters();
-  await saveTreatmentsToFirestore();
-}
-async function saveTreatmentsToFirestore() {
-  const values = customTreatmentTypes.map(t => ({ stringValue: t }));
-  const body = { fields: { list: { arrayValue: { values } } } };
-  try { await fetch(`${BASE_URL}/settings/treatments?key=${FIREBASE_API_KEY}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }); } catch(e) { console.error(e); }
-}
-async function loadTreatmentsFromFirestore() {
-  try {
-    const res = await fetch(`${BASE_URL}/settings/treatments?key=${FIREBASE_API_KEY}`);
-    if (res.status === 404) return;
-    const data = await res.json();
-    const values = data.fields?.list?.arrayValue?.values || [];
-    if (values.length > 0) { customTreatmentTypes = values.map(v => v.stringValue); }
-  } catch(e) { console.error(e); }
-}
-
-function renderAdminStats() {
-  const now = new Date(); const weekStart = new Date(now); weekStart.setDate(now.getDate()-now.getDay()+1); weekStart.setHours(0,0,0,0);
-  const weekEntries = entries.filter(e => new Date(e.startTime) >= weekStart);
-  const total = weekEntries.reduce((s,e)=>s+e.durationSec,0);
-  const activeAgents = new Set(entries.filter(e=>isToday(e.startTime)).map(e=>e.agent));
-  document.getElementById('admin-s-total').textContent = fmtDuration(total);
-  document.getElementById('admin-s-count').textContent = entries.length;
-  document.getElementById('admin-s-active').textContent = activeAgents.size;
-}
-function exportCSV() {
-  const rows = [['Date','Heure','Source','Description','Agent','Durée (sec)']];
-  entries.forEach(e => {
-    const d = new Date(e.startTime);
-    rows.push([d.toLocaleDateString('fr-FR'), fmtTime(e.startTime), e.source, e.desc, (TEAM.find(t=>t.id===e.agent)||{}).name || e.agent, e.durationSec]);
-  });
-  const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
-  const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = 'onspot-time-entries-' + new Date().toISOString().split('T')[0] + '.csv';
-  a.click(); URL.revokeObjectURL(url);
-}
-function exportExcel() {
-  const header = ['Date','Heure','Source','Description','Agent','Durée (min)'];
-  let html = '<table><tr>' + header.map(h=>`<th>${h}</th>`).join('') + '</tr>';
-  entries.forEach(e => {
-    const d = new Date(e.startTime);
-    const agentName = (TEAM.find(t=>t.id===e.agent)||{}).name || e.agent;
-    html += '<tr>' + [d.toLocaleDateString('fr-FR'), fmtTime(e.startTime), e.source, e.desc, agentName, Math.round(e.durationSec/60)].map(c=>`<td>${c}</td>`).join('') + '</tr>';
-  });
-  html += '</table>';
-  const blob = new Blob(['\ufeff' + html], {type:'application/vnd.ms-excel;charset=utf-8;'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = 'onspot-time-entries-' + new Date().toISOString().split('T')[0] + '.xls';
-  a.click(); URL.revokeObjectURL(url);
-}
-
-// ===== ROLE HOME =====
-async function renderRoleHome() {
-  const activeTimers = await loadActiveTimers();
-  if (currentUser.role === 'supervisor') { renderSupervisorBanner(activeTimers); renderSupervisorStats(activeTimers); }
-  if (currentUser.role === 'admin') { renderAdminBanner(); renderAdminHomeStats(); }
-  renderTeamLiveList(activeTimers);
-}
-function agentsOnly() { return TEAM.filter(u => u.role === 'agent'); }
-function renderSupervisorBanner(activeTimers) {
-  const agents = agentsOnly(); const activeIds = new Set(activeTimers.map(t => t.agentId));
-  const activeAgents = agents.filter(a => activeIds.has(a.id));
-  const avatarsHtml = activeAgents.slice(0,3).map(a => `<div class="role-banner-avatar" style="background:${a.color};margin-right:-8px">${a.initials}</div>`).join('') + (agents.length > 3 ? `<div class="role-banner-avatar role-banner-avatar-more">+${agents.length-3}</div>` : '');
-  document.getElementById('sup-banner-avatars').innerHTML = avatarsHtml || '<div class="role-banner-avatar role-banner-avatar-more">0</div>';
-  document.getElementById('sup-banner-title').textContent = `${activeAgents.length} sur ${agents.length} agents actifs`;
-  const idleAgent = findLongestIdleAgent(agents, activeIds);
-  document.getElementById('sup-banner-sub').textContent = idleAgent || 'Tout le monde est à jour';
-  document.getElementById('sup-banner-dot').style.background = activeAgents.length > 0 ? '#3B8C6E' : '#A0AAB8';
-}
-function findLongestIdleAgent(agents, activeIds) {
-  const idle = agents.filter(a => !activeIds.has(a.id));
-  if (!idle.length) return null;
-  return `${idle[0].name} inactif`;
-}
-function renderSupervisorStats(activeTimers) {
-  const agents = agentsOnly(); const activeIds = new Set(activeTimers.map(t => t.agentId));
-  document.getElementById('sup-s-active').textContent = activeIds.size;
-  document.getElementById('sup-s-active-sub').textContent = `sur ${agents.length} agents`;
-  const todayEntries = entries.filter(e => isToday(e.startTime) && agents.some(a=>a.id===e.agent));
-  const total = todayEntries.reduce((s,e)=>s+e.durationSec,0);
-  document.getElementById('sup-s-total').textContent = fmtDuration(total);
-  document.getElementById('sup-s-idle').textContent = agents.length - activeIds.size;
-}
-function renderAdminBanner() {
-  const now = new Date(); const weekStart = new Date(now); weekStart.setDate(now.getDate()-now.getDay()+1); weekStart.setHours(0,0,0,0);
-  const weekEntries = entries.filter(e => new Date(e.startTime) >= weekStart);
-  const total = weekEntries.reduce((s,e)=>s+e.durationSec,0);
-  document.getElementById('adm-banner-total').textContent = fmtDuration(total);
-  document.getElementById('adm-banner-title').textContent = `${agentsOnly().length} agents · ${customTreatmentTypes.length} types de traitement`;
-  document.getElementById('adm-banner-sub').textContent = '';
-}
-function renderAdminHomeStats() {
-  const now = new Date(); const weekStart = new Date(now); weekStart.setDate(now.getDate()-now.getDay()+1); weekStart.setHours(0,0,0,0);
-  const weekEntries = entries.filter(e => new Date(e.startTime) >= weekStart);
-  const total = weekEntries.reduce((s,e)=>s+e.durationSec,0);
-  const activeToday = new Set(entries.filter(e=>isToday(e.startTime)).map(e=>e.agent));
-  document.getElementById('adm-home-total').textContent = fmtDuration(total);
-  document.getElementById('adm-home-entries').textContent = entries.length;
-  document.getElementById('adm-home-active').textContent = activeToday.size;
-}
-function renderTeamLiveList(activeTimers) {
-  const agents = agentsOnly(); document.getElementById('team-live-count').textContent = agents.length + ' agents';
-  const timerByAgent = {}; activeTimers.forEach(t => timerByAgent[t.agentId] = t);
-  document.getElementById('team-live-list').innerHTML = agents.map(a => {
-    const t = timerByAgent[a.id];
-    if (t) {
-      const elapsed = Math.floor((Date.now() - t.startTime)/1000); const mins = Math.floor(elapsed/60); const secs = elapsed%60;
-      const timeStr = mins + ':' + String(secs).padStart(2,'0');
-      return `<div class="team-row" onclick="viewAgentDetail('${a.id}')" style="cursor:pointer">
-        <div class="mini-avatar" style="background:${a.color}20;color:${a.color}">${a.initials}</div>
-        <div class="team-row-info"><div class="team-row-name">${a.name}</div><div class="team-row-role">${t.desc}</div></div>
-        <span class="team-row-timer">${timeStr}</span></div>`;
-    }
-    return `<div class="team-row" onclick="viewAgentDetail('${a.id}')" style="cursor:pointer">
-      <div class="mini-avatar" style="background:var(--border2,#E2E8F0);color:var(--text2,#6B7C93)">${a.initials}</div>
-      <div class="team-row-info"><div class="team-row-name">${a.name}</div><div class="team-row-role" style="color:var(--text3,#A0AAB8)">Inactif</div></div>
-      <span class="team-row-timer" style="color:var(--text3,#A0AAB8)">—</span></div>`;
-  }).join('');
-}
-function viewAgentDetail(agentId) {
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.querySelector('.tab.agent-only').classList.remove('hidden'); document.querySelector('.tab.agent-only').classList.add('active');
-  currentView = 'today';
-  document.getElementById('team-live-panel').classList.add('hidden'); document.getElementById('admin-panel').classList.add('hidden');
-  document.querySelector('.toolbar').classList.remove('hidden'); document.querySelector('.entries-table').classList.remove('hidden');
-  document.getElementById('filter-agent').value = agentId;
-  renderAll();
-}
-
-// ===== DMT =====
-async function loadDMT() {
-  try {
-    const res = await fetch(`${BASE_URL}/settings/dmt?key=${FIREBASE_API_KEY}`);
-    if (res.status === 404) { renderDMTInputs(); return; }
-    const data = await res.json(); const f = data.fields || {};
-    sourceDMT = { ringover: parseInt(f.ringover?.integerValue ?? SOURCE_DMT_DEFAULT.ringover), crisp: parseInt(f.crisp?.integerValue ?? SOURCE_DMT_DEFAULT.crisp), manual: parseInt(f.manual?.integerValue ?? SOURCE_DMT_DEFAULT.manual) };
-  } catch(e) { console.error(e); }
-  renderDMTInputs();
-}
-function renderDMTInputs() {
-  const r = document.getElementById('dmt-ringover'); const c = document.getElementById('dmt-crisp'); const m = document.getElementById('dmt-manual');
-  if (r) r.value = sourceDMT.ringover; if (c) c.value = sourceDMT.crisp; if (m) m.value = sourceDMT.manual;
-}
-async function saveDMT() {
-  sourceDMT = { ringover: parseInt(document.getElementById('dmt-ringover').value) || SOURCE_DMT_DEFAULT.ringover, crisp: parseInt(document.getElementById('dmt-crisp').value) || SOURCE_DMT_DEFAULT.crisp, manual: parseInt(document.getElementById('dmt-manual').value) || SOURCE_DMT_DEFAULT.manual };
-  const body = { fields: { ringover: { integerValue: String(sourceDMT.ringover) }, crisp: { integerValue: String(sourceDMT.crisp) }, manual: { integerValue: String(sourceDMT.manual) } }};
-  try { await fetch(`${BASE_URL}/settings/dmt?key=${FIREBASE_API_KEY}`, { method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) }); renderAll(); } catch(e) { console.error(e); }
-}
-
-// ===== ACCOUNTS PERSISTENCE =====
-async function loadAccountsFromFirestore() {
-  try {
-    const res = await fetch(`${BASE_URL}/accounts?key=${FIREBASE_API_KEY}`);
-    const data = await res.json();
-    TEAM = (data.documents || []).map(doc => {
-      const f = doc.fields || {};
-      return { id: doc.name.split('/').pop(), name: f.name?.stringValue || 'Sans nom', email: f.email?.stringValue || '', color: f.color?.stringValue || '#2B4C7E', initials: f.initials?.stringValue || '??', role: f.role?.stringValue || 'agent', photo: f.photo?.stringValue || '' };
-    });
-  } catch(e) { console.error(e); }
-}
-async function saveAccountToFirestore(user) {
-  const body = { fields: { name: { stringValue: user.name }, email: { stringValue: user.email || '' }, color: { stringValue: user.color }, initials: { stringValue: user.initials }, role: { stringValue: user.role }, photo: { stringValue: user.photo || '' } }};
-  try { await fetch(`${BASE_URL}/accounts/${user.id}?key=${FIREBASE_API_KEY}`, { method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) }); } catch(e) { console.error(e); }
-}
-
-// ===== PROFILE MODAL =====
-let pendingProfilePhoto = null;
-function openProfileModal() {
-  pendingProfilePhoto = currentUser.photo || null;
-  document.getElementById('profile-name-input').value = currentUser.name; document.getElementById('profile-password-input').value = ''; document.getElementById('profile-error').textContent = '';
-  renderProfilePhotoPreview(); document.getElementById('profile-modal-overlay').classList.remove('hidden');
-}
-function closeProfileModal() { document.getElementById('profile-modal-overlay').classList.add('hidden'); }
-function closeProfileModalOutside(e) { if (e.target.id === 'profile-modal-overlay') closeProfileModal(); }
-function renderProfilePhotoPreview() {
-  const el = document.getElementById('profile-photo-preview');
-  if (pendingProfilePhoto) { el.style.backgroundImage = `url(${pendingProfilePhoto})`; el.textContent = ''; } else { el.style.backgroundImage = ''; el.textContent = currentUser.initials; }
-}
-function onProfilePhotoSelected(event) {
-  const file = event.target.files[0]; if (!file) return;
-  if (file.size > 1.5 * 1024 * 1024) { document.getElementById('profile-error').textContent = 'Image trop lourde (max 1.5 Mo).'; return; }
-  const reader = new FileReader(); reader.onload = (e) => { pendingProfilePhoto = e.target.result; renderProfilePhotoPreview(); }; reader.readAsDataURL(file);
-}
-function removeProfilePhoto() { pendingProfilePhoto = ''; renderProfilePhotoPreview(); }
-async function saveProfile() {
-  const newName = document.getElementById('profile-name-input').value.trim(); const newPassword = document.getElementById('profile-password-input').value.trim();
-  const errEl = document.getElementById('profile-error'); errEl.textContent = '';
-  if (!newName) { errEl.textContent = 'Le nom ne peut pas être vide.'; return; }
-  if (newPassword && newPassword.length < 6) { errEl.textContent = 'Le mot de passe doit faire au moins 6 caractères.'; return; }
-  if (newPassword) {
-    const idToken = localStorage.getItem('onspot_idToken');
-    try {
-      const res = await fetch(`${AUTH_BASE}/accounts:update?key=${FIREBASE_API_KEY}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ idToken, password: newPassword, returnSecureToken: true }) });
-      const data = await res.json();
-      if (data.error) { errEl.textContent = "Erreur lors du changement de mot de passe."; return; }
-      localStorage.setItem('onspot_idToken', data.idToken);
-    } catch(e) { errEl.textContent = 'Erreur réseau.'; return; }
-  }
-  currentUser.name = newName; currentUser.photo = pendingProfilePhoto || '';
-  const idx = TEAM.findIndex(u => u.id === currentUser.id); if (idx >= 0) TEAM[idx] = currentUser;
-  await saveAccountToFirestore(currentUser); renderTopbarIdentity(); populateFilters(); document.getElementById('profile-password-input').value = ''; closeProfileModal();
-}
-
-// ===== ACCOUNT EDIT MODAL (admin only) =====
-let editingAccountId = null; let pendingAccountPhoto = null;
-function openAccountEditModal(accountId) {
-  if (currentUser.role !== 'admin') return;
-  const acc = TEAM.find(u => u.id === accountId); if (!acc) return;
-  editingAccountId = accountId; pendingAccountPhoto = acc.photo || null;
-  document.getElementById('account-modal-title').textContent = 'Modifier · ' + acc.name; document.getElementById('account-name-input').value = acc.name; document.getElementById('account-role-input').value = acc.role; document.getElementById('account-error').textContent = '';
-  renderAccountPhotoPreview(acc); document.getElementById('account-modal-overlay').classList.remove('hidden');
-}
-function closeAccountEditModal() { document.getElementById('account-modal-overlay').classList.add('hidden'); editingAccountId = null; }
-function closeAccountModalOutside(e) { if (e.target.id === 'account-modal-overlay') closeAccountEditModal(); }
-function renderAccountPhotoPreview(acc) {
-  const el = document.getElementById('account-photo-preview');
-  if (pendingAccountPhoto) { el.style.backgroundImage = `url(${pendingAccountPhoto})`; el.textContent = ''; } else { el.style.backgroundImage = ''; el.textContent = acc.initials; }
-}
-function onAccountPhotoSelected(event) {
-  const file = event.target.files[0]; if (!file) return;
-  if (file.size > 1.5 * 1024 * 1024) { document.getElementById('account-error').textContent = 'Image trop lourde (max 1.5 Mo).'; return; }
-  const reader = new FileReader(); reader.onload = (e) => { pendingAccountPhoto = e.target.result; document.getElementById('account-photo-preview').style.backgroundImage = `url(${pendingAccountPhoto})`; document.getElementById('account-photo-preview').textContent = ''; }; reader.readAsDataURL(file);
-}
-function removeAccountPhoto() {
-  pendingAccountPhoto = ''; const acc = TEAM.find(u => u.id === editingAccountId);
-  document.getElementById('account-photo-preview').style.backgroundImage = ''; document.getElementById('account-photo-preview').textContent = acc ? acc.initials : '';
-}
-async function saveAccountEdit() {
-  const acc = TEAM.find(u => u.id === editingAccountId); if (!acc) return;
-  const newName = document.getElementById('account-name-input').value.trim(); const newRole = document.getElementById('account-role-input').value;
-  if (!newName) { document.getElementById('account-error').textContent = 'Le nom ne peut pas être vide.'; return; }
-  acc.name = newName; acc.role = newRole; acc.photo = pendingAccountPhoto || '';
-  await saveAccountToFirestore(acc); closeAccountEditModal(); renderTeamList(); populateFilters();
-  if (currentUser.id === acc.id) { currentUser = acc; renderTopbarIdentity(); }
-}
-
-// ===== CREATE ACCOUNT (admin only) =====
-function genTempPassword() {
-  const adjectives = ['Voyage','Ocean','Clay','Bloom','Atlas','Compass'];
-  const word = adjectives[Math.floor(Math.random()*adjectives.length)];
-  const digits = Math.floor(1000 + Math.random()*9000);
-  return `${word}-${digits}`;
-}
-function openCreateAccountModal() {
-  document.getElementById('new-account-name').value = ''; document.getElementById('new-account-email').value = ''; document.getElementById('create-account-error').textContent = '';
-  document.getElementById('create-account-form').classList.remove('hidden'); document.getElementById('create-account-result').classList.add('hidden'); document.getElementById('create-account-footer').classList.remove('hidden'); document.getElementById('create-account-overlay').classList.remove('hidden');
-}
-function closeCreateAccountModal() { document.getElementById('create-account-overlay').classList.add('hidden'); }
-function closeCreateAccountModalOutside(e) { if (e.target.id === 'create-account-overlay') closeCreateAccountModal(); }
-async function submitCreateAccount() {
-  const name = document.getElementById('new-account-name').value.trim(); const email = document.getElementById('new-account-email').value.trim();
-  const errEl = document.getElementById('create-account-error'); errEl.textContent = '';
-  if (!name) { errEl.textContent = 'Le nom est requis.'; return; } if (!email || !email.includes('@')) { errEl.textContent = 'Email invalide.'; return; }
-  const submitBtn = document.getElementById('create-account-submit'); submitBtn.disabled = true; submitBtn.textContent = 'Création...';
-  const adminIdToken = localStorage.getItem('onspot_idToken'); const adminUid = localStorage.getItem('onspot_uid'); const tempPassword = genTempPassword();
-  try {
-    const res = await fetch(`${AUTH_BASE}/accounts:signUp?key=${FIREBASE_API_KEY}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: tempPassword, returnSecureToken: true }) });
-    const data = await res.json();
-    if (data.error) { errEl.textContent = data.error.message === 'EMAIL_EXISTS' ? 'Cet email est déjà utilisé.' : 'Erreur lors de la création.'; submitBtn.disabled = false; submitBtn.textContent = 'Créer le compte'; return; }
-    const newUid = data.localId; const initials = name.trim().split(/\s+/).map(w=>w[0]).join('').toUpperCase().slice(0,2) || '??';
-    const palette = ['#2B4C7E','#3B8C6E','#DCAE1D','#C9604F','#A8527A']; const color = palette[Math.floor(Math.random()*palette.length)];
-    const newAccount = { id: newUid, name, email, color, initials, role: 'agent', photo: '' };
-    await saveAccountToFirestore(newAccount); TEAM.push(newAccount);
-    localStorage.setItem('onspot_idToken', adminIdToken); localStorage.setItem('onspot_uid', adminUid);
-    document.getElementById('result-email').textContent = email; document.getElementById('result-password').textContent = tempPassword;
-    document.getElementById('create-account-form').classList.add('hidden'); document.getElementById('create-account-result').classList.remove('hidden'); document.getElementById('create-account-footer').classList.add('hidden');
-    renderTeamList(); populateFilters();
-  } catch(e) { errEl.textContent = 'Erreur réseau.'; } finally { submitBtn.disabled = false; submitBtn.textContent = 'Créer le compte'; }
-}
-function copyCreatedCredentials() {
-  const email = document.getElementById('result-email').textContent; const pass = document.getElementById('result-password').textContent;
-  navigator.clipboard.writeText(`Email : ${email}\nMot de passe temporaire : ${pass}`);
-}
-
-// ===== EVOLUTION CHART =====
-function populateChartScopeSelect() {
-  const sel = document.getElementById('chart-scope'); if (!sel) return;
-  sel.innerHTML = '<option value="team">Équipe entière</option>' + agentsOnly().map(a => `<option value="${a.id}">${a.name}</option>`).join('');
-}
-function renderEvolutionChart() {
-  const scope = document.getElementById('chart-scope').value; const period = document.getElementById('chart-period').value; const days = period === 'week' ? 7 : 30;
-  const buckets = [];
-  for (let i = days - 1; i >= 0; i--) { const d = new Date(); d.setDate(d.getDate() - i); d.setHours(0,0,0,0); buckets.push({ date: d, totalSec: 0 }); }
-  const scoped = scope === 'team' ? entries : entries.filter(e => e.agent === scope);
-  scoped.forEach(e => { const d = new Date(e.startTime); const bucket = buckets.find(b => b.date.toDateString() === d.toDateString()); if (bucket) bucket.totalSec += e.durationSec; });
-  const maxSec = Math.max(...buckets.map(b=>b.totalSec), 60); const showEvery = days > 14 ? Math.ceil(days/12) : 1;
-  const barsHtml = buckets.map((b,i) => {
-    const heightPct = Math.max((b.totalSec / maxSec) * 100, b.totalSec>0?3:0); const showLabel = i % showEvery === 0 || i === buckets.length-1; const label = showLabel ? b.date.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit'}) : '';
-    return `<div class="evo-bar-col"><span class="evo-bar-value">${b.totalSec>0?fmtDuration(b.totalSec):''}</span><div class="evo-bar" style="height:${heightPct}%"></div><span class="evo-bar-label">${label}</span></div>`;
-  }).join('');
-  document.getElementById('evolution-chart').innerHTML = `<div class="evo-bars">${barsHtml}</div>`;
-}
-
-// --- LOGIQUE INBOUND TIME PICKER ---
-let pickerHour = "00", pickerMin = "00";
-let isScrolling = false;
-
-function initTimePickerUI() {
-  const hCol = document.getElementById('col-hours'); const mCol = document.getElementById('col-mins');
-  let hHtml = '<div class="time-spacer"></div>', mHtml = '<div class="time-spacer"></div>';
-  for(let i=0; i<24; i++) hHtml += `<div class="time-opt" data-val="${String(i).padStart(2,'0')}" onclick="clickTimeOpt('col-hours', ${i})">${String(i).padStart(2,'0')}</div>`;
-  for(let i=0; i<60; i++) mHtml += `<div class="time-opt" data-val="${String(i).padStart(2,'0')}" onclick="clickTimeOpt('col-mins', ${i})">${String(i).padStart(2,'0')}</div>`;
-  hHtml += '<div class="time-spacer"></div>'; mHtml += '<div class="time-spacer"></div>';
-  hCol.innerHTML = hHtml; mCol.innerHTML = mHtml;
-}
-
-function toggleTimePicker(e) {
-  e?.stopPropagation();
-  const drop = document.getElementById('time-dropdown');
-  drop.classList.toggle('hidden');
-  if (!drop.classList.contains('hidden')) syncPickerScroll();
-}
-
-function handleTimeScroll(col, type) {
-  if (isScrolling) return;
-  const opts = col.querySelectorAll('.time-opt');
-  const center = col.scrollTop + col.clientHeight / 2;
-  let closest = null, minDiff = Infinity;
-  opts.forEach(opt => {
-    const optCenter = opt.offsetTop + opt.offsetHeight / 2;
-    const diff = Math.abs(center - optCenter);
-    if (diff < minDiff) { minDiff = diff; closest = opt; }
-  });
-  if (closest) {
-    opts.forEach(o => o.classList.remove('active')); closest.classList.add('active');
-    if (type === 'h') pickerHour = closest.dataset.val; else pickerMin = closest.dataset.val;
-    document.getElementById('inbound-time-input').value = `${pickerHour}:${pickerMin}`;
-  }
-}
-
-function syncPickerScroll() {
-  isScrolling = true;
-  const hCol = document.getElementById('col-hours'); const mCol = document.getElementById('col-mins');
-  const hTarget = hCol.querySelector(`[data-val="${pickerHour}"]`); const mTarget = mCol.querySelector(`[data-val="${pickerMin}"]`);
-  if (hTarget) hCol.scrollTop = hTarget.offsetTop - hCol.clientHeight/2 + hTarget.offsetHeight/2;
-  if (mTarget) mCol.scrollTop = mTarget.offsetTop - mCol.clientHeight/2 + mTarget.offsetHeight/2;
-  setTimeout(() => isScrolling = false, 50);
-}
-
-function clickTimeOpt(colId, index) {
-  const col = document.getElementById(colId);
-  const target = col.querySelectorAll('.time-opt')[index];
-  col.scrollTo({ top: target.offsetTop - col.clientHeight/2 + target.offsetHeight/2, behavior: 'smooth' });
-}
-
-// --- LOGIQUE EMOJI PICKER ---
-const QUICK_EMOJIS = ['✈️','🏨','🚗','🚆','🎫','📞','💬','📧','✅','❌','⚠️','📝','💼','🩺','🔍','💳','💡','🎉'];
-
-function initEmojiPicker() {
-  const picker = document.getElementById('emoji-picker');
-  if (!picker) return;
-  picker.innerHTML = QUICK_EMOJIS.map(e => `<button class="emoji-btn" type="button" onclick="insertEmoji('${e}')">${e}</button>`).join('');
-}
-
-function toggleEmojiPicker(e) {
-  e?.stopPropagation();
-  document.getElementById('emoji-picker').classList.toggle('hidden');
-}
-
-function insertEmoji(emoji) {
-  const input = document.getElementById('new-treatment-input');
-  input.value += emoji;
-  input.focus();
-  document.getElementById('emoji-picker').classList.add('hidden');
-}
-
-// Fermer les popups (Temps et Emojis) au clic à l'extérieur
-document.addEventListener('click', (e) => {
-  const timeDrop = document.getElementById('time-dropdown');
-  if (timeDrop && !timeDrop.classList.contains('hidden') && !e.target.closest('#time-picker-container')) {
-    timeDrop.classList.add('hidden');
-  }
-  
-  const emojiDrop = document.getElementById('emoji-picker');
-  if (emojiDrop && !emojiDrop.classList.contains('hidden') && !e.target.closest('.treatment-add-row')) {
-    emojiDrop.classList.add('hidden');
-  }
-});
-
-initTimePickerUI();
-initEmojiPicker();
-
-async function initApp() {
-  await loadAccountsFromFirestore();
-  await loadDMT();
-  await loadTreatmentsFromFirestore();
-  
-  if (!(await tryRestoreSession())) {
-    document.getElementById('login-screen').style.display = 'flex';
-  }
-}
-
-// Lancement de l'application
-initApp();
-</script>
+        // Lancement au chargement
+        window.onload = () => app.init();
+    </script>
 </body>
 </html>
