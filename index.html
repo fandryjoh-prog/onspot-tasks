@@ -55,7 +55,7 @@
 .theme-toggle-btn:hover{border-color:var(--ocean);color:var(--ocean)}
 body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;transition:background .2s,color .2s}
 
-/* LOGIN */
+/* LOGIN (STRICTEMENT CONFORME A TON IMAGE ORIGINAL) */
 #login-screen{position:fixed;inset:0;background:var(--ocean-deep);display:flex;align-items:center;justify-content:center;z-index:100}
 .login-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:44px;width:360px}
 .login-logo{font-family:var(--display);font-weight:600;font-size:13px;letter-spacing:1px;color:var(--ocean);margin-bottom:10px}
@@ -72,14 +72,27 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 /* APP */
 #app{display:none}
 .topbar{height:56px;background:var(--ocean);border-bottom:1px solid var(--ocean-deep);display:flex;align-items:center;padding:0 24px;gap:16px;position:sticky;top:0;z-index:50}
-.topbar-logo{font-family:var(--display);font-size:16px;font-weight:600;letter-spacing:-0.2px;color:#fff}
+.topbar-logo{font-family:var(--display);font-size:16px;font-weight:600;letter-spacing:-0.2px;color:#fff; display:flex; align-items:center; gap:8px;}
+.topbar-logo img{height:26px; border-radius:4px; background:white; padding:2px;}
 .topbar-sep{color:#5A7AA8;font-size:18px}
 .topbar-title{font-size:11px;color:#B9CCE6;font-weight:600;text-transform:uppercase;letter-spacing:1px;border-left:1px solid #4A6A99;padding-left:14px}
 .topbar-right{margin-left:auto;display:flex;align-items:center;gap:12px}
 .user-pill{display:flex;align-items:center;gap:8px;padding:6px 12px;border-radius:99px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);font-size:12px;font-weight:500;color:#fff;cursor:pointer;}
 .btn{padding:8px 16px;border-radius:9px;border:none;cursor:pointer;font-family:var(--font);font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:7px;transition:all .15s}
-.btn-ghost{background:rgba(255,255,255,.08);color:#D8E2EE;border:1px solid rgba(255,255,255,.15)}
-.btn-ghost:hover{color:#fff;background:rgba(255,255,255,.16)}
+.btn-ghost{background:rgba(255,255,255,.08);color:#D8E2EE;border:1px solid rgba(255,255,255,.16)}
+.btn-refresh{background:var(--surface2);color:var(--ocean);border:1px solid var(--border);}
+.btn-refresh:hover{background:var(--ocean-dim);}
+
+/* LIVE DASHBOARD PERMANENT (SUPERVISEUR/ADMIN) */
+.live-header-panel{margin:20px 24px 0;background:var(--ocean-deep);border-radius:var(--radius);padding:20px;color:white;}
+.live-header-title{font-family:var(--display);font-size:18px;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:10px;}
+.live-pulse-dot{width:10px;height:10px;background:var(--green);border-radius:50%;box-shadow:0 0 8px var(--green);animation:pulse-green 1.5s infinite;}
+.live-header-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));gap:12px;}
+.live-agent-card{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:12px;}
+.live-agent-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.live-agent-name{font-weight:600;font-size:13px;}
+.live-agent-time{font-family:var(--mono);font-size:12px;color:#B9CCE6;font-weight:600;}
+.live-agent-task{font-size:12px;opacity:0.9;}
 
 /* TIMER BANNER */
 .timer-banner{margin:20px 24px 0;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px 26px;display:flex;align-items:center;gap:22px}
@@ -98,19 +111,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .timer-btn-stop{background:var(--ocean);color:#fff;box-shadow:0 0 0 3px var(--clay-dim)}
 .timer-btn-stop:hover{transform:scale(1.04)}
 .timer-btn-stop::before{content:'';position:absolute;inset:-6px;border-radius:50%;border:2.5px solid var(--clay);border-top-color:transparent;animation:pulse-spin 2.2s linear infinite}
-@keyframes pulse-spin{to{transform:rotate(360deg)}}
-
-/* LIVE DASHBOARD PERMANENT (SUPERVISEUR/ADMIN) */
-.live-header-panel{margin:20px 24px 0;background:var(--ocean-deep);border-radius:var(--radius);padding:20px;color:white;}
-.live-header-title{font-family:var(--display);font-size:18px;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:10px;}
-.live-pulse-dot{width:10px;height:10px;background:var(--green);border-radius:50%;box-shadow:0 0 8px var(--green);animation:pulse-green 1.5s infinite;}
-.live-header-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));gap:12px;}
-.live-agent-card{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:12px;}
-.live-agent-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
-.live-agent-name{font-weight:600;font-size:13px;}
-.live-agent-time{font-family:var(--mono);font-size:12px;color:#B9CCE6;font-weight:600;}
-.live-agent-task{font-size:12px;opacity:0.9;}
-@keyframes pulse-green { 0% { box-shadow: 0 0 0 0 rgba(59,140,110,0.6); } 70% { box-shadow: 0 0 0 6px rgba(59,140,110,0); } 100% { box-shadow: 0 0 0 0 rgba(59,140,110,0); } }
 
 /* QUICK START */
 .quickstart{display:flex;gap:8px;margin:14px 24px 0;flex-wrap:wrap}
@@ -123,11 +123,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px}
 .stat-label{font-size:11px;color:var(--text2);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px;font-weight:600}
 .stat-value{font-family:var(--display);font-size:25px;font-weight:600;letter-spacing:-0.3px;color:var(--text)}
-.stat-sub{font-size:11px;color:var(--text2);margin-top:4px}
 
-/* ACCORDEON VUE GLOBALE EQUIPE */
+/* ACCORDEON EQUIPE (FIXE - PLUS DE CLASSE HIDDEN SUR LA GRILLE) */
 .team-accordion{margin:20px 24px 0;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
-.team-summary{padding:16px 20px;font-weight:600;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;color:var(--ocean);background:var(--ocean-dim);border-bottom:1px solid var(--border);outline:none;}
+.team-summary{padding:16px 20px;font-weight:600;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;color:var(--ocean);background:var(--ocean-dim);border-bottom:1px solid var(--border);outline:none;user-select:none;}
 .team-summary::-webkit-details-marker{display:none;}
 .team-summary::after{content:'▼';font-size:10px;}
 .team-accordion[open] .team-summary::after{content:'▲';}
@@ -148,7 +147,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .entries-table table{width:100%;border-collapse:collapse;min-width:800px;}
 .entries-table th{font-size:10px;font-weight:700;color:var(--text2);text-align:left;padding:11px 16px;border-bottom:1px solid var(--border);text-transform:uppercase;letter-spacing:.6px;background:var(--surface2)}
 .entries-table td{font-size:13px;padding:12px 16px;border-bottom:1px solid var(--border)}
-.entries-table tr:last-child td{border-bottom:none}
 .entries-table tr:hover td{background:var(--surface2)}
 .source-tag{display:inline-flex;align-items:center;gap:5px;font-size:11px;padding:3px 8px;border-radius:6px;font-weight:600}
 .src-inbound{background:var(--red-dim);color:var(--red)}
@@ -164,7 +162,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .icon-btn:hover{background:var(--border);color:var(--text)}
 .empty{padding:48px;text-align:center;color:var(--text3);font-size:13px}
 
-/* TABLE FILTERS AVANCES (SELECT INTERACTIFS) */
+/* TABLE FILTERS (OPTIONS DROPDOWN SELECT) */
 .filter-row th { padding: 8px 16px; background: var(--surface); border-bottom: 2px solid var(--border); }
 .filter-input-tbl { width: 100%; padding: 6px 8px; border: 1px solid var(--border); border-radius: 4px; font-size: 11px; outline: none; background: var(--surface2); color: var(--text); font-family: var(--font); }
 .filter-input-tbl:focus { border-color: var(--ocean); }
@@ -176,15 +174,12 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .modal-title{font-family:var(--display);font-size:18px;font-weight:600;color:var(--text)}
 .modal-close{background:transparent;border:none;color:var(--text2);cursor:pointer;font-size:20px;padding:4px}
 .modal-body{padding:20px 24px}
-.modal-overlay:not(.hidden) .modal-body { display: block !important; } /* Securise l'affichage interne */
 .modal-footer{padding:16px 24px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end}
 .profile-photo-row{display:flex;align-items:center;gap:16px;margin-bottom:20px}
 .dmt-row{display:flex;align-items:center;gap:10px;padding:10px 18px;border-bottom:1px solid var(--border)}
 .dmt-label{flex:1;font-size:13px;color:var(--text)}
 .dmt-input{width:90px;flex:none}
 .dmt-unit{font-size:11px;color:var(--text2)}
-.dur-warn{color:#B8860B;font-weight:600}
-.dur-over{color:var(--red);font-weight:700}
 .chart-toolbar{display:flex;gap:8px;padding:14px 18px;border-bottom:1px solid var(--border)}
 .evolution-chart{padding:20px 18px}
 .evo-bars{display:flex;align-items:flex-end;gap:8px;height:140px;padding:0 4px}
@@ -196,7 +191,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .btn-primary{background:var(--ocean);color:#fff;border:none}
 .btn-primary:hover{background:var(--ocean-deep)}
 
-/* ADMINISTRATION PANEL */
+/* ADMIN PANELS */
 .hidden{display:none!important}
 .role-badge{font-size:11px;font-weight:600;padding:4px 10px;border-radius:99px;background:var(--amber-dim,#FCF1D6);color:#8A6A0F;margin-left:8px;letter-spacing:.2px}
 .admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
@@ -223,7 +218,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .role-banner-metric-value{font-family:var(--display,inherit);font-weight:700;font-size:24px;color:var(--ocean,#2B4C7E);letter-spacing:-0.5px}
 .role-banner-metric-label{font-size:10px;color:var(--text2,#6B7C93);text-transform:uppercase;letter-spacing:.4px;margin-top:2px}
 .role-banner-link{background:none;border:none;color:var(--ocean,#2B4C7E);font-size:11px;font-weight:600;cursor:pointer;font-family:var(--font)}
-.team-row-timer{font-family:var(--mono,monospace);font-size:12px;color:var(--ocean,#2B4C7E)}
 </style>
 </head>
 <body>
@@ -248,12 +242,12 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 
 <div id="app">
   <div class="topbar">
-    <div class="topbar-logo">Task'in</div>
+    <div class="topbar-logo"><img src="image_1a1b24.jpg" alt="Task'in"> Task'in</div>
     <div class="topbar-sep">/</div>
     <div class="topbar-title">Time Tracker</div>
     <span class="role-badge hidden" id="role-badge"></span>
     <div class="topbar-right">
-      <button class="btn btn-ghost" onclick="refreshApp()">↻ Actualiser</button>
+      <button class="btn btn-refresh" onclick="refreshApp()">↻ Actualiser</button>
       <button class="theme-toggle-btn" id="theme-toggle" onclick="toggleTheme()" title="Changer de thème">☾</button>
       <div class="user-pill" onclick="openProfileModal()" style="cursor:pointer"><div class="mini-avatar" id="topbar-avatar"></div><span id="topbar-name"></span></div>
       <button class="btn btn-ghost" onclick="logout()">Déconnexion</button>
@@ -329,14 +323,44 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   <details class="team-accordion hidden" id="team-accordion-view">
     <summary class="team-summary">Vue Globale Équipe & KPIs</summary>
     <div style="padding: 20px;">
-      <div class="stats-grid" id="stats-grid-supervisor" style="grid-template-columns:repeat(4,1fr); padding-bottom:20px; border-bottom:1px solid var(--border); margin:0;">
-        <div class="stat-card"><div class="stat-label">Total Équipe (Jour)</div><div class="stat-value" id="sup-s-total" style="color:var(--ocean)">0h00</div></div>
-        <div class="stat-card"><div class="stat-label">DMT Global</div><div class="stat-value" id="sup-s-dmt" style="color:var(--ocean)">0min</div></div>
-        <div class="stat-card"><div class="stat-label">FRT Global</div><div class="stat-value" id="sup-s-frt" style="color:var(--clay)">0min</div></div>
-        <div class="stat-card"><div class="stat-label">Total Tâches</div><div class="stat-value" id="sup-s-count" style="color:var(--text2)">0</div></div>
+      <div class="stats-grid" id="stats-grid-supervisor" style="grid-template-columns:repeat(4,1fr); margin:0;">
+        <div class="stat-card">
+          <div class="stat-label">Total Équipe (Jour)</div>
+          <div class="stat-value" id="sup-s-total" style="color:var(--ocean)">0h00</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">DMT Global</div>
+          <div class="stat-value" id="sup-s-dmt" style="color:var(--ocean)">0min</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">FRT Global</div>
+          <div class="stat-value" id="sup-s-frt" style="color:var(--clay)">0min</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Total Tâches</div>
+          <div class="stat-value" id="sup-s-count" style="color:var(--text2)">0</div>
+        </div>
       </div>
     </div>
   </details>
+
+  <div class="stats-grid hidden" id="stats-grid-admin-home" style="grid-template-columns:repeat(3,1fr)">
+    <div class="stat-card">
+      <div class="stat-label">Total semaine</div>
+      <div class="stat-value" id="adm-home-total" style="color:var(--ocean)">0h00</div>
+      <div class="stat-sub">toute l'équipe</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Entrées enregistrées</div>
+      <div class="stat-value" id="adm-home-entries" style="color:var(--ocean)">0</div>
+      <div class="stat-sub">au total</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Agents actifs (jour)</div>
+      <div class="stat-value" id="adm-home-active" style="color:var(--ocean)">0</div>
+      <div class="stat-sub">sur 5</div>
+    </div>
+  </div>
 
   <div class="tabs">
     <button class="tab agent-only active" onclick="switchTab('today',this)">Aujourd'hui</button>
@@ -347,95 +371,68 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   </div>
 
   <div class="content">
-    <div class="toolbar" id="main-toolbar">
-      <select class="filter-select hidden" id="filter-agent" onchange="renderAll()">
-        <option value="">Tous les agents</option>
-      </select>
-      <button class="btn btn-ghost hidden" id="btn-export" onclick="exportCSV()">↓ Exporter CSV</button>
-      <span class="count-badge" id="entry-count">0 entrées</span>
-    </div>
+    <div id="table-view-container">
+      <div class="toolbar">
+        <select class="filter-select" id="filter-source" onchange="renderAll()">
+          <option value="">Toutes sources</option>
+          <option value="inbound">Appel entrant</option>
+          <option value="outbound">Appel sortant</option>
+          <option value="chat">Crisp Chat</option>
+          <option value="email">Crisp Email</option>
+          <option value="ticket">Ticket / Manuel</option>
+        </select>
+        <select class="filter-select" id="filter-agent-toolbar" onchange="renderAll()">
+          <option value="">Tous les agents</option>
+        </select>
+        <select class="filter-select" id="filter-treatment" onchange="renderAll()">
+          <option value="">Tous traitements</option>
+        </select>
+        <input class="search-input" id="search-input" placeholder="Rechercher..." oninput="onSearchInput()">
+        <button class="btn btn-ghost hidden" id="btn-export" onclick="exportCSV()">↓ Exporter CSV</button>
+        <span class="count-badge" id="entry-count">0 entrées</span>
+      </div>
 
-    <div class="entries-table" id="main-table">
-      <table>
-        <thead>
-          <tr>
-            <th width="12%">Inbound Time</th>
-            <th width="12%">Start Time</th>
-            <th width="15%">Source</th>
-            <th width="35%">Description / Traitement</th>
-            <th width="15%">Agent</th>
-            <th width="10%">Durée</th>
-            <th width="5%" class="col-actions hidden"></th>
-          </tr>
-          <tr class="filter-row hidden" id="table-filters">
-            <th><input type="text" class="filter-input-tbl" id="f-inb" placeholder="Filtrer..." oninput="onSearchInput()"></th>
-            <th><input type="text" class="filter-input-tbl" id="f-start" placeholder="Filtrer..." oninput="onSearchInput()"></th>
-            <th>
-              <select id="f-src" class="filter-input-tbl" onchange="onSearchInput()">
-                <option value="">Toutes sources</option>
-                <option value="inbound">📞↘ Inbound</option>
-                <option value="outbound">📞↗ Outbound</option>
-                <option value="chat">💬 Crisp Chat</option>
-                <option value="email">✉️ Crisp Email</option>
-                <option value="ticket">🎫 Ticket/Manuel</option>
-              </select>
-            </th>
-            <th><input type="text" class="filter-input-tbl" id="f-desc" placeholder="Filtrer..." oninput="onSearchInput()"></th>
-            <th>
-              <select id="f-agt" class="filter-input-tbl" onchange="onSearchInput()">
-                <option value="">Tous les agents</option>
-              </select>
-            </th>
-            <th><input type="text" class="filter-input-tbl" id="f-dur" placeholder="Filtrer..." oninput="onSearchInput()"></th>
-            <th class="col-actions hidden"></th>
-          </tr>
-        </thead>
-        <tbody id="entries-body"></tbody>
-      </table>
+      <div class="entries-table">
+        <table>
+          <thead>
+            <tr>
+              <th width="12%">Inbound Time</th>
+              <th width="12%">Start Time</th>
+              <th width="15%">Source</th>
+              <th width="35%">Description / Traitement</th>
+              <th width="15%">Agent</th>
+              <th width="10%">Durée</th>
+              <th width="5%" class="col-actions hidden"></th>
+            </tr>
+            <tr class="filter-row hidden" id="table-filters">
+              <th><input type="text" class="filter-input-tbl" id="f-inb" placeholder="Filtrer..." oninput="onSearchInput()"></th>
+              <th><input type="text" class="filter-input-tbl" id="f-start" placeholder="Filtrer..." oninput="onSearchInput()"></th>
+              <th>
+                <select class="filter-input-tbl" id="f-src" onchange="onSearchInput()">
+                  <option value="">Toutes sources</option>
+                  <option value="inbound">📞↘ Inbound</option>
+                  <option value="outbound">📞↗ Outbound</option>
+                  <option value="chat">💬 Crisp Chat</option>
+                  <option value="email">✉️ Crisp Email</option>
+                  <option value="ticket">🎫 Ticket/Manuel</option>
+                </select>
+              </th>
+              <th><input type="text" class="filter-input-tbl" id="f-desc" placeholder="Filtrer..." oninput="onSearchInput()"></th>
+              <th><select class="filter-input-tbl" id="f-agt" onchange="onSearchInput()"><option value="">Tous les agents</option></select></th>
+              <th><input type="text" class="filter-input-tbl" id="f-dur" placeholder="Filtrer..." oninput="onSearchInput()"></th>
+              <th class="col-actions hidden"></th>
+            </tr>
+          </thead>
+          <tbody id="entries-body"></tbody>
+        </table>
+      </div>
     </div>
 
     <div id="team-live-panel" class="hidden">
       <div class="admin-card" style="margin-bottom:16px">
         <div class="admin-card-header">
-          <h3>Équipe en direct (Historique Sup)</h3>
-          <span class="count-badge" id="team-live-count"></span>
+          <h3>DMT cibles par source</h3>
         </div>
-        <div id="team-live-list"></div>
-      </div>
-      <div class="admin-card">
-        <div class="admin-card-header"><h3>Extraction globale</h3></div>
-        <div style="padding:14px 18px;display:flex;gap:8px">
-          <button class="btn btn-ghost" onclick="exportCSV()">↓ Export CSV</button>
-        </div>
-      </div>
-    </div>
-
-    <div id="admin-panel" class="hidden">
-      <div class="admin-grid">
-        <div class="admin-card">
-          <div class="admin-card-header">
-            <h3>Comptes équipe</h3>
-            <span class="count-badge" id="team-count">0 comptes</span>
-          </div>
-          <div style="padding:14px 18px;"><button class="btn btn-primary" style="width:100%" onclick="openCreateAccountModal()">+ Ajouter un compte</button></div>
-          <div id="team-list"></div>
-        </div>
-        <div class="admin-card">
-          <div class="admin-card-header">
-            <h3>Types de traitement</h3>
-            <span class="count-badge" id="treatment-count">0 types</span>
-          </div>
-          <div class="treatment-add-row" style="position:relative; align-items:center;">
-            <button class="btn btn-ghost" onclick="toggleEmojiPicker(event)" title="Ajouter un emoji" style="padding: 8px 10px; font-size: 16px;">😀</button>
-            <input class="form-input" id="new-treatment-input" placeholder="Nouveau type (ex: ✈️ Vols)..." onkeydown="if(event.key==='Enter') addTreatmentType()">
-            <button class="btn btn-primary" onclick="addTreatmentType()">Ajouter</button>
-            <div class="emoji-picker hidden" id="emoji-picker" onclick="event.stopPropagation()"></div>
-          </div>
-          <div id="treatment-list"></div>
-        </div>
-      </div>
-      <div class="admin-card" style="margin-top:16px">
-        <div class="admin-card-header"><h3>Objectifs DMT par source</h3></div>
         <div class="dmt-row">
           <span class="dmt-label">Appels (Inbound/Outbound)</span>
           <input class="form-input dmt-input" id="dmt-ringover" type="number" min="0">
@@ -453,10 +450,57 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
         </div>
         <div style="padding:12px 18px"><button class="btn btn-primary" onclick="saveDMT()">Enregistrer les DMT</button></div>
       </div>
+
+      <div class="admin-card" style="margin-bottom:16px">
+        <div class="admin-card-header">
+          <h3>Équipe en direct</h3>
+          <span class="count-badge" id="team-live-count"></span>
+        </div>
+        <div id="team-live-list"></div>
+      </div>
+
+      <div class="admin-card">
+        <div class="admin-card-header"><h3>Extraction globale</h3></div>
+        <div style="padding:14px 18px;display:flex;gap:8px">
+          <button class="btn btn-ghost" onclick="exportCSV()">↓ Export CSV</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="admin-panel" class="hidden">
+      <div class="admin-grid" id="admin-secure-elements">
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <h3>Comptes équipe</h3>
+            <span class="count-badge" id="team-count">0 comptes</span>
+          </div>
+          <div style="padding:14px 18px;"><button class="btn btn-primary" style="width:100%" onclick="openCreateAccountModal()">+ Ajouter un compte</button></div>
+          <div id="team-list"></div>
+        </div>
+        
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <h3>Types de traitement</h3>
+            <span class="count-badge" id="treatment-count">0 types</span>
+          </div>
+          <div class="treatment-add-row" style="position:relative; align-items:center;">
+            <button class="btn btn-ghost" onclick="toggleEmojiPicker(event)" title="Ajouter un emoji" style="padding: 8px 10px; font-size: 16px;">😀</button>
+            <input class="form-input" id="new-treatment-input" placeholder="Nouveau type (ex: ✈️ Vols)..." onkeydown="if(event.key==='Enter') addTreatmentType()">
+            <button class="btn btn-primary" onclick="addTreatmentType()">Ajouter</button>
+            <div class="emoji-picker hidden" id="emoji-picker" onclick="event.stopPropagation()"></div>
+          </div>
+          <div id="treatment-list"></div>
+        </div>
+      </div>
+
       <div class="admin-card" style="margin-top:16px">
-        <div class="admin-card-header"><h3>Courbe d'évolution</h3></div>
+        <div class="admin-card-header">
+          <h3>Courbe d'évolution</h3>
+        </div>
         <div class="chart-toolbar">
-          <select class="filter-select" id="chart-scope" onchange="renderEvolutionChart()"><option value="team">Équipe entière</option></select>
+          <select class="filter-select" id="chart-scope" onchange="renderEvolutionChart()">
+            <option value="team">Équipe entière</option>
+          </select>
           <select class="filter-select" id="chart-period" onchange="renderEvolutionChart()">
             <option value="week">Cette semaine</option>
             <option value="month">Ce mois</option>
@@ -465,6 +509,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
         <div id="evolution-chart" class="evolution-chart"></div>
       </div>
     </div>
+
   </div>
 </div>
 
@@ -581,16 +626,17 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     <div class="modal-body">
       <div class="form-row">
         <label class="form-label">Source</label>
-        <div class="source-picker" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <div class="source-picker">
           <div class="source-opt opt-inbound selected" id="src-inbound" onclick="selectSource('inbound')"><span>📞↘</span> Appel entrant</div>
           <div class="source-opt opt-outbound" id="src-outbound" onclick="selectSource('outbound')"><span>📞↗</span> Appel sortant</div>
           <div class="source-opt opt-chat" id="src-chat" onclick="selectSource('chat')"><span>💬</span> Crisp Chat</div>
           <div class="source-opt opt-email" id="src-email" onclick="selectSource('email')"><span>✉️</span> Crisp Email</div>
-          <div class="source-opt opt-ticket" id="src-ticket" onclick="selectSource('ticket')" style="grid-column: span 2"><span>🎫</span> Traitement ticket</div>
+          <div class="source-opt opt-ticket" id="src-ticket" onclick="selectSource('ticket')"><span>🎫</span> Traitement ticket</div>
         </div>
       </div>
+      
       <div class="form-row" id="time-picker-container" style="position:relative;">
-        <label class="form-label">Inbound time (Heure d'arrivée)</label>
+        <label class="form-label">Inbound time (Heure d'arrivée de la requête)</label>
         <input class="form-input" id="inbound-time-input" readonly onclick="toggleTimePicker(event)" style="cursor:pointer; font-family:var(--mono);" placeholder="--:--">
         <div class="time-dropdown hidden" id="time-dropdown" onclick="event.stopPropagation()">
           <div class="time-col" id="col-hours" onscroll="handleTimeScroll(this, 'h')"></div>
@@ -598,9 +644,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
           <div class="time-col" id="col-mins" onscroll="handleTimeScroll(this, 'm')"></div>
         </div>
       </div>
+      
       <div class="form-row">
-        <label class="form-label">Description / Ticket</label>
-        <input class="form-input" id="f-desc" placeholder="Ex: Ticket #68554 ou description de la tâche">
+        <label class="form-label">Description / Référence</label>
+        <input class="form-input" id="f-desc" placeholder="Ex: Ticket #68554 ou détails...">
       </div>
     </div>
     <div class="modal-footer">
@@ -611,6 +658,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 </div>
 
 <script>
+// ==========================================
+// MOTEUR LOGIQUE JAVASCRIPT COMPLET
+// ==========================================
 const FIREBASE_PROJECT_ID = "trackingcallro";
 const FIREBASE_API_KEY = "AIzaSyD1Weyc2zdtdaO7JgrMRskXZaDOGTIbyqc";
 const BASE_URL = `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/databases/(default)/documents`;
@@ -620,11 +670,11 @@ let TEAM = [];
 const SOURCE_DMT_DEFAULT = { ringover: 300, crisp: 480, manual: 600 };
 let sourceDMT = {...SOURCE_DMT_DEFAULT};
 
-// EMOJIS RESTAURÉS CORRIGÉS
+// EMOJIS RESTAURÉS SUR LES TRAITEMENTS PAR DEFAUT
 const TREATMENT_TYPES_DEFAULT = [
-  '✅ Confirmation','🎫 Reservations','💡 Conseils/suggestions','🔄 Follow-up','🔍 Lost and found','🚗 Car rental',
-  '➕ Additionnels services','🚆 Train','🩺 Health','🎡 Activities','🚌 Transferts','🤝 DMC','🗺️ Itinerary',
-  '🏨 Accommodation','🧳 Luggage','✈️ Flights','👋 Welcome call','🚪 Goodbye call'
+  '✅ Confirmation','🎫 Reservations','💡 Conseils/suggestions','🔄 Follow-up','🧳 Lost and found','🚗 Car rental',
+  '➕ Additionnels services','🚆 Train','🩺 Health','🏂 Activities','🚐 Transferts','🌍 DMC','🗺️ Itinerary',
+  '🏨 Accommodation','Luggage','✈️ Flights','👋 Welcome call','👋 Goodbye call'
 ];
 let customTreatmentTypes = [...TREATMENT_TYPES_DEFAULT];
 
@@ -637,7 +687,6 @@ let selectedSource = 'inbound';
 let currentView = 'today';
 let searchTimeout = null;
 
-// ======================= APPLICATION ENGINE =======================
 async function doLogin() {
   const email = document.getElementById('login-email').value.trim();
   const password = document.getElementById('login-password').value;
@@ -655,7 +704,7 @@ async function doLogin() {
     localStorage.setItem('onspot_idToken', data.idToken);
     localStorage.setItem('onspot_uid', data.localId);
     const user = await fetchAccountProfile(data.localId);
-    if (!user) { err.textContent = "Ce compte n'a pas encore de profil. Contacte un admin."; return; }
+    if (!user) { err.textContent = "Ce compte n'a pas de profil valide. Contacte l'admin."; return; }
     enterApp(user);
   } catch(e) { err.textContent = 'Erreur réseau.'; }
 }
@@ -675,63 +724,132 @@ async function fetchAccountProfile(uid) {
   } catch(e) { return null; }
 }
 
-function enterApp(user) {
+async function enterApp(user) {
   currentUser = user;
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('app').style.display = 'block';
-  applyUserTheme(); renderTopbarIdentity(); applyRoleUI(); checkActiveTimer(); refreshApp();
+  applyUserTheme(); 
+  renderTopbarIdentity(); 
+  
+  // CHARGEMENT SYNCHRONE DES COMPTES AVANT TOUT RENDER HISTORIQUE
+  await loadAccountsFromFirestore();
+  populateFilters();
+  await loadDMT();
+  await loadTreatmentsFromFirestore();
+  
+  applyRoleUI(); 
+  checkActiveTimer(); 
+  await loadEntries();
 }
 
+function renderTopbarIdentity() {
+  const av = document.getElementById('topbar-avatar');
+  if (currentUser.photo) {
+    av.style.backgroundImage = `url(${currentUser.photo})`; av.style.backgroundSize = 'cover';
+    av.style.backgroundPosition = 'center'; av.textContent = '';
+  } else {
+    av.style.backgroundImage = ''; av.textContent = currentUser.initials;
+    av.style.background = currentUser.color+'20'; av.style.color = currentUser.color;
+  }
+  document.getElementById('topbar-name').textContent = currentUser.name;
+}
+
+function applyUserTheme() {
+  const saved = localStorage.getItem('onspot_theme_' + currentUser.id) || 'light';
+  document.documentElement.setAttribute('data-theme', saved);
+  updateThemeToggleIcon(saved);
+}
+function toggleTheme() {
+  if (!currentUser) return;
+  const current = document.documentElement.getAttribute('data-theme') || 'light';
+  const next = current === 'light' ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('onspot_theme_' + currentUser.id, next);
+  updateThemeToggleIcon(next);
+}
+function updateThemeToggleIcon(theme) {
+  const btn = document.getElementById('theme-toggle');
+  if (btn) btn.textContent = theme === 'dark' ? '☀' : '☾';
+}
+
+async function tryRestoreSession() {
+  const idToken = localStorage.getItem('onspot_idToken');
+  const uid = localStorage.getItem('onspot_uid');
+  if (!idToken || !uid) return false;
+  const user = await fetchAccountProfile(uid);
+  if (!user) { localStorage.removeItem('onspot_idToken'); localStorage.removeItem('onspot_uid'); return false; }
+  await enterApp(user);
+  return true;
+}
+
+function logout() {
+  if (activeTimer) { alert('Arrête le timer en cours avant de te déconnecter.'); return; }
+  localStorage.removeItem('onspot_idToken'); localStorage.removeItem('onspot_uid');
+  window.location.reload();
+}
+
+// DROPDOWNS S'ACTUALISENT SANS ERREURS
+function populateFilters() {
+  const sel = document.getElementById('filter-agent-toolbar');
+  if(sel) sel.innerHTML = '<option value="">Tous les agents</option>' + TEAM.filter(u=>u.role==='agent').map(u=>`<option value="${u.id}">${u.name}</option>`).join('');
+  
+  const tblAgt = document.getElementById('f-agt');
+  if(tblAgt) tblAgt.innerHTML = '<option value="">Tous les agents</option>' + TEAM.map(u=>`<option value="${u.id}">${u.name}</option>`).join('');
+  
+  const tSel = document.getElementById('filter-treatment');
+  if (tSel) tSel.innerHTML = '<option value="">Tous traitements</option>' + customTreatmentTypes.map(t=>`<option value="${t}">${t}</option>`).join('');
+}
+
+// LOGIQUE DES ACCES ET FILTRES SECURISES AGENTS
 function applyRoleUI() {
   const role = currentUser.role;
-  const isSupAdmin = role === 'supervisor' || role === 'admin';
+  const isSupAdmin = (role === 'supervisor' || role === 'admin');
   const badge = document.getElementById('role-badge');
-  const app = document.getElementById('app');
-  app.className = 'role-' + role;
-
+  
   if (role === 'agent') badge.textContent = 'Agent';
-  if (role === 'supervisor') badge.textContent = 'Superviseur · Vue élargie';
-  if (role === 'admin') badge.textContent = 'Admin · Contrôle total';
+  if (role === 'supervisor') badge.textContent = 'Superviseur';
+  if (role === 'admin') badge.textContent = 'Admin';
   badge.classList.toggle('hidden', role === 'agent');
 
-  document.getElementById('tab-team').classList.toggle('hidden', role === 'agent');
+  document.querySelectorAll('.agent-only').forEach(el => el.classList.toggle('hidden', role !== 'agent'));
   document.getElementById('tab-admin').classList.toggle('hidden', role !== 'admin');
-  document.getElementById('tab-home').classList.toggle('hidden', role === 'agent');
-  document.getElementById('tab-week-role').classList.toggle('hidden', role === 'agent');
-  document.querySelector('.tab.agent-only').classList.toggle('hidden', role !== 'agent');
-
-  document.getElementById('timer-banner').classList.toggle('hidden', role !== 'agent');
-  document.querySelector('.quickstart').classList.toggle('hidden', role !== 'agent');
-  document.getElementById('stats-grid-agent').classList.toggle('hidden', role !== 'agent');
+  document.getElementById('tab-week-role').classList.toggle('hidden', !isSupAdmin);
+  document.getElementById('tab-home').classList.toggle('hidden', !isSupAdmin);
+  document.getElementById('tab-team').classList.toggle('hidden', !isSupAdmin);
   
-  // Masquer ou afficher le panel permanent et l'accordéon
   document.getElementById('permanent-live-panel').classList.toggle('hidden', !isSupAdmin);
   document.getElementById('team-accordion-view').classList.toggle('hidden', !isSupAdmin);
-  document.getElementById('table-filters').classList.toggle('hidden', !isSupAdmin);
-
-  if (role === 'admin') document.querySelectorAll('.col-actions').forEach(el => el.classList.remove('hidden'));
-
-  const agentFilter = document.getElementById('filter-agent');
+  document.getElementById('filter-row').classList.toggle('hidden', !isSupAdmin);
+  document.getElementById('filter-agent-toolbar').classList.toggle('hidden', !isSupAdmin);
+  document.getElementById('btn-export').classList.toggle('hidden', !isSupAdmin);
+  
+  // EXTRA SECURE : Supprime physiquement les éléments admin du DOM si l'utilisateur est un simple agent
   if (role === 'agent') {
-    agentFilter.value = currentUser.id; agentFilter.disabled = true;
-  } else {
-    agentFilter.disabled = false;
+    const secureAdminBox = document.getElementById('admin-secure-elements');
+    if(secureAdminBox) secureAdminBox.innerHTML = '<div style="padding:20px; color:var(--red);">Accès non autorisé.</div>';
+  }
+
+  if (role === 'admin') {
+    document.querySelectorAll('.col-actions').forEach(el => el.classList.remove('hidden'));
   }
 
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   if (role === 'agent') {
-    currentView = 'today'; document.querySelector('.tab.agent-only').classList.add('active');
+    currentView = 'today';
+    document.querySelector('.tab.agent-only').classList.add('active');
   } else {
-    currentView = 'home';
-    document.getElementById('tab-home').classList.add('active');
-    document.querySelector('.toolbar').classList.add('hidden');
-    document.querySelector('.entries-table').classList.add('hidden');
-    if(!liveInterval) liveInterval = setInterval(fetchPermanentLiveAgents, 15000);
-    fetchPermanentLiveAgents();
+    currentView = 'today';
+    document.querySelector('.tab[onclick="switchTab(\'today\',this)"]').classList.add('active');
+    if(!liveInterval) liveInterval = setInterval(fetchLiveAgents, 15000);
+    fetchLiveAgents();
   }
 }
 
 async function refreshApp() {
+  await refreshAppData();
+}
+
+async function refreshAppData() {
   await loadAccountsFromFirestore();
   populateFilters();
   await loadDMT();
@@ -740,127 +858,26 @@ async function refreshApp() {
 }
 
 function switchTab(view, btn) {
-  if (currentUser.role === 'agent' && (view === 'admin' || view === 'team' || view === 'home')) return;
+  if (currentUser.role === 'agent' && (view === 'admin' || view === 'week' || view === 'home' || view === 'team')) return;
   currentView = view;
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   if (btn) btn.classList.add('active');
 
   const isAdminView = view === 'admin';
-  const isHomeView = view === 'home';
-  const isTeamView = view === 'team';
-  const showTable = !isAdminView && !isHomeView;
-
-  document.querySelector('.toolbar').classList.toggle('hidden', !showTable);
-  document.querySelector('.entries-table').classList.toggle('hidden', !showTable);
+  document.getElementById('table-view-container').classList.toggle('hidden', isAdminView);
   document.getElementById('admin-panel').classList.toggle('hidden', !isAdminView);
-  document.getElementById('team-live-panel').classList.toggle('hidden', !isHomeView && !isTeamView);
 
-  if (isAdminView) { renderAdminPanel(); return; }
-  if (isHomeView || isTeamView) { renderRoleHome(); return; }
-  renderAll();
+  if (!isAdminView) renderAll();
+  if (isAdminView && currentUser.role === 'admin') { renderTeamList(); renderTreatmentList(); renderDMTInputs(); populateChartScopeSelect(); renderEvolutionChart(); }
 }
 
-// ======================= DATA MOTEUR & TABLES =======================
-async function loadEntries() {
-  try {
-    const res = await fetch(`${BASE_URL}/time_entries?key=${FIREBASE_API_KEY}&pageSize=1000`);
-    const data = await res.json();
-    entries = (data.documents || []).map(doc => {
-      const f = doc.fields || {};
-      return {
-        id: doc.name.split('/').pop(), rawId: f.rawId?.stringValue || '', source: f.source?.stringValue || 'ticket',
-        desc: f.desc?.stringValue || '', treatment: f.treatment?.stringValue || '', agent: f.agent?.stringValue || '',
-        inboundTime: f.inboundTime?.stringValue || '--:--',
-        startTimeStr: f.startTime?.stringValue || new Date().toISOString(), durationSec: parseInt(f.durationSec?.integerValue || 0),
-      };
-    }).sort((a,b)=> new Date(b.startTimeStr) - new Date(a.startTimeStr));
-    
-    if (currentView === 'home' || currentView === 'team') renderRoleHome();
-    else if (currentView === 'admin') renderAdminPanel();
-    else renderAll();
-  } catch(e) {}
-}
-
-function getFiltered() {
-  const source = document.getElementById('filter-source').value;
-  let agent = document.getElementById('filter-agent').value;
-  const treatment = document.getElementById('filter-treatment')?.value || '';
-  const search = document.getElementById('search-input').value.toLowerCase();
-  
-  const fInb = document.getElementById('f-inb')?.value.toLowerCase();
-  const fStart = document.getElementById('f-start')?.value.toLowerCase();
-  const fSrc = document.getElementById('f-src')?.value.toLowerCase();
-  const fDesc = document.getElementById('f-desc')?.value.toLowerCase();
-  const fAgt = document.getElementById('f-agt')?.value.toLowerCase();
-  const fDur = document.getElementById('f-dur')?.value.toLowerCase();
-  
-  let list = entries;
-  if (currentUser.role === 'agent') { agent = currentUser.id; }
-
-  if (currentView === 'today') list = list.filter(e=>isToday(e.startTimeStr));
-  else if (currentView === 'week') list = list.filter(e=>isThisWeek(e.startTimeStr));
-  
-  return list.filter(e => {
-    const startStr = new Date(e.startTimeStr).toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
-    const agentObj = TEAM.find(t => t.id === e.agent);
-    const agentName = agentObj ? agentObj.name.toLowerCase() : e.agent.toLowerCase();
-    const durStr = Math.ceil(e.durationSec / 60) + ' min';
-
-    if (source && e.source!==source) return false;
-    if (agent && e.agent!==agent) return false;
-    if (treatment && e.treatment!==treatment && !e.desc.includes(treatment)) return false;
-    if (search && !e.desc.toLowerCase().includes(search)) return false;
-
-    if (fInb && !(e.inboundTime||'--:--').toLowerCase().includes(fInb)) return false;
-    if (fStart && !startStr.includes(fStart)) return false;
-    if (fSrc && !e.source.toLowerCase().includes(fSrc)) return false;
-    if (fDesc && !e.desc.toLowerCase().includes(fDesc)) return false;
-    if (fAgt && !agentName.includes(fAgt) && e.agent !== fAgt) return false;
-    if (fDur && !durStr.includes(fDur)) return false;
-
-    return true;
-  });
-}
-
-function renderAll() {
-  const filtered = getFiltered();
-  document.getElementById('entry-count').textContent = filtered.length + ' entrée' + (filtered.length!==1?'s':'');
-  renderStats(filtered);
-  
-  const body = document.getElementById('entries-body');
-  if (!filtered.length) {
-    body.innerHTML = '<tr><td colspan="7"><div class="empty">Aucune entrée trouvée.</div></td></tr>'; return;
-  }
-  
-  const canEdit = currentUser.role === 'admin';
-  body.innerHTML = filtered.map(e => {
-    let sourceKey = 'manual';
-    if(e.source.includes('ringover')||e.source.includes('inbound')||e.source.includes('outbound')) sourceKey = 'ringover';
-    else if(e.source.includes('crisp')||e.source.includes('chat')||e.source.includes('email')) sourceKey = 'crisp';
-    
-    const dmt = sourceDMT[sourceKey] ?? sourceDMT.manual;
-    const ratio = dmt ? e.durationSec / dmt : 0;
-    let durClass = ''; if (ratio > 1.2) durClass = 'dur-over'; else if (ratio > 1) durClass = 'dur-warn';
-    const startStr = new Date(e.startTimeStr).toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
-
-    return `<tr>
-      <td class="dur-cell" style="font-weight:600">${e.inboundTime || '--:--'}</td>
-      <td class="dur-cell">${startStr}</td>
-      <td>${sourceTag(e.source)}</td>
-      <td id="desc-${e.id}" style="width:35%">${e.desc}</td>
-      <td>${agentCell(e.agent)}</td>
-      <td class="dur-cell ${durClass}" title="DMT cible : ${fmtDuration(dmt)}">${Math.ceil(e.durationSec/60)} min</td>
-      <td class="col-actions ${canEdit?'':'hidden'}"><div class="row-actions">
-        <button class="icon-btn" onclick="editEntry('${e.id}')">✎</button>
-        <button class="icon-btn" onclick="deleteEntry('${e.id}')">✕</button>
-      </div></td>
-    </tr>`;
-  }).join('');
-}
-
-function renderStats(filtered) {
-  let baseEntries = entries.filter(e => currentUser.role === 'agent' ? e.agent === currentUser.id : true);
-  const todayEntries = baseEntries.filter(e=>isToday(e.startTimeStr));
+// ==========================================
+// CALCULS ET LOGIQUE KPIs (FRT / DMT)
+// ==========================================
+function renderStats(filteredList) {
+  const todayStr = new Date().toDateString();
+  const myEntries = entries.filter(e => e.agent === currentUser.id && new Date(e.startTimeStr).toDateString() === todayStr);
+  const teamEntries = entries.filter(e => new Date(e.startTimeStr).toDateString() === todayStr);
 
   const calcSet = (list) => {
     if (list.length === 0) return { total: '0h00', dmt: '0min', frt: '0min', count: 0 };
@@ -884,14 +901,14 @@ function renderStats(filtered) {
     };
   };
 
-  const myKpi = calcSet(todayEntries.filter(e=>e.agent === currentUser.id));
+  const myKpi = calcSet(myEntries);
   document.getElementById('s-total').textContent = myKpi.total;
   document.getElementById('s-dmt').textContent = myKpi.dmt;
   document.getElementById('s-frt').textContent = myKpi.frt;
   document.getElementById('s-count').textContent = myKpi.count;
 
   if (currentUser.role === 'supervisor' || currentUser.role === 'admin') {
-    const teamKpi = calcSet(todayEntries);
+    const teamKpi = calcSet(teamEntries);
     document.getElementById('sup-s-total').textContent = teamKpi.total;
     document.getElementById('sup-s-dmt').textContent = teamKpi.dmt;
     document.getElementById('sup-s-frt').textContent = teamKpi.frt;
@@ -899,14 +916,13 @@ function renderStats(filtered) {
   }
 }
 
-async function fetchPermanentLiveAgents() {
+async function fetchLiveAgents() {
   if (currentUser.role === 'agent') return;
   try {
     const res = await fetch(`${BASE_URL}/active_timers?key=${FIREBASE_API_KEY}`);
     const data = await res.json();
     const docs = data.documents || [];
     const grid = document.getElementById('live-agents-grid');
-    if (!grid) return;
     if (docs.length === 0) { grid.innerHTML = '<div style="opacity:0.6; padding:10px;">Aucun agent actif pour le moment.</div>'; return; }
 
     grid.innerHTML = docs.map(doc => {
@@ -915,15 +931,102 @@ async function fetchPermanentLiveAgents() {
       const agentName = agentObj ? agentObj.name : `Agent`;
       const startTime = parseInt(f.startTime?.integerValue || Date.now());
       const elapsedMin = Math.floor((Date.now() - startTime) / 60000);
+      const source = f.source?.stringValue || 'Tâche';
+      const desc = f.desc?.stringValue || 'En cours...';
+      const timeColor = elapsedMin > 15 ? '#C9604F' : '#84A9DE';
       return `<div class="live-agent-card">
-        <div class="live-agent-top"><span class="live-agent-name">👤 ${agentName}</span><span class="live-agent-time">${elapsedMin} min</span></div>
-        <div class="live-agent-task"><strong>${f.source?.stringValue || 'Chrono'}</strong><br>${f.desc?.stringValue || ''}</div>
+        <div class="live-agent-top"><span class="live-agent-name">👤 ${agentName}</span><span class="live-agent-time" style="color:${timeColor}">${elapsedMin} min</span></div>
+        <div class="live-agent-task"><strong>${source}</strong><br>${desc}</div>
       </div>`;
     }).join('');
   } catch(e) {}
 }
 
-// ======================= TIMERS CONTROL =======================
+function agentsOnly() { return TEAM.filter(u => u.role === 'agent'); }
+
+// ==========================================
+// RENDU DU TABLEAU ET FILTRES AVANCÉS
+// ==========================================
+function renderAll() {
+  const filtered = getFiltered();
+  document.getElementById('entry-count').textContent = filtered.length + ' entrée' + (filtered.length!==1?'s':'');
+  renderStats(filtered);
+  
+  const body = document.getElementById('entries-body');
+  const canEdit = currentUser.role === 'admin';
+  if (!filtered.length) {
+    body.innerHTML = '<tr><td colspan="7"><div class="empty">Aucune entrée trouvée.</div></td></tr>';
+    return;
+  }
+  
+  body.innerHTML = filtered.map(e => {
+    let sourceKey = 'manual';
+    if(e.source.includes('ringover')||e.source.includes('inbound')||e.source.includes('outbound')) sourceKey = 'ringover';
+    else if(e.source.includes('crisp')||e.source.includes('chat')||e.source.includes('email')) sourceKey = 'crisp';
+    
+    const dmt = sourceDMT[sourceKey] ?? sourceDMT.manual;
+    const ratio = dmt ? e.durationSec / dmt : 0;
+    let durClass = ''; if (ratio > 1.2) durClass = 'dur-over'; else if (ratio > 1) durClass = 'dur-warn';
+    const startStr = new Date(e.startTimeStr).toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
+
+    return `
+    <tr>
+      <td class="dur-cell" style="font-weight:600">${e.inboundTime || '--:--'}</td>
+      <td class="dur-cell">${startStr}</td>
+      <td>${sourceTag(e.source)}</td>
+      <td id="desc-${e.id}" style="width:35%">${e.desc}</td>
+      <td>${agentCell(e.agent)}</td>
+      <td class="dur-cell ${durClass}" title="DMT cible : ${fmtDuration(dmt)}">${Math.ceil(e.durationSec/60)} min</td>
+      <td><div class="row-actions">
+        ${canEdit ? `<button class="icon-btn" onclick="editEntry('${e.id}')" title="Modifier">✎</button>` : ''}
+        ${canEdit ? `<button class="icon-btn" onclick="deleteEntry('${e.id}')" title="Supprimer">✕</button>` : ''}
+      </div></td>
+    </tr>`;
+  }).join('');
+}
+
+function getFiltered() {
+  const source = document.getElementById('filter-source').value;
+  let agent = document.getElementById('filter-agent-toolbar').value;
+  const treatment = document.getElementById('filter-treatment')?.value || '';
+  const search = document.getElementById('search-input').value.toLowerCase();
+  
+  const fInb = document.getElementById('f-inb')?.value.toLowerCase();
+  const fStart = document.getElementById('f-start')?.value.toLowerCase();
+  const fSrc = document.getElementById('f-src')?.value;
+  const fDesc = document.getElementById('f-desc')?.value.toLowerCase();
+  const fAgt = document.getElementById('f-agt')?.value;
+  const fDur = document.getElementById('f-dur')?.value.toLowerCase();
+  
+  let list = entries;
+  if (currentUser.role === 'agent') { agent = currentUser.id; }
+
+  const todayStr = new Date().toDateString();
+  if (currentView === 'today') list = list.filter(e=>isToday(e.startTimeStr));
+  else if (currentView === 'week') list = list.filter(e=>isThisWeek(e.startTimeStr));
+  
+  return list.filter(e => {
+    const startStr = new Date(e.startTimeStr).toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
+    const durStr = Math.ceil(e.durationSec / 60) + ' min';
+
+    if (source && e.source!==source) return false;
+    if (agent && e.agent!==agent) return false;
+    if (treatment && e.treatment!==treatment && !e.desc.includes(treatment)) return false;
+    if (search && !e.desc.toLowerCase().includes(search)) return false;
+
+    // Filtres select & input par colonne
+    if (fInb && !(e.inboundTime||'--:--').toLowerCase().includes(fInb)) return false;
+    if (fStart && !startStr.includes(fStart)) return false;
+    if (fSrc && e.source !== fSrc) return false;
+    if (fDesc && !e.desc.toLowerCase().includes(fDesc)) return false;
+    if (fAgt && e.agent !== fAgt) return false;
+    if (fDur && !durStr.includes(fDur)) return false;
+
+    return true;
+  });
+}
+
+// ===== TIMERS CONTROL =====
 function openModal() {
   document.getElementById('modal-overlay').classList.remove('hidden');
   document.getElementById('f-desc').value = ''; selectSource('inbound');
@@ -934,22 +1037,37 @@ function openModal() {
 }
 function closeModal() { document.getElementById('modal-overlay').classList.add('hidden'); }
 function closeModalOutside(e) { if (e.target === document.getElementById('modal-overlay')) closeModal(); }
-function selectSource(s) { selectedSource = s; document.querySelectorAll('.source-opt').forEach(o => o.classList.remove('selected')); document.getElementById('src-' + s)?.classList.add('selected'); }
-function quickStart(source) { if (activeTimer) { alert("Timer déjà actif."); return; } if (source === 'ticket') { openModal(); return; } selectedSource = source; openModal(); selectSource(source); }
+function selectSource(s) {
+  selectedSource = s;
+  document.querySelectorAll('.source-opt').forEach(o => o.classList.remove('selected'));
+  document.getElementById('src-' + s)?.classList.add('selected');
+}
+function quickStart(source) {
+  if (activeTimer) { alert("Un timer est déjà actif."); return; }
+  if (source === 'ticket') { openModal(); return; }
+  selectedSource = source; openModal(); selectSource(source);
+}
 
 function startTimer() {
   const desc = document.getElementById('f-desc').value.trim() || selectedSource;
   activeTimer = { source: selectedSource, desc, startTime: Date.now(), inboundTime: `${pickerHour}:${pickerMin}` };
   closeModal();
   document.getElementById('timer-banner').classList.add('active');
-  document.getElementById('timer-clock').className = 'timer-clock active';
+  document.getElementById('timer-clock').classList.remove('idle'); document.getElementById('timer-clock').classList.add('active');
   document.getElementById('timer-task').textContent = desc; document.getElementById('timer-task').classList.remove('placeholder');
   document.getElementById('play-btn').classList.add('hidden'); document.getElementById('stop-btn').classList.remove('hidden');
-  localStorage.setItem('activeTimer_'+currentUser.id, JSON.stringify(activeTimer));
+  
+  localStorage.setItem('taskin_active_'+currentUser.id, JSON.stringify(activeTimer));
   saveActiveTimerToFirestore();
   timerInterval = setInterval(updateClock, 1000); updateClock();
 }
-
+async function saveActiveTimerToFirestore() {
+  const body = { fields: { source: { stringValue: activeTimer.source }, desc: { stringValue: activeTimer.desc }, startTime: { integerValue: String(activeTimer.startTime) } }};
+  try { await fetch(`${BASE_URL}/active_timers/${currentUser.id}?key=${FIREBASE_API_KEY}`, { method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) }); } catch(e) {}
+}
+async function clearActiveTimerFromFirestore() {
+  try { await fetch(`${BASE_URL}/active_timers/${currentUser.id}?key=${FIREBASE_API_KEY}`, { method:'DELETE' }); } catch(e) {}
+}
 function updateClock() {
   if (!activeTimer) return;
   const elapsed = Math.floor(Math.abs(Date.now() - activeTimer.startTime) / 1000);
@@ -958,54 +1076,75 @@ function updateClock() {
 }
 
 async function stopTimer() {
-  if (!activeTimer) return; clearInterval(timerInterval);
+  if (!activeTimer) return;
+  clearInterval(timerInterval);
   const durationSec = Math.floor((Date.now() - activeTimer.startTime)/1000);
   const entry = { id: Date.now().toString(), source: activeTimer.source, desc: activeTimer.desc, agent: currentUser.id, inboundTime: activeTimer.inboundTime || '--:--', startTimeStr: new Date(activeTimer.startTime).toISOString(), durationSec };
   entries.unshift(entry);
 
-  activeTimer = null; localStorage.removeItem('activeTimer_'+currentUser.id);
-  document.getElementById('timer-banner').classList.remove('active'); document.getElementById('timer-clock').className = 'timer-clock idle';
-  document.getElementById('timer-clock').textContent = '00:00:00'; document.getElementById('timer-task').textContent = 'Aucun timer actif'; document.getElementById('timer-task').className = 'timer-task placeholder';
+  activeTimer = null; localStorage.removeItem('taskin_active_'+currentUser.id);
+  document.getElementById('timer-banner').classList.remove('active'); document.getElementById('timer-clock').classList.add('idle'); document.getElementById('timer-clock').classList.remove('active');
+  document.getElementById('timer-clock').textContent = '00:00:00'; document.getElementById('timer-task').textContent = 'Aucun timer actif — démarre une tâche ci-dessous'; document.getElementById('timer-task').classList.add('placeholder');
   document.getElementById('play-btn').classList.remove('hidden'); document.getElementById('stop-btn').classList.add('hidden');
   
-  renderAll(); await saveEntryToFirestore(entry); await clearActiveTimerFromFirestore();
-  fetchPermanentLiveAgents();
+  renderAll();
+  await saveEntryToFirestore(entry); await clearActiveTimerFromFirestore();
+  fetchLiveAgents();
 }
-
 function checkActiveTimer() {
-  const saved = localStorage.getItem('activeTimer_'+currentUser.id);
+  const saved = localStorage.getItem('taskin_active_'+currentUser.id);
   if (saved) {
     activeTimer = JSON.parse(saved); document.getElementById('timer-banner').classList.add('active');
-    document.getElementById('timer-clock').className = 'timer-clock active';
+    document.getElementById('timer-clock').classList.remove('idle'); document.getElementById('timer-clock').classList.add('active');
     document.getElementById('timer-task').textContent = activeTimer.desc; document.getElementById('timer-task').classList.remove('placeholder');
     document.getElementById('play-btn').classList.add('hidden'); document.getElementById('stop-btn').classList.remove('hidden');
     timerInterval = setInterval(updateClock, 1000); updateClock();
   }
 }
 
-// ======================= ADMIN PROFILE & TEAMS =======================
-function renderAdminPanel() { renderTeamList(); renderTreatmentList(); renderDMTInputs(); populateChartScopeSelect(); renderEvolutionChart(); renderAdminStats(); }
+// INBOUND ROULETTE
+function initTimePickerUI() {
+  const hCol = document.getElementById('col-hours'); const mCol = document.getElementById('col-mins');
+  let hHtml = '<div class="time-spacer"></div>', mHtml = '<div class="time-spacer"></div>';
+  for(let i=0; i<24; i++) hHtml += `<div class="time-opt" data-val="${String(i).padStart(2,'0')}" onclick="clickTimeOpt('col-hours', ${i})">${String(i).padStart(2,'0')}</div>`;
+  for(let i=0; i<60; i++) mHtml += `<div class="time-opt" data-val="${String(i).padStart(2,'0')}" onclick="clickTimeOpt('col-mins', ${i})">${String(i).padStart(2,'0')}</div>`;
+  hHtml += '<div class="time-spacer"></div>'; mHtml += '<div class="time-spacer"></div>';
+  hCol.innerHTML = hHtml; mCol.innerHTML = mHtml;
+}
+function toggleTimePicker(e) { e?.stopPropagation(); const drop = document.getElementById('time-dropdown'); drop.classList.toggle('hidden'); if (!drop.classList.contains('hidden')) syncPickerScroll(); }
+function handleTimeScroll(col, type) {
+  if (isScrolling) return;
+  const opts = col.querySelectorAll('.time-opt'); const center = col.scrollTop + col.clientHeight / 2;
+  let closest = null, minDiff = Infinity;
+  opts.forEach(opt => { const optCenter = opt.offsetTop + opt.offsetHeight / 2; const diff = Math.abs(center - optCenter); if (diff < minDiff) { minDiff = diff; closest = opt; } });
+  if (closest) { opts.forEach(o => o.classList.remove('active')); closest.classList.add('active'); if (type === 'h') pickerHour = closest.dataset.val; else pickerMin = closest.dataset.val; document.getElementById('inbound-time-input').value = `${pickerHour}:${pickerMin}`; }
+}
+function syncPickerScroll() {
+  isScrolling = true; const hCol = document.getElementById('col-hours'); const mCol = document.getElementById('col-mins');
+  const hTarget = hCol.querySelector(`[data-val="${pickerHour}"]`); const mTarget = mCol.querySelector(`[data-val="${pickerMin}"]`);
+  if (hTarget) hCol.scrollTop = hTarget.offsetTop - hCol.clientHeight/2 + hTarget.offsetHeight/2;
+  if (mTarget) mCol.scrollTop = mTarget.offsetTop - mCol.clientHeight/2 + mTarget.offsetHeight/2;
+  setTimeout(() => isScrolling = false, 50);
+}
+function clickTimeOpt(colId, index) { const col = document.getElementById(colId); const target = col.querySelectorAll('.time-opt')[index]; col.scrollTo({ top: target.offsetTop - col.clientHeight/2 + target.offsetHeight/2, behavior: 'smooth' }); }
 
+// ==========================================
+// ADMIN & DB ACCOUNTS
+// ==========================================
 async function loadAccountsFromFirestore() {
   try {
     const res = await fetch(`${BASE_URL}/accounts?key=${FIREBASE_API_KEY}`); const data = await res.json();
     TEAM = (data.documents || []).map(doc => { const f = doc.fields || {}; return { id: doc.name.split('/').pop(), name: f.name?.stringValue || 'Sans nom', color: f.color?.stringValue || '#2B4C7E', initials: f.initials?.stringValue || '??', role: f.role?.stringValue || 'agent', photo: f.photo?.stringValue || '' }; });
-    
-    // Injecter les options des agents dans le filtre cliquable du tableau
-    const fAgt = document.getElementById('f-agt');
-    if(fAgt) fAgt.innerHTML = '<option value="">Tous les agents</option>' + TEAM.filter(u=>u.role==='agent').map(u=>`<option value="${u.id}">${u.name}</option>`).join('');
   } catch(e) {}
 }
-
 function renderTeamList() {
   document.getElementById('team-count').textContent = TEAM.length + ' comptes';
-  document.getElementById('team-list').innerHTML = TEAM.map(u => `<div class="team-row" onclick="openAccountEditModal('${u.id}')" style="cursor:pointer"><div class="mini-avatar" style="background:${u.color}20;color:${u.color}${u.photo?`;background-image:url(${u.photo});background-size:cover`:''}">${u.photo?'':u.initials}</div><div class="team-row-info"><div class="team-row-name">${u.name}</div><div class="team-row-role">${roleLabel(u.role)}</div></div><span style="font-size:11px;color:var(--ocean);font-weight:600;margin-left:auto;">Modifier →</span></div>`).join('');
+  document.getElementById('team-list').innerHTML = TEAM.map(u => `<div class="team-row" onclick="openAccountEditModal('${u.id}')" style="cursor:pointer"><div class="mini-avatar" style="background:${u.color}20;color:${u.color}${u.photo?`;background-image:url(${u.photo});background-size:cover`:''}">${u.photo?'':u.initials}</div><div class="team-row-info"><div class="team-row-name">${u.name}</div><div class="team-row-role">${u.role}</div></div><span style="font-size:11px;color:var(--ocean);font-weight:600;margin-left:auto;">Modifier →</span></div>`).join('');
 }
-
-function roleLabel(r) { return r === 'admin' ? 'Admin' : r === 'supervisor' ? 'Superviseur' : 'Agent'; }
-
+let editingAccountId = null; let pendingAccountPhoto = null;
 function openAccountEditModal(accountId) {
-  if (currentUser.role !== 'admin') return; editingAccountId = accountId; const acc = TEAM.find(u => u.id === accountId); if (!acc) return;
+  if (currentUser.role !== 'admin') return;
+  editingAccountId = accountId; const acc = TEAM.find(u => u.id === accountId); if (!acc) return;
   pendingAccountPhoto = acc.photo || null; document.getElementById('account-modal-title').textContent = 'Modifier · ' + acc.name; document.getElementById('account-name-input').value = acc.name; document.getElementById('account-role-input').value = acc.role; document.getElementById('account-error').textContent = '';
   renderAccountPhotoPreview(acc); document.getElementById('account-modal-overlay').classList.remove('hidden');
 }
@@ -1023,8 +1162,6 @@ async function saveAccountEdit() {
   await fetch(`${BASE_URL}/accounts/${acc.id}?key=${FIREBASE_API_KEY}`, { method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
   closeAccountEditModal(); renderTeamList(); populateFilters(); if (currentUser.id === acc.id) { currentUser = acc; renderTopbarIdentity(); }
 }
-
-function genTempPassword() { const adjectives = ['Voyage','Ocean','Clay','Bloom','Atlas','Compass']; const word = adjectives[Math.floor(Math.random()*adjectives.length)]; const digits = Math.floor(1000 + Math.random()*9000); return `${word}-${digits}`; }
 function openCreateAccountModal() { document.getElementById('new-account-name').value = ''; document.getElementById('new-account-email').value = ''; document.getElementById('create-account-error').textContent = ''; document.getElementById('create-account-form').classList.remove('hidden'); document.getElementById('create-account-result').classList.add('hidden'); document.getElementById('create-account-footer').classList.remove('hidden'); document.getElementById('create-account-overlay').classList.remove('hidden'); }
 function closeCreateAccountModal() { document.getElementById('create-account-overlay').classList.add('hidden'); }
 function closeCreateAccountModalOutside(e) { if (e.target.id === 'create-account-overlay') closeCreateAccountModal(); }
@@ -1075,20 +1212,11 @@ function renderEvolutionChart() {
   const barsHtml = buckets.map((b,i) => { const heightPct = Math.max((b.totalSec / maxSec) * 100, b.totalSec>0?3:0); const showLabel = i % showEvery === 0 || i === buckets.length-1; const label = showLabel ? b.date.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit'}) : ''; return `<div class="evo-bar-col"><span class="evo-bar-value">${b.totalSec>0?fmtDuration(b.totalSec):''}</span><div class="evo-bar" style="height:${heightPct}%"></div><span class="evo-bar-label">${label}</span></div>`; }).join('');
   document.getElementById('evolution-chart').innerHTML = `<div class="evo-bars">${barsHtml}</div>`;
 }
-function renderAdminStats() {
-  const now = new Date(); const weekStart = new Date(now); weekStart.setDate(now.getDate()-now.getDay()+1); weekStart.setHours(0,0,0,0);
-  const weekEntries = entries.filter(e => new Date(e.startTimeStr) >= weekStart);
-  const total = weekEntries.reduce((s,e)=>s+e.durationSec,0);
-  const activeAgents = new Set(entries.filter(e=>isToday(e.startTimeStr)).map(e=>e.agent));
-  document.getElementById('admin-s-total').textContent = fmtDuration(total);
-  document.getElementById('admin-s-count').textContent = entries.length;
-  document.getElementById('admin-s-active').textContent = activeAgents.size;
-}
-async function renderRoleHome() { renderAdminStats(); }
 
-// PROFILE PHOTO UTILS
+// PROFIL PERSO
 let pendingProfilePhoto = null;
 function openProfileModal() { pendingProfilePhoto = currentUser.photo || null; document.getElementById('profile-name-input').value = currentUser.name; document.getElementById('profile-password-input').value = ''; document.getElementById('profile-error').textContent = ''; renderProfilePhotoPreview(); document.getElementById('profile-modal-overlay').classList.remove('hidden'); }
+if(document.getElementById('profile-photo-remove')) { document.getElementById('profile-photo-remove').onclick = removeProfilePhoto; }
 function closeProfileModal() { document.getElementById('profile-modal-overlay').classList.add('hidden'); }
 function closeProfileModalOutside(e) { if (e.target.id === 'profile-modal-overlay') closeProfileModal(); }
 function renderProfilePhotoPreview() { const el = document.getElementById('profile-photo-preview'); if (pendingProfilePhoto) { el.style.backgroundImage = `url(${pendingProfilePhoto})`; el.textContent = ''; } else { el.style.backgroundImage = ''; el.textContent = currentUser.initials; } }
@@ -1105,36 +1233,13 @@ async function saveProfile() {
   renderTopbarIdentity(); document.getElementById('profile-password-input').value = ''; closeProfileModal();
 }
 
-// INBOUND TIME PICKER ROULETTE UTILS
-function initTimePickerUI() {
-  const hCol = document.getElementById('col-hours'); const mCol = document.getElementById('col-mins');
-  let hHtml = '<div class="time-spacer"></div>', mHtml = '<div class="time-spacer"></div>';
-  for(let i=0; i<24; i++) hHtml += `<div class="time-opt" data-val="${String(i).padStart(2,'0')}" onclick="clickTimeOpt('col-hours', ${i})">${String(i).padStart(2,'0')}</div>`;
-  for(let i=0; i<60; i++) mHtml += `<div class="time-opt" data-val="${String(i).padStart(2,'0')}" onclick="clickTimeOpt('col-mins', ${i})">${String(i).padStart(2,'0')}</div>`;
-  hHtml += '<div class="time-spacer"></div>'; mHtml += '<div class="time-spacer"></div>';
-  hCol.innerHTML = hHtml; mCol.innerHTML = mHtml;
-}
-function toggleTimePicker(e) { e?.stopPropagation(); const drop = document.getElementById('time-dropdown'); drop.classList.toggle('hidden'); if (!drop.classList.contains('hidden')) syncPickerScroll(); }
-function handleTimeScroll(col, type) {
-  if (isScrolling) return;
-  const opts = col.querySelectorAll('.time-opt'); const center = col.scrollTop + col.clientHeight / 2;
-  let closest = null, minDiff = Infinity;
-  opts.forEach(opt => { const optCenter = opt.offsetTop + opt.offsetHeight / 2; const diff = Math.abs(center - optCenter); if (diff < minDiff) { minDiff = diff; closest = opt; } });
-  if (closest) { opts.forEach(o => o.classList.remove('active')); closest.classList.add('active'); if (type === 'h') pickerHour = closest.dataset.val; else pickerMin = closest.dataset.val; document.getElementById('inbound-time-input').value = `${pickerHour}:${pickerMin}`; }
-}
-function syncPickerScroll() {
-  isScrolling = true; const hCol = document.getElementById('col-hours'); const mCol = document.getElementById('col-mins');
-  const hTarget = hCol.querySelector(`[data-val="${pickerHour}"]`); const mTarget = mCol.querySelector(`[data-val="${pickerMin}"]`);
-  if (hTarget) hCol.scrollTop = hTarget.offsetTop - hCol.clientHeight/2 + hTarget.offsetHeight/2;
-  if (mTarget) mCol.scrollTop = mTarget.offsetTop - mCol.clientHeight/2 + mTarget.offsetHeight/2;
-  setTimeout(() => isScrolling = false, 50);
-}
-function clickTimeOpt(colId, index) { const col = document.getElementById(colId); const target = col.querySelectorAll('.time-opt')[index]; col.scrollTo({ top: target.offsetTop - col.clientHeight/2 + target.offsetHeight/2, behavior: 'smooth' }); }
+// INITIALISATEURS GLOBAUX
+initTimePickerUI();
+initEmojiPicker();
 
-// APP LAUNCH
 window.onload = async () => {
   if (await tryRestoreSession()) {
-    await refreshApp();
+    // Session restaurée avec succès
   } else {
     document.getElementById('login-screen').style.display = 'flex';
   }
