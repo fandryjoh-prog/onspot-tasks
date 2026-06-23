@@ -55,13 +55,14 @@
 .theme-toggle-btn:hover{border-color:var(--ocean);color:var(--ocean)}
 body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;transition:background .2s,color .2s}
 
-/* LOGIN (RESTAURÉ COMME L'IMAGE) */
+/* LOGIN (RESTAURÉ COMME TON IMAGE) */
 #login-screen{position:fixed;inset:0;background:var(--ocean-deep);display:flex;align-items:center;justify-content:center;z-index:100}
-.login-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:44px;width:360px}
+.login-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:44px;width:360px;text-align:left;}
+.login-logo-img{width:64px;height:64px;border-radius:12px;margin-bottom:16px;display:block;object-fit:cover;}
 .login-logo{font-family:var(--display);font-weight:600;font-size:13px;letter-spacing:1px;color:var(--ocean);margin-bottom:10px}
 .login-title{font-family:var(--display);font-size:28px;font-weight:600;margin-bottom:6px;letter-spacing:-0.5px;color:var(--text)}
 .login-sub{font-size:13px;color:var(--text2);margin-bottom:32px}
-.form-row{margin-bottom:16px;text-align:left;}
+.form-row{margin-bottom:16px}
 .form-label{display:block;font-size:11px;color:var(--text2);margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:.4px}
 .form-input,.form-select{width:100%;padding:10px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:9px;color:var(--text);font-family:var(--font);font-size:13px;outline:none}
 .form-input:focus,.form-select:focus{border-color:var(--ocean)}
@@ -72,8 +73,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 /* APP */
 #app{display:none}
 .topbar{height:60px;background:var(--ocean);border-bottom:1px solid var(--ocean-deep);display:flex;align-items:center;padding:0 24px;gap:16px;position:sticky;top:0;z-index:50}
-.topbar-logo{display:flex;align-items:center;gap:12px;font-family:var(--display);font-size:18px;font-weight:700;color:#fff}
-.topbar-logo img{height:34px;border-radius:6px;background:white;}
+.topbar-logo{display:flex;align-items:center;gap:10px;font-family:var(--display);font-size:18px;font-weight:700;color:#fff}
+.topbar-logo img{height:30px;border-radius:6px;}
+.topbar-sep{color:#5A7AA8;font-size:18px}
+.topbar-title{font-size:11px;color:#B9CCE6;font-weight:600;text-transform:uppercase;letter-spacing:1px;border-left:1px solid #4A6A99;padding-left:14px}
 .topbar-right{margin-left:auto;display:flex;align-items:center;gap:12px}
 .user-pill{display:flex;align-items:center;gap:8px;padding:6px 12px;border-radius:99px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);font-size:12px;font-weight:500;color:#fff;cursor:pointer;}
 .btn{padding:8px 16px;border-radius:9px;border:none;cursor:pointer;font-family:var(--font);font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:7px;transition:all .15s}
@@ -82,7 +85,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .btn-refresh{background:var(--surface2);color:var(--ocean);border:1px solid var(--border);}
 .btn-refresh:hover{background:var(--ocean-dim);}
 
-/* LIVE HEADER (SUPERVISEUR / ADMIN) */
+/* LIVE DASHBOARD (SUP/ADMIN) */
 .live-header-panel{margin:20px 24px 0;background:var(--ocean-deep);border-radius:var(--radius);padding:20px;color:white;}
 .live-header-title{font-family:var(--display);font-size:18px;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:10px;}
 .live-pulse-dot{width:10px;height:10px;background:var(--green);border-radius:50%;box-shadow:0 0 8px var(--green);animation:pulse-green 1.5s infinite;}
@@ -139,9 +142,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .tab.active{background:var(--surface);color:var(--ocean);border-color:var(--border)}
 .content{padding:20px 24px}
 .toolbar{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap}
-.filter-select,.search-input{padding:7px 11px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--font);font-size:13px;outline:none}
-.search-input{width:200px}
-.filter-select:focus,.search-input:focus{border-color:var(--ocean)}
+.filter-select{padding:7px 11px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--font);font-size:13px;outline:none}
+.filter-select:focus{border-color:var(--ocean)}
 .count-badge{font-size:11px;padding:3px 9px;border-radius:99px;background:var(--surface2);color:var(--text2);font-family:var(--mono);margin-left:auto;border:1px solid var(--border)}
 
 /* TABLE & FILTERS */
@@ -150,6 +152,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .entries-table th{font-size:10px;font-weight:700;color:var(--text2);text-align:left;padding:11px 16px;border-bottom:1px solid var(--border);text-transform:uppercase;letter-spacing:.6px;background:var(--surface2)}
 .entries-table td{font-size:13px;padding:12px 16px;border-bottom:1px solid var(--border)}
 .entries-table tr:hover td{background:var(--surface2)}
+
 .filter-row th { padding: 8px 16px; background: var(--surface); border-bottom: 2px solid var(--border); }
 .filter-input-tbl { width: 100%; padding: 6px 8px; border: 1px solid var(--border); border-radius: 4px; font-size: 11px; outline: none; background: var(--surface2); color: var(--text); }
 .filter-input-tbl:focus { border-color: var(--ocean); }
@@ -230,26 +233,27 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 </head>
 <body>
 
-<!-- VUE CONNEXION -->
 <div id="login-screen">
   <div class="login-card">
-    <div class="login-logo">OnSpot</div>
+    <img src="image_1a1b24.jpg" alt="Task'in Logo" class="login-logo-img">
+    <div class="login-logo">Task'in</div>
     <div class="login-title">Time Tracker</div>
     <div class="login-sub">Connecte-toi avec ton email et ton mot de passe</div>
+    
     <div class="form-row">
       <label class="form-label">EMAIL</label>
-      <input class="form-input" type="email" id="login-email" placeholder="prenom@onspot.travel" autocomplete="username">
+      <input class="form-input" type="email" id="login-email" placeholder="prenom@taskin.com" autocomplete="username">
     </div>
     <div class="form-row">
       <label class="form-label">MOT DE PASSE</label>
-      <input class="form-input" type="password" id="login-password" placeholder="........" autocomplete="current-password">
+      <input class="form-input" type="password" id="login-password" placeholder="••••••••" autocomplete="current-password">
     </div>
+    
     <div class="login-error" id="login-error"></div>
     <button class="login-btn" onclick="doLogin()">Se connecter</button>
   </div>
 </div>
 
-<!-- VUE PRINCIPALE -->
 <div id="app">
   <div class="topbar">
     <div class="topbar-logo"><img src="image_1a1b24.jpg" alt="Task'in"> Task'in</div>
@@ -266,7 +270,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     </div>
   </div>
 
-  <!-- LIVE DASHBOARD (SUPERVISEUR / ADMIN) -->
   <div id="live-header-panel" class="live-header-panel hidden">
     <div class="live-header-title"><div class="live-pulse-dot"></div> Équipe en direct</div>
     <div class="live-header-grid" id="live-agents-grid">
@@ -286,7 +289,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     </div>
   </div>
 
-  <!-- QUICK START BAR -->
   <div class="quickstart agent-only">
     <button class="qs-btn" onclick="quickStart('inbound')"><span class="qs-dot" style="background:#E58787"></span>Appel entrant</button>
     <button class="qs-btn" onclick="quickStart('outbound')"><span class="qs-dot" style="background:#D6A848"></span>Appel sortant</button>
@@ -296,7 +298,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     <button class="qs-btn" onclick="syncRingover()" style="margin-left:auto; background:var(--surface2)"><span class="qs-dot" style="background:var(--ocean)"></span>Sync RingOver</button>
   </div>
 
-  <!-- STATS AGENT PERSO (FRT/DMT) -->
   <div class="stats-grid agent-only" id="stats-grid-agent">
     <div class="stat-card">
       <div class="stat-label">Durée Totale (Jour)</div>
@@ -316,9 +317,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     </div>
   </div>
 
-  <!-- ACCORDEON EQUIPE -->
   <details class="team-accordion hidden" id="team-accordion">
-    <summary class="team-summary">Vue Globale Équipe & KPIs</summary>
+    <summary class="team-summary">Vue Globale Équipe & KPIs <span>▼</span></summary>
     <div style="padding: 20px;">
       <div class="stats-grid" style="margin:0;">
         <div class="stat-card">
@@ -349,7 +349,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 
   <div class="content">
     
-    <!-- TABLEAU ET FILTRES -->
     <div id="table-view-container">
       <div class="toolbar">
         <select class="filter-select hidden" id="filter-agent" onchange="renderAll()">
@@ -386,7 +385,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       </div>
     </div>
 
-    <!-- ADMINISTRATION -->
     <div id="admin-panel" class="hidden">
       <div class="admin-grid">
         <div class="admin-card">
@@ -457,11 +455,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   </div>
 </div>
 
-<!-- ==============================================
-                  MODALS
-=============================================== -->
-
-<!-- Modal Démarrer Timer -->
 <div class="modal-overlay hidden" id="modal-overlay" onclick="closeModalOutside(event)">
   <div class="modal">
     <div class="modal-header">
@@ -503,7 +496,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   </div>
 </div>
 
-<!-- Modal Mon Profil -->
 <div class="modal-overlay hidden" id="profile-modal-overlay" onclick="closeProfileModalOutside(event)">
   <div class="modal">
     <div class="modal-header">
@@ -511,7 +503,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       <button class="modal-close" onclick="closeProfileModal()">×</button>
     </div>
     <div class="modal-body">
-      <div class="profile-photo-row">
+      <div class="profile-photo-row" style="display:flex; gap:16px; margin-bottom:20px;">
         <div class="profile-photo-preview" id="profile-photo-preview"></div>
         <div>
           <input type="file" id="profile-photo-input" accept="image/*" class="hidden" onchange="onProfilePhotoSelected(event)">
@@ -536,7 +528,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   </div>
 </div>
 
-<!-- Modal Editer Compte (Admin) -->
 <div class="modal-overlay hidden" id="account-modal-overlay" onclick="closeAccountModalOutside(event)">
   <div class="modal">
     <div class="modal-header">
@@ -544,7 +535,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       <button class="modal-close" onclick="closeAccountEditModal()">×</button>
     </div>
     <div class="modal-body">
-      <div class="profile-photo-row">
+      <div class="profile-photo-row" style="display:flex; gap:16px; margin-bottom:20px;">
         <div class="profile-photo-preview" id="account-photo-preview"></div>
         <div>
           <input type="file" id="account-photo-input" accept="image/*" class="hidden" onchange="onAccountPhotoSelected(event)">
@@ -573,7 +564,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   </div>
 </div>
 
-<!-- Modal Ajouter un compte -->
 <div class="modal-overlay hidden" id="create-account-overlay" onclick="closeCreateAccountModalOutside(event)">
   <div class="modal">
     <div class="modal-header">
@@ -652,8 +642,8 @@ async function doLogin() {
     });
     const data = await res.json();
     if (data.error) { err.textContent = 'Email ou mot de passe incorrect.'; return; }
-    localStorage.setItem('onspot_idToken', data.idToken);
-    localStorage.setItem('onspot_uid', data.localId);
+    localStorage.setItem('taskin_idToken', data.idToken);
+    localStorage.setItem('taskin_uid', data.localId);
     const user = await fetchAccountProfile(data.localId);
     if (!user) { err.textContent = "Ce compte n'a pas encore de profil. Contacte un admin."; return; }
     enterApp(user);
@@ -699,7 +689,7 @@ function renderTopbarIdentity() {
 }
 
 function applyUserTheme() {
-  const saved = localStorage.getItem('onspot_theme_' + currentUser.id) || 'light';
+  const saved = localStorage.getItem('taskin_theme_' + currentUser.id) || 'light';
   document.documentElement.setAttribute('data-theme', saved);
   updateThemeToggleIcon(saved);
 }
@@ -709,7 +699,7 @@ function toggleTheme() {
   const current = document.documentElement.getAttribute('data-theme') || 'light';
   const next = current === 'light' ? 'dark' : 'light';
   document.documentElement.setAttribute('data-theme', next);
-  localStorage.setItem('onspot_theme_' + currentUser.id, next);
+  localStorage.setItem('taskin_theme_' + currentUser.id, next);
   updateThemeToggleIcon(next);
 }
 
@@ -719,11 +709,11 @@ function updateThemeToggleIcon(theme) {
 }
 
 async function tryRestoreSession() {
-  const idToken = localStorage.getItem('onspot_idToken');
-  const uid = localStorage.getItem('onspot_uid');
+  const idToken = localStorage.getItem('taskin_idToken');
+  const uid = localStorage.getItem('taskin_uid');
   if (!idToken || !uid) return false;
   const user = await fetchAccountProfile(uid);
-  if (!user) { localStorage.removeItem('onspot_idToken'); localStorage.removeItem('onspot_uid'); return false; }
+  if (!user) { localStorage.removeItem('taskin_idToken'); localStorage.removeItem('taskin_uid'); return false; }
   enterApp(user);
   return true;
 }
@@ -731,7 +721,7 @@ async function tryRestoreSession() {
 document.getElementById('login-password').addEventListener('keydown', e => { if (e.key==='Enter') doLogin(); });
 function logout() {
   if (activeTimer) { alert('Arrête le timer en cours avant de te déconnecter.'); return; }
-  localStorage.removeItem('onspot_idToken'); localStorage.removeItem('onspot_uid');
+  localStorage.removeItem('taskin_idToken'); localStorage.removeItem('taskin_uid');
   currentUser = null; entries = [];
   document.getElementById('login-screen').style.display = 'flex';
   document.getElementById('app').style.display = 'none';
@@ -1077,7 +1067,7 @@ function startTimer() {
   document.getElementById('play-btn').classList.add('hidden');
   document.getElementById('stop-btn').classList.remove('hidden');
   
-  localStorage.setItem('activeTimer_'+currentUser.id, JSON.stringify(activeTimer));
+  localStorage.setItem('taskin_active_'+currentUser.id, JSON.stringify(activeTimer));
   saveActiveTimerToFirestore();
   timerInterval = setInterval(updateClock, 1000);
   updateClock();
@@ -1115,7 +1105,7 @@ async function stopTimer() {
   entries.unshift(entry);
 
   activeTimer = null;
-  localStorage.removeItem('activeTimer_'+currentUser.id);
+  localStorage.removeItem('taskin_active_'+currentUser.id);
   document.getElementById('timer-banner').classList.remove('active');
   document.getElementById('timer-clock').classList.add('idle'); 
   document.getElementById('timer-clock').classList.remove('active');
@@ -1132,7 +1122,7 @@ async function stopTimer() {
 }
 
 function checkActiveTimer() {
-  const saved = localStorage.getItem('activeTimer_'+currentUser.id);
+  const saved = localStorage.getItem('taskin_active_'+currentUser.id);
   if (saved) {
     activeTimer = JSON.parse(saved);
     document.getElementById('timer-banner').classList.add('active');
@@ -1299,7 +1289,7 @@ async function submitCreateAccount() {
   const errEl = document.getElementById('create-account-error'); errEl.textContent = '';
   if (!name) { errEl.textContent = 'Le nom est requis.'; return; } if (!email || !email.includes('@')) { errEl.textContent = 'Email invalide.'; return; }
   const submitBtn = document.getElementById('create-account-submit'); submitBtn.disabled = true; submitBtn.textContent = 'Création...';
-  const adminIdToken = localStorage.getItem('onspot_idToken'); const adminUid = localStorage.getItem('onspot_uid'); const tempPassword = genTempPassword();
+  const adminIdToken = localStorage.getItem('taskin_idToken'); const adminUid = localStorage.getItem('taskin_uid'); const tempPassword = genTempPassword();
   try {
     const res = await fetch(`${AUTH_BASE}/accounts:signUp?key=${FIREBASE_API_KEY}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: tempPassword, returnSecureToken: true }) });
     const data = await res.json();
@@ -1310,7 +1300,7 @@ async function submitCreateAccount() {
     const body = { fields: { name: { stringValue: newAccount.name }, color: { stringValue: newAccount.color }, initials: { stringValue: newAccount.initials }, role: { stringValue: newAccount.role }, photo: { stringValue: '' } }};
     await fetch(`${BASE_URL}/accounts/${newAccount.id}?key=${FIREBASE_API_KEY}`, { method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
     TEAM.push(newAccount);
-    localStorage.setItem('onspot_idToken', adminIdToken); localStorage.setItem('onspot_uid', adminUid);
+    localStorage.setItem('taskin_idToken', adminIdToken); localStorage.setItem('taskin_uid', adminUid);
     document.getElementById('result-email').textContent = email; document.getElementById('result-password').textContent = tempPassword;
     document.getElementById('create-account-form').classList.add('hidden'); document.getElementById('create-account-result').classList.remove('hidden'); document.getElementById('create-account-footer').classList.add('hidden');
     renderTeamList(); populateFilters();
@@ -1410,12 +1400,12 @@ async function saveProfile() {
   if (!newName) { errEl.textContent = 'Le nom ne peut pas être vide.'; return; }
   if (newPassword && newPassword.length < 6) { errEl.textContent = 'Le mot de passe doit faire au moins 6 caractères.'; return; }
   if (newPassword) {
-    const idToken = localStorage.getItem('onspot_idToken');
+    const idToken = localStorage.getItem('taskin_idToken');
     try {
       const res = await fetch(`${AUTH_BASE}/accounts:update?key=${FIREBASE_API_KEY}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ idToken, password: newPassword, returnSecureToken: true }) });
       const data = await res.json();
       if (data.error) { errEl.textContent = "Erreur lors du changement de mot de passe."; return; }
-      localStorage.setItem('onspot_idToken', data.idToken);
+      localStorage.setItem('taskin_idToken', data.idToken);
     } catch(e) { errEl.textContent = 'Erreur réseau.'; return; }
   }
   currentUser.name = newName; currentUser.photo = pendingProfilePhoto || '';
