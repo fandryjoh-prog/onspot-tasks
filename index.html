@@ -103,7 +103,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 @keyframes pulse-spin{to{transform:rotate(360deg)}}
 @media (prefers-reduced-motion:reduce){.timer-btn-stop::before{animation:none;border-top-color:var(--clay)}}
 
-/* NOUVEAU: LIVE DASHBOARD PERMANENT (SUPERVISEUR/ADMIN) */
+/* LIVE DASHBOARD PERMANENT */
 .live-header-panel{margin:20px 24px 0;background:var(--ocean-deep);border-radius:var(--radius);padding:20px;color:white;}
 .live-header-title{font-family:var(--display);font-size:18px;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:10px;}
 .live-pulse-dot{width:10px;height:10px;background:var(--green);border-radius:50%;box-shadow:0 0 8px var(--green);animation:pulse-green 1.5s infinite;}
@@ -156,6 +156,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .filter-row th { padding: 8px 16px; background: var(--surface); border-bottom: 2px solid var(--border); }
 .filter-input-tbl { width: 100%; padding: 6px 8px; border: 1px solid var(--border); border-radius: 4px; font-size: 11px; outline: none; background: var(--surface2); color: var(--text); }
 .filter-input-tbl:focus { border-color: var(--ocean); }
+/* Point 3 : select dans les filtres tableau */
+.filter-select-tbl { width: 100%; padding: 5px 6px; border: 1px solid var(--border); border-radius: 4px; font-size: 11px; outline: none; background: var(--surface2); color: var(--text); font-family: var(--font); }
+.filter-select-tbl:focus { border-color: var(--ocean); }
 
 .source-tag{display:inline-flex;align-items:center;gap:5px;font-size:11px;padding:3px 8px;border-radius:6px;font-weight:600}
 .src-ringover, .src-inbound, .src-outbound{background:var(--ocean-dim);color:var(--ocean)}
@@ -228,7 +231,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .role-banner-link{background:none;border:none;color:var(--ocean,#2B4C7E);font-size:11px;font-weight:600;cursor:pointer;font-family:var(--font)}
 .team-row-timer{font-family:var(--mono,monospace);font-size:12px;color:var(--ocean,#2B4C7E)}
 
-/* NOUVELLES SOURCES */
+/* SOURCES */
 .source-opt {
   display: flex; align-items: center; justify-content: center; gap: 6px;
   padding: 10px 8px; border: 1px solid transparent; border-radius: 9px;
@@ -384,6 +387,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     </div>
   </div>
 
+  <!-- Point 8 : retiré la classe hidden codée en dur sur stats-grid-supervisor -->
   <details class="team-accordion hidden" id="team-accordion" style="margin-top:20px;">
     <summary class="team-summary">Vue Globale Équipe & KPIs</summary>
     <div class="stats-grid" id="stats-grid-supervisor" style="grid-template-columns:repeat(4,1fr); padding-bottom:20px; border-bottom:1px solid var(--border);">
@@ -464,23 +468,24 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
             <th>Durée</th>
             <th></th>
           </tr>
+          <!-- Point 3 : colonne Source et Agent remplacées par des <select> -->
           <tr class="filter-row hidden" id="table-filters">
             <th><input type="text" class="filter-input-tbl" id="f-inb" placeholder="Filtrer..." oninput="onSearchInput()"></th>
             <th><input type="text" class="filter-input-tbl" id="f-start" placeholder="Filtrer..." oninput="onSearchInput()"></th>
             <th>
-              <select class="filter-input-tbl" id="f-src" onchange="onSearchInput()">
-                <option value="">Toutes sources</option>
-                <option value="inbound">Appel entrant</option>
-                <option value="outbound">Appel sortant</option>
-                <option value="chat">Crisp Chat</option>
-                <option value="email">Crisp Email</option>
-                <option value="ticket">Ticket / Manuel</option>
+              <select class="filter-select-tbl" id="f-src" onchange="onSearchInput()">
+                <option value="">Toutes</option>
+                <option value="inbound">Entrant</option>
+                <option value="outbound">Sortant</option>
+                <option value="chat">Chat</option>
+                <option value="email">Email</option>
+                <option value="ticket">Ticket</option>
               </select>
             </th>
-            <th><input type="text" class="filter-input-tbl" id="f-desc" placeholder="Filtrer..." oninput="onSearchInput()"></th>
+            <th><input type="text" class="filter-input-tbl" id="f-desc-tbl" placeholder="Filtrer..." oninput="onSearchInput()"></th>
             <th>
-              <select class="filter-input-tbl" id="f-agt" onchange="onSearchInput()">
-                <option value="">Tous les agents</option>
+              <select class="filter-select-tbl" id="f-agt" onchange="onSearchInput()">
+                <option value="">Tous</option>
               </select>
             </th>
             <th><input type="text" class="filter-input-tbl" id="f-dur" placeholder="Filtrer..." oninput="onSearchInput()"></th>
@@ -547,14 +552,12 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
             <h3>Types de traitement</h3>
             <span class="count-badge" id="treatment-count">0 types</span>
           </div>
-          
           <div class="treatment-add-row" style="position:relative; align-items:center;">
-            <button class="btn btn-ghost" onclick="toggleEmojiPicker(event)" title="Ajouter un emoji" style="padding: 8px 10px; font-size: 16px;">😀</button>
+            <button class="btn btn-ghost" id="emoji-toggle-btn" type="button" onclick="toggleEmojiPicker(event)" title="Ajouter un emoji" style="padding: 8px 10px; font-size: 16px; flex-shrink:0;">😀</button>
             <input class="form-input" id="new-treatment-input" placeholder="Nouveau type (ex: ✈️ Vols)..." onkeydown="if(event.key==='Enter') addTreatmentType()">
             <button class="btn btn-primary" onclick="addTreatmentType()">Ajouter</button>
             <div class="emoji-picker hidden" id="emoji-picker" onclick="event.stopPropagation()"></div>
           </div>
-          
           <div id="treatment-list"></div>
         </div>
       </div>
@@ -602,6 +605,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   </div>
 </div>
 
+<!-- MODALES INCHANGÉES -->
 <div class="modal-overlay hidden" id="account-modal-overlay" onclick="closeAccountModalOutside(event)">
   <div class="modal">
     <div class="modal-header">
@@ -706,6 +710,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   </div>
 </div>
 
+<!-- Point 7 : Modale timer nettoyée — un seul #modal-overlay, structure propre -->
 <div class="modal-overlay hidden" id="modal-overlay" onclick="closeModalOutside(event)">
   <div class="modal">
     <div class="modal-header">
@@ -715,7 +720,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     <div class="modal-body">
       <div class="form-row">
         <label class="form-label">Source</label>
-        <div class="source-picker">
+        <div class="source-picker" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
           <div class="source-opt opt-inbound selected" id="src-inbound" onclick="selectSource('inbound')">
             <span>📞↘</span> Appel entrant
           </div>
@@ -728,23 +733,22 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
           <div class="source-opt opt-email" id="src-email" onclick="selectSource('email')">
             <span>✉️</span> Crisp (email)
           </div>
-          <div class="source-opt opt-ticket" id="src-ticket" onclick="selectSource('ticket')">
+          <div class="source-opt opt-ticket" id="src-ticket" onclick="selectSource('ticket')" style="grid-column:span 2;">
             <span>🎫</span> Traitement ticket
           </div>
         </div>
       </div>
-      
+
       <div class="form-row" id="time-picker-container" style="position:relative;">
         <label class="form-label">Inbound time (Heure d'arrivée)</label>
         <input class="form-input" id="inbound-time-input" readonly onclick="toggleTimePicker(event)" style="cursor:pointer; font-family:var(--mono);" placeholder="--:--">
-        
         <div class="time-dropdown hidden" id="time-dropdown" onclick="event.stopPropagation()">
           <div class="time-col" id="col-hours" onscroll="handleTimeScroll(this, 'h')"></div>
           <div class="time-sep">:</div>
           <div class="time-col" id="col-mins" onscroll="handleTimeScroll(this, 'm')"></div>
         </div>
       </div>
-      
+
       <div class="form-row">
         <label class="form-label">Description / Ticket</label>
         <input class="form-input" id="modal-desc" placeholder="Ex: Ticket #68554 ou description de la tâche">
@@ -766,15 +770,18 @@ const AUTH_BASE = `https://identitytoolkit.googleapis.com/v1`;
 let TEAM = [];
 const SOURCE_DMT_DEFAULT = { ringover: 300, crisp: 480, manual: 600 };
 let sourceDMT = {...SOURCE_DMT_DEFAULT};
+
+// Point 4 : TREATMENT_TYPES_DEFAULT avec emojis
 const TREATMENT_TYPES_DEFAULT = [
-  '✅ Confirmation','🎫 Reservations','💡 Conseils/suggestions','🔄 Follow-up','🔍 Lost and found','🚗 Car rental',
-  '➕ Additionnels services','🚆 Train','🩺 Health','🎯 Activities','🚐 Transferts','🗺️ DMC','🗓️ Itinerary',
-  '🏨 Accommodation','🧳 Luggage','✈️ Flights','👋 Welcome call','👋 Goodbye call'
+  '✅ Confirmation','🎫 Reservations','💡 Conseils/suggestions','🔄 Follow-up',
+  '🔍 Lost and found','🚗 Car rental','➕ Additionnels services','🚆 Train',
+  '🩺 Health','🎉 Activities','🚌 Transferts','🗺️ DMC','📋 Itinerary',
+  '🏨 Accommodation','🧳 Luggage','✈️ Flights','📞 Welcome call','👋 Goodbye call'
 ];
 
 let currentUser = null;
 let entries = [];
-let activeTimer = null; 
+let activeTimer = null;
 let timerInterval = null;
 let selectedSource = 'inbound';
 let currentView = 'today';
@@ -787,11 +794,9 @@ async function doLogin() {
   const err = document.getElementById('login-error');
   err.textContent = '';
   if (!email || !password) { err.textContent = 'Entre ton email et ton mot de passe.'; return; }
-
   try {
     const res = await fetch(`${AUTH_BASE}/accounts:signInWithPassword?key=${FIREBASE_API_KEY}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password, returnSecureToken: true })
     });
     const data = await res.json();
@@ -800,7 +805,7 @@ async function doLogin() {
     localStorage.setItem('onspot_uid', data.localId);
     const user = await fetchAccountProfile(data.localId);
     if (!user) { err.textContent = "Ce compte n'a pas encore de profil. Contacte un admin."; return; }
-    await enterApp(user);
+    enterApp(user);
   } catch(e) { err.textContent = 'Erreur de connexion. Réessaie.'; console.error(e); }
 }
 
@@ -819,15 +824,16 @@ async function fetchAccountProfile(uid) {
   } catch(e) { console.error('Erreur profil compte:', e); return null; }
 }
 
-async function enterApp(user) {
+function enterApp(user) {
   currentUser = user;
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('app').style.display = 'block';
-  applyUserTheme(); 
-  renderTopbarIdentity(); 
-  await refreshApp(); // On attend le chargement complet des données Firebase (Admin/0 comptes fix)
-  applyRoleUI(); 
-  checkActiveTimer(); 
+  applyUserTheme();
+  renderTopbarIdentity();
+  // Point 2 : populateFilters et applyRoleUI appelés après que refreshApp sera terminé
+  applyRoleUI();
+  checkActiveTimer();
+  refreshApp();
 }
 
 function renderTopbarIdentity() {
@@ -868,10 +874,12 @@ async function tryRestoreSession() {
   if (!idToken || !uid) return false;
   const user = await fetchAccountProfile(uid);
   if (!user) { localStorage.removeItem('onspot_idToken'); localStorage.removeItem('onspot_uid'); return false; }
-  await enterApp(user);
+  enterApp(user);
   return true;
 }
 
+// Point 6 : applyRoleUI renforcé — masquage strict timer/quickstart pour sup/admin,
+// Point 5 : masquage strict admin-panel et tab-admin si rôle !== admin
 function applyRoleUI() {
   const role = currentUser.role;
   const badge = document.getElementById('role-badge');
@@ -884,35 +892,35 @@ function applyRoleUI() {
   if (role === 'admin') badge.textContent = 'Admin · Contrôle total';
   badge.classList.toggle('hidden', role === 'agent');
 
+  // Onglets
   document.getElementById('tab-team').classList.toggle('hidden', role === 'agent');
   document.getElementById('tab-admin').classList.toggle('hidden', role !== 'admin');
   document.getElementById('tab-home').classList.toggle('hidden', role === 'agent');
   document.getElementById('tab-week-role').classList.toggle('hidden', role === 'agent');
   document.querySelector('.tab.agent-only').classList.toggle('hidden', role !== 'agent');
 
-  // Sécurité Panel Admin et suppression du timer pour Sup/Admin
-  if (role !== 'admin') {
-    document.getElementById('admin-panel').style.display = 'none';
-  } else {
-    document.getElementById('admin-panel').style.display = '';
-  }
+  // Point 6 : Timer et Quickstart stritement réservés aux agents
+  document.getElementById('timer-banner').classList.toggle('hidden', role !== 'agent');
+  document.querySelector('.quickstart').classList.toggle('hidden', role !== 'agent');
 
-  if (role !== 'agent') {
-    document.getElementById('timer-banner').style.display = 'none';
-    document.querySelector('.quickstart').style.display = 'none';
-  } else {
-    document.getElementById('timer-banner').style.display = 'flex';
-    document.querySelector('.quickstart').style.display = 'flex';
-  }
-
+  // Banners rôle
   document.getElementById('supervisor-banner').classList.toggle('hidden', role !== 'supervisor');
   document.getElementById('admin-banner').classList.toggle('hidden', role !== 'admin');
 
+  // Stats
   document.getElementById('stats-grid-agent').classList.toggle('hidden', role !== 'agent');
   document.getElementById('team-accordion').classList.toggle('hidden', role === 'agent');
   document.getElementById('stats-grid-admin-home').classList.toggle('hidden', role !== 'admin');
-  
+
+  // Dashboard live permanent (Sup/Admin)
   document.getElementById('permanent-live-panel').classList.toggle('hidden', role === 'agent');
+
+  // Point 5 : admin-panel strictement masqué si non-admin
+  if (role !== 'admin') {
+    document.getElementById('admin-panel').classList.add('hidden');
+  }
+
+  // Ligne de filtres tableau (Sup/Admin seulement)
   document.getElementById('table-filters').classList.toggle('hidden', role === 'agent');
 
   const agentFilter = document.getElementById('filter-agent');
@@ -923,24 +931,26 @@ function applyRoleUI() {
     agentFilter.disabled = false;
   }
 
+  // Point 1 : currentView initialisé correctement selon le rôle
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  
-  // Par défaut "Aujourd'hui" si agent, "home" sinon
   if (role === 'agent') {
     currentView = 'today';
-    document.querySelector('.tab.agent-only').classList.add('active');
+    const agentTab = document.querySelector('.tab.agent-only');
+    if (agentTab) agentTab.classList.add('active');
   } else {
     currentView = 'home';
-    document.getElementById('tab-home').classList.add('active');
+    const homeTab = document.getElementById('tab-home');
+    if (homeTab) homeTab.classList.add('active');
     document.querySelector('.toolbar').classList.add('hidden');
     document.querySelector('.entries-table').classList.add('hidden');
-    
+
     setInterval(fetchPermanentLiveAgents, 15000);
     fetchPermanentLiveAgents();
   }
 }
 
 document.getElementById('login-password').addEventListener('keydown', e => { if (e.key==='Enter') doLogin(); });
+
 function logout() {
   if (activeTimer) { alert('Arrête le timer en cours avant de te déconnecter.'); return; }
   localStorage.removeItem('onspot_idToken'); localStorage.removeItem('onspot_uid');
@@ -952,19 +962,24 @@ function logout() {
 
 function populateFilters() {
   const sel = document.getElementById('filter-agent');
-  const tblAgt = document.getElementById('f-agt');
-  const agentOptions = '<option value="">Tous les agents</option>' + agentsOnly().map(u=>`<option value="${u.id}">${u.name}</option>`).join('');
-  if (sel) sel.innerHTML = agentOptions;
-  if (tblAgt) tblAgt.innerHTML = agentOptions;
+  sel.innerHTML = '<option value="">Tous les agents</option>' + agentsOnly().map(u=>`<option value="${u.id}">${u.name}</option>`).join('');
+
+  // Point 3 : remplissage dynamique du select Agent dans les filtres du tableau
+  const fAgt = document.getElementById('f-agt');
+  if (fAgt) {
+    fAgt.innerHTML = '<option value="">Tous</option>' + agentsOnly().map(u=>`<option value="${u.id}">${u.name}</option>`).join('');
+  }
 
   const tSel = document.getElementById('filter-treatment');
   if (tSel) tSel.innerHTML = '<option value="">Tous traitements</option>' + customTreatmentTypes.map(t=>`<option value="${t}">${t}</option>`).join('');
 }
 
+// Point 2 : refreshApp entièrement séquentiel avec await
 async function refreshApp() {
   await loadAccountsFromFirestore();
   populateFilters();
   await loadTreatmentsFromFirestore();
+  await loadDMT();
   await loadEntries();
 }
 
@@ -973,93 +988,85 @@ function openModal() {
   document.getElementById('modal-overlay').classList.remove('hidden');
   document.getElementById('modal-desc').value = '';
   selectSource('inbound');
-  
   const d = new Date();
   d.setMinutes(d.getMinutes() + 1);
   pickerHour = String(d.getHours()).padStart(2, '0');
   pickerMin = String(d.getMinutes()).padStart(2, '0');
   document.getElementById('inbound-time-input').value = `${pickerHour}:${pickerMin}`;
-  
   document.getElementById('modal-desc').focus();
 }
 function closeModal() { document.getElementById('modal-overlay').classList.add('hidden'); }
 function closeModalOutside(e) { if (e.target === document.getElementById('modal-overlay')) closeModal(); }
+
 function selectSource(s) {
   selectedSource = s;
   document.querySelectorAll('.source-opt').forEach(o => o.classList.remove('selected'));
   document.getElementById('src-' + s).classList.add('selected');
 }
+
 function quickStart(source) {
   if (activeTimer) { alert('Un timer est déjà actif. Arrête-le avant d\'en démarrer un autre.'); return; }
-  if (source === 'ticket') { openModal(); return; }
-  selectedSource = source;
   openModal();
   selectSource(source);
 }
+
 function startTimer() {
+  // Point 7 : lecture depuis #modal-desc (renommé pour éviter le conflit avec #f-desc du filtre tableau)
   const desc = document.getElementById('modal-desc').value.trim() || (selectedSource==='ticket'?'Tâche manuelle':selectedSource);
-  
-  const d = new Date();
-  d.setHours(parseInt(pickerHour, 10), parseInt(pickerMin, 10), 0, 0);
-  
-  activeTimer = { 
-    source: selectedSource, 
-    desc, 
+  activeTimer = {
+    source: selectedSource,
+    desc,
     startTime: Date.now(),
     inboundTime: `${pickerHour}:${pickerMin}`
   };
   closeModal();
   document.getElementById('timer-banner').classList.add('active');
-  document.getElementById('timer-clock').classList.remove('idle'); 
+  document.getElementById('timer-clock').classList.remove('idle');
   document.getElementById('timer-clock').classList.add('active');
-  document.getElementById('timer-task').textContent = desc; 
+  document.getElementById('timer-task').textContent = desc;
   document.getElementById('timer-task').classList.remove('placeholder');
   document.getElementById('play-btn').classList.add('hidden');
   document.getElementById('stop-btn').classList.remove('hidden');
-  
   localStorage.setItem('activeTimer_'+currentUser.id, JSON.stringify(activeTimer));
   saveActiveTimerToFirestore();
   timerInterval = setInterval(updateClock, 1000);
   updateClock();
 }
+
 async function saveActiveTimerToFirestore() {
   const body = { fields: { source: { stringValue: activeTimer.source }, desc: { stringValue: activeTimer.desc }, startTime: { integerValue: String(activeTimer.startTime) } }};
   try { await fetch(`${BASE_URL}/active_timers/${currentUser.id}?key=${FIREBASE_API_KEY}`, { method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) }); } catch(e) { console.error(e); }
 }
+
 async function clearActiveTimerFromFirestore() {
   try { await fetch(`${BASE_URL}/active_timers/${currentUser.id}?key=${FIREBASE_API_KEY}`, { method:'DELETE' }); } catch(e) { console.error(e); }
 }
+
 function updateClock() {
   if (!activeTimer) return;
   const ms = Date.now() - activeTimer.startTime;
-  const isFuture = ms < 0; 
+  const isFuture = ms < 0;
   const elapsed = Math.floor(Math.abs(ms) / 1000);
-  
   const h = String(Math.floor(elapsed/3600)).padStart(2,'0');
   const m = String(Math.floor((elapsed%3600)/60)).padStart(2,'0');
   const s = String(elapsed%60).padStart(2,'0');
-  
   document.getElementById('timer-clock').textContent = (isFuture ? '-' : '') + `${h}:${m}:${s}`;
 }
+
 async function stopTimer() {
   if (!activeTimer) return;
   clearInterval(timerInterval);
   const durationSec = Math.floor((Date.now() - activeTimer.startTime)/1000);
   const entry = {
-    id: Date.now().toString(),
-    source: activeTimer.source,
-    desc: activeTimer.desc,
-    agent: currentUser.id,
-    inboundTime: activeTimer.inboundTime || '--:--',
-    startTimeStr: new Date(activeTimer.startTime).toISOString(),
-    durationSec
+    id: Date.now().toString(), source: activeTimer.source, desc: activeTimer.desc,
+    agent: currentUser.id, inboundTime: activeTimer.inboundTime || '--:--',
+    startTimeStr: new Date(activeTimer.startTime).toISOString(), durationSec
   };
   entries.unshift(entry);
-
   activeTimer = null;
   localStorage.removeItem('activeTimer_'+currentUser.id);
   document.getElementById('timer-banner').classList.remove('active');
-  document.getElementById('timer-clock').classList.add('idle'); 
+  document.getElementById('timer-clock').classList.add('idle');
   document.getElementById('timer-clock').classList.remove('active');
   document.getElementById('timer-clock').textContent = '00:00:00';
   document.getElementById('timer-task').textContent = 'Aucun timer actif — démarre une tâche ci-dessous';
@@ -1067,11 +1074,11 @@ async function stopTimer() {
   document.getElementById('play-btn').classList.remove('hidden');
   document.getElementById('stop-btn').classList.add('hidden');
   renderAll();
-
   saveEntryToFirestore(entry);
   clearActiveTimerFromFirestore();
   fetchPermanentLiveAgents();
 }
+
 function checkActiveTimer() {
   const saved = localStorage.getItem('activeTimer_'+currentUser.id);
   if (saved) {
@@ -1099,25 +1106,20 @@ async function loadActiveTimers() {
 }
 
 async function fetchPermanentLiveAgents() {
-  if(currentUser.role === 'agent') return;
+  if (currentUser.role === 'agent') return;
   const activeTimers = await loadActiveTimers();
   const grid = document.getElementById('live-agents-grid');
-  
   if (activeTimers.length === 0) {
     grid.innerHTML = '<div style="opacity:0.6; padding:10px;">Aucun agent actif pour le moment.</div>';
     return;
   }
-
   let html = '';
   activeTimers.forEach(t => {
     const agentObj = TEAM.find(u => u.id === t.agentId);
-    const agentName = agentObj ? agentObj.name : `Agent`;
-    
+    const agentName = agentObj ? agentObj.name : 'Agent';
     const elapsedMin = Math.floor((Date.now() - t.startTime) / 60000);
     const timeColor = elapsedMin > 15 ? '#C9604F' : '#84A9DE';
-
-    html += `
-    <div class="live-agent-card">
+    html += `<div class="live-agent-card">
       <div class="live-agent-top">
         <span class="live-agent-name">👤 ${agentName}</span>
         <span class="live-agent-time" style="color:${timeColor}">${elapsedMin} min</span>
@@ -1138,28 +1140,46 @@ async function loadEntries() {
   try {
     const res = await fetch(`${BASE_URL}/time_entries?key=${FIREBASE_API_KEY}&pageSize=1000`);
     const data = await res.json();
-    entries = (data.documents || []).map(docToEntry).sort((a,b)=> new Date(b.startTimeStr)-new Date(a.startTimeStr));
+    // Point 1 : filet de sécurité sur startTimeStr dans le mapping
+    entries = (data.documents || []).map(docToEntry).filter(e => e !== null).sort((a,b)=> new Date(b.startTimeStr)-new Date(a.startTimeStr));
     if (currentView === 'home' || currentView === 'team') renderRoleHome();
     else if (currentView === 'admin') renderAdminPanel();
     else renderAll();
   } catch(e) { console.error(e); }
 }
+
+// Point 1 : docToEntry sécurisé — retourne null si startTimeStr invalide
 function docToEntry(doc) {
-  const f = doc.fields || {};
-  let sTime = f.startTime?.stringValue || new Date().toISOString();
-  // Sécurisation de la date Firebase
-  if (isNaN(new Date(sTime).getTime())) sTime = new Date().toISOString();
-  return {
-    id: doc.name.split('/').pop(), rawId: f.rawId?.stringValue || '', source: f.source?.stringValue || 'ticket',
-    desc: f.desc?.stringValue || '', treatment: f.treatment?.stringValue || '', agent: f.agent?.stringValue || '',
-    inboundTime: f.inboundTime?.stringValue || '--:--',
-    startTimeStr: sTime, durationSec: parseInt(f.durationSec?.integerValue || 0),
-  };
+  try {
+    const f = doc.fields || {};
+    const rawTime = f.startTime?.stringValue || '';
+    const parsedDate = new Date(rawTime);
+    // Si la date est invalide, on ignore cette entrée
+    if (!rawTime || isNaN(parsedDate.getTime())) return null;
+    return {
+      id: doc.name.split('/').pop(),
+      rawId: f.rawId?.stringValue || '',
+      source: f.source?.stringValue || 'ticket',
+      desc: f.desc?.stringValue || '',
+      treatment: f.treatment?.stringValue || '',
+      agent: f.agent?.stringValue || '',
+      inboundTime: f.inboundTime?.stringValue || '--:--',
+      startTimeStr: rawTime,
+      durationSec: parseInt(f.durationSec?.integerValue || 0),
+    };
+  } catch(e) { console.error('docToEntry erreur:', e); return null; }
 }
+
 async function saveEntryToFirestore(entry) {
-  const body = { fields: { rawId: { stringValue: entry.rawId || '' }, source: { stringValue: entry.source }, desc: { stringValue: entry.desc }, agent: { stringValue: entry.agent }, inboundTime: { stringValue: entry.inboundTime || '--:--' }, startTime: { stringValue: entry.startTimeStr }, durationSec: { integerValue: String(entry.durationSec) } }};
+  const body = { fields: {
+    rawId: { stringValue: entry.rawId || '' }, source: { stringValue: entry.source },
+    desc: { stringValue: entry.desc }, agent: { stringValue: entry.agent },
+    inboundTime: { stringValue: entry.inboundTime || '--:--' },
+    startTime: { stringValue: entry.startTimeStr }, durationSec: { integerValue: String(entry.durationSec) }
+  }};
   await fetch(`${BASE_URL}/time_entries/${entry.id}?key=${FIREBASE_API_KEY}`, { method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
 }
+
 async function deleteEntry(id) {
   if (!confirm('Supprimer cette entrée ?')) return;
   entries = entries.filter(e=>e.id!==id);
@@ -1173,6 +1193,7 @@ function fmtDuration(sec) {
   if (h>0) return `${h}h${String(m).padStart(2,'0')}`;
   return `${m}min`;
 }
+
 function sourceTag(s) {
   if (s==='inbound' || s==='ringover') return '<span class="source-tag src-inbound">📞↘ Appel entrant</span>';
   if (s==='outbound') return '<span class="source-tag src-outbound">📞↗ Appel sortant</span>';
@@ -1180,15 +1201,18 @@ function sourceTag(s) {
   if (s==='email') return '<span class="source-tag src-email">✉️ Crisp Email</span>';
   return '<span class="source-tag src-ticket">🎫 Ticket/Manuel</span>';
 }
+
 function agentCell(id) {
   const u = TEAM.find(t=>t.id===id);
   if (!u) return '—';
   return `<div class="agent-cell"><div class="mini-avatar" style="background:${u.color}20;color:${u.color}">${u.initials}</div>${u.name}</div>`;
 }
+
 function isToday(iso) {
   const d = new Date(iso), now = new Date();
   return d.toDateString() === now.toDateString();
 }
+
 function isThisWeek(iso) {
   const d = new Date(iso), now = new Date();
   const start = new Date(now); start.setDate(now.getDate()-now.getDay()+1); start.setHours(0,0,0,0);
@@ -1205,20 +1229,21 @@ function getFiltered() {
   let agent = document.getElementById('filter-agent').value;
   const treatment = document.getElementById('filter-treatment')?.value || '';
   const search = document.getElementById('search-input').value.toLowerCase();
-  
-  const fInb = document.getElementById('f-inb')?.value.toLowerCase();
-  const fStart = document.getElementById('f-start')?.value.toLowerCase();
-  const fSrc = document.getElementById('f-src')?.value;
-  const fDesc = document.getElementById('f-desc')?.value.toLowerCase();
-  const fAgt = document.getElementById('f-agt')?.value;
-  const fDur = document.getElementById('f-dur')?.value.toLowerCase();
-  
+
+  // Point 3 : lecture depuis les nouveaux selects du tableau
+  const fInb = document.getElementById('f-inb')?.value.toLowerCase() || '';
+  const fStart = document.getElementById('f-start')?.value.toLowerCase() || '';
+  const fSrc = document.getElementById('f-src')?.value || '';
+  const fDescTbl = document.getElementById('f-desc-tbl')?.value.toLowerCase() || '';
+  const fAgt = document.getElementById('f-agt')?.value || '';
+  const fDur = document.getElementById('f-dur')?.value.toLowerCase() || '';
+
   let list = entries;
   if (currentUser.role === 'agent') { agent = currentUser.id; }
 
   if (currentView === 'today') list = list.filter(e=>isToday(e.startTimeStr));
   else if (currentView === 'week') list = list.filter(e=>isThisWeek(e.startTimeStr));
-  
+
   return list.filter(e => {
     const startStr = new Date(e.startTimeStr).toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
     const durStr = Math.ceil(e.durationSec / 60) + ' min';
@@ -1231,7 +1256,7 @@ function getFiltered() {
     if (fInb && !(e.inboundTime||'--:--').toLowerCase().includes(fInb)) return false;
     if (fStart && !startStr.includes(fStart)) return false;
     if (fSrc && e.source !== fSrc) return false;
-    if (fDesc && !e.desc.toLowerCase().includes(fDesc)) return false;
+    if (fDescTbl && !e.desc.toLowerCase().includes(fDescTbl)) return false;
     if (fAgt && e.agent !== fAgt) return false;
     if (fDur && !durStr.includes(fDur)) return false;
 
@@ -1251,7 +1276,6 @@ function renderStats(filtered) {
   if (currentUser.role === 'agent') {
     baseEntries = entries.filter(e => e.agent === currentUser.id);
   }
-
   const todayEntries = baseEntries.filter(e=>isToday(e.startTimeStr));
   const calcSet = (list) => {
     if (list.length === 0) return { total: '0h00', dmt: '0min', frt: '0min', count: 0 };
@@ -1261,7 +1285,8 @@ function renderStats(filtered) {
       if (e.inboundTime && e.inboundTime !== '--:--') {
         const [inH, inM] = e.inboundTime.split(':').map(Number);
         if(!isNaN(inH) && !isNaN(inM)) {
-          const startDt = new Date(e.startTimeStr); const inDt = new Date(startDt); inDt.setHours(inH, inM, 0, 0);
+          const startDt = new Date(e.startTimeStr); const inDt = new Date(startDt);
+          inDt.setHours(inH, inM, 0, 0);
           let diff = Math.floor((startDt - inDt)/1000);
           if (diff >= 0 && diff < 86400) { validFrtSec += diff; frtCount++; }
         }
@@ -1294,27 +1319,21 @@ function renderStats(filtered) {
 function renderTable(filtered) {
   const body = document.getElementById('entries-body');
   const canEdit = currentUser.role === 'admin';
-  
   if (!filtered.length) {
     body.innerHTML = '<tr><td colspan="7"><div class="empty">Aucune entrée pour cette période.</div></td></tr>';
     return;
   }
-  
   body.innerHTML = filtered.map(e => {
     let sourceKey = 'manual';
     if(e.source==='ringover'||e.source==='inbound'||e.source==='outbound') sourceKey = 'ringover';
     else if(e.source==='crisp'||e.source==='chat'||e.source==='email') sourceKey = 'crisp';
-    
     const dmt = sourceDMT[sourceKey] ?? sourceDMT.manual;
     const ratio = dmt ? e.durationSec / dmt : 0;
     let durClass = '';
     if (ratio > 1.2) durClass = 'dur-over';
     else if (ratio > 1) durClass = 'dur-warn';
-    
     const startStr = new Date(e.startTimeStr).toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
-
-    return `
-    <tr>
+    return `<tr>
       <td class="dur-cell" style="font-weight:600">${e.inboundTime || '--:--'}</td>
       <td class="dur-cell">${startStr}</td>
       <td>${sourceTag(e.source)}</td>
@@ -1322,7 +1341,7 @@ function renderTable(filtered) {
       <td>${agentCell(e.agent)}</td>
       <td class="dur-cell ${durClass}" title="DMT cible : ${fmtDuration(dmt)}">${Math.ceil(e.durationSec/60)} min</td>
       <td><div class="row-actions">
-        ${canEdit ? `<button class="icon-btn" onclick="editEntry('${e.id}')" title="Ajouter une référence / Modifier">✎</button>` : ''}
+        ${canEdit ? `<button class="icon-btn" onclick="editEntry('${e.id}')" title="Modifier">✎</button>` : ''}
         ${canEdit ? `<button class="icon-btn" onclick="deleteEntry('${e.id}')" title="Supprimer">✕</button>` : ''}
       </div></td>
     </tr>`;
@@ -1333,31 +1352,27 @@ function editEntry(id) {
   if (currentUser.role !== 'admin') return;
   const entry = entries.find(e => e.id === id);
   if (!entry) return;
-  
   const cell = document.getElementById('desc-' + id);
   const current = entry.desc;
-  
-  cell.innerHTML = `<input class="form-input" id="edit-input-${id}" value="${current.replace(/"/g,'&quot;')}" placeholder="Ex: Ticket #68554 ou détails..." style="padding:5px 8px; font-size:13px; width:100%; box-sizing:border-box;" />`;
-  
+  cell.innerHTML = `<input class="form-input" id="edit-input-${id}" value="${current.replace(/"/g,'&quot;')}" placeholder="Ex: Ticket #68554..." style="padding:5px 8px; font-size:13px; width:100%; box-sizing:border-box;" />`;
   const input = document.getElementById('edit-input-' + id);
   input.focus();
   input.setSelectionRange(input.value.length, input.value.length);
-  
   const save = async () => {
     const newDesc = input.value.trim() || current;
     entry.desc = newDesc;
     cell.textContent = newDesc;
     saveEntryToFirestore(entry);
   };
-  
   input.addEventListener('blur', save);
   input.addEventListener('keydown', e => { if (e.key === 'Enter') input.blur(); });
 }
 
+// Point 5 : switchTab renforcé — guards stricts pour agent et non-admin
 function switchTab(view, btn) {
-  if (currentUser.role === 'agent' && (view === 'admin' || view === 'team' || view === 'home')) {
-    return;
-  }
+  if (currentUser.role === 'agent' && (view === 'admin' || view === 'team' || view === 'home')) return;
+  if (currentUser.role !== 'admin' && view === 'admin') return;
+
   currentView = view;
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   if (btn) btn.classList.add('active');
@@ -1383,6 +1398,7 @@ let customTreatmentTypes = [...TREATMENT_TYPES_DEFAULT];
 function renderAdminPanel() {
   renderTeamList(); renderTreatmentList(); renderAdminStats(); populateChartScopeSelect(); renderEvolutionChart();
 }
+
 function renderTeamList() {
   document.getElementById('team-count').textContent = TEAM.length + ' comptes';
   document.getElementById('team-list').innerHTML = TEAM.map(u => `
@@ -1392,11 +1408,13 @@ function renderTeamList() {
       <span style="font-size:11px;color:var(--ocean);font-weight:600;margin-left:auto;">Modifier →</span>
     </div>`).join('');
 }
+
 function roleLabel(role) {
   if (role === 'admin') return 'Admin';
   if (role === 'supervisor') return 'Superviseur';
   return 'Agent';
 }
+
 function renderTreatmentList() {
   document.getElementById('treatment-count').textContent = customTreatmentTypes.length + ' types';
   document.getElementById('treatment-list').innerHTML = customTreatmentTypes.map((t,i) => `
@@ -1413,18 +1431,21 @@ async function addTreatmentType() {
   populateFilters();
   await saveTreatmentsToFirestore();
 }
+
 async function removeTreatmentType(i) {
-  if (!confirm('Voulez-vous vraiment supprimer ce type de traitement ?')) return;
+  if (!confirm('Supprimer ce type de traitement ?')) return;
   customTreatmentTypes.splice(i, 1);
   renderTreatmentList();
   populateFilters();
   await saveTreatmentsToFirestore();
 }
+
 async function saveTreatmentsToFirestore() {
   const values = customTreatmentTypes.map(t => ({ stringValue: t }));
   const body = { fields: { list: { arrayValue: { values } } } };
   try { await fetch(`${BASE_URL}/settings/treatments?key=${FIREBASE_API_KEY}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }); } catch(e) { console.error(e); }
 }
+
 async function loadTreatmentsFromFirestore() {
   try {
     const res = await fetch(`${BASE_URL}/settings/treatments?key=${FIREBASE_API_KEY}`);
@@ -1444,6 +1465,7 @@ function renderAdminStats() {
   document.getElementById('admin-s-count').textContent = entries.length;
   document.getElementById('admin-s-active').textContent = activeAgents.size;
 }
+
 function exportCSV() {
   const rows = [['Date','Inbound Time','Start Time','Source','Description','Agent','Durée (min)']];
   entries.forEach(e => {
@@ -1454,11 +1476,11 @@ function exportCSV() {
   const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
   const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
   const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = 'onspot-time-entries-' + new Date().toISOString().split('T')[0] + '.csv';
+  const a = document.createElement('a'); a.href = url;
+  a.download = 'taskin-time-entries-' + new Date().toISOString().split('T')[0] + '.csv';
   a.click(); URL.revokeObjectURL(url);
 }
-function exportExcel() { exportCSV(); } 
+function exportExcel() { exportCSV(); }
 
 // ===== ROLE HOME =====
 async function renderRoleHome() {
@@ -1467,7 +1489,9 @@ async function renderRoleHome() {
   if (currentUser.role === 'admin') { renderAdminBanner(); renderAdminHomeStats(); }
   renderTeamLiveList(activeTimers);
 }
+
 function agentsOnly() { return TEAM.filter(u => u.role === 'agent'); }
+
 function renderSupervisorBanner(activeTimers) {
   const agents = agentsOnly(); const activeIds = new Set(activeTimers.map(t => t.agentId));
   const activeAgents = agents.filter(a => activeIds.has(a.id));
@@ -1478,11 +1502,13 @@ function renderSupervisorBanner(activeTimers) {
   document.getElementById('sup-banner-sub').textContent = idleAgent || 'Tout le monde est à jour';
   document.getElementById('sup-banner-dot').style.background = activeAgents.length > 0 ? '#3B8C6E' : '#A0AAB8';
 }
+
 function findLongestIdleAgent(agents, activeIds) {
   const idle = agents.filter(a => !activeIds.has(a.id));
   if (!idle.length) return null;
   return `${idle[0].name} inactif`;
 }
+
 function renderAdminBanner() {
   const now = new Date(); const weekStart = new Date(now); weekStart.setDate(now.getDate()-now.getDay()+1); weekStart.setHours(0,0,0,0);
   const weekEntries = entries.filter(e => new Date(e.startTimeStr) >= weekStart);
@@ -1491,6 +1517,7 @@ function renderAdminBanner() {
   document.getElementById('adm-banner-title').textContent = `${agentsOnly().length} agents · ${customTreatmentTypes.length} types de traitement`;
   document.getElementById('adm-banner-sub').textContent = '';
 }
+
 function renderAdminHomeStats() {
   const now = new Date(); const weekStart = new Date(now); weekStart.setDate(now.getDate()-now.getDay()+1); weekStart.setHours(0,0,0,0);
   const weekEntries = entries.filter(e => new Date(e.startTimeStr) >= weekStart);
@@ -1500,13 +1527,15 @@ function renderAdminHomeStats() {
   document.getElementById('adm-home-entries').textContent = entries.length;
   document.getElementById('adm-home-active').textContent = activeToday.size;
 }
+
 function renderTeamLiveList(activeTimers) {
   const agents = agentsOnly(); document.getElementById('team-live-count').textContent = agents.length + ' agents';
   const timerByAgent = {}; activeTimers.forEach(t => timerByAgent[t.agentId] = t);
   document.getElementById('team-live-list').innerHTML = agents.map(a => {
     const t = timerByAgent[a.id];
     if (t) {
-      const elapsed = Math.floor((Date.now() - t.startTime)/1000); const mins = Math.floor(elapsed/60); const secs = elapsed%60;
+      const elapsed = Math.floor((Date.now() - t.startTime)/1000);
+      const mins = Math.floor(elapsed/60); const secs = elapsed%60;
       const timeStr = mins + ':' + String(secs).padStart(2,'0');
       return `<div class="team-row" onclick="viewAgentDetail('${a.id}')" style="cursor:pointer">
         <div class="mini-avatar" style="background:${a.color}20;color:${a.color}">${a.initials}</div>
@@ -1514,17 +1543,21 @@ function renderTeamLiveList(activeTimers) {
         <span class="team-row-timer">${timeStr}</span></div>`;
     }
     return `<div class="team-row" onclick="viewAgentDetail('${a.id}')" style="cursor:pointer">
-      <div class="mini-avatar" style="background:var(--border2,#E2E8F0);color:var(--text2,#6B7C93)">${a.initials}</div>
-      <div class="team-row-info"><div class="team-row-name">${a.name}</div><div class="team-row-role" style="color:var(--text3,#A0AAB8)">Inactif</div></div>
-      <span class="team-row-timer" style="color:var(--text3,#A0AAB8)">—</span></div>`;
+      <div class="mini-avatar" style="background:var(--border2);color:var(--text2)">${a.initials}</div>
+      <div class="team-row-info"><div class="team-row-name">${a.name}</div><div class="team-row-role" style="color:var(--text3)">Inactif</div></div>
+      <span class="team-row-timer" style="color:var(--text3)">—</span></div>`;
   }).join('');
 }
+
 function viewAgentDetail(agentId) {
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.querySelector('.tab.agent-only').classList.remove('hidden'); document.querySelector('.tab.agent-only').classList.add('active');
+  const agentTab = document.querySelector('.tab.agent-only');
+  if (agentTab) { agentTab.classList.remove('hidden'); agentTab.classList.add('active'); }
   currentView = 'today';
-  document.getElementById('team-live-panel').classList.add('hidden'); document.getElementById('admin-panel').classList.add('hidden');
-  document.querySelector('.toolbar').classList.remove('hidden'); document.querySelector('.entries-table').classList.remove('hidden');
+  document.getElementById('team-live-panel').classList.add('hidden');
+  document.getElementById('admin-panel').classList.add('hidden');
+  document.querySelector('.toolbar').classList.remove('hidden');
+  document.querySelector('.entries-table').classList.remove('hidden');
   document.getElementById('filter-agent').value = agentId;
   renderAll();
 }
@@ -1539,17 +1572,38 @@ async function loadDMT() {
   } catch(e) { console.error(e); }
   renderDMTInputs();
 }
+
 function renderDMTInputs() {
   const r = document.getElementById('dmt-ringover'); const c = document.getElementById('dmt-crisp'); const m = document.getElementById('dmt-manual');
   if (r) r.value = sourceDMT.ringover; if (c) c.value = sourceDMT.crisp; if (m) m.value = sourceDMT.manual;
 }
+
 async function saveDMT() {
   sourceDMT = { ringover: parseInt(document.getElementById('dmt-ringover').value) || SOURCE_DMT_DEFAULT.ringover, crisp: parseInt(document.getElementById('dmt-crisp').value) || SOURCE_DMT_DEFAULT.crisp, manual: parseInt(document.getElementById('dmt-manual').value) || SOURCE_DMT_DEFAULT.manual };
   const body = { fields: { ringover: { integerValue: String(sourceDMT.ringover) }, crisp: { integerValue: String(sourceDMT.crisp) }, manual: { integerValue: String(sourceDMT.manual) } }};
   try { await fetch(`${BASE_URL}/settings/dmt?key=${FIREBASE_API_KEY}`, { method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) }); renderAll(); } catch(e) { console.error(e); }
 }
 
-// ===== ACCOUNTS PERSISTENCE =====
+// ===== ACCOUNTS =====
+async function loadAccountsFromFirestore() {
+  try {
+    const res = await fetch(`${BASE_URL}/accounts?key=${FIREBASE_API_KEY}`);
+    const data = await res.json();
+    TEAM = (data.documents || []).map(doc => {
+      const f = doc.fields || {};
+      return {
+        id: doc.name.split('/').pop(),
+        name: f.name?.stringValue || 'Sans nom',
+        email: f.email?.stringValue || '',
+        color: f.color?.stringValue || '#2B4C7E',
+        initials: f.initials?.stringValue || '??',
+        role: f.role?.stringValue || 'agent',
+        photo: f.photo?.stringValue || '',
+      };
+    });
+  } catch(e) { console.error('loadAccountsFromFirestore:', e); }
+}
+
 async function saveAccountToFirestore(user) {
   const body = { fields: { name: { stringValue: user.name }, email: { stringValue: user.email || '' }, color: { stringValue: user.color }, initials: { stringValue: user.initials }, role: { stringValue: user.role }, photo: { stringValue: user.photo || '' } }};
   try { await fetch(`${BASE_URL}/accounts/${user.id}?key=${FIREBASE_API_KEY}`, { method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) }); } catch(e) { console.error(e); }
@@ -1560,6 +1614,7 @@ function populateChartScopeSelect() {
   const sel = document.getElementById('chart-scope'); if (!sel) return;
   sel.innerHTML = '<option value="team">Équipe entière</option>' + agentsOnly().map(a => `<option value="${a.id}">${a.name}</option>`).join('');
 }
+
 function renderEvolutionChart() {
   const scope = document.getElementById('chart-scope').value; const period = document.getElementById('chart-period').value; const days = period === 'week' ? 7 : 30;
   const buckets = [];
@@ -1568,23 +1623,30 @@ function renderEvolutionChart() {
   scoped.forEach(e => { const d = new Date(e.startTimeStr); const bucket = buckets.find(b => b.date.toDateString() === d.toDateString()); if (bucket) bucket.totalSec += e.durationSec; });
   const maxSec = Math.max(...buckets.map(b=>b.totalSec), 60); const showEvery = days > 14 ? Math.ceil(days/12) : 1;
   const barsHtml = buckets.map((b,i) => {
-    const heightPct = Math.max((b.totalSec / maxSec) * 100, b.totalSec>0?3:0); const showLabel = i % showEvery === 0 || i === buckets.length-1; const label = showLabel ? b.date.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit'}) : '';
+    const heightPct = Math.max((b.totalSec / maxSec) * 100, b.totalSec>0?3:0);
+    const showLabel = i % showEvery === 0 || i === buckets.length-1;
+    const label = showLabel ? b.date.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit'}) : '';
     return `<div class="evo-bar-col"><span class="evo-bar-value">${b.totalSec>0?fmtDuration(b.totalSec):''}</span><div class="evo-bar" style="height:${heightPct}%"></div><span class="evo-bar-label">${label}</span></div>`;
   }).join('');
   document.getElementById('evolution-chart').innerHTML = `<div class="evo-bars">${barsHtml}</div>`;
 }
 
-// --- LOGIQUE INBOUND TIME PICKER ---
+// ===== TIME PICKER =====
 let pickerHour = "00", pickerMin = "00";
 let isScrolling = false;
 
 function initTimePickerUI() {
-  const hCol = document.getElementById('col-hours'); const mCol = document.getElementById('col-mins');
-  let hHtml = '<div class="time-spacer"></div>', mHtml = '<div class="time-spacer"></div>';
-  for(let i=0; i<24; i++) hHtml += `<div class="time-opt" data-val="${String(i).padStart(2,'0')}" onclick="clickTimeOpt('col-hours', ${i})">${String(i).padStart(2,'0')}</div>`;
-  for(let i=0; i<60; i++) mHtml += `<div class="time-opt" data-val="${String(i).padStart(2,'0')}" onclick="clickTimeOpt('col-mins', ${i})">${String(i).padStart(2,'0')}</div>`;
-  hHtml += '<div class="time-spacer"></div>'; mHtml += '<div class="time-spacer"></div>';
-  hCol.innerHTML = hHtml; mCol.innerHTML = mHtml;
+  const hCol = document.getElementById('col-hours');
+  const mCol = document.getElementById('col-mins');
+  if (!hCol || !mCol) return;
+  let hHtml = '<div class="time-spacer"></div>';
+  let mHtml = '<div class="time-spacer"></div>';
+  for(let i=0; i<24; i++) hHtml += `<div class="time-opt" data-val="${String(i).padStart(2,'0')}" onclick="clickTimeOpt('col-hours',${i})">${String(i).padStart(2,'0')}</div>`;
+  for(let i=0; i<60; i++) mHtml += `<div class="time-opt" data-val="${String(i).padStart(2,'0')}" onclick="clickTimeOpt('col-mins',${i})">${String(i).padStart(2,'0')}</div>`;
+  hHtml += '<div class="time-spacer"></div>';
+  mHtml += '<div class="time-spacer"></div>';
+  hCol.innerHTML = hHtml;
+  mCol.innerHTML = mHtml;
 }
 
 function toggleTimePicker(e) {
@@ -1605,16 +1667,20 @@ function handleTimeScroll(col, type) {
     if (diff < minDiff) { minDiff = diff; closest = opt; }
   });
   if (closest) {
-    opts.forEach(o => o.classList.remove('active')); closest.classList.add('active');
-    if (type === 'h') pickerHour = closest.dataset.val; else pickerMin = closest.dataset.val;
+    opts.forEach(o => o.classList.remove('active'));
+    closest.classList.add('active');
+    if (type === 'h') pickerHour = closest.dataset.val;
+    else pickerMin = closest.dataset.val;
     document.getElementById('inbound-time-input').value = `${pickerHour}:${pickerMin}`;
   }
 }
 
 function syncPickerScroll() {
   isScrolling = true;
-  const hCol = document.getElementById('col-hours'); const mCol = document.getElementById('col-mins');
-  const hTarget = hCol.querySelector(`[data-val="${pickerHour}"]`); const mTarget = mCol.querySelector(`[data-val="${pickerMin}"]`);
+  const hCol = document.getElementById('col-hours');
+  const mCol = document.getElementById('col-mins');
+  const hTarget = hCol.querySelector(`[data-val="${pickerHour}"]`);
+  const mTarget = mCol.querySelector(`[data-val="${pickerMin}"]`);
   if (hTarget) hCol.scrollTop = hTarget.offsetTop - hCol.clientHeight/2 + hTarget.offsetHeight/2;
   if (mTarget) mCol.scrollTop = mTarget.offsetTop - mCol.clientHeight/2 + mTarget.offsetHeight/2;
   setTimeout(() => isScrolling = false, 50);
@@ -1623,11 +1689,11 @@ function syncPickerScroll() {
 function clickTimeOpt(colId, index) {
   const col = document.getElementById(colId);
   const target = col.querySelectorAll('.time-opt')[index];
-  col.scrollTo({ top: target.offsetTop - col.clientHeight/2 + target.offsetHeight/2, behavior: 'smooth' });
+  if (target) col.scrollTo({ top: target.offsetTop - col.clientHeight/2 + target.offsetHeight/2, behavior: 'smooth' });
 }
 
-// --- LOGIQUE EMOJI PICKER ---
-const QUICK_EMOJIS = ['✈️','🏨','🚗','🚆','🎫','📞','💬','📧','✅','❌','⚠️','📝','💼','🩺','🔍','💳','💡','🎉'];
+// ===== EMOJI PICKER =====
+const QUICK_EMOJIS = ['✈️','🏨','🚗','🚆','🎫','📞','💬','📧','✅','❌','⚠️','📝','💼','🩺','🔍','💳','💡','🎉','🔄','🗺️','🚌','🧳','👋','➕'];
 
 function initEmojiPicker() {
   const picker = document.getElementById('emoji-picker');
@@ -1635,9 +1701,11 @@ function initEmojiPicker() {
   picker.innerHTML = QUICK_EMOJIS.map(e => `<button class="emoji-btn" type="button" onclick="insertEmoji('${e}')">${e}</button>`).join('');
 }
 
+// Point 4 : toggleEmojiPicker — stopPropagation sur le bouton pour éviter le conflit de fermeture immédiate
 function toggleEmojiPicker(e) {
-  e?.stopPropagation();
-  document.getElementById('emoji-picker').classList.toggle('hidden');
+  if (e) { e.stopPropagation(); e.preventDefault(); }
+  const picker = document.getElementById('emoji-picker');
+  picker.classList.toggle('hidden');
 }
 
 function insertEmoji(emoji) {
@@ -1647,19 +1715,186 @@ function insertEmoji(emoji) {
   document.getElementById('emoji-picker').classList.add('hidden');
 }
 
-// Fermer les popups (Temps et Emojis) au clic à l'extérieur
+// Fermer les popups au clic extérieur
 document.addEventListener('click', (e) => {
   const timeDrop = document.getElementById('time-dropdown');
   if (timeDrop && !timeDrop.classList.contains('hidden') && !e.target.closest('#time-picker-container')) {
     timeDrop.classList.add('hidden');
   }
-  
   const emojiDrop = document.getElementById('emoji-picker');
   if (emojiDrop && !emojiDrop.classList.contains('hidden') && !e.target.closest('.treatment-add-row')) {
     emojiDrop.classList.add('hidden');
   }
 });
 
+// ===== MODALES COMPTES & PROFIL =====
+let editingAccountId = null;
+let editingAccountPhotoData = null;
+
+function openAccountEditModal(uid) {
+  if (currentUser.role !== 'admin') return;
+  editingAccountId = uid;
+  editingAccountPhotoData = null;
+  const u = TEAM.find(t => t.id === uid);
+  if (!u) return;
+  document.getElementById('account-modal-title').textContent = `Modifier — ${u.name}`;
+  document.getElementById('account-name-input').value = u.name;
+  document.getElementById('account-role-input').value = u.role;
+  const prev = document.getElementById('account-photo-preview');
+  if (u.photo) { prev.style.backgroundImage = `url(${u.photo})`; prev.textContent = ''; }
+  else { prev.style.backgroundImage = ''; prev.textContent = u.initials; }
+  document.getElementById('account-error').textContent = '';
+  document.getElementById('account-modal-overlay').classList.remove('hidden');
+}
+
+function closeAccountEditModal() { document.getElementById('account-modal-overlay').classList.add('hidden'); }
+function closeAccountModalOutside(e) { if (e.target === document.getElementById('account-modal-overlay')) closeAccountEditModal(); }
+
+function onAccountPhotoSelected(event) {
+  const file = event.target.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    editingAccountPhotoData = e.target.result;
+    const prev = document.getElementById('account-photo-preview');
+    prev.style.backgroundImage = `url(${editingAccountPhotoData})`; prev.textContent = '';
+  };
+  reader.readAsDataURL(file);
+}
+
+function removeAccountPhoto() {
+  editingAccountPhotoData = '';
+  const prev = document.getElementById('account-photo-preview');
+  prev.style.backgroundImage = '';
+  const u = TEAM.find(t => t.id === editingAccountId);
+  prev.textContent = u ? u.initials : '';
+}
+
+async function saveAccountEdit() {
+  const name = document.getElementById('account-name-input').value.trim();
+  const role = document.getElementById('account-role-input').value;
+  if (!name) { document.getElementById('account-error').textContent = 'Le nom est requis.'; return; }
+  const u = TEAM.find(t => t.id === editingAccountId);
+  if (!u) return;
+  u.name = name; u.role = role;
+  u.initials = name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+  if (editingAccountPhotoData !== null) u.photo = editingAccountPhotoData;
+  await saveAccountToFirestore(u);
+  if (u.id === currentUser.id) { currentUser = {...currentUser, name: u.name, role: u.role, initials: u.initials, photo: u.photo}; renderTopbarIdentity(); }
+  closeAccountEditModal();
+  renderTeamList();
+  populateFilters();
+}
+
+let createdEmail = '', createdPassword = '';
+
+function openCreateAccountModal() {
+  document.getElementById('create-account-overlay').classList.remove('hidden');
+  document.getElementById('create-account-form').classList.remove('hidden');
+  document.getElementById('create-account-result').classList.add('hidden');
+  document.getElementById('create-account-footer').classList.remove('hidden');
+  document.getElementById('new-account-name').value = '';
+  document.getElementById('new-account-email').value = '';
+  document.getElementById('create-account-error').textContent = '';
+}
+
+function closeCreateAccountModal() { document.getElementById('create-account-overlay').classList.add('hidden'); }
+function closeCreateAccountModalOutside(e) { if (e.target === document.getElementById('create-account-overlay')) closeCreateAccountModal(); }
+
+async function submitCreateAccount() {
+  const name = document.getElementById('new-account-name').value.trim();
+  const email = document.getElementById('new-account-email').value.trim();
+  const errEl = document.getElementById('create-account-error');
+  if (!name || !email) { errEl.textContent = 'Nom et email requis.'; return; }
+  const btn = document.getElementById('create-account-submit');
+  btn.disabled = true; btn.textContent = 'Création...';
+  const tempPassword = 'Taskin' + Math.floor(1000+Math.random()*9000);
+  try {
+    const res = await fetch(`${AUTH_BASE}/accounts:signUp?key=${FIREBASE_API_KEY}`, {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ email, password: tempPassword, returnSecureToken: true })
+    });
+    const data = await res.json();
+    if (data.error) { errEl.textContent = data.error.message || 'Erreur création.'; btn.disabled=false; btn.textContent='Créer le compte'; return; }
+    const uid = data.localId;
+    const colors = ['#2B4C7E','#E98A7D','#3B8C6E','#DCAE1D','#7B68EE','#FF7F50'];
+    const color = colors[TEAM.length % colors.length];
+    const newUser = { id: uid, name, email, color, initials: name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2), role: 'agent', photo: '' };
+    await saveAccountToFirestore(newUser);
+    TEAM.push(newUser);
+    createdEmail = email; createdPassword = tempPassword;
+    document.getElementById('result-email').textContent = email;
+    document.getElementById('result-password').textContent = tempPassword;
+    document.getElementById('create-account-form').classList.add('hidden');
+    document.getElementById('create-account-result').classList.remove('hidden');
+    document.getElementById('create-account-footer').classList.add('hidden');
+    renderTeamList(); populateFilters();
+    document.getElementById('team-count').textContent = TEAM.length + ' comptes';
+  } catch(e) { errEl.textContent = 'Erreur réseau.'; console.error(e); btn.disabled=false; btn.textContent='Créer le compte'; }
+}
+
+function copyCreatedCredentials() {
+  navigator.clipboard.writeText(`Email: ${createdEmail}\nMot de passe: ${createdPassword}`).then(()=>alert('Copié !')).catch(()=>{});
+}
+
+// Profil perso
+let profilePhotoData = null;
+
+function openProfileModal() {
+  profilePhotoData = null;
+  document.getElementById('profile-name-input').value = currentUser.name;
+  document.getElementById('profile-password-input').value = '';
+  document.getElementById('profile-error').textContent = '';
+  const prev = document.getElementById('profile-photo-preview');
+  if (currentUser.photo) { prev.style.backgroundImage = `url(${currentUser.photo})`; prev.textContent = ''; }
+  else { prev.style.backgroundImage = ''; prev.textContent = currentUser.initials; }
+  document.getElementById('profile-modal-overlay').classList.remove('hidden');
+}
+
+function closeProfileModal() { document.getElementById('profile-modal-overlay').classList.add('hidden'); }
+function closeProfileModalOutside(e) { if (e.target === document.getElementById('profile-modal-overlay')) closeProfileModal(); }
+
+function onProfilePhotoSelected(event) {
+  const file = event.target.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    profilePhotoData = e.target.result;
+    const prev = document.getElementById('profile-photo-preview');
+    prev.style.backgroundImage = `url(${profilePhotoData})`; prev.textContent = '';
+  };
+  reader.readAsDataURL(file);
+}
+
+function removeProfilePhoto() {
+  profilePhotoData = '';
+  const prev = document.getElementById('profile-photo-preview');
+  prev.style.backgroundImage = ''; prev.textContent = currentUser.initials;
+}
+
+async function saveProfile() {
+  const name = document.getElementById('profile-name-input').value.trim();
+  const password = document.getElementById('profile-password-input').value;
+  const errEl = document.getElementById('profile-error');
+  if (!name) { errEl.textContent = 'Le nom est requis.'; return; }
+  currentUser.name = name;
+  currentUser.initials = name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+  if (profilePhotoData !== null) currentUser.photo = profilePhotoData;
+  const u = TEAM.find(t => t.id === currentUser.id);
+  if (u) { u.name = currentUser.name; u.initials = currentUser.initials; u.photo = currentUser.photo; }
+  await saveAccountToFirestore(currentUser);
+  if (password) {
+    try {
+      const idToken = localStorage.getItem('onspot_idToken');
+      await fetch(`${AUTH_BASE}/accounts:update?key=${FIREBASE_API_KEY}`, {
+        method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ idToken, password, returnSecureToken: true })
+      });
+    } catch(e) { console.error(e); }
+  }
+  renderTopbarIdentity();
+  closeProfileModal();
+}
+
+// ===== INIT =====
 initTimePickerUI();
 initEmojiPicker();
 
@@ -1669,7 +1904,6 @@ async function initApp() {
   }
 }
 
-// Lancement de l'application
 initApp();
 </script>
 </body>
