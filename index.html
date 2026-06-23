@@ -55,26 +55,25 @@
 .theme-toggle-btn:hover{border-color:var(--ocean);color:var(--ocean)}
 body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;transition:background .2s,color .2s}
 
-/* LOGIN */
+/* LOGIN (RESTAURÉ COMME L'IMAGE) */
 #login-screen{position:fixed;inset:0;background:var(--ocean-deep);display:flex;align-items:center;justify-content:center;z-index:100}
-.login-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:44px;width:360px;text-align:center;}
-.login-logo{width:80px;height:80px;border-radius:12px;margin:0 auto 16px;display:block;object-fit:cover;}
-.login-title{font-family:var(--display);font-size:28px;font-weight:600;margin-bottom:6px;letter-spacing:-0.5px;color:var(--ocean)}
+.login-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:44px;width:360px}
+.login-logo{font-family:var(--display);font-weight:600;font-size:13px;letter-spacing:1px;color:var(--ocean);margin-bottom:10px}
+.login-title{font-family:var(--display);font-size:28px;font-weight:600;margin-bottom:6px;letter-spacing:-0.5px;color:var(--text)}
 .login-sub{font-size:13px;color:var(--text2);margin-bottom:32px}
 .form-row{margin-bottom:16px;text-align:left;}
-.pin-input{width:100%;padding:11px;background:var(--surface2);border:1px solid var(--border);border-radius:9px;color:var(--text);font-family:var(--font);font-size:14px;text-align:center;outline:none}
-.pin-input:focus{border-color:var(--ocean)}
-.login-btn{width:100%;margin-top:16px;padding:12px;background:var(--ocean);color:#fff;border:none;border-radius:9px;font-family:var(--font);font-size:14px;font-weight:600;cursor:pointer}
+.form-label{display:block;font-size:11px;color:var(--text2);margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:.4px}
+.form-input,.form-select{width:100%;padding:10px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:9px;color:var(--text);font-family:var(--font);font-size:13px;outline:none}
+.form-input:focus,.form-select:focus{border-color:var(--ocean)}
+.login-btn{width:100%;margin-top:16px;padding:12px;background:var(--ocean);color:#fff;border:none;border-radius:9px;font-family:var(--font);font-size:14px;font-weight:600;cursor:pointer;transition:.15s}
 .login-btn:hover{background:var(--ocean-deep)}
 .login-error{font-size:12px;color:var(--red);margin-top:8px;text-align:center;min-height:18px}
 
 /* APP */
 #app{display:none}
-.topbar{height:56px;background:var(--ocean);border-bottom:1px solid var(--ocean-deep);display:flex;align-items:center;padding:0 24px;gap:16px;position:sticky;top:0;z-index:50}
-.topbar-logo{display:flex;align-items:center;gap:10px;font-family:var(--display);font-size:16px;font-weight:600;letter-spacing:-0.2px;color:#fff}
-.topbar-logo img{height:28px;border-radius:6px;}
-.topbar-sep{color:#5A7AA8;font-size:18px}
-.topbar-title{font-size:11px;color:#B9CCE6;font-weight:600;text-transform:uppercase;letter-spacing:1px;border-left:1px solid #4A6A99;padding-left:14px}
+.topbar{height:60px;background:var(--ocean);border-bottom:1px solid var(--ocean-deep);display:flex;align-items:center;padding:0 24px;gap:16px;position:sticky;top:0;z-index:50}
+.topbar-logo{display:flex;align-items:center;gap:12px;font-family:var(--display);font-size:18px;font-weight:700;color:#fff}
+.topbar-logo img{height:34px;border-radius:6px;background:white;}
 .topbar-right{margin-left:auto;display:flex;align-items:center;gap:12px}
 .user-pill{display:flex;align-items:center;gap:8px;padding:6px 12px;border-radius:99px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);font-size:12px;font-weight:500;color:#fff;cursor:pointer;}
 .btn{padding:8px 16px;border-radius:9px;border:none;cursor:pointer;font-family:var(--font);font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:7px;transition:all .15s}
@@ -83,7 +82,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .btn-refresh{background:var(--surface2);color:var(--ocean);border:1px solid var(--border);}
 .btn-refresh:hover{background:var(--ocean-dim);}
 
-/* NOUVEAU: LIVE HEADER (SUPERVISEUR / ADMIN) */
+/* LIVE HEADER (SUPERVISEUR / ADMIN) */
 .live-header-panel{margin:20px 24px 0;background:var(--ocean-deep);border-radius:var(--radius);padding:20px;color:white;}
 .live-header-title{font-family:var(--display);font-size:18px;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:10px;}
 .live-pulse-dot{width:10px;height:10px;background:var(--green);border-radius:50%;box-shadow:0 0 8px var(--green);animation:pulse-green 1.5s infinite;}
@@ -123,12 +122,11 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 
 /* STATS */
 .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:20px 24px 0}
-.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;display:flex;flex-direction:column;justify-content:center;}
 .stat-label{font-size:11px;color:var(--text2);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px;font-weight:600}
 .stat-value{font-family:var(--display);font-size:25px;font-weight:600;letter-spacing:-0.3px;color:var(--text)}
-.stat-sub{font-size:11px;color:var(--text2);margin-top:4px}
 
-/* NOUVEAU: TEAM ACCORDION (SUP/ADMIN) */
+/* TEAM ACCORDION (SUP/ADMIN) */
 .team-accordion{margin:20px 24px 0;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
 .team-summary{padding:16px 20px;font-weight:600;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;color:var(--ocean);background:var(--ocean-dim);border-bottom:1px solid var(--border);}
 .team-summary::-webkit-details-marker{display:none;}
@@ -146,13 +144,12 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .filter-select:focus,.search-input:focus{border-color:var(--ocean)}
 .count-badge{font-size:11px;padding:3px 9px;border-radius:99px;background:var(--surface2);color:var(--text2);font-family:var(--mono);margin-left:auto;border:1px solid var(--border)}
 
-/* TABLE & NOUVEAUX FILTRES */
+/* TABLE & FILTERS */
 .entries-table{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow-x:auto}
 .entries-table table{width:100%;border-collapse:collapse;min-width:800px;}
 .entries-table th{font-size:10px;font-weight:700;color:var(--text2);text-align:left;padding:11px 16px;border-bottom:1px solid var(--border);text-transform:uppercase;letter-spacing:.6px;background:var(--surface2)}
 .entries-table td{font-size:13px;padding:12px 16px;border-bottom:1px solid var(--border)}
 .entries-table tr:hover td{background:var(--surface2)}
-
 .filter-row th { padding: 8px 16px; background: var(--surface); border-bottom: 2px solid var(--border); }
 .filter-input-tbl { width: 100%; padding: 6px 8px; border: 1px solid var(--border); border-radius: 4px; font-size: 11px; outline: none; background: var(--surface2); color: var(--text); }
 .filter-input-tbl:focus { border-color: var(--ocean); }
@@ -179,7 +176,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .modal-close{background:transparent;border:none;color:var(--text2);cursor:pointer;font-size:20px;padding:4px}
 .modal-body{padding:20px 24px}
 .modal-footer{padding:16px 24px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end}
-.form-label{display:block;font-size:11px;color:var(--text2);margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:.4px}
 .profile-photo-row{display:flex;align-items:center;gap:16px;margin-bottom:20px}
 .profile-photo-preview{width:64px;height:64px;border-radius:50%;background:var(--surface2);background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:600;font-size:20px;color:var(--ocean);flex-shrink:0;border:1px solid var(--border)}
 .btn-primary{background:var(--ocean);color:#fff;border:none}
@@ -194,7 +190,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .team-row:last-of-type{border-bottom:none}
 .team-row-name{font-size:13px;font-weight:500}
 .team-row-role{font-size:11px;color:var(--text2,#6B7C93)}
-.admin-note{padding:10px 18px;font-size:11px;color:var(--text3,#A0AAB8);font-style:italic}
 .treatment-add-row{display:flex;gap:8px;padding:14px 18px;border-bottom:1px solid var(--border,#EEF2F6)}
 .treatment-add-row .form-input{flex:1}
 .treatment-row{display:flex;align-items:center;justify-content:space-between;padding:9px 18px;font-size:13px;border-bottom:1px solid var(--border,#EEF2F6)}
@@ -235,24 +230,26 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 </head>
 <body>
 
+<!-- VUE CONNEXION -->
 <div id="login-screen">
   <div class="login-card">
-    <img src="image_1a1b24.jpg" alt="Task'in Logo" class="login-logo">
-    <div class="login-title">Task'in</div>
+    <div class="login-logo">OnSpot</div>
+    <div class="login-title">Time Tracker</div>
     <div class="login-sub">Connecte-toi avec ton email et ton mot de passe</div>
     <div class="form-row">
-      <label class="form-label">Email</label>
-      <input class="form-input" type="email" id="login-email" placeholder="prenom@taskin.com" autocomplete="username">
+      <label class="form-label">EMAIL</label>
+      <input class="form-input" type="email" id="login-email" placeholder="prenom@onspot.travel" autocomplete="username">
     </div>
     <div class="form-row">
-      <label class="form-label">Mot de passe</label>
-      <input class="form-input" type="password" id="login-password" placeholder="••••••••" autocomplete="current-password">
+      <label class="form-label">MOT DE PASSE</label>
+      <input class="form-input" type="password" id="login-password" placeholder="........" autocomplete="current-password">
     </div>
     <div class="login-error" id="login-error"></div>
     <button class="login-btn" onclick="doLogin()">Se connecter</button>
   </div>
 </div>
 
+<!-- VUE PRINCIPALE -->
 <div id="app">
   <div class="topbar">
     <div class="topbar-logo"><img src="image_1a1b24.jpg" alt="Task'in"> Task'in</div>
@@ -262,11 +259,14 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     <div class="topbar-right">
       <button class="btn btn-refresh" onclick="refreshApp()"><span style="font-size:16px;">↻</span> Actualiser</button>
       <button class="theme-toggle-btn" id="theme-toggle" onclick="toggleTheme()" title="Changer de thème">☾</button>
-      <div class="user-pill" onclick="openProfileModal()" style="cursor:pointer"><div class="mini-avatar" id="topbar-avatar"></div><span id="topbar-name"></span></div>
+      <div class="user-pill" onclick="openProfileModal()">
+        <div class="mini-avatar" id="topbar-avatar"></div><span id="topbar-name"></span>
+      </div>
       <button class="btn btn-ghost" onclick="logout()">Déconnexion</button>
     </div>
   </div>
 
+  <!-- LIVE DASHBOARD (SUPERVISEUR / ADMIN) -->
   <div id="live-header-panel" class="live-header-panel hidden">
     <div class="live-header-title"><div class="live-pulse-dot"></div> Équipe en direct</div>
     <div class="live-header-grid" id="live-agents-grid">
@@ -286,6 +286,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     </div>
   </div>
 
+  <!-- QUICK START BAR -->
   <div class="quickstart agent-only">
     <button class="qs-btn" onclick="quickStart('inbound')"><span class="qs-dot" style="background:#E58787"></span>Appel entrant</button>
     <button class="qs-btn" onclick="quickStart('outbound')"><span class="qs-dot" style="background:#D6A848"></span>Appel sortant</button>
@@ -295,6 +296,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     <button class="qs-btn" onclick="syncRingover()" style="margin-left:auto; background:var(--surface2)"><span class="qs-dot" style="background:var(--ocean)"></span>Sync RingOver</button>
   </div>
 
+  <!-- STATS AGENT PERSO (FRT/DMT) -->
   <div class="stats-grid agent-only" id="stats-grid-agent">
     <div class="stat-card">
       <div class="stat-label">Durée Totale (Jour)</div>
@@ -314,6 +316,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     </div>
   </div>
 
+  <!-- ACCORDEON EQUIPE -->
   <details class="team-accordion hidden" id="team-accordion">
     <summary class="team-summary">Vue Globale Équipe & KPIs</summary>
     <div style="padding: 20px;">
@@ -346,6 +349,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 
   <div class="content">
     
+    <!-- TABLEAU ET FILTRES -->
     <div id="table-view-container">
       <div class="toolbar">
         <select class="filter-select hidden" id="filter-agent" onchange="renderAll()">
@@ -382,6 +386,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       </div>
     </div>
 
+    <!-- ADMINISTRATION -->
     <div id="admin-panel" class="hidden">
       <div class="admin-grid">
         <div class="admin-card">
@@ -452,6 +457,11 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   </div>
 </div>
 
+<!-- ==============================================
+                  MODALS
+=============================================== -->
+
+<!-- Modal Démarrer Timer -->
 <div class="modal-overlay hidden" id="modal-overlay" onclick="closeModalOutside(event)">
   <div class="modal">
     <div class="modal-header">
@@ -493,6 +503,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   </div>
 </div>
 
+<!-- Modal Mon Profil -->
 <div class="modal-overlay hidden" id="profile-modal-overlay" onclick="closeProfileModalOutside(event)">
   <div class="modal">
     <div class="modal-header">
@@ -525,6 +536,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   </div>
 </div>
 
+<!-- Modal Editer Compte (Admin) -->
 <div class="modal-overlay hidden" id="account-modal-overlay" onclick="closeAccountModalOutside(event)">
   <div class="modal">
     <div class="modal-header">
@@ -561,6 +573,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   </div>
 </div>
 
+<!-- Modal Ajouter un compte -->
 <div class="modal-overlay hidden" id="create-account-overlay" onclick="closeCreateAccountModalOutside(event)">
   <div class="modal">
     <div class="modal-header">
@@ -620,6 +633,7 @@ let liveInterval = null;
 let selectedSource = 'inbound';
 let currentView = 'today';
 let searchTimeout = null;
+let pickerHour = "00", pickerMin = "00", isScrolling = false;
 
 // ==========================================
 // AUTHENTIFICATION
@@ -736,7 +750,7 @@ function applyRoleUI() {
   document.getElementById('tab-admin').classList.toggle('hidden', role !== 'admin');
   document.getElementById('tab-week').classList.toggle('hidden', !isSupAdmin);
   
-  // Panneaux Sup/Admin (Live Dash, Accordéon, Filtres)
+  // Panneaux Sup/Admin
   document.getElementById('live-header-panel').classList.toggle('hidden', !isSupAdmin);
   document.getElementById('team-accordion').classList.toggle('hidden', !isSupAdmin);
   document.getElementById('filter-row').classList.toggle('hidden', !isSupAdmin);
@@ -781,6 +795,7 @@ function switchTab(view, btn) {
 
 function populateFilters() {
   const sel = document.getElementById('filter-agent');
+  if(!sel) return;
   sel.innerHTML = '<option value="">Tous les agents</option>' + TEAM.filter(u=>u.role==='agent').map(u=>`<option value="${u.id}">${u.name}</option>`).join('');
 }
 
@@ -867,6 +882,12 @@ function renderStats(filteredList) {
     document.getElementById('t-frt').textContent = teamKpi.frt;
     document.getElementById('t-count').textContent = teamKpi.count;
   }
+}
+
+function fmtDuration(sec) {
+  const h = Math.floor(sec/3600), m = Math.floor((sec%3600)/60);
+  if (h>0) return `${h}h${String(m).padStart(2,'0')}`;
+  return `${m}m`;
 }
 
 // ==========================================
@@ -1005,12 +1026,6 @@ function sourceTag(s) {
   return `<span class="source-tag src-ticket">🎫 Ticket/Manuel</span>`;
 }
 
-function fmtDuration(sec) {
-  const h = Math.floor(sec/3600), m = Math.floor((sec%3600)/60);
-  if (h>0) return `${h}h${String(m).padStart(2,'0')}`;
-  return `${m}min`;
-}
-
 // ==========================================
 // TIMER LOGIC & QUICK START
 // ==========================================
@@ -1130,7 +1145,7 @@ function checkActiveTimer() {
   }
 }
 
-// TIME PICKER ROULETTE
+// INBOUND TIME PICKER ROULETTE
 function initTimePickerUI() {
   const hCol = document.getElementById('col-hours'); const mCol = document.getElementById('col-mins');
   let hHtml = '<div class="time-spacer"></div>', mHtml = '<div class="time-spacer"></div>';
@@ -1216,7 +1231,6 @@ function exportCSV() {
   a.href = url; a.download = 'taskin-export-' + new Date().toISOString().split('T')[0] + '.csv';
   a.click(); URL.revokeObjectURL(url);
 }
-function exportExcel() { exportCSV(); } // Redirection simple
 
 // ==========================================
 // PANNEAU D'ADMINISTRATION
@@ -1285,7 +1299,7 @@ async function submitCreateAccount() {
   const errEl = document.getElementById('create-account-error'); errEl.textContent = '';
   if (!name) { errEl.textContent = 'Le nom est requis.'; return; } if (!email || !email.includes('@')) { errEl.textContent = 'Email invalide.'; return; }
   const submitBtn = document.getElementById('create-account-submit'); submitBtn.disabled = true; submitBtn.textContent = 'Création...';
-  const adminIdToken = localStorage.getItem('taskin_idToken'); const adminUid = localStorage.getItem('taskin_uid'); const tempPassword = genTempPassword();
+  const adminIdToken = localStorage.getItem('onspot_idToken'); const adminUid = localStorage.getItem('onspot_uid'); const tempPassword = genTempPassword();
   try {
     const res = await fetch(`${AUTH_BASE}/accounts:signUp?key=${FIREBASE_API_KEY}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: tempPassword, returnSecureToken: true }) });
     const data = await res.json();
@@ -1296,7 +1310,7 @@ async function submitCreateAccount() {
     const body = { fields: { name: { stringValue: newAccount.name }, color: { stringValue: newAccount.color }, initials: { stringValue: newAccount.initials }, role: { stringValue: newAccount.role }, photo: { stringValue: '' } }};
     await fetch(`${BASE_URL}/accounts/${newAccount.id}?key=${FIREBASE_API_KEY}`, { method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
     TEAM.push(newAccount);
-    localStorage.setItem('taskin_idToken', adminIdToken); localStorage.setItem('taskin_uid', adminUid);
+    localStorage.setItem('onspot_idToken', adminIdToken); localStorage.setItem('onspot_uid', adminUid);
     document.getElementById('result-email').textContent = email; document.getElementById('result-password').textContent = tempPassword;
     document.getElementById('create-account-form').classList.add('hidden'); document.getElementById('create-account-result').classList.remove('hidden'); document.getElementById('create-account-footer').classList.add('hidden');
     renderTeamList(); populateFilters();
@@ -1396,12 +1410,12 @@ async function saveProfile() {
   if (!newName) { errEl.textContent = 'Le nom ne peut pas être vide.'; return; }
   if (newPassword && newPassword.length < 6) { errEl.textContent = 'Le mot de passe doit faire au moins 6 caractères.'; return; }
   if (newPassword) {
-    const idToken = localStorage.getItem('taskin_idToken');
+    const idToken = localStorage.getItem('onspot_idToken');
     try {
       const res = await fetch(`${AUTH_BASE}/accounts:update?key=${FIREBASE_API_KEY}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ idToken, password: newPassword, returnSecureToken: true }) });
       const data = await res.json();
       if (data.error) { errEl.textContent = "Erreur lors du changement de mot de passe."; return; }
-      localStorage.setItem('taskin_idToken', data.idToken);
+      localStorage.setItem('onspot_idToken', data.idToken);
     } catch(e) { errEl.textContent = 'Erreur réseau.'; return; }
   }
   currentUser.name = newName; currentUser.photo = pendingProfilePhoto || '';
