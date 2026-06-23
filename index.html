@@ -55,10 +55,9 @@
 .theme-toggle-btn:hover{border-color:var(--ocean);color:var(--ocean)}
 body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;transition:background .2s,color .2s}
 
-/* LOGIN (Exactement comme ton original) */
+/* LOGIN */
 #login-screen{position:fixed;inset:0;background:var(--ocean-deep);display:flex;align-items:center;justify-content:center;z-index:100}
 .login-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:44px;width:360px}
-.login-logo-img{width:64px;height:64px;border-radius:12px;margin-bottom:12px;display:block;object-fit:cover;}
 .login-logo{font-family:var(--display);font-weight:600;font-size:13px;letter-spacing:1px;color:var(--ocean);margin-bottom:10px}
 .login-title{font-family:var(--display);font-size:28px;font-weight:600;margin-bottom:6px;letter-spacing:-0.5px;color:var(--text)}
 .login-sub{font-size:13px;color:var(--text2);margin-bottom:32px}
@@ -73,12 +72,11 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 /* APP */
 #app{display:none}
 .topbar{height:56px;background:var(--ocean);border-bottom:1px solid var(--ocean-deep);display:flex;align-items:center;padding:0 24px;gap:16px;position:sticky;top:0;z-index:50}
-.topbar-logo{font-family:var(--display);font-size:18px;font-weight:700;letter-spacing:-0.2px;color:#fff; display:flex; align-items:center; gap:8px;}
-.topbar-logo img{height:28px; border-radius:4px;}
+.topbar-logo{font-family:var(--display);font-size:16px;font-weight:600;letter-spacing:-0.2px;color:#fff}
 .topbar-sep{color:#5A7AA8;font-size:18px}
 .topbar-title{font-size:11px;color:#B9CCE6;font-weight:600;text-transform:uppercase;letter-spacing:1px;border-left:1px solid #4A6A99;padding-left:14px}
 .topbar-right{margin-left:auto;display:flex;align-items:center;gap:12px}
-.user-pill{display:flex;align-items:center;gap:8px;padding:6px 12px;border-radius:99px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);font-size:12px;font-weight:500;color:#fff}
+.user-pill{display:flex;align-items:center;gap:8px;padding:6px 12px;border-radius:99px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);font-size:12px;font-weight:500;color:#fff;cursor:pointer;}
 .btn{padding:8px 16px;border-radius:9px;border:none;cursor:pointer;font-family:var(--font);font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:7px;transition:all .15s}
 .btn-ghost{background:rgba(255,255,255,.08);color:#D8E2EE;border:1px solid rgba(255,255,255,.15)}
 .btn-ghost:hover{color:#fff;background:rgba(255,255,255,.16)}
@@ -101,9 +99,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .timer-btn-stop:hover{transform:scale(1.04)}
 .timer-btn-stop::before{content:'';position:absolute;inset:-6px;border-radius:50%;border:2.5px solid var(--clay);border-top-color:transparent;animation:pulse-spin 2.2s linear infinite}
 @keyframes pulse-spin{to{transform:rotate(360deg)}}
-@media (prefers-reduced-motion:reduce){.timer-btn-stop::before{animation:none;border-top-color:var(--clay)}}
 
-/* NOUVEAU: LIVE DASHBOARD PERMANENT (SUPERVISEUR/ADMIN) */
+/* LIVE DASHBOARD PERMANENT (SUPERVISEUR/ADMIN) */
 .live-header-panel{margin:20px 24px 0;background:var(--ocean-deep);border-radius:var(--radius);padding:20px;color:white;}
 .live-header-title{font-family:var(--display);font-size:18px;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:10px;}
 .live-pulse-dot{width:10px;height:10px;background:var(--green);border-radius:50%;box-shadow:0 0 8px var(--green);animation:pulse-green 1.5s infinite;}
@@ -121,15 +118,16 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .qs-btn:hover{border-color:var(--ocean);color:var(--ocean)}
 .qs-dot{width:7px;height:7px;border-radius:50%}
 
-/* STATS & ACCORDEON */
+/* STATS */
 .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:20px 24px 0}
 .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px}
 .stat-label{font-size:11px;color:var(--text2);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px;font-weight:600}
 .stat-value{font-family:var(--display);font-size:25px;font-weight:600;letter-spacing:-0.3px;color:var(--text)}
 .stat-sub{font-size:11px;color:var(--text2);margin-top:4px}
 
+/* ACCORDEON VUE GLOBALE EQUIPE */
 .team-accordion{margin:20px 24px 0;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
-.team-summary{padding:16px 20px;font-weight:600;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;color:var(--ocean);background:var(--ocean-dim);border-bottom:1px solid var(--border);}
+.team-summary{padding:16px 20px;font-weight:600;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;color:var(--ocean);background:var(--ocean-dim);border-bottom:1px solid var(--border);outline:none;}
 .team-summary::-webkit-details-marker{display:none;}
 .team-summary::after{content:'▼';font-size:10px;}
 .team-accordion[open] .team-summary::after{content:'▲';}
@@ -145,22 +143,18 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .filter-select:focus,.search-input:focus{border-color:var(--ocean)}
 .count-badge{font-size:11px;padding:3px 9px;border-radius:99px;background:var(--surface2);color:var(--text2);font-family:var(--mono);margin-left:auto;border:1px solid var(--border)}
 
-/* TABLE & FILTRES */
-.entries-table{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow-x:auto}
-.entries-table table{width:100%;border-collapse:collapse; min-width:800px;}
+/* TABLE */
+.entries-table{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden; overflow-x:auto;}
+.entries-table table{width:100%;border-collapse:collapse;min-width:800px;}
 .entries-table th{font-size:10px;font-weight:700;color:var(--text2);text-align:left;padding:11px 16px;border-bottom:1px solid var(--border);text-transform:uppercase;letter-spacing:.6px;background:var(--surface2)}
 .entries-table td{font-size:13px;padding:12px 16px;border-bottom:1px solid var(--border)}
 .entries-table tr:last-child td{border-bottom:none}
 .entries-table tr:hover td{background:var(--surface2)}
-
-.filter-row th { padding: 8px 16px; background: var(--surface); border-bottom: 2px solid var(--border); }
-.filter-input-tbl { width: 100%; padding: 6px 8px; border: 1px solid var(--border); border-radius: 4px; font-size: 11px; outline: none; background: var(--surface2); color: var(--text); }
-.filter-input-tbl:focus { border-color: var(--ocean); }
-
 .source-tag{display:inline-flex;align-items:center;gap:5px;font-size:11px;padding:3px 8px;border-radius:6px;font-weight:600}
-.src-ringover, .src-inbound, .src-outbound{background:var(--ocean-dim);color:var(--ocean)}
-.src-crisp, .src-chat, .src-email{background:var(--clay-dim);color:#A8503F}
-.src-manual, .src-ticket{background:var(--amber-dim);color:#8A6A0F}
+.src-inbound{background:var(--red-dim);color:var(--red)}
+.src-outbound{background:var(--amber-dim);color:var(--amber)}
+.src-chat, .src-email{background:var(--ocean-dim);color:var(--ocean)}
+.src-ticket{background:var(--green-dim);color:var(--green)}
 .dur-cell{font-family:var(--mono);font-size:12px;color:var(--text2)}
 .agent-cell{display:flex;align-items:center;gap:8px}
 .mini-avatar{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0;font-family:var(--font)}
@@ -170,13 +164,19 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .icon-btn:hover{background:var(--border);color:var(--text)}
 .empty{padding:48px;text-align:center;color:var(--text3);font-size:13px}
 
+/* TABLE FILTERS AVANCES (SELECT INTERACTIFS) */
+.filter-row th { padding: 8px 16px; background: var(--surface); border-bottom: 2px solid var(--border); }
+.filter-input-tbl { width: 100%; padding: 6px 8px; border: 1px solid var(--border); border-radius: 4px; font-size: 11px; outline: none; background: var(--surface2); color: var(--text); font-family: var(--font); }
+.filter-input-tbl:focus { border-color: var(--ocean); }
+
 /* MODAL */
 .modal-overlay{position:fixed;inset:0;background:rgba(30,42,58,.55);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(2px)}
-.modal{background:var(--surface);border:1px solid var(--border);border-radius:16px;width:100%;max-width:480px; max-height:90vh; overflow-y:auto;}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:16px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;}
 .modal-header{padding:20px 24px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
 .modal-title{font-family:var(--display);font-size:18px;font-weight:600;color:var(--text)}
 .modal-close{background:transparent;border:none;color:var(--text2);cursor:pointer;font-size:20px;padding:4px}
 .modal-body{padding:20px 24px}
+.modal-overlay:not(.hidden) .modal-body { display: block !important; } /* Securise l'affichage interne */
 .modal-footer{padding:16px 24px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end}
 .profile-photo-row{display:flex;align-items:center;gap:16px;margin-bottom:20px}
 .dmt-row{display:flex;align-items:center;gap:10px;padding:10px 18px;border-bottom:1px solid var(--border)}
@@ -196,10 +196,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .btn-primary{background:var(--ocean);color:#fff;border:none}
 .btn-primary:hover{background:var(--ocean-deep)}
 
+/* ADMINISTRATION PANEL */
 .hidden{display:none!important}
 .role-badge{font-size:11px;font-weight:600;padding:4px 10px;border-radius:99px;background:var(--amber-dim,#FCF1D6);color:#8A6A0F;margin-left:8px;letter-spacing:.2px}
-#app.role-admin{border-left:4px solid var(--ocean,#2B4C7E)}
-#tab-team,#tab-admin{display:inline-flex}
 .admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .admin-card{background:var(--surface,#fff);border:1px solid var(--border,#E2E8F0);border-radius:12px;overflow:hidden}
 .admin-card-header{padding:14px 18px;border-bottom:1px solid var(--border,#E2E8F0);display:flex;align-items:center;justify-content:space-between}
@@ -208,11 +207,11 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .team-row:last-of-type{border-bottom:none}
 .team-row-name{font-size:13px;font-weight:500}
 .team-row-role{font-size:11px;color:var(--text2,#6B7C93)}
-.admin-note{padding:10px 18px;font-size:11px;color:var(--text3,#A0AAB8);font-style:italic}
 .treatment-add-row{display:flex;gap:8px;padding:14px 18px;border-bottom:1px solid var(--border,#EEF2F6)}
 .treatment-add-row .form-input{flex:1}
 .treatment-row{display:flex;align-items:center;justify-content:space-between;padding:9px 18px;font-size:13px;border-bottom:1px solid var(--border,#EEF2F6)}
 @media (max-width:900px){.admin-grid{grid-template-columns:1fr}}
+
 .role-banner{background:var(--surface,#fff);border:1px solid var(--border,#E2E8F0);border-radius:14px;margin:20px 24px 0;padding:18px 24px;display:flex;align-items:center}
 .role-banner-avatars{display:flex;align-items:center;padding-right:20px;border-right:1px solid var(--border,#EEF2F6)}
 .role-banner-avatar{width:30px;height:30px;border-radius:50%;border:2px solid var(--bg,#fff);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:#fff}
@@ -220,80 +219,23 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .role-banner-info{flex:1;padding-left:20px}
 .role-banner-title{font-family:var(--display,inherit);font-weight:600;font-size:18px;color:var(--text,#1E2A3A)}
 .role-banner-sub{font-size:12px;color:var(--text2,#6B7C93);margin-top:2px}
-.role-banner-alert{color:#C9604F}
-.role-banner-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
 .role-banner-metric{padding-right:24px;border-right:1px solid var(--border,#EEF2F6)}
 .role-banner-metric-value{font-family:var(--display,inherit);font-weight:700;font-size:24px;color:var(--ocean,#2B4C7E);letter-spacing:-0.5px}
 .role-banner-metric-label{font-size:10px;color:var(--text2,#6B7C93);text-transform:uppercase;letter-spacing:.4px;margin-top:2px}
 .role-banner-link{background:none;border:none;color:var(--ocean,#2B4C7E);font-size:11px;font-weight:600;cursor:pointer;font-family:var(--font)}
 .team-row-timer{font-family:var(--mono,monospace);font-size:12px;color:var(--ocean,#2B4C7E)}
-
-/* NOUVELLES SOURCES */
-.source-opt {
-  display: flex; align-items: center; justify-content: center; gap: 6px;
-  padding: 10px 8px; border: 1px solid transparent; border-radius: 9px;
-  font-size: 12px; font-weight: 600; cursor: pointer; transition: all .15s;
-}
-.opt-inbound { background: #4D2D2D; color: #E58787; }
-.opt-inbound.selected { border-color: #E58787; background: #663939; }
-.opt-outbound { background: #4A3E1B; color: #D6A848; }
-.opt-outbound.selected { border-color: #D6A848; background: #635222; }
-.opt-chat { background: #2A3B52; color: #84A9DE; }
-.opt-chat.selected { border-color: #84A9DE; background: #354B69; }
-.opt-email { background: #EAF3FC; color: #2A61A3; }
-.opt-email.selected { border-color: #2A61A3; background: #FFFFFF; }
-.opt-ticket { background: #1E3B1E; color: #6DB36D; }
-.opt-ticket.selected { border-color: #6DB36D; background: #274D27; }
-
-/* TIME PICKER ROULETTE */
-.time-dropdown {
-  position: absolute; top: 100%; left: 0; width: 140px; height: 160px;
-  background: var(--surface); border: 1px solid var(--ocean); border-radius: 9px;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.15); z-index: 300; display: flex;
-  margin-top: 6px; overflow: hidden;
-}
-.time-col {
-  flex: 1; overflow-y: auto; scroll-snap-type: y mandatory; scrollbar-width: none;
-  position: relative;
-}
-.time-col::-webkit-scrollbar { display: none; }
-.time-sep {
-  display: flex; align-items: center; justify-content: center;
-  font-weight: 700; color: var(--text2); padding-bottom: 2px;
-}
-.time-opt {
-  height: 36px; display: flex; align-items: center; justify-content: center;
-  scroll-snap-align: center; font-size: 14px; font-family: var(--mono); color: var(--text2); cursor: pointer; transition: all .1s;
-}
-.time-opt.active { color: var(--ocean); font-weight: 700; font-size: 16px; background: var(--ocean-dim); }
-.time-spacer { height: 62px; }
-
-/* EMOJI PICKER */
-.emoji-picker {
-  position: absolute; top: 100%; left: 0; margin-top: 4px;
-  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
-  padding: 10px; display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.15); z-index: 100;
-}
-.emoji-btn {
-  background: transparent; border: none; font-size: 18px; cursor: pointer;
-  border-radius: 6px; padding: 6px; transition: background 0.15s;
-  display: flex; align-items: center; justify-content: center;
-}
-.emoji-btn:hover { background: var(--surface2); transform: scale(1.1); }
 </style>
 </head>
 <body>
 
 <div id="login-screen">
   <div class="login-card">
-    <img src="image_1a1b24.jpg" alt="Task'in" style="width:64px;height:64px;border-radius:12px;margin-bottom:16px;object-fit:cover;">
-    <div class="login-logo" style="color:var(--ocean);font-size:24px;font-weight:700;">Task'in</div>
+    <div class="login-logo">OnSpot</div>
     <div class="login-title">Time Tracker</div>
     <div class="login-sub">Connecte-toi avec ton email et ton mot de passe</div>
     <div class="form-row">
       <label class="form-label">Email</label>
-      <input class="form-input" type="email" id="login-email" placeholder="prenom@taskin.com" autocomplete="username">
+      <input class="form-input" type="email" id="login-email" placeholder="prenom@onspot.travel" autocomplete="username">
     </div>
     <div class="form-row">
       <label class="form-label">Mot de passe</label>
@@ -306,7 +248,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 
 <div id="app">
   <div class="topbar">
-    <div class="topbar-logo"><img src="image_1a1b24.jpg" alt="Task'in"> Task'in</div>
+    <div class="topbar-logo">Task'in</div>
     <div class="topbar-sep">/</div>
     <div class="topbar-title">Time Tracker</div>
     <span class="role-badge hidden" id="role-badge"></span>
@@ -351,7 +293,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     </div>
     <div class="role-banner-info">
       <div class="role-banner-title" id="adm-banner-title" style="font-family:var(--font);font-size:13px;font-weight:400;color:var(--text)"></div>
-      <div class="role-banner-sub role-banner-alert" id="adm-banner-sub"></div>
+      <div class="role-banner-sub" id="adm-banner-sub"></div>
     </div>
     <button class="role-banner-link" onclick="switchTab('admin', document.getElementById('tab-admin'))">Détails →</button>
   </div>
@@ -362,7 +304,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     <button class="qs-btn" onclick="quickStart('chat')"><span class="qs-dot" style="background:#84A9DE"></span>Crisp Chat</button>
     <button class="qs-btn" onclick="quickStart('email')"><span class="qs-dot" style="background:#2A61A3"></span>Crisp Email</button>
     <button class="qs-btn" onclick="quickStart('ticket')"><span class="qs-dot" style="background:#6DB36D"></span>Ticket / Manuel</button>
-    <button class="qs-btn" onclick="syncRingover()"><span class="qs-dot" style="background:var(--ocean)"></span>Sync RingOver (auto)</button>
+    <button class="qs-btn" onclick="syncRingover()" style="margin-left:auto;"><span class="qs-dot" style="background:var(--ocean)"></span>Sync RingOver</button>
   </div>
 
   <div class="stats-grid agent-only" id="stats-grid-agent">
@@ -384,45 +326,17 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     </div>
   </div>
 
-  <details class="team-accordion hidden" id="team-accordion" style="margin-top:20px;">
+  <details class="team-accordion hidden" id="team-accordion-view">
     <summary class="team-summary">Vue Globale Équipe & KPIs</summary>
-    <div class="stats-grid hidden" id="stats-grid-supervisor" style="grid-template-columns:repeat(4,1fr); padding-bottom:20px; border-bottom:1px solid var(--border);">
-      <div class="stat-card">
-        <div class="stat-label">Total Équipe (Jour)</div>
-        <div class="stat-value" id="sup-s-total" style="color:var(--ocean)">0h00</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">DMT Global</div>
-        <div class="stat-value" id="sup-s-dmt" style="color:var(--ocean)">0min</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">FRT Global</div>
-        <div class="stat-value" id="sup-s-frt" style="color:var(--clay)">0min</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Total Tâches</div>
-        <div class="stat-value" id="sup-s-count" style="color:var(--text2)">0</div>
+    <div style="padding: 20px;">
+      <div class="stats-grid" id="stats-grid-supervisor" style="grid-template-columns:repeat(4,1fr); padding-bottom:20px; border-bottom:1px solid var(--border); margin:0;">
+        <div class="stat-card"><div class="stat-label">Total Équipe (Jour)</div><div class="stat-value" id="sup-s-total" style="color:var(--ocean)">0h00</div></div>
+        <div class="stat-card"><div class="stat-label">DMT Global</div><div class="stat-value" id="sup-s-dmt" style="color:var(--ocean)">0min</div></div>
+        <div class="stat-card"><div class="stat-label">FRT Global</div><div class="stat-value" id="sup-s-frt" style="color:var(--clay)">0min</div></div>
+        <div class="stat-card"><div class="stat-label">Total Tâches</div><div class="stat-value" id="sup-s-count" style="color:var(--text2)">0</div></div>
       </div>
     </div>
   </details>
-
-  <div class="stats-grid hidden" id="stats-grid-admin-home" style="grid-template-columns:repeat(3,1fr)">
-    <div class="stat-card">
-      <div class="stat-label">Total semaine</div>
-      <div class="stat-value" id="adm-home-total" style="color:var(--ocean)">0h00</div>
-      <div class="stat-sub">toute l'équipe</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">Entrées enregistrées</div>
-      <div class="stat-value" id="adm-home-entries" style="color:var(--ocean)">0</div>
-      <div class="stat-sub">au total</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">Agents actifs (jour)</div>
-      <div class="stat-value" id="adm-home-active" style="color:var(--ocean)">0</div>
-      <div class="stat-sub">sur 5</div>
-    </div>
-  </div>
 
   <div class="tabs">
     <button class="tab agent-only active" onclick="switchTab('today',this)">Aujourd'hui</button>
@@ -433,45 +347,47 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   </div>
 
   <div class="content">
-    <div class="toolbar">
-      <select class="filter-select" id="filter-source" onchange="renderAll()">
-        <option value="">Toutes sources</option>
-        <option value="inbound">Appel entrant</option>
-        <option value="outbound">Appel sortant</option>
-        <option value="chat">Crisp Chat</option>
-        <option value="email">Crisp Email</option>
-        <option value="ticket">Ticket / Manuel</option>
-      </select>
-      <select class="filter-select" id="filter-agent" onchange="renderAll()">
+    <div class="toolbar" id="main-toolbar">
+      <select class="filter-select hidden" id="filter-agent" onchange="renderAll()">
         <option value="">Tous les agents</option>
       </select>
-      <select class="filter-select" id="filter-treatment" onchange="renderAll()">
-        <option value="">Tous traitements</option>
-      </select>
-      <input class="search-input" id="search-input" placeholder="Rechercher..." oninput="onSearchInput()">
+      <button class="btn btn-ghost hidden" id="btn-export" onclick="exportCSV()">↓ Exporter CSV</button>
       <span class="count-badge" id="entry-count">0 entrées</span>
     </div>
 
-    <div class="entries-table">
+    <div class="entries-table" id="main-table">
       <table>
         <thead>
           <tr>
-            <th>Inbound Time</th>
-            <th>Start Time</th>
-            <th>Source</th>
-            <th>Description</th>
-            <th>Agent</th>
-            <th>Durée</th>
-            <th></th>
+            <th width="12%">Inbound Time</th>
+            <th width="12%">Start Time</th>
+            <th width="15%">Source</th>
+            <th width="35%">Description / Traitement</th>
+            <th width="15%">Agent</th>
+            <th width="10%">Durée</th>
+            <th width="5%" class="col-actions hidden"></th>
           </tr>
           <tr class="filter-row hidden" id="table-filters">
             <th><input type="text" class="filter-input-tbl" id="f-inb" placeholder="Filtrer..." oninput="onSearchInput()"></th>
             <th><input type="text" class="filter-input-tbl" id="f-start" placeholder="Filtrer..." oninput="onSearchInput()"></th>
-            <th><input type="text" class="filter-input-tbl" id="f-src" placeholder="Filtrer..." oninput="onSearchInput()"></th>
+            <th>
+              <select id="f-src" class="filter-input-tbl" onchange="onSearchInput()">
+                <option value="">Toutes sources</option>
+                <option value="inbound">📞↘ Inbound</option>
+                <option value="outbound">📞↗ Outbound</option>
+                <option value="chat">💬 Crisp Chat</option>
+                <option value="email">✉️ Crisp Email</option>
+                <option value="ticket">🎫 Ticket/Manuel</option>
+              </select>
+            </th>
             <th><input type="text" class="filter-input-tbl" id="f-desc" placeholder="Filtrer..." oninput="onSearchInput()"></th>
-            <th><input type="text" class="filter-input-tbl" id="f-agt" placeholder="Filtrer..." oninput="onSearchInput()"></th>
+            <th>
+              <select id="f-agt" class="filter-input-tbl" onchange="onSearchInput()">
+                <option value="">Tous les agents</option>
+              </select>
+            </th>
             <th><input type="text" class="filter-input-tbl" id="f-dur" placeholder="Filtrer..." oninput="onSearchInput()"></th>
-            <th></th>
+            <th class="col-actions hidden"></th>
           </tr>
         </thead>
         <tbody id="entries-body"></tbody>
@@ -481,9 +397,45 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     <div id="team-live-panel" class="hidden">
       <div class="admin-card" style="margin-bottom:16px">
         <div class="admin-card-header">
-          <h3>DMT par source</h3>
-          <span class="count-badge">Durée moyenne de traitement cible</span>
+          <h3>Équipe en direct (Historique Sup)</h3>
+          <span class="count-badge" id="team-live-count"></span>
         </div>
+        <div id="team-live-list"></div>
+      </div>
+      <div class="admin-card">
+        <div class="admin-card-header"><h3>Extraction globale</h3></div>
+        <div style="padding:14px 18px;display:flex;gap:8px">
+          <button class="btn btn-ghost" onclick="exportCSV()">↓ Export CSV</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="admin-panel" class="hidden">
+      <div class="admin-grid">
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <h3>Comptes équipe</h3>
+            <span class="count-badge" id="team-count">0 comptes</span>
+          </div>
+          <div style="padding:14px 18px;"><button class="btn btn-primary" style="width:100%" onclick="openCreateAccountModal()">+ Ajouter un compte</button></div>
+          <div id="team-list"></div>
+        </div>
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <h3>Types de traitement</h3>
+            <span class="count-badge" id="treatment-count">0 types</span>
+          </div>
+          <div class="treatment-add-row" style="position:relative; align-items:center;">
+            <button class="btn btn-ghost" onclick="toggleEmojiPicker(event)" title="Ajouter un emoji" style="padding: 8px 10px; font-size: 16px;">😀</button>
+            <input class="form-input" id="new-treatment-input" placeholder="Nouveau type (ex: ✈️ Vols)..." onkeydown="if(event.key==='Enter') addTreatmentType()">
+            <button class="btn btn-primary" onclick="addTreatmentType()">Ajouter</button>
+            <div class="emoji-picker hidden" id="emoji-picker" onclick="event.stopPropagation()"></div>
+          </div>
+          <div id="treatment-list"></div>
+        </div>
+      </div>
+      <div class="admin-card" style="margin-top:16px">
+        <div class="admin-card-header"><h3>Objectifs DMT par source</h3></div>
         <div class="dmt-row">
           <span class="dmt-label">Appels (Inbound/Outbound)</span>
           <input class="form-input dmt-input" id="dmt-ringover" type="number" min="0">
@@ -501,83 +453,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
         </div>
         <div style="padding:12px 18px"><button class="btn btn-primary" onclick="saveDMT()">Enregistrer les DMT</button></div>
       </div>
-
-      <div class="admin-card" style="margin-bottom:16px">
-        <div class="admin-card-header">
-          <h3>Équipe en direct (Historique Sup)</h3>
-          <span class="count-badge" id="team-live-count"></span>
-        </div>
-        <div id="team-live-list"></div>
-      </div>
-
-      <div class="admin-card">
-        <div class="admin-card-header"><h3>Extraction des données</h3></div>
-        <div style="padding:14px 18px;display:flex;gap:8px">
-          <button class="btn btn-ghost" onclick="exportCSV()">↓ Export CSV</button>
-          <button class="btn btn-ghost" onclick="exportExcel()">↓ Export Excel</button>
-        </div>
-      </div>
-    </div>
-
-    <div id="admin-panel" class="hidden">
-      <div class="admin-grid">
-        <div class="admin-card">
-          <div class="admin-card-header">
-            <h3>Comptes équipe</h3>
-            <span class="count-badge" id="team-count">0 comptes</span>
-          </div>
-          <button class="btn btn-primary" style="width:100%;margin-bottom:12px" onclick="openCreateAccountModal()">+ Ajouter un compte</button>
-          <div id="team-list"></div>
-        </div>
-        <div class="admin-card">
-          <div class="admin-card-header">
-            <h3>Types de traitement</h3>
-            <span class="count-badge" id="treatment-count">0 types</span>
-          </div>
-          
-          <div class="treatment-add-row" style="position:relative; align-items:center;">
-            <button class="btn btn-ghost" onclick="toggleEmojiPicker(event)" title="Ajouter un emoji" style="padding: 8px 10px; font-size: 16px;">😀</button>
-            <input class="form-input" id="new-treatment-input" placeholder="Nouveau type (ex: ✈️ Vols)..." onkeydown="if(event.key==='Enter') addTreatmentType()">
-            <button class="btn btn-primary" onclick="addTreatmentType()">Ajouter</button>
-            <div class="emoji-picker hidden" id="emoji-picker" onclick="event.stopPropagation()"></div>
-          </div>
-          
-          <div id="treatment-list"></div>
-        </div>
-      </div>
       <div class="admin-card" style="margin-top:16px">
-        <div class="admin-card-header">
-          <h3>Statistiques globales</h3>
-        </div>
-        <div class="stats-grid" style="margin:0;padding:16px">
-          <div class="stat-card">
-            <div class="stat-label">Total équipe (semaine)</div>
-            <div class="stat-value" id="admin-s-total">0h00</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">Entrées enregistrées</div>
-            <div class="stat-value" id="admin-s-count">0</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">Agents actifs</div>
-            <div class="stat-value" id="admin-s-active">0</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">Export</div>
-            <button class="btn btn-ghost" onclick="exportCSV()" style="margin-top:4px">↓ CSV</button>
-            <button class="btn btn-ghost" onclick="exportExcel()" style="margin-top:4px">↓ Excel</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="admin-card" style="margin-top:16px">
-        <div class="admin-card-header">
-          <h3>Courbe d'évolution</h3>
-        </div>
+        <div class="admin-card-header"><h3>Courbe d'évolution</h3></div>
         <div class="chart-toolbar">
-          <select class="filter-select" id="chart-scope" onchange="renderEvolutionChart()">
-            <option value="team">Équipe entière</option>
-          </select>
+          <select class="filter-select" id="chart-scope" onchange="renderEvolutionChart()"><option value="team">Équipe entière</option></select>
           <select class="filter-select" id="chart-period" onchange="renderEvolutionChart()">
             <option value="week">Cette semaine</option>
             <option value="month">Ce mois</option>
@@ -702,36 +581,23 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     <div class="modal-body">
       <div class="form-row">
         <label class="form-label">Source</label>
-        <div class="source-picker">
-          <div class="source-opt opt-inbound selected" id="src-inbound" onclick="selectSource('inbound')">
-            <span>📞↘</span> Appel entrant
-          </div>
-          <div class="source-opt opt-outbound" id="src-outbound" onclick="selectSource('outbound')">
-            <span>📞↗</span> Appel sortant
-          </div>
-          <div class="source-opt opt-chat" id="src-chat" onclick="selectSource('chat')">
-            <span>💬</span> Crisp (chat)
-          </div>
-          <div class="source-opt opt-email" id="src-email" onclick="selectSource('email')">
-            <span>✉️</span> Crisp (email)
-          </div>
-          <div class="source-opt opt-ticket" id="src-ticket" onclick="selectSource('ticket')">
-            <span>🎫</span> Traitement ticket
-          </div>
+        <div class="source-picker" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+          <div class="source-opt opt-inbound selected" id="src-inbound" onclick="selectSource('inbound')"><span>📞↘</span> Appel entrant</div>
+          <div class="source-opt opt-outbound" id="src-outbound" onclick="selectSource('outbound')"><span>📞↗</span> Appel sortant</div>
+          <div class="source-opt opt-chat" id="src-chat" onclick="selectSource('chat')"><span>💬</span> Crisp Chat</div>
+          <div class="source-opt opt-email" id="src-email" onclick="selectSource('email')"><span>✉️</span> Crisp Email</div>
+          <div class="source-opt opt-ticket" id="src-ticket" onclick="selectSource('ticket')" style="grid-column: span 2"><span>🎫</span> Traitement ticket</div>
         </div>
       </div>
-      
       <div class="form-row" id="time-picker-container" style="position:relative;">
         <label class="form-label">Inbound time (Heure d'arrivée)</label>
         <input class="form-input" id="inbound-time-input" readonly onclick="toggleTimePicker(event)" style="cursor:pointer; font-family:var(--mono);" placeholder="--:--">
-        
         <div class="time-dropdown hidden" id="time-dropdown" onclick="event.stopPropagation()">
           <div class="time-col" id="col-hours" onscroll="handleTimeScroll(this, 'h')"></div>
           <div class="time-sep">:</div>
           <div class="time-col" id="col-mins" onscroll="handleTimeScroll(this, 'm')"></div>
         </div>
       </div>
-      
       <div class="form-row">
         <label class="form-label">Description / Ticket</label>
         <input class="form-input" id="f-desc" placeholder="Ex: Ticket #68554 ou description de la tâche">
@@ -753,21 +619,25 @@ const AUTH_BASE = `https://identitytoolkit.googleapis.com/v1`;
 let TEAM = [];
 const SOURCE_DMT_DEFAULT = { ringover: 300, crisp: 480, manual: 600 };
 let sourceDMT = {...SOURCE_DMT_DEFAULT};
+
+// EMOJIS RESTAURÉS CORRIGÉS
 const TREATMENT_TYPES_DEFAULT = [
-  'Confirmation','Reservations','Conseils/suggestions','Follow-up','Lost and found','Car rental',
-  'Additionnels services','Train','Health','Activities','Transferts','DMC','Itinerary',
-  'Accommodation','Luggage','Flights','Welcome call','Goodbye call'
+  '✅ Confirmation','🎫 Reservations','💡 Conseils/suggestions','🔄 Follow-up','🔍 Lost and found','🚗 Car rental',
+  '➕ Additionnels services','🚆 Train','🩺 Health','🎡 Activities','🚌 Transferts','🤝 DMC','🗺️ Itinerary',
+  '🏨 Accommodation','🧳 Luggage','✈️ Flights','👋 Welcome call','🚪 Goodbye call'
 ];
+let customTreatmentTypes = [...TREATMENT_TYPES_DEFAULT];
 
 let currentUser = null;
 let entries = [];
 let activeTimer = null; 
 let timerInterval = null;
+let liveInterval = null;
 let selectedSource = 'inbound';
 let currentView = 'today';
 let searchTimeout = null;
 
-// ======================= AUTH =======================
+// ======================= APPLICATION ENGINE =======================
 async function doLogin() {
   const email = document.getElementById('login-email').value.trim();
   const password = document.getElementById('login-password').value;
@@ -777,8 +647,7 @@ async function doLogin() {
 
   try {
     const res = await fetch(`${AUTH_BASE}/accounts:signInWithPassword?key=${FIREBASE_API_KEY}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password, returnSecureToken: true })
     });
     const data = await res.json();
@@ -788,7 +657,7 @@ async function doLogin() {
     const user = await fetchAccountProfile(data.localId);
     if (!user) { err.textContent = "Ce compte n'a pas encore de profil. Contacte un admin."; return; }
     enterApp(user);
-  } catch(e) { err.textContent = 'Erreur de connexion. Réessaie.'; console.error(e); }
+  } catch(e) { err.textContent = 'Erreur réseau.'; }
 }
 
 async function fetchAccountProfile(uid) {
@@ -803,65 +672,22 @@ async function fetchAccountProfile(uid) {
       color: f.color?.stringValue || '#2B4C7E', initials: f.initials?.stringValue || '??',
       role: f.role?.stringValue || 'agent', photo: f.photo?.stringValue || '',
     };
-  } catch(e) { console.error('Erreur profil compte:', e); return null; }
+  } catch(e) { return null; }
 }
 
 function enterApp(user) {
   currentUser = user;
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('app').style.display = 'block';
-  applyUserTheme(); renderTopbarIdentity(); populateFilters(); applyRoleUI(); checkActiveTimer(); refreshApp();
+  applyUserTheme(); renderTopbarIdentity(); applyRoleUI(); checkActiveTimer(); refreshApp();
 }
 
-function renderTopbarIdentity() {
-  const av = document.getElementById('topbar-avatar');
-  if (currentUser.photo) {
-    av.style.backgroundImage = `url(${currentUser.photo})`; av.style.backgroundSize = 'cover';
-    av.style.backgroundPosition = 'center'; av.textContent = '';
-  } else {
-    av.style.backgroundImage = ''; av.textContent = currentUser.initials;
-    av.style.background = currentUser.color+'20'; av.style.color = currentUser.color;
-  }
-  document.getElementById('topbar-name').textContent = currentUser.name;
-}
-
-function applyUserTheme() {
-  const saved = localStorage.getItem('onspot_theme_' + currentUser.id) || 'light';
-  document.documentElement.setAttribute('data-theme', saved);
-  updateThemeToggleIcon(saved);
-}
-
-function toggleTheme() {
-  if (!currentUser) return;
-  const current = document.documentElement.getAttribute('data-theme') || 'light';
-  const next = current === 'light' ? 'dark' : 'light';
-  document.documentElement.setAttribute('data-theme', next);
-  localStorage.setItem('onspot_theme_' + currentUser.id, next);
-  updateThemeToggleIcon(next);
-}
-
-function updateThemeToggleIcon(theme) {
-  const btn = document.getElementById('theme-toggle');
-  if (btn) btn.textContent = theme === 'dark' ? '☀' : '☾';
-}
-
-async function tryRestoreSession() {
-  const idToken = localStorage.getItem('onspot_idToken');
-  const uid = localStorage.getItem('onspot_uid');
-  if (!idToken || !uid) return false;
-  const user = await fetchAccountProfile(uid);
-  if (!user) { localStorage.removeItem('onspot_idToken'); localStorage.removeItem('onspot_uid'); return false; }
-  enterApp(user);
-  return true;
-}
-
-// RESTAURATION STRICTE DU switchTab ET applyRoleUI D'ORIGINE
 function applyRoleUI() {
   const role = currentUser.role;
+  const isSupAdmin = role === 'supervisor' || role === 'admin';
   const badge = document.getElementById('role-badge');
   const app = document.getElementById('app');
-  app.classList.remove('role-agent','role-supervisor','role-admin');
-  app.classList.add('role-' + role);
+  app.className = 'role-' + role;
 
   if (role === 'agent') badge.textContent = 'Agent';
   if (role === 'supervisor') badge.textContent = 'Superviseur · Vue élargie';
@@ -875,296 +701,84 @@ function applyRoleUI() {
   document.querySelector('.tab.agent-only').classList.toggle('hidden', role !== 'agent');
 
   document.getElementById('timer-banner').classList.toggle('hidden', role !== 'agent');
-  document.getElementById('supervisor-banner').classList.toggle('hidden', role !== 'supervisor');
-  document.getElementById('admin-banner').classList.toggle('hidden', role !== 'admin');
   document.querySelector('.quickstart').classList.toggle('hidden', role !== 'agent');
-
   document.getElementById('stats-grid-agent').classList.toggle('hidden', role !== 'agent');
-  document.getElementById('team-accordion').classList.toggle('hidden', role === 'agent');
-  document.getElementById('stats-grid-admin-home').classList.toggle('hidden', role !== 'admin');
   
-  // Le Dashboard Permanent pour Sup/Admin
-  document.getElementById('permanent-live-panel').classList.toggle('hidden', role === 'agent');
+  // Masquer ou afficher le panel permanent et l'accordéon
+  document.getElementById('permanent-live-panel').classList.toggle('hidden', !isSupAdmin);
+  document.getElementById('team-accordion-view').classList.toggle('hidden', !isSupAdmin);
+  document.getElementById('table-filters').classList.toggle('hidden', !isSupAdmin);
 
-  // Ligne de filtres tableau (Sup/Admin)
-  document.getElementById('table-filters').classList.toggle('hidden', role === 'agent');
+  if (role === 'admin') document.querySelectorAll('.col-actions').forEach(el => el.classList.remove('hidden'));
 
   const agentFilter = document.getElementById('filter-agent');
   if (role === 'agent') {
-    agentFilter.value = currentUser.id;
-    agentFilter.disabled = true;
+    agentFilter.value = currentUser.id; agentFilter.disabled = true;
   } else {
     agentFilter.disabled = false;
   }
 
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   if (role === 'agent') {
-    currentView = 'today';
-    document.querySelector('.tab.agent-only').classList.add('active');
+    currentView = 'today'; document.querySelector('.tab.agent-only').classList.add('active');
   } else {
     currentView = 'home';
     document.getElementById('tab-home').classList.add('active');
     document.querySelector('.toolbar').classList.add('hidden');
     document.querySelector('.entries-table').classList.add('hidden');
-    
-    // Démarrage de l'actualisation du dashboard live permanent
-    setInterval(fetchPermanentLiveAgents, 15000);
+    if(!liveInterval) liveInterval = setInterval(fetchPermanentLiveAgents, 15000);
     fetchPermanentLiveAgents();
   }
 }
 
-document.getElementById('login-password').addEventListener('keydown', e => { if (e.key==='Enter') doLogin(); });
-function logout() {
-  if (activeTimer) { alert('Arrête le timer en cours avant de te déconnecter.'); return; }
-  localStorage.removeItem('onspot_idToken'); localStorage.removeItem('onspot_uid');
-  currentUser = null; entries = [];
-  document.getElementById('login-screen').style.display = 'flex';
-  document.getElementById('app').style.display = 'none';
-  document.getElementById('login-email').value = ''; document.getElementById('login-password').value = '';
-}
-
-function populateFilters() {
-  const sel = document.getElementById('filter-agent');
-  sel.innerHTML = '<option value="">Tous les agents</option>' + agentsOnly().map(u=>`<option value="${u.id}">${u.name}</option>`).join('');
-  const tSel = document.getElementById('filter-treatment');
-  if (tSel) tSel.innerHTML = '<option value="">Tous traitements</option>' + customTreatmentTypes.map(t=>`<option value="${t}">${t}</option>`).join('');
-}
-
-// Fonction "Actualiser" (Remplace l'ancienne chargeData)
 async function refreshApp() {
   await loadAccountsFromFirestore();
   populateFilters();
+  await loadDMT();
   await loadTreatmentsFromFirestore();
   await loadEntries();
 }
 
-// ===== TIMER LOGIC =====
-function openModal() {
-  document.getElementById('modal-overlay').classList.remove('hidden');
-  document.getElementById('f-desc').value = '';
-  selectSource('inbound');
-  
-  const d = new Date();
-  d.setMinutes(d.getMinutes() + 1);
-  pickerHour = String(d.getHours()).padStart(2, '0');
-  pickerMin = String(d.getMinutes()).padStart(2, '0');
-  document.getElementById('inbound-time-input').value = `${pickerHour}:${pickerMin}`;
-  
-  document.getElementById('f-desc').focus();
-}
-function closeModal() { document.getElementById('modal-overlay').classList.add('hidden'); }
-function closeModalOutside(e) { if (e.target === document.getElementById('modal-overlay')) closeModal(); }
-function selectSource(s) {
-  selectedSource = s;
-  document.querySelectorAll('.source-opt').forEach(o => o.classList.remove('selected'));
-  document.getElementById('src-' + s).classList.add('selected');
-}
-function quickStart(source) {
-  if (activeTimer) { alert('Un timer est déjà actif. Arrête-le avant d\'en démarrer un autre.'); return; }
-  if (source === 'ticket') { openModal(); return; }
-  selectedSource = source;
-  openModal();
-  selectSource(source);
-}
-function startTimer() {
-  const desc = document.getElementById('f-desc').value.trim() || (selectedSource==='ticket'?'Tâche manuelle':selectedSource);
-  
-  const d = new Date();
-  d.setHours(parseInt(pickerHour, 10), parseInt(pickerMin, 10), 0, 0);
-  
-  activeTimer = { 
-    source: selectedSource, 
-    desc, 
-    startTime: Date.now(),
-    inboundTime: `${pickerHour}:${pickerMin}`
-  };
-  closeModal();
-  document.getElementById('timer-banner').classList.add('active');
-  document.getElementById('timer-clock').classList.remove('idle'); 
-  document.getElementById('timer-clock').classList.add('active');
-  document.getElementById('timer-task').textContent = desc; 
-  document.getElementById('timer-task').classList.remove('placeholder');
-  document.getElementById('play-btn').classList.add('hidden');
-  document.getElementById('stop-btn').classList.remove('hidden');
-  
-  localStorage.setItem('activeTimer_'+currentUser.id, JSON.stringify(activeTimer));
-  saveActiveTimerToFirestore();
-  timerInterval = setInterval(updateClock, 1000);
-  updateClock();
-}
-async function saveActiveTimerToFirestore() {
-  const body = { fields: { source: { stringValue: activeTimer.source }, desc: { stringValue: activeTimer.desc }, startTime: { integerValue: String(activeTimer.startTime) } }};
-  try { await fetch(`${BASE_URL}/active_timers/${currentUser.id}?key=${FIREBASE_API_KEY}`, { method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) }); } catch(e) { console.error(e); }
-}
-async function clearActiveTimerFromFirestore() {
-  try { await fetch(`${BASE_URL}/active_timers/${currentUser.id}?key=${FIREBASE_API_KEY}`, { method:'DELETE' }); } catch(e) { console.error(e); }
-}
-function updateClock() {
-  if (!activeTimer) return;
-  const ms = Date.now() - activeTimer.startTime;
-  const isFuture = ms < 0; 
-  const elapsed = Math.floor(Math.abs(ms) / 1000);
-  
-  const h = String(Math.floor(elapsed/3600)).padStart(2,'0');
-  const m = String(Math.floor((elapsed%3600)/60)).padStart(2,'0');
-  const s = String(elapsed%60).padStart(2,'0');
-  
-  document.getElementById('timer-clock').textContent = (isFuture ? '-' : '') + `${h}:${m}:${s}`;
-}
-async function stopTimer() {
-  if (!activeTimer) return;
-  clearInterval(timerInterval);
-  const durationSec = Math.floor((Date.now() - activeTimer.startTime)/1000);
-  const entry = {
-    id: Date.now().toString(),
-    source: activeTimer.source,
-    desc: activeTimer.desc,
-    agent: currentUser.id,
-    inboundTime: activeTimer.inboundTime || '--:--',
-    startTimeStr: new Date(activeTimer.startTime).toISOString(),
-    durationSec
-  };
-  entries.unshift(entry);
+function switchTab(view, btn) {
+  if (currentUser.role === 'agent' && (view === 'admin' || view === 'team' || view === 'home')) return;
+  currentView = view;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  if (btn) btn.classList.add('active');
 
-  activeTimer = null;
-  localStorage.removeItem('activeTimer_'+currentUser.id);
-  document.getElementById('timer-banner').classList.remove('active');
-  document.getElementById('timer-clock').classList.add('idle'); 
-  document.getElementById('timer-clock').classList.remove('active');
-  document.getElementById('timer-clock').textContent = '00:00:00';
-  document.getElementById('timer-task').textContent = 'Aucun timer actif — démarre une tâche ci-dessous';
-  document.getElementById('timer-task').classList.add('placeholder');
-  document.getElementById('play-btn').classList.remove('hidden');
-  document.getElementById('stop-btn').classList.add('hidden');
+  const isAdminView = view === 'admin';
+  const isHomeView = view === 'home';
+  const isTeamView = view === 'team';
+  const showTable = !isAdminView && !isHomeView;
+
+  document.querySelector('.toolbar').classList.toggle('hidden', !showTable);
+  document.querySelector('.entries-table').classList.toggle('hidden', !showTable);
+  document.getElementById('admin-panel').classList.toggle('hidden', !isAdminView);
+  document.getElementById('team-live-panel').classList.toggle('hidden', !isHomeView && !isTeamView);
+
+  if (isAdminView) { renderAdminPanel(); return; }
+  if (isHomeView || isTeamView) { renderRoleHome(); return; }
   renderAll();
-
-  saveEntryToFirestore(entry);
-  clearActiveTimerFromFirestore();
-  fetchPermanentLiveAgents();
-}
-function checkActiveTimer() {
-  const saved = localStorage.getItem('activeTimer_'+currentUser.id);
-  if (saved) {
-    activeTimer = JSON.parse(saved);
-    document.getElementById('timer-banner').classList.add('active');
-    document.getElementById('timer-clock').classList.remove('idle'); document.getElementById('timer-clock').classList.add('active');
-    document.getElementById('timer-task').textContent = activeTimer.desc; document.getElementById('timer-task').classList.remove('placeholder');
-    document.getElementById('play-btn').classList.add('hidden');
-    document.getElementById('stop-btn').classList.remove('hidden');
-    timerInterval = setInterval(updateClock, 1000);
-    updateClock();
-  }
 }
 
-// ===== ACTIVE TIMERS / LIVE PERMANENT =====
-async function loadActiveTimers() {
-  try {
-    const res = await fetch(`${BASE_URL}/active_timers?key=${FIREBASE_API_KEY}`);
-    const data = await res.json();
-    return (data.documents || []).map(doc => {
-      const f = doc.fields || {};
-      return { agentId: doc.name.split('/').pop(), source: f.source?.stringValue || 'ticket', desc: f.desc?.stringValue || '', startTime: parseInt(f.startTime?.integerValue || 0) };
-    });
-  } catch(e) { return []; }
-}
-
-async function fetchPermanentLiveAgents() {
-  if(currentUser.role === 'agent') return;
-  const activeTimers = await loadActiveTimers();
-  const grid = document.getElementById('live-agents-grid');
-  
-  if (activeTimers.length === 0) {
-    grid.innerHTML = '<div style="opacity:0.6; padding:10px;">Aucun agent actif pour le moment.</div>';
-    return;
-  }
-
-  let html = '';
-  activeTimers.forEach(t => {
-    const agentObj = TEAM.find(u => u.id === t.agentId);
-    const agentName = agentObj ? agentObj.name : `Agent`;
-    
-    const elapsedMin = Math.floor((Date.now() - t.startTime) / 60000);
-    const timeColor = elapsedMin > 15 ? '#C9604F' : '#84A9DE';
-
-    html += `
-    <div class="live-agent-card">
-      <div class="live-agent-top">
-        <span class="live-agent-name">👤 ${agentName}</span>
-        <span class="live-agent-time" style="color:${timeColor}">${elapsedMin} min</span>
-      </div>
-      <div class="live-agent-task"><strong>${t.source}</strong><br>${t.desc}</div>
-    </div>`;
-  });
-  grid.innerHTML = html;
-}
-
-// ===== RINGOVER SYNC =====
-async function syncRingover() {
-  alert('Synchronisation désactivée pour cette version de démonstration.');
-}
-
-// ===== FIRESTORE =====
+// ======================= DATA MOTEUR & TABLES =======================
 async function loadEntries() {
   try {
     const res = await fetch(`${BASE_URL}/time_entries?key=${FIREBASE_API_KEY}&pageSize=1000`);
     const data = await res.json();
-    entries = (data.documents || []).map(docToEntry).sort((a,b)=> new Date(b.startTimeStr)-new Date(a.startTimeStr));
+    entries = (data.documents || []).map(doc => {
+      const f = doc.fields || {};
+      return {
+        id: doc.name.split('/').pop(), rawId: f.rawId?.stringValue || '', source: f.source?.stringValue || 'ticket',
+        desc: f.desc?.stringValue || '', treatment: f.treatment?.stringValue || '', agent: f.agent?.stringValue || '',
+        inboundTime: f.inboundTime?.stringValue || '--:--',
+        startTimeStr: f.startTime?.stringValue || new Date().toISOString(), durationSec: parseInt(f.durationSec?.integerValue || 0),
+      };
+    }).sort((a,b)=> new Date(b.startTimeStr) - new Date(a.startTimeStr));
+    
     if (currentView === 'home' || currentView === 'team') renderRoleHome();
     else if (currentView === 'admin') renderAdminPanel();
     else renderAll();
-  } catch(e) { console.error(e); }
-}
-function docToEntry(doc) {
-  const f = doc.fields || {};
-  return {
-    id: doc.name.split('/').pop(), rawId: f.rawId?.stringValue || '', source: f.source?.stringValue || 'ticket',
-    desc: f.desc?.stringValue || '', treatment: f.treatment?.stringValue || '', agent: f.agent?.stringValue || '',
-    inboundTime: f.inboundTime?.stringValue || '--:--',
-    startTimeStr: f.startTime?.stringValue || new Date().toISOString(), durationSec: parseInt(f.durationSec?.integerValue || 0),
-  };
-}
-async function saveEntryToFirestore(entry) {
-  const body = { fields: { rawId: { stringValue: entry.rawId || '' }, source: { stringValue: entry.source }, desc: { stringValue: entry.desc }, agent: { stringValue: entry.agent }, inboundTime: { stringValue: entry.inboundTime || '--:--' }, startTime: { stringValue: entry.startTimeStr }, durationSec: { integerValue: String(entry.durationSec) } }};
-  await fetch(`${BASE_URL}/time_entries/${entry.id}?key=${FIREBASE_API_KEY}`, { method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
-}
-async function deleteEntry(id) {
-  if (!confirm('Supprimer cette entrée ?')) return;
-  entries = entries.filter(e=>e.id!==id);
-  renderAll();
-  await fetch(`${BASE_URL}/time_entries/${id}?key=${FIREBASE_API_KEY}`, { method:'DELETE' });
-}
-
-// ===== RENDER =====
-function fmtDuration(sec) {
-  const h = Math.floor(sec/3600), m = Math.floor((sec%3600)/60);
-  if (h>0) return `${h}h${String(m).padStart(2,'0')}`;
-  return `${m}min`;
-}
-function sourceTag(s) {
-  if (s==='inbound' || s==='ringover') return '<span class="source-tag src-inbound">📞↘ Appel entrant</span>';
-  if (s==='outbound') return '<span class="source-tag src-outbound">📞↗ Appel sortant</span>';
-  if (s==='chat' || s==='crisp') return '<span class="source-tag src-chat">💬 Crisp Chat</span>';
-  if (s==='email') return '<span class="source-tag src-email">✉️ Crisp Email</span>';
-  return '<span class="source-tag src-ticket">🎫 Ticket/Manuel</span>';
-}
-function agentCell(id) {
-  const u = TEAM.find(t=>t.id===id);
-  if (!u) return '—';
-  return `<div class="agent-cell"><div class="mini-avatar" style="background:${u.color}20;color:${u.color}">${u.initials}</div>${u.name}</div>`;
-}
-function isToday(iso) {
-  const d = new Date(iso), now = new Date();
-  return d.toDateString() === now.toDateString();
-}
-function isThisWeek(iso) {
-  const d = new Date(iso), now = new Date();
-  const start = new Date(now); start.setDate(now.getDate()-now.getDay()+1); start.setHours(0,0,0,0);
-  return d >= start;
-}
-
-function onSearchInput() {
-  clearTimeout(searchTimeout);
-  searchTimeout = setTimeout(renderAll, 300);
+  } catch(e) {}
 }
 
 function getFiltered() {
@@ -1201,7 +815,7 @@ function getFiltered() {
     if (fStart && !startStr.includes(fStart)) return false;
     if (fSrc && !e.source.toLowerCase().includes(fSrc)) return false;
     if (fDesc && !e.desc.toLowerCase().includes(fDesc)) return false;
-    if (fAgt && !agentName.includes(fAgt)) return false;
+    if (fAgt && !agentName.includes(fAgt) && e.agent !== fAgt) return false;
     if (fDur && !durStr.includes(fDur)) return false;
 
     return true;
@@ -1212,16 +826,42 @@ function renderAll() {
   const filtered = getFiltered();
   document.getElementById('entry-count').textContent = filtered.length + ' entrée' + (filtered.length!==1?'s':'');
   renderStats(filtered);
-  renderTable(filtered);
+  
+  const body = document.getElementById('entries-body');
+  if (!filtered.length) {
+    body.innerHTML = '<tr><td colspan="7"><div class="empty">Aucune entrée trouvée.</div></td></tr>'; return;
+  }
+  
+  const canEdit = currentUser.role === 'admin';
+  body.innerHTML = filtered.map(e => {
+    let sourceKey = 'manual';
+    if(e.source.includes('ringover')||e.source.includes('inbound')||e.source.includes('outbound')) sourceKey = 'ringover';
+    else if(e.source.includes('crisp')||e.source.includes('chat')||e.source.includes('email')) sourceKey = 'crisp';
+    
+    const dmt = sourceDMT[sourceKey] ?? sourceDMT.manual;
+    const ratio = dmt ? e.durationSec / dmt : 0;
+    let durClass = ''; if (ratio > 1.2) durClass = 'dur-over'; else if (ratio > 1) durClass = 'dur-warn';
+    const startStr = new Date(e.startTimeStr).toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
+
+    return `<tr>
+      <td class="dur-cell" style="font-weight:600">${e.inboundTime || '--:--'}</td>
+      <td class="dur-cell">${startStr}</td>
+      <td>${sourceTag(e.source)}</td>
+      <td id="desc-${e.id}" style="width:35%">${e.desc}</td>
+      <td>${agentCell(e.agent)}</td>
+      <td class="dur-cell ${durClass}" title="DMT cible : ${fmtDuration(dmt)}">${Math.ceil(e.durationSec/60)} min</td>
+      <td class="col-actions ${canEdit?'':'hidden'}"><div class="row-actions">
+        <button class="icon-btn" onclick="editEntry('${e.id}')">✎</button>
+        <button class="icon-btn" onclick="deleteEntry('${e.id}')">✕</button>
+      </div></td>
+    </tr>`;
+  }).join('');
 }
 
 function renderStats(filtered) {
-  let baseEntries = entries;
-  if (currentUser.role === 'agent') {
-    baseEntries = entries.filter(e => e.agent === currentUser.id);
-  }
-
+  let baseEntries = entries.filter(e => currentUser.role === 'agent' ? e.agent === currentUser.id : true);
   const todayEntries = baseEntries.filter(e=>isToday(e.startTimeStr));
+
   const calcSet = (list) => {
     if (list.length === 0) return { total: '0h00', dmt: '0min', frt: '0min', count: 0 };
     let totalSec = 0; let validFrtSec = 0; let frtCount = 0;
@@ -1244,15 +884,14 @@ function renderStats(filtered) {
     };
   };
 
-  const myKpi = calcSet(todayEntries);
+  const myKpi = calcSet(todayEntries.filter(e=>e.agent === currentUser.id));
   document.getElementById('s-total').textContent = myKpi.total;
   document.getElementById('s-dmt').textContent = myKpi.dmt;
   document.getElementById('s-frt').textContent = myKpi.frt;
   document.getElementById('s-count').textContent = myKpi.count;
 
   if (currentUser.role === 'supervisor' || currentUser.role === 'admin') {
-    const teamToday = entries.filter(e => isToday(e.startTimeStr));
-    const teamKpi = calcSet(teamToday);
+    const teamKpi = calcSet(todayEntries);
     document.getElementById('sup-s-total').textContent = teamKpi.total;
     document.getElementById('sup-s-dmt').textContent = teamKpi.dmt;
     document.getElementById('sup-s-frt').textContent = teamKpi.frt;
@@ -1260,151 +899,182 @@ function renderStats(filtered) {
   }
 }
 
-function renderTable(filtered) {
-  const body = document.getElementById('entries-body');
-  const canEdit = currentUser.role === 'admin';
+async function fetchPermanentLiveAgents() {
+  if (currentUser.role === 'agent') return;
+  try {
+    const res = await fetch(`${BASE_URL}/active_timers?key=${FIREBASE_API_KEY}`);
+    const data = await res.json();
+    const docs = data.documents || [];
+    const grid = document.getElementById('live-agents-grid');
+    if (!grid) return;
+    if (docs.length === 0) { grid.innerHTML = '<div style="opacity:0.6; padding:10px;">Aucun agent actif pour le moment.</div>'; return; }
+
+    grid.innerHTML = docs.map(doc => {
+      const f = doc.fields || {}; const uid = doc.name.split('/').pop();
+      const agentObj = TEAM.find(t => t.id === uid);
+      const agentName = agentObj ? agentObj.name : `Agent`;
+      const startTime = parseInt(f.startTime?.integerValue || Date.now());
+      const elapsedMin = Math.floor((Date.now() - startTime) / 60000);
+      return `<div class="live-agent-card">
+        <div class="live-agent-top"><span class="live-agent-name">👤 ${agentName}</span><span class="live-agent-time">${elapsedMin} min</span></div>
+        <div class="live-agent-task"><strong>${f.source?.stringValue || 'Chrono'}</strong><br>${f.desc?.stringValue || ''}</div>
+      </div>`;
+    }).join('');
+  } catch(e) {}
+}
+
+// ======================= TIMERS CONTROL =======================
+function openModal() {
+  document.getElementById('modal-overlay').classList.remove('hidden');
+  document.getElementById('f-desc').value = ''; selectSource('inbound');
+  const d = new Date(); d.setMinutes(d.getMinutes() + 1);
+  pickerHour = String(d.getHours()).padStart(2, '0'); pickerMin = String(d.getMinutes()).padStart(2, '0');
+  document.getElementById('inbound-time-input').value = `${pickerHour}:${pickerMin}`;
+  document.getElementById('f-desc').focus();
+}
+function closeModal() { document.getElementById('modal-overlay').classList.add('hidden'); }
+function closeModalOutside(e) { if (e.target === document.getElementById('modal-overlay')) closeModal(); }
+function selectSource(s) { selectedSource = s; document.querySelectorAll('.source-opt').forEach(o => o.classList.remove('selected')); document.getElementById('src-' + s)?.classList.add('selected'); }
+function quickStart(source) { if (activeTimer) { alert("Timer déjà actif."); return; } if (source === 'ticket') { openModal(); return; } selectedSource = source; openModal(); selectSource(source); }
+
+function startTimer() {
+  const desc = document.getElementById('f-desc').value.trim() || selectedSource;
+  activeTimer = { source: selectedSource, desc, startTime: Date.now(), inboundTime: `${pickerHour}:${pickerMin}` };
+  closeModal();
+  document.getElementById('timer-banner').classList.add('active');
+  document.getElementById('timer-clock').className = 'timer-clock active';
+  document.getElementById('timer-task').textContent = desc; document.getElementById('timer-task').classList.remove('placeholder');
+  document.getElementById('play-btn').classList.add('hidden'); document.getElementById('stop-btn').classList.remove('hidden');
+  localStorage.setItem('activeTimer_'+currentUser.id, JSON.stringify(activeTimer));
+  saveActiveTimerToFirestore();
+  timerInterval = setInterval(updateClock, 1000); updateClock();
+}
+
+function updateClock() {
+  if (!activeTimer) return;
+  const elapsed = Math.floor(Math.abs(Date.now() - activeTimer.startTime) / 1000);
+  const h = String(Math.floor(elapsed/3600)).padStart(2,'0'); const m = String(Math.floor((elapsed%3600)/60)).padStart(2,'0'); const s = String(elapsed%60).padStart(2,'0');
+  document.getElementById('timer-clock').textContent = `${h}:${m}:${s}`;
+}
+
+async function stopTimer() {
+  if (!activeTimer) return; clearInterval(timerInterval);
+  const durationSec = Math.floor((Date.now() - activeTimer.startTime)/1000);
+  const entry = { id: Date.now().toString(), source: activeTimer.source, desc: activeTimer.desc, agent: currentUser.id, inboundTime: activeTimer.inboundTime || '--:--', startTimeStr: new Date(activeTimer.startTime).toISOString(), durationSec };
+  entries.unshift(entry);
+
+  activeTimer = null; localStorage.removeItem('activeTimer_'+currentUser.id);
+  document.getElementById('timer-banner').classList.remove('active'); document.getElementById('timer-clock').className = 'timer-clock idle';
+  document.getElementById('timer-clock').textContent = '00:00:00'; document.getElementById('timer-task').textContent = 'Aucun timer actif'; document.getElementById('timer-task').className = 'timer-task placeholder';
+  document.getElementById('play-btn').classList.remove('hidden'); document.getElementById('stop-btn').classList.add('hidden');
   
-  if (!filtered.length) {
-    body.innerHTML = '<tr><td colspan="7"><div class="empty">Aucune entrée pour cette période.</div></td></tr>';
-    return;
+  renderAll(); await saveEntryToFirestore(entry); await clearActiveTimerFromFirestore();
+  fetchPermanentLiveAgents();
+}
+
+function checkActiveTimer() {
+  const saved = localStorage.getItem('activeTimer_'+currentUser.id);
+  if (saved) {
+    activeTimer = JSON.parse(saved); document.getElementById('timer-banner').classList.add('active');
+    document.getElementById('timer-clock').className = 'timer-clock active';
+    document.getElementById('timer-task').textContent = activeTimer.desc; document.getElementById('timer-task').classList.remove('placeholder');
+    document.getElementById('play-btn').classList.add('hidden'); document.getElementById('stop-btn').classList.remove('hidden');
+    timerInterval = setInterval(updateClock, 1000); updateClock();
   }
-  
-  body.innerHTML = filtered.map(e => {
-    let sourceKey = 'manual';
-    if(e.source==='ringover'||e.source==='inbound'||e.source==='outbound') sourceKey = 'ringover';
-    else if(e.source==='crisp'||e.source==='chat'||e.source==='email') sourceKey = 'crisp';
+}
+
+// ======================= ADMIN PROFILE & TEAMS =======================
+function renderAdminPanel() { renderTeamList(); renderTreatmentList(); renderDMTInputs(); populateChartScopeSelect(); renderEvolutionChart(); renderAdminStats(); }
+
+async function loadAccountsFromFirestore() {
+  try {
+    const res = await fetch(`${BASE_URL}/accounts?key=${FIREBASE_API_KEY}`); const data = await res.json();
+    TEAM = (data.documents || []).map(doc => { const f = doc.fields || {}; return { id: doc.name.split('/').pop(), name: f.name?.stringValue || 'Sans nom', color: f.color?.stringValue || '#2B4C7E', initials: f.initials?.stringValue || '??', role: f.role?.stringValue || 'agent', photo: f.photo?.stringValue || '' }; });
     
-    const dmt = sourceDMT[sourceKey] ?? sourceDMT.manual;
-    const ratio = dmt ? e.durationSec / dmt : 0;
-    let durClass = '';
-    if (ratio > 1.2) durClass = 'dur-over';
-    else if (ratio > 1) durClass = 'dur-warn';
-    
-    const startStr = new Date(e.startTimeStr).toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
-
-    return `
-    <tr>
-      <td class="dur-cell" style="font-weight:600">${e.inboundTime || '--:--'}</td>
-      <td class="dur-cell">${startStr}</td>
-      <td>${sourceTag(e.source)}</td>
-      <td id="desc-${e.id}" style="width:35%">${e.desc}</td>
-      <td>${agentCell(e.agent)}</td>
-      <td class="dur-cell ${durClass}" title="DMT cible : ${fmtDuration(dmt)}">${Math.ceil(e.durationSec/60)} min</td>
-      <td><div class="row-actions">
-        ${canEdit ? `<button class="icon-btn" onclick="editEntry('${e.id}')" title="Ajouter une référence / Modifier">✎</button>` : ''}
-        ${canEdit ? `<button class="icon-btn" onclick="deleteEntry('${e.id}')" title="Supprimer">✕</button>` : ''}
-      </div></td>
-    </tr>`;
-  }).join('');
+    // Injecter les options des agents dans le filtre cliquable du tableau
+    const fAgt = document.getElementById('f-agt');
+    if(fAgt) fAgt.innerHTML = '<option value="">Tous les agents</option>' + TEAM.filter(u=>u.role==='agent').map(u=>`<option value="${u.id}">${u.name}</option>`).join('');
+  } catch(e) {}
 }
 
-function editEntry(id) {
-  if (currentUser.role !== 'admin') return;
-  const entry = entries.find(e => e.id === id);
-  if (!entry) return;
-  
-  const cell = document.getElementById('desc-' + id);
-  const current = entry.desc;
-  
-  cell.innerHTML = `<input class="form-input" id="edit-input-${id}" value="${current.replace(/"/g,'&quot;')}" placeholder="Ex: Ticket #68554 ou détails..." style="padding:5px 8px; font-size:13px; width:100%; box-sizing:border-box;" />`;
-  
-  const input = document.getElementById('edit-input-' + id);
-  input.focus();
-  input.setSelectionRange(input.value.length, input.value.length);
-  
-  const save = async () => {
-    const newDesc = input.value.trim() || current;
-    entry.desc = newDesc;
-    cell.textContent = newDesc;
-    saveEntryToFirestore(entry);
-  };
-  
-  input.addEventListener('blur', save);
-  input.addEventListener('keydown', e => { if (e.key === 'Enter') input.blur(); });
-}
-
-// RESTAURATION EXACTE DE SWITCHTAB
-function switchTab(view, btn) {
-  if (currentUser.role === 'agent' && (view === 'admin' || view === 'team' || view === 'home')) {
-    return;
-  }
-  currentView = view;
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  if (btn) btn.classList.add('active');
-
-  const isAdminView = view === 'admin';
-  const isHomeView = view === 'home';
-  const isTeamView = view === 'team';
-  const showTable = !isAdminView && !isHomeView;
-
-  document.querySelector('.toolbar').classList.toggle('hidden', !showTable);
-  document.querySelector('.entries-table').classList.toggle('hidden', !showTable);
-  document.getElementById('admin-panel').classList.toggle('hidden', !isAdminView);
-  document.getElementById('team-live-panel').classList.toggle('hidden', !isHomeView && !isTeamView);
-
-  if (isAdminView) { renderAdminPanel(); return; }
-  if (isHomeView || isTeamView) { renderRoleHome(); return; }
-  renderAll();
-}
-
-// ===== ADMIN PANEL =====
-let customTreatmentTypes = [...TREATMENT_TYPES_DEFAULT];
-
-function renderAdminPanel() {
-  renderTeamList(); renderTreatmentList(); renderAdminStats(); populateChartScopeSelect(); renderEvolutionChart();
-}
 function renderTeamList() {
   document.getElementById('team-count').textContent = TEAM.length + ' comptes';
-  document.getElementById('team-list').innerHTML = TEAM.map(u => `
-    <div class="team-row" onclick="openAccountEditModal('${u.id}')" style="cursor:pointer">
-      <div class="mini-avatar" style="background:${u.color}20;color:${u.color}${u.photo?`;background-image:url(${u.photo});background-size:cover`:''}">${u.photo?'':u.initials}</div>
-      <div class="team-row-info"><div class="team-row-name">${u.name}</div><div class="team-row-role">${roleLabel(u.role)}</div></div>
-      <span style="font-size:11px;color:var(--ocean);font-weight:600;margin-left:auto;">Modifier →</span>
-    </div>`).join('');
-}
-function roleLabel(role) {
-  if (role === 'admin') return 'Admin';
-  if (role === 'supervisor') return 'Superviseur';
-  return 'Agent';
-}
-function renderTreatmentList() {
-  document.getElementById('treatment-count').textContent = customTreatmentTypes.length + ' types';
-  document.getElementById('treatment-list').innerHTML = customTreatmentTypes.map((t,i) => `
-    <div class="treatment-row"><span>${t}</span><button class="icon-btn" onclick="removeTreatmentType(${i})">✕</button></div>`).join('');
+  document.getElementById('team-list').innerHTML = TEAM.map(u => `<div class="team-row" onclick="openAccountEditModal('${u.id}')" style="cursor:pointer"><div class="mini-avatar" style="background:${u.color}20;color:${u.color}${u.photo?`;background-image:url(${u.photo});background-size:cover`:''}">${u.photo?'':u.initials}</div><div class="team-row-info"><div class="team-row-name">${u.name}</div><div class="team-row-role">${roleLabel(u.role)}</div></div><span style="font-size:11px;color:var(--ocean);font-weight:600;margin-left:auto;">Modifier →</span></div>`).join('');
 }
 
-async function addTreatmentType() {
-  const input = document.getElementById('new-treatment-input');
-  const val = input.value.trim();
-  if (!val) return;
-  customTreatmentTypes.push(val);
-  input.value = '';
-  renderTreatmentList();
-  populateFilters();
-  await saveTreatmentsToFirestore();
+function roleLabel(r) { return r === 'admin' ? 'Admin' : r === 'supervisor' ? 'Superviseur' : 'Agent'; }
+
+function openAccountEditModal(accountId) {
+  if (currentUser.role !== 'admin') return; editingAccountId = accountId; const acc = TEAM.find(u => u.id === accountId); if (!acc) return;
+  pendingAccountPhoto = acc.photo || null; document.getElementById('account-modal-title').textContent = 'Modifier · ' + acc.name; document.getElementById('account-name-input').value = acc.name; document.getElementById('account-role-input').value = acc.role; document.getElementById('account-error').textContent = '';
+  renderAccountPhotoPreview(acc); document.getElementById('account-modal-overlay').classList.remove('hidden');
 }
-async function removeTreatmentType(i) {
-  if (!confirm('Voulez-vous vraiment supprimer ce type de traitement ?')) return;
-  customTreatmentTypes.splice(i, 1);
-  renderTreatmentList();
-  populateFilters();
-  await saveTreatmentsToFirestore();
+function closeAccountEditModal() { document.getElementById('account-modal-overlay').classList.add('hidden'); editingAccountId = null; }
+function closeAccountModalOutside(e) { if (e.target.id === 'account-modal-overlay') closeAccountEditModal(); }
+function renderAccountPhotoPreview(acc) { const el = document.getElementById('account-photo-preview'); if (pendingAccountPhoto) { el.style.backgroundImage = `url(${pendingAccountPhoto})`; el.textContent = ''; } else { el.style.backgroundImage = ''; el.textContent = acc.initials; } }
+function onAccountPhotoSelected(event) { const file = event.target.files[0]; if (!file) return; if (file.size > 1.5 * 1024 * 1024) { document.getElementById('account-error').textContent = 'Image trop lourde (max 1.5 Mo).'; return; } const reader = new FileReader(); reader.onload = (e) => { pendingAccountPhoto = e.target.result; document.getElementById('account-photo-preview').style.backgroundImage = `url(${pendingAccountPhoto})`; document.getElementById('account-photo-preview').textContent = ''; }; reader.readAsDataURL(file); }
+function removeAccountPhoto() { pendingAccountPhoto = ''; const acc = TEAM.find(u => u.id === editingAccountId); document.getElementById('account-photo-preview').style.backgroundImage = ''; document.getElementById('account-photo-preview').textContent = acc ? acc.initials : ''; }
+async function saveAccountEdit() {
+  const acc = TEAM.find(u => u.id === editingAccountId); if (!acc) return;
+  const newName = document.getElementById('account-name-input').value.trim(); const newRole = document.getElementById('account-role-input').value;
+  if (!newName) { document.getElementById('account-error').textContent = 'Le nom ne peut pas être vide.'; return; }
+  acc.name = newName; acc.role = newRole; acc.photo = pendingAccountPhoto || '';
+  const body = { fields: { name: { stringValue: acc.name }, color: { stringValue: acc.color }, initials: { stringValue: acc.initials }, role: { stringValue: acc.role }, photo: { stringValue: acc.photo || '' } }};
+  await fetch(`${BASE_URL}/accounts/${acc.id}?key=${FIREBASE_API_KEY}`, { method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
+  closeAccountEditModal(); renderTeamList(); populateFilters(); if (currentUser.id === acc.id) { currentUser = acc; renderTopbarIdentity(); }
 }
-async function saveTreatmentsToFirestore() {
-  const values = customTreatmentTypes.map(t => ({ stringValue: t }));
-  const body = { fields: { list: { arrayValue: { values } } } };
-  try { await fetch(`${BASE_URL}/settings/treatments?key=${FIREBASE_API_KEY}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }); } catch(e) { console.error(e); }
-}
-async function loadTreatmentsFromFirestore() {
+
+function genTempPassword() { const adjectives = ['Voyage','Ocean','Clay','Bloom','Atlas','Compass']; const word = adjectives[Math.floor(Math.random()*adjectives.length)]; const digits = Math.floor(1000 + Math.random()*9000); return `${word}-${digits}`; }
+function openCreateAccountModal() { document.getElementById('new-account-name').value = ''; document.getElementById('new-account-email').value = ''; document.getElementById('create-account-error').textContent = ''; document.getElementById('create-account-form').classList.remove('hidden'); document.getElementById('create-account-result').classList.add('hidden'); document.getElementById('create-account-footer').classList.remove('hidden'); document.getElementById('create-account-overlay').classList.remove('hidden'); }
+function closeCreateAccountModal() { document.getElementById('create-account-overlay').classList.add('hidden'); }
+function closeCreateAccountModalOutside(e) { if (e.target.id === 'create-account-overlay') closeCreateAccountModal(); }
+async function submitCreateAccount() {
+  const name = document.getElementById('new-account-name').value.trim(); const email = document.getElementById('new-account-email').value.trim();
+  const errEl = document.getElementById('create-account-error'); errEl.textContent = '';
+  if (!name) { errEl.textContent = 'Le nom est requis.'; return; } if (!email || !email.includes('@')) { errEl.textContent = 'Email invalide.'; return; }
+  const submitBtn = document.getElementById('create-account-submit'); submitBtn.disabled = true; submitBtn.textContent = 'Création...';
+  const adminIdToken = localStorage.getItem('onspot_idToken'); const adminUid = localStorage.getItem('onspot_uid'); const tempPassword = genTempPassword();
   try {
-    const res = await fetch(`${BASE_URL}/settings/treatments?key=${FIREBASE_API_KEY}`);
-    if (res.status === 404) return;
+    const res = await fetch(`${AUTH_BASE}/accounts:signUp?key=${FIREBASE_API_KEY}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: tempPassword, returnSecureToken: true }) });
     const data = await res.json();
-    const values = data.fields?.list?.arrayValue?.values || [];
-    if (values.length > 0) { customTreatmentTypes = values.map(v => v.stringValue); }
-  } catch(e) { console.error(e); }
+    if (data.error) { errEl.textContent = data.error.message === 'EMAIL_EXISTS' ? 'Cet email est déjà utilisé.' : 'Erreur lors de la création.'; submitBtn.disabled = false; submitBtn.textContent = 'Créer le compte'; return; }
+    const newUid = data.localId; const initials = name.trim().split(/\s+/).map(w=>w[0]).join('').toUpperCase().slice(0,2) || '??';
+    const palette = ['#2B4C7E','#3B8C6E','#DCAE1D','#C9604F','#A8527A']; const color = palette[Math.floor(Math.random()*palette.length)];
+    const newAccount = { id: newUid, name, email, color, initials, role: 'agent', photo: '' };
+    const body = { fields: { name: { stringValue: newAccount.name }, color: { stringValue: newAccount.color }, initials: { stringValue: newAccount.initials }, role: { stringValue: newAccount.role }, photo: { stringValue: '' } }};
+    await fetch(`${BASE_URL}/accounts/${newAccount.id}?key=${FIREBASE_API_KEY}`, { method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
+    TEAM.push(newAccount); localStorage.setItem('onspot_idToken', adminIdToken); localStorage.setItem('onspot_uid', adminUid);
+    document.getElementById('result-email').textContent = email; document.getElementById('result-password').textContent = tempPassword;
+    document.getElementById('create-account-form').classList.add('hidden'); document.getElementById('create-account-result').classList.remove('hidden'); document.getElementById('create-account-footer').classList.add('hidden');
+    renderTeamList(); populateFilters();
+  } catch(e) { errEl.textContent = 'Erreur réseau.'; } finally { submitBtn.disabled = false; submitBtn.textContent = 'Créer le compte'; }
 }
+function copyCreatedCredentials() { navigator.clipboard.writeText(`Email : ${document.getElementById('result-email').textContent}\nMot de passe temporaire : ${document.getElementById('result-password').textContent}`); }
 
+async function loadTreatmentsFromFirestore() {
+  try { const res = await fetch(`${BASE_URL}/settings/treatments?key=${FIREBASE_API_KEY}`); if (res.status === 404) return; const data = await res.json(); const values = data.fields?.list?.arrayValue?.values || []; if (values.length > 0) { customTreatmentTypes = values.map(v => v.stringValue); } } catch(e) {}
+}
+function renderTreatmentList() { document.getElementById('treatment-count').textContent = customTreatmentTypes.length + ' types'; document.getElementById('treatment-list').innerHTML = customTreatmentTypes.map((t,i) => `<div class="treatment-row"><span>${t}</span><button class="icon-btn" onclick="removeTreatmentType(${i})">✕</button></div>`).join(''); }
+async function addTreatmentType() { const input = document.getElementById('new-treatment-input'); const val = input.value.trim(); if (!val) return; customTreatmentTypes.push(val); input.value = ''; renderTreatmentList(); const values = customTreatmentTypes.map(t => ({ stringValue: t })); const body = { fields: { list: { arrayValue: { values } } } }; await fetch(`${BASE_URL}/settings/treatments?key=${FIREBASE_API_KEY}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }); }
+async function removeTreatmentType(i) { if (!confirm('Voulez-vous vraiment supprimer ce type de traitement ?')) return; customTreatmentTypes.splice(i, 1); renderTreatmentList(); const values = customTreatmentTypes.map(t => ({ stringValue: t })); const body = { fields: { list: { arrayValue: { values } } } }; await fetch(`${BASE_URL}/settings/treatments?key=${FIREBASE_API_KEY}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }); }
+
+async function loadDMT() {
+  try { const res = await fetch(`${BASE_URL}/settings/dmt?key=${FIREBASE_API_KEY}`); if (res.status === 404) { renderDMTInputs(); return; } const data = await res.json(); const f = data.fields || {}; sourceDMT = { ringover: parseInt(f.ringover?.integerValue ?? SOURCE_DMT_DEFAULT.ringover), crisp: parseInt(f.crisp?.integerValue ?? SOURCE_DMT_DEFAULT.crisp), manual: parseInt(f.manual?.integerValue ?? SOURCE_DMT_DEFAULT.manual) }; } catch(e) {}
+  renderDMTInputs();
+}
+function renderDMTInputs() { const r = document.getElementById('dmt-ringover'); const c = document.getElementById('dmt-crisp'); const m = document.getElementById('dmt-manual'); if (r) r.value = sourceDMT.ringover; if (c) c.value = sourceDMT.crisp; if (m) m.value = sourceDMT.manual; }
+async function saveDMT() { sourceDMT = { ringover: parseInt(document.getElementById('dmt-ringover').value) || SOURCE_DMT_DEFAULT.ringover, crisp: parseInt(document.getElementById('dmt-crisp').value) || SOURCE_DMT_DEFAULT.crisp, manual: parseInt(document.getElementById('dmt-manual').value) || SOURCE_DMT_DEFAULT.manual }; const body = { fields: { ringover: { integerValue: String(sourceDMT.ringover) }, crisp: { integerValue: String(sourceDMT.crisp) }, manual: { integerValue: String(sourceDMT.manual) } }}; await fetch(`${BASE_URL}/settings/dmt?key=${FIREBASE_API_KEY}`, { method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) }); renderAll(); }
+
+function populateChartScopeSelect() { const sel = document.getElementById('chart-scope'); if (!sel) return; sel.innerHTML = '<option value="team">Équipe entière</option>' + TEAM.filter(u=>u.role==='agent').map(a => `<option value="${a.id}">${a.name}</option>`).join(''); }
+function renderEvolutionChart() {
+  const scope = document.getElementById('chart-scope').value; const period = document.getElementById('chart-period').value; const days = period === 'week' ? 7 : 30; const buckets = [];
+  for (let i = days - 1; i >= 0; i--) { const d = new Date(); d.setDate(d.getDate() - i); d.setHours(0,0,0,0); buckets.push({ date: d, totalSec: 0 }); }
+  const scoped = scope === 'team' ? entries : entries.filter(e => e.agent === scope);
+  scoped.forEach(e => { const d = new Date(e.startTimeStr); const bucket = buckets.find(b => b.date.toDateString() === d.toDateString()); if (bucket) bucket.totalSec += e.durationSec; });
+  const maxSec = Math.max(...buckets.map(b=>b.totalSec), 60); const showEvery = days > 14 ? Math.ceil(days/12) : 1;
+  const barsHtml = buckets.map((b,i) => { const heightPct = Math.max((b.totalSec / maxSec) * 100, b.totalSec>0?3:0); const showLabel = i % showEvery === 0 || i === buckets.length-1; const label = showLabel ? b.date.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit'}) : ''; return `<div class="evo-bar-col"><span class="evo-bar-value">${b.totalSec>0?fmtDuration(b.totalSec):''}</span><div class="evo-bar" style="height:${heightPct}%"></div><span class="evo-bar-label">${label}</span></div>`; }).join('');
+  document.getElementById('evolution-chart').innerHTML = `<div class="evo-bars">${barsHtml}</div>`;
+}
 function renderAdminStats() {
   const now = new Date(); const weekStart = new Date(now); weekStart.setDate(now.getDate()-now.getDay()+1); weekStart.setHours(0,0,0,0);
   const weekEntries = entries.filter(e => new Date(e.startTimeStr) >= weekStart);
@@ -1414,140 +1084,28 @@ function renderAdminStats() {
   document.getElementById('admin-s-count').textContent = entries.length;
   document.getElementById('admin-s-active').textContent = activeAgents.size;
 }
-function exportCSV() {
-  const rows = [['Date','Inbound Time','Start Time','Source','Description','Agent','Durée (min)']];
-  entries.forEach(e => {
-    const d = new Date(e.startTimeStr);
-    const startStr = d.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
-    rows.push([d.toLocaleDateString('fr-FR'), e.inboundTime||'--:--', startStr, e.source, e.desc, (TEAM.find(t=>t.id===e.agent)||{}).name || e.agent, Math.ceil(e.durationSec/60)]);
-  });
-  const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
-  const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = 'onspot-time-entries-' + new Date().toISOString().split('T')[0] + '.csv';
-  a.click(); URL.revokeObjectURL(url);
-}
-function exportExcel() { exportCSV(); } // CSV covers the need
+async function renderRoleHome() { renderAdminStats(); }
 
-// ===== ROLE HOME =====
-async function renderRoleHome() {
-  const activeTimers = await loadActiveTimers();
-  if (currentUser.role === 'supervisor') { renderSupervisorBanner(activeTimers); }
-  if (currentUser.role === 'admin') { renderAdminBanner(); renderAdminHomeStats(); }
-  renderTeamLiveList(activeTimers);
-}
-function agentsOnly() { return TEAM.filter(u => u.role === 'agent'); }
-function renderSupervisorBanner(activeTimers) {
-  const agents = agentsOnly(); const activeIds = new Set(activeTimers.map(t => t.agentId));
-  const activeAgents = agents.filter(a => activeIds.has(a.id));
-  const avatarsHtml = activeAgents.slice(0,3).map(a => `<div class="role-banner-avatar" style="background:${a.color};margin-right:-8px">${a.initials}</div>`).join('') + (agents.length > 3 ? `<div class="role-banner-avatar role-banner-avatar-more">+${agents.length-3}</div>` : '');
-  document.getElementById('sup-banner-avatars').innerHTML = avatarsHtml || '<div class="role-banner-avatar role-banner-avatar-more">0</div>';
-  document.getElementById('sup-banner-title').textContent = `${activeAgents.length} sur ${agents.length} agents actifs`;
-  const idleAgent = findLongestIdleAgent(agents, activeIds);
-  document.getElementById('sup-banner-sub').textContent = idleAgent || 'Tout le monde est à jour';
-  document.getElementById('sup-banner-dot').style.background = activeAgents.length > 0 ? '#3B8C6E' : '#A0AAB8';
-}
-function findLongestIdleAgent(agents, activeIds) {
-  const idle = agents.filter(a => !activeIds.has(a.id));
-  if (!idle.length) return null;
-  return `${idle[0].name} inactif`;
-}
-function renderAdminBanner() {
-  const now = new Date(); const weekStart = new Date(now); weekStart.setDate(now.getDate()-now.getDay()+1); weekStart.setHours(0,0,0,0);
-  const weekEntries = entries.filter(e => new Date(e.startTimeStr) >= weekStart);
-  const total = weekEntries.reduce((s,e)=>s+e.durationSec,0);
-  document.getElementById('adm-banner-total').textContent = fmtDuration(total);
-  document.getElementById('adm-banner-title').textContent = `${agentsOnly().length} agents · ${customTreatmentTypes.length} types de traitement`;
-  document.getElementById('adm-banner-sub').textContent = '';
-}
-function renderAdminHomeStats() {
-  const now = new Date(); const weekStart = new Date(now); weekStart.setDate(now.getDate()-now.getDay()+1); weekStart.setHours(0,0,0,0);
-  const weekEntries = entries.filter(e => new Date(e.startTimeStr) >= weekStart);
-  const total = weekEntries.reduce((s,e)=>s+e.durationSec,0);
-  const activeToday = new Set(entries.filter(e=>isToday(e.startTimeStr)).map(e=>e.agent));
-  document.getElementById('adm-home-total').textContent = fmtDuration(total);
-  document.getElementById('adm-home-entries').textContent = entries.length;
-  document.getElementById('adm-home-active').textContent = activeToday.size;
-}
-function renderTeamLiveList(activeTimers) {
-  const agents = agentsOnly(); document.getElementById('team-live-count').textContent = agents.length + ' agents';
-  const timerByAgent = {}; activeTimers.forEach(t => timerByAgent[t.agentId] = t);
-  document.getElementById('team-live-list').innerHTML = agents.map(a => {
-    const t = timerByAgent[a.id];
-    if (t) {
-      const elapsed = Math.floor((Date.now() - t.startTime)/1000); const mins = Math.floor(elapsed/60); const secs = elapsed%60;
-      const timeStr = mins + ':' + String(secs).padStart(2,'0');
-      return `<div class="team-row" onclick="viewAgentDetail('${a.id}')" style="cursor:pointer">
-        <div class="mini-avatar" style="background:${a.color}20;color:${a.color}">${a.initials}</div>
-        <div class="team-row-info"><div class="team-row-name">${a.name}</div><div class="team-row-role">${t.desc}</div></div>
-        <span class="team-row-timer">${timeStr}</span></div>`;
-    }
-    return `<div class="team-row" onclick="viewAgentDetail('${a.id}')" style="cursor:pointer">
-      <div class="mini-avatar" style="background:var(--border2,#E2E8F0);color:var(--text2,#6B7C93)">${a.initials}</div>
-      <div class="team-row-info"><div class="team-row-name">${a.name}</div><div class="team-row-role" style="color:var(--text3,#A0AAB8)">Inactif</div></div>
-      <span class="team-row-timer" style="color:var(--text3,#A0AAB8)">—</span></div>`;
-  }).join('');
-}
-function viewAgentDetail(agentId) {
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.querySelector('.tab.agent-only').classList.remove('hidden'); document.querySelector('.tab.agent-only').classList.add('active');
-  currentView = 'today';
-  document.getElementById('team-live-panel').classList.add('hidden'); document.getElementById('admin-panel').classList.add('hidden');
-  document.querySelector('.toolbar').classList.remove('hidden'); document.querySelector('.entries-table').classList.remove('hidden');
-  document.getElementById('filter-agent').value = agentId;
-  renderAll();
+// PROFILE PHOTO UTILS
+let pendingProfilePhoto = null;
+function openProfileModal() { pendingProfilePhoto = currentUser.photo || null; document.getElementById('profile-name-input').value = currentUser.name; document.getElementById('profile-password-input').value = ''; document.getElementById('profile-error').textContent = ''; renderProfilePhotoPreview(); document.getElementById('profile-modal-overlay').classList.remove('hidden'); }
+function closeProfileModal() { document.getElementById('profile-modal-overlay').classList.add('hidden'); }
+function closeProfileModalOutside(e) { if (e.target.id === 'profile-modal-overlay') closeProfileModal(); }
+function renderProfilePhotoPreview() { const el = document.getElementById('profile-photo-preview'); if (pendingProfilePhoto) { el.style.backgroundImage = `url(${pendingProfilePhoto})`; el.textContent = ''; } else { el.style.backgroundImage = ''; el.textContent = currentUser.initials; } }
+function onProfilePhotoSelected(event) { const file = event.target.files[0]; if (!file) return; if (file.size > 1.5 * 1024 * 1024) { document.getElementById('profile-error').textContent = 'Image trop lourde (max 1.5 Mo).'; return; } const reader = new FileReader(); reader.onload = (e) => { pendingProfilePhoto = e.target.result; renderProfilePhotoPreview(); }; reader.readAsDataURL(file); }
+function removeProfilePhoto() { pendingProfilePhoto = ''; renderProfilePhotoPreview(); }
+async function saveProfile() {
+  const newName = document.getElementById('profile-name-input').value.trim(); const newPassword = document.getElementById('profile-password-input').value.trim(); const errEl = document.getElementById('profile-error'); errEl.textContent = '';
+  if (!newName) { errEl.textContent = 'Le nom ne peut pas être vide.'; return; } if (newPassword && newPassword.length < 6) { errEl.textContent = 'Le mot de passe doit faire au moins 6 caractères.'; return; }
+  if (newPassword) { const idToken = localStorage.getItem('onspot_idToken'); try { const res = await fetch(`${AUTH_BASE}/accounts:update?key=${FIREBASE_API_KEY}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ idToken, password: newPassword, returnSecureToken: true }) }); const data = await res.json(); if (data.error) { errEl.textContent = "Erreur lors du changement de mot de passe."; return; } localStorage.setItem('onspot_idToken', data.idToken); } catch(e) { errEl.textContent = 'Erreur réseau.'; return; } }
+  currentUser.name = newName; currentUser.photo = pendingProfilePhoto || '';
+  const idx = TEAM.findIndex(u => u.id === currentUser.id); if (idx >= 0) TEAM[idx] = currentUser;
+  const body = { fields: { name: { stringValue: currentUser.name }, color: { stringValue: currentUser.color }, initials: { stringValue: currentUser.initials }, role: { stringValue: currentUser.role }, photo: { stringValue: currentUser.photo || '' } }};
+  await fetch(`${BASE_URL}/accounts/${currentUser.id}?key=${FIREBASE_API_KEY}`, { method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) }); 
+  renderTopbarIdentity(); document.getElementById('profile-password-input').value = ''; closeProfileModal();
 }
 
-// ===== DMT =====
-async function loadDMT() {
-  try {
-    const res = await fetch(`${BASE_URL}/settings/dmt?key=${FIREBASE_API_KEY}`);
-    if (res.status === 404) { renderDMTInputs(); return; }
-    const data = await res.json(); const f = data.fields || {};
-    sourceDMT = { ringover: parseInt(f.ringover?.integerValue ?? SOURCE_DMT_DEFAULT.ringover), crisp: parseInt(f.crisp?.integerValue ?? SOURCE_DMT_DEFAULT.crisp), manual: parseInt(f.manual?.integerValue ?? SOURCE_DMT_DEFAULT.manual) };
-  } catch(e) { console.error(e); }
-  renderDMTInputs();
-}
-function renderDMTInputs() {
-  const r = document.getElementById('dmt-ringover'); const c = document.getElementById('dmt-crisp'); const m = document.getElementById('dmt-manual');
-  if (r) r.value = sourceDMT.ringover; if (c) c.value = sourceDMT.crisp; if (m) m.value = sourceDMT.manual;
-}
-async function saveDMT() {
-  sourceDMT = { ringover: parseInt(document.getElementById('dmt-ringover').value) || SOURCE_DMT_DEFAULT.ringover, crisp: parseInt(document.getElementById('dmt-crisp').value) || SOURCE_DMT_DEFAULT.crisp, manual: parseInt(document.getElementById('dmt-manual').value) || SOURCE_DMT_DEFAULT.manual };
-  const body = { fields: { ringover: { integerValue: String(sourceDMT.ringover) }, crisp: { integerValue: String(sourceDMT.crisp) }, manual: { integerValue: String(sourceDMT.manual) } }};
-  try { await fetch(`${BASE_URL}/settings/dmt?key=${FIREBASE_API_KEY}`, { method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) }); renderAll(); } catch(e) { console.error(e); }
-}
-
-// ===== ACCOUNTS PERSISTENCE =====
-async function saveAccountToFirestore(user) {
-  const body = { fields: { name: { stringValue: user.name }, email: { stringValue: user.email || '' }, color: { stringValue: user.color }, initials: { stringValue: user.initials }, role: { stringValue: user.role }, photo: { stringValue: user.photo || '' } }};
-  try { await fetch(`${BASE_URL}/accounts/${user.id}?key=${FIREBASE_API_KEY}`, { method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) }); } catch(e) { console.error(e); }
-}
-
-// ===== EVOLUTION CHART =====
-function populateChartScopeSelect() {
-  const sel = document.getElementById('chart-scope'); if (!sel) return;
-  sel.innerHTML = '<option value="team">Équipe entière</option>' + agentsOnly().map(a => `<option value="${a.id}">${a.name}</option>`).join('');
-}
-function renderEvolutionChart() {
-  const scope = document.getElementById('chart-scope').value; const period = document.getElementById('chart-period').value; const days = period === 'week' ? 7 : 30;
-  const buckets = [];
-  for (let i = days - 1; i >= 0; i--) { const d = new Date(); d.setDate(d.getDate() - i); d.setHours(0,0,0,0); buckets.push({ date: d, totalSec: 0 }); }
-  const scoped = scope === 'team' ? entries : entries.filter(e => e.agent === scope);
-  scoped.forEach(e => { const d = new Date(e.startTimeStr); const bucket = buckets.find(b => b.date.toDateString() === d.toDateString()); if (bucket) bucket.totalSec += e.durationSec; });
-  const maxSec = Math.max(...buckets.map(b=>b.totalSec), 60); const showEvery = days > 14 ? Math.ceil(days/12) : 1;
-  const barsHtml = buckets.map((b,i) => {
-    const heightPct = Math.max((b.totalSec / maxSec) * 100, b.totalSec>0?3:0); const showLabel = i % showEvery === 0 || i === buckets.length-1; const label = showLabel ? b.date.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit'}) : '';
-    return `<div class="evo-bar-col"><span class="evo-bar-value">${b.totalSec>0?fmtDuration(b.totalSec):''}</span><div class="evo-bar" style="height:${heightPct}%"></div><span class="evo-bar-label">${label}</span></div>`;
-  }).join('');
-  document.getElementById('evolution-chart').innerHTML = `<div class="evo-bars">${barsHtml}</div>`;
-}
-
-// --- LOGIQUE INBOUND TIME PICKER ---
-let pickerHour = "00", pickerMin = "00";
-let isScrolling = false;
-
+// INBOUND TIME PICKER ROULETTE UTILS
 function initTimePickerUI() {
   const hCol = document.getElementById('col-hours'); const mCol = document.getElementById('col-mins');
   let hHtml = '<div class="time-spacer"></div>', mHtml = '<div class="time-spacer"></div>';
@@ -1556,91 +1114,31 @@ function initTimePickerUI() {
   hHtml += '<div class="time-spacer"></div>'; mHtml += '<div class="time-spacer"></div>';
   hCol.innerHTML = hHtml; mCol.innerHTML = mHtml;
 }
-
-function toggleTimePicker(e) {
-  e?.stopPropagation();
-  const drop = document.getElementById('time-dropdown');
-  drop.classList.toggle('hidden');
-  if (!drop.classList.contains('hidden')) syncPickerScroll();
-}
-
+function toggleTimePicker(e) { e?.stopPropagation(); const drop = document.getElementById('time-dropdown'); drop.classList.toggle('hidden'); if (!drop.classList.contains('hidden')) syncPickerScroll(); }
 function handleTimeScroll(col, type) {
   if (isScrolling) return;
-  const opts = col.querySelectorAll('.time-opt');
-  const center = col.scrollTop + col.clientHeight / 2;
+  const opts = col.querySelectorAll('.time-opt'); const center = col.scrollTop + col.clientHeight / 2;
   let closest = null, minDiff = Infinity;
-  opts.forEach(opt => {
-    const optCenter = opt.offsetTop + opt.offsetHeight / 2;
-    const diff = Math.abs(center - optCenter);
-    if (diff < minDiff) { minDiff = diff; closest = opt; }
-  });
-  if (closest) {
-    opts.forEach(o => o.classList.remove('active')); closest.classList.add('active');
-    if (type === 'h') pickerHour = closest.dataset.val; else pickerMin = closest.dataset.val;
-    document.getElementById('inbound-time-input').value = `${pickerHour}:${pickerMin}`;
-  }
+  opts.forEach(opt => { const optCenter = opt.offsetTop + opt.offsetHeight / 2; const diff = Math.abs(center - optCenter); if (diff < minDiff) { minDiff = diff; closest = opt; } });
+  if (closest) { opts.forEach(o => o.classList.remove('active')); closest.classList.add('active'); if (type === 'h') pickerHour = closest.dataset.val; else pickerMin = closest.dataset.val; document.getElementById('inbound-time-input').value = `${pickerHour}:${pickerMin}`; }
 }
-
 function syncPickerScroll() {
-  isScrolling = true;
-  const hCol = document.getElementById('col-hours'); const mCol = document.getElementById('col-mins');
+  isScrolling = true; const hCol = document.getElementById('col-hours'); const mCol = document.getElementById('col-mins');
   const hTarget = hCol.querySelector(`[data-val="${pickerHour}"]`); const mTarget = mCol.querySelector(`[data-val="${pickerMin}"]`);
   if (hTarget) hCol.scrollTop = hTarget.offsetTop - hCol.clientHeight/2 + hTarget.offsetHeight/2;
   if (mTarget) mCol.scrollTop = mTarget.offsetTop - mCol.clientHeight/2 + mTarget.offsetHeight/2;
   setTimeout(() => isScrolling = false, 50);
 }
+function clickTimeOpt(colId, index) { const col = document.getElementById(colId); const target = col.querySelectorAll('.time-opt')[index]; col.scrollTo({ top: target.offsetTop - col.clientHeight/2 + target.offsetHeight/2, behavior: 'smooth' }); }
 
-function clickTimeOpt(colId, index) {
-  const col = document.getElementById(colId);
-  const target = col.querySelectorAll('.time-opt')[index];
-  col.scrollTo({ top: target.offsetTop - col.clientHeight/2 + target.offsetHeight/2, behavior: 'smooth' });
-}
-
-// --- LOGIQUE EMOJI PICKER ---
-const QUICK_EMOJIS = ['✈️','🏨','🚗','🚆','🎫','📞','💬','📧','✅','❌','⚠️','📝','💼','🩺','🔍','💳','💡','🎉'];
-
-function initEmojiPicker() {
-  const picker = document.getElementById('emoji-picker');
-  if (!picker) return;
-  picker.innerHTML = QUICK_EMOJIS.map(e => `<button class="emoji-btn" type="button" onclick="insertEmoji('${e}')">${e}</button>`).join('');
-}
-
-function toggleEmojiPicker(e) {
-  e?.stopPropagation();
-  document.getElementById('emoji-picker').classList.toggle('hidden');
-}
-
-function insertEmoji(emoji) {
-  const input = document.getElementById('new-treatment-input');
-  input.value += emoji;
-  input.focus();
-  document.getElementById('emoji-picker').classList.add('hidden');
-}
-
-// Fermer les popups (Temps et Emojis) au clic à l'extérieur
-document.addEventListener('click', (e) => {
-  const timeDrop = document.getElementById('time-dropdown');
-  if (timeDrop && !timeDrop.classList.contains('hidden') && !e.target.closest('#time-picker-container')) {
-    timeDrop.classList.add('hidden');
-  }
-  
-  const emojiDrop = document.getElementById('emoji-picker');
-  if (emojiDrop && !emojiDrop.classList.contains('hidden') && !e.target.closest('.treatment-add-row')) {
-    emojiDrop.classList.add('hidden');
-  }
-});
-
-initTimePickerUI();
-initEmojiPicker();
-
-async function initApp() {
-  if (!(await tryRestoreSession())) {
+// APP LAUNCH
+window.onload = async () => {
+  if (await tryRestoreSession()) {
+    await refreshApp();
+  } else {
     document.getElementById('login-screen').style.display = 'flex';
   }
-}
-
-// Lancement de l'application
-initApp();
+};
 </script>
 </body>
 </html>
