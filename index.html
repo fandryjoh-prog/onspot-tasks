@@ -86,7 +86,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .btn-refresh:hover{background:var(--ocean-dim);}
 
 /* LIVE DASHBOARD PERMANENT (SUPERVISEUR/ADMIN) */
-.live-header-panel{margin:20px 24px 0;background:var(--ocean-deep);border-radius:var(--radius);padding:20px;color:white;}
+.permanent-live-panel{margin:20px 24px 0;background:var(--ocean-deep);border-radius:var(--radius);padding:20px;color:white;}
 .live-header-title{font-family:var(--display);font-size:18px;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:10px;}
 .live-pulse-dot{width:10px;height:10px;background:var(--green);border-radius:50%;box-shadow:0 0 8px var(--green);animation:pulse-green 1.5s infinite;}
 .live-header-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));gap:12px;}
@@ -122,7 +122,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .qs-btn:hover{border-color:var(--ocean);color:var(--ocean)}
 .qs-dot{width:7px;height:7px;border-radius:50%}
 
-/* STATS AGENT */
+/* STATS */
 .stats-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:20px 24px 0}
 .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px}
 .stat-label{font-size:11px;color:var(--text2);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px;font-weight:600}
@@ -160,8 +160,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .filter-input-tbl:focus { border-color: var(--ocean); }
 
 .source-tag{display:inline-flex;align-items:center;gap:5px;font-size:11px;padding:3px 8px;border-radius:6px;font-weight:600}
-.src-ringover, .src-inbound, .src-outbound{background:var(--ocean-dim);color:var(--ocean)}
-.src-crisp, .src-chat, .src-email{background:var(--clay-dim);color:#A8503F}
+.src-ringover, .src-inbound, .src-outbound{background:var(--red-dim);color:var(--red)}
+.src-crisp, .src-chat, .src-email{background:var(--ocean-dim);color:var(--ocean)}
 .src-manual, .src-ticket{background:var(--amber-dim);color:#8A6A0F}
 .dur-cell{font-family:var(--mono);font-size:12px;color:var(--text2)}
 .agent-cell{display:flex;align-items:center;gap:8px}
@@ -174,7 +174,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 
 /* MODAL */
 .modal-overlay{position:fixed;inset:0;background:rgba(30,42,58,.55);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(2px)}
-.modal{background:var(--surface);border:1px solid var(--border);border-radius:16px;width:100%;max-width:480px; max-height:90vh; overflow-y:auto;}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:16px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;}
 .modal-header{padding:20px 24px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
 .modal-title{font-family:var(--display);font-size:18px;font-weight:600;color:var(--text)}
 .modal-close{background:transparent;border:none;color:var(--text2);cursor:pointer;font-size:20px;padding:4px}
@@ -198,7 +198,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .btn-primary{background:var(--ocean);color:#fff;border:none}
 .btn-primary:hover{background:var(--ocean-deep)}
 
-/* ADMIN UTILS */
+/* ADMIN PANELS */
 .hidden{display:none!important}
 .role-badge{font-size:11px;font-weight:600;padding:4px 10px;border-radius:99px;background:var(--amber-dim,#FCF1D6);color:#8A6A0F;margin-left:8px;letter-spacing:.2px}
 .admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
@@ -271,7 +271,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     </div>
   </div>
 
-  <div class="live-header-panel hidden" id="permanent-live-panel">
+  <div class="permanent-live-panel hidden" id="permanent-live-panel">
      <div class="live-header-title"><div class="live-pulse-dot"></div> Équipe en direct</div>
      <div class="live-header-grid" id="live-agents-grid"></div>
   </div>
@@ -349,6 +349,24 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     </div>
   </details>
 
+  <div class="stats-grid hidden" id="stats-grid-admin-home" style="grid-template-columns:repeat(3,1fr)">
+    <div class="stat-card">
+      <div class="stat-label">Total semaine</div>
+      <div class="stat-value" id="adm-home-total" style="color:var(--ocean)">0h00</div>
+      <div class="stat-sub">toute l'équipe</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Entrées enregistrées</div>
+      <div class="stat-value" id="adm-home-entries" style="color:var(--ocean)">0</div>
+      <div class="stat-sub">au total</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Agents actifs (jour)</div>
+      <div class="stat-value" id="adm-home-active" style="color:var(--ocean)">0</div>
+      <div class="stat-sub">sur 5</div>
+    </div>
+  </div>
+
   <div class="tabs">
     <button class="tab agent-only active" onclick="switchTab('today',this)">Aujourd'hui</button>
     <button class="tab hidden" id="tab-week-role" onclick="switchTab('week',this)">Cette semaine</button>
@@ -401,7 +419,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       </div>
     </div>
 
-    <!-- ZONE D'ADMINISTRATION SECURISEE -->
     <div id="admin-panel" class="hidden">
       <div class="admin-grid" id="admin-secure-elements">
         <div class="admin-card">
@@ -417,16 +434,17 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
             <h3>Types de traitement</h3>
             <span class="count-badge" id="treatment-count">0 types</span>
           </div>
+          
           <div class="treatment-add-row" style="position:relative; align-items:center;">
             <button class="btn btn-ghost" onclick="toggleEmojiPicker(event)" title="Ajouter un emoji" style="padding: 8px 10px; font-size: 16px;">😀</button>
             <input class="form-input" id="new-treatment-input" placeholder="Nouveau type (ex: ✈️ Vols)..." onkeydown="if(event.key==='Enter') addTreatmentType()">
             <button class="btn btn-primary" onclick="addTreatmentType()">Ajouter</button>
             <div class="emoji-picker hidden" id="emoji-picker" onclick="event.stopPropagation()"></div>
           </div>
+          
           <div id="treatment-list"></div>
         </div>
       </div>
-      
       <div class="admin-card" style="margin-top:16px">
         <div class="admin-card-header">
           <h3>Statistiques globales</h3>
@@ -470,8 +488,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     </div>
   </div>
 </div>
-
-<!-- ======================= MODALS ======================= -->
 
 <div class="modal-overlay hidden" id="account-modal-overlay" onclick="closeAccountModalOutside(event)">
   <div class="modal">
@@ -661,12 +677,12 @@ async function doLogin() {
     });
     const data = await res.json();
     if (data.error) { err.textContent = 'Email ou mot de passe incorrect.'; return; }
-    localStorage.setItem('onspot_idToken', data.idToken);
-    localStorage.setItem('onspot_uid', data.localId);
+    localStorage.setItem('taskin_idToken', data.idToken);
+    localStorage.setItem('taskin_uid', data.localId);
     const user = await fetchAccountProfile(data.localId);
     if (!user) { err.textContent = "Ce compte n'a pas encore de profil. Contacte un admin."; return; }
     await enterApp(user);
-  } catch(e) { err.textContent = 'Erreur de connexion. Réessaie.'; }
+  } catch(e) { err.textContent = 'Erreur de connexion. Réessaie.'; console.error(e); }
 }
 
 async function fetchAccountProfile(uid) {
@@ -681,9 +697,10 @@ async function fetchAccountProfile(uid) {
       color: f.color?.stringValue || '#2B4C7E', initials: f.initials?.stringValue || '??',
       role: f.role?.stringValue || 'agent', photo: f.photo?.stringValue || '',
     };
-  } catch(e) { return null; }
+  } catch(e) { console.error('Erreur profil compte:', e); return null; }
 }
 
+// CORRECTION: CHARGEMENT FIREBASE AVANT AFFICHAGE HISTORIQUE
 async function enterApp(user) {
   currentUser = user;
   document.getElementById('login-screen').style.display = 'none';
@@ -714,7 +731,7 @@ function renderTopbarIdentity() {
 }
 
 function applyUserTheme() {
-  const saved = localStorage.getItem('onspot_theme_' + currentUser.id) || 'light';
+  const saved = localStorage.getItem('taskin_theme_' + currentUser.id) || 'light';
   document.documentElement.setAttribute('data-theme', saved);
   updateThemeToggleIcon(saved);
 }
@@ -724,7 +741,7 @@ function toggleTheme() {
   const current = document.documentElement.getAttribute('data-theme') || 'light';
   const next = current === 'light' ? 'dark' : 'light';
   document.documentElement.setAttribute('data-theme', next);
-  localStorage.setItem('onspot_theme_' + currentUser.id, next);
+  localStorage.setItem('taskin_theme_' + currentUser.id, next);
   updateThemeToggleIcon(next);
 }
 
@@ -734,15 +751,16 @@ function updateThemeToggleIcon(theme) {
 }
 
 async function tryRestoreSession() {
-  const idToken = localStorage.getItem('onspot_idToken');
-  const uid = localStorage.getItem('onspot_uid');
+  const idToken = localStorage.getItem('taskin_idToken');
+  const uid = localStorage.getItem('taskin_uid');
   if (!idToken || !uid) return false;
   const user = await fetchAccountProfile(uid);
-  if (!user) { localStorage.removeItem('onspot_idToken'); localStorage.removeItem('onspot_uid'); return false; }
+  if (!user) { localStorage.removeItem('taskin_idToken'); localStorage.removeItem('taskin_uid'); return false; }
   await enterApp(user);
   return true;
 }
 
+// CORRECTION : SECURITE AGENT / ADMIN
 function applyRoleUI() {
   const role = currentUser.role;
   const isSupAdmin = (role === 'supervisor' || role === 'admin');
@@ -756,16 +774,27 @@ function applyRoleUI() {
   if (role === 'admin') badge.textContent = 'Admin · Contrôle total';
   badge.classList.toggle('hidden', role === 'agent');
 
-  document.querySelectorAll('.agent-only').forEach(el => el.classList.toggle('hidden', role !== 'agent'));
+  document.getElementById('tab-team').classList.toggle('hidden', role === 'agent');
   document.getElementById('tab-admin').classList.toggle('hidden', role !== 'admin');
   document.getElementById('tab-week-role').classList.toggle('hidden', role === 'agent');
-  
-  document.getElementById('permanent-live-panel').classList.toggle('hidden', role === 'agent');
-  document.getElementById('team-accordion-view').classList.toggle('hidden', role === 'agent');
+  document.querySelector('.tab.agent-only').classList.toggle('hidden', role !== 'agent');
+
+  document.getElementById('timer-banner').classList.toggle('hidden', role !== 'agent');
+  document.querySelector('.quickstart').classList.toggle('hidden', role !== 'agent');
+
+  document.getElementById('stats-grid-agent').classList.toggle('hidden', role !== 'agent');
+  document.getElementById('stats-grid-admin-home').classList.toggle('hidden', role !== 'admin');
+
+  // Affichage Ligne de filtres colonnes et accordéon equipe (Sup/Admin)
   document.getElementById('table-filters').classList.toggle('hidden', role === 'agent');
+  document.getElementById('team-accordion-view').classList.toggle('hidden', role === 'agent');
   document.getElementById('filter-agent-toolbar').classList.toggle('hidden', role === 'agent');
   document.getElementById('btn-export').classList.toggle('hidden', role === 'agent');
   
+  // Dashboard permanent d'en-tête (Supervisor/Admin)
+  document.getElementById('permanent-live-panel').classList.toggle('hidden', role === 'agent');
+  
+  // MASQUAGE PHYSIQUE TOTAL DE L'ADMIN POUR LES AGENTS
   if (role === 'agent') {
     const secureAdminBox = document.getElementById('admin-secure-elements');
     if(secureAdminBox) secureAdminBox.innerHTML = '';
@@ -788,13 +817,14 @@ function applyRoleUI() {
   
   document.getElementById('table-view-container').classList.remove('hidden');
   document.getElementById('admin-panel').classList.add('hidden');
-  renderAll();
+  
+  renderAll(); // Rendu immédiat des historiques dès l'entrée
 }
 
 document.getElementById('login-password').addEventListener('keydown', e => { if (e.key==='Enter') doLogin(); });
 function logout() {
   if (activeTimer) { alert('Arrête le timer en cours avant de te déconnecter.'); return; }
-  localStorage.removeItem('onspot_idToken'); localStorage.removeItem('onspot_uid');
+  localStorage.removeItem('taskin_idToken'); localStorage.removeItem('taskin_uid');
   window.location.reload();
 }
 
@@ -804,34 +834,51 @@ function populateFilters() {
   
   const tblAgt = document.getElementById('f-agt');
   if(tblAgt) tblAgt.innerHTML = '<option value="">Tous les agents</option>' + TEAM.map(u=>`<option value="${u.id}">${u.name}</option>`).join('');
+  
+  const tSel = document.getElementById('filter-treatment');
+  if (tSel) tSel.innerHTML = '<option value="">Tous traitements</option>' + customTreatmentTypes.map(t=>`<option value="${t}">${t}</option>`).join('');
 }
 
 async function refreshApp() {
   const btn = document.querySelector('.btn-refresh');
   if(btn) { btn.innerHTML = "Actualisation..."; btn.disabled = true; }
-  await loadAccountsFromFirestore();
-  populateFilters();
-  await loadTreatmentsFromFirestore();
-  await loadEntries();
-  if(btn) { btn.innerHTML = "<span style='font-size:16px'>↻</span> Actualiser"; btn.disabled = false; }
+  
+  try {
+      await loadAccountsFromFirestore();
+      populateFilters();
+      await loadTreatmentsFromFirestore();
+      await loadEntries();
+  } catch (e) {
+      console.error("Erreur lors de l'actualisation :", e);
+  } finally {
+      if(btn) { btn.innerHTML = "<span style='font-size:16px'>↻</span> Actualiser"; btn.disabled = false; }
+  }
 }
 
 function switchTab(view, btn) {
-  if (currentUser.role === 'agent' && (view === 'admin' || view === 'week')) return;
+  if (currentUser.role === 'agent' && (view === 'admin' || view === 'team' || view === 'week')) return;
   currentView = view;
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   if (btn) btn.classList.add('active');
 
   const isAdminView = view === 'admin';
-  document.getElementById('table-view-container').classList.toggle('hidden', isAdminView);
+  const isTeamView = view === 'team';
+  const showTable = !isAdminView && !isTeamView;
+
+  document.getElementById('table-view-container').classList.toggle('hidden', !showTable);
   document.getElementById('admin-panel').classList.toggle('hidden', !isAdminView);
 
-  if (!isAdminView) renderAll();
-  if (isAdminView && currentUser.role === 'admin') { renderTeamList(); renderTreatmentList(); renderDMTInputs(); populateChartScopeSelect(); renderEvolutionChart(); }
+  if (isAdminView && currentUser.role === 'admin') { renderAdminPanel(); return; }
+  renderAll();
 }
 
-// ===== CALCUL KPIs =====
+// ===== CALCULS ET LOGIQUE KPIs (FRT / DMT) =====
 function renderStats(filteredList) {
+  let baseEntries = entries;
+  if (currentUser.role === 'agent') {
+    baseEntries = entries.filter(e => e.agent === currentUser.id);
+  }
+
   const todayStr = new Date().toDateString();
   const myEntries = entries.filter(e => e.agent === currentUser.id && new Date(e.startTimeStr).toDateString() === todayStr);
   const teamEntries = entries.filter(e => new Date(e.startTimeStr).toDateString() === todayStr);
@@ -864,12 +911,21 @@ function renderStats(filteredList) {
   document.getElementById('s-frt').textContent = myKpi.frt;
   document.getElementById('s-count').textContent = myKpi.count;
 
+  // Calcul Ringover / Crisp perso
+  const ro = myEntries.filter(e=>e.source==='ringover' || e.source==='inbound' || e.source==='outbound');
+  const cr = myEntries.filter(e=>e.source==='crisp' || e.source==='chat' || e.source==='email');
+  document.getElementById('s-ringover').textContent = fmtDuration(ro.reduce((s,e)=>s+e.durationSec,0));
+  document.getElementById('s-ringover-count').textContent = ro.length + ' appels';
+  document.getElementById('s-crisp').textContent = fmtDuration(cr.reduce((s,e)=>s+e.durationSec,0));
+  document.getElementById('s-crisp-count').textContent = cr.length + ' tickets';
+
   if (currentUser.role === 'supervisor' || currentUser.role === 'admin') {
     const teamKpi = calcSet(teamEntries);
     document.getElementById('sup-s-total').textContent = teamKpi.total;
     document.getElementById('sup-s-dmt').textContent = teamKpi.dmt;
     document.getElementById('sup-s-frt').textContent = teamKpi.frt;
     document.getElementById('sup-s-count').textContent = teamKpi.count;
+    
     document.getElementById('adm-home-total').textContent = teamKpi.total;
     document.getElementById('adm-home-entries').textContent = entries.length;
   }
@@ -907,56 +963,19 @@ function fmtDuration(sec) {
   return `${m}min`;
 }
 
-// ===== RENDER TABLE =====
+// ==========================================
+// RENDU DU TABLEAU ET FILTRES AVANCÉS
+// ==========================================
 function onSearchInput() {
   clearTimeout(searchTimeout);
   searchTimeout = setTimeout(renderAll, 300);
 }
 
-function getFiltered() {
-  let agent = document.getElementById('filter-agent-toolbar')?.value;
-  const search = document.getElementById('search-input')?.value.toLowerCase() || '';
-  const fInb = document.getElementById('f-inb')?.value.toLowerCase();
-  const fStart = document.getElementById('f-start')?.value.toLowerCase();
-  const fSrc = document.getElementById('f-src')?.value;
-  const fDesc = document.getElementById('f-desc')?.value.toLowerCase();
-  const fAgt = document.getElementById('f-agt')?.value;
-  const fDur = document.getElementById('f-dur')?.value.toLowerCase();
-  
-  let list = entries;
-  if (currentUser.role === 'agent') { agent = currentUser.id; }
-
-  const todayStr = new Date().toDateString();
-  if (currentView === 'today') list = list.filter(e=>new Date(e.startTimeStr).toDateString() === todayStr);
-  else if (currentView === 'week') list = list.filter(e=>{
-    const d = new Date(e.startTimeStr), now = new Date();
-    const start = new Date(now); start.setDate(now.getDate()-now.getDay()+1); start.setHours(0,0,0,0);
-    return d >= start;
-  });
-  
-  return list.filter(e => {
-    const startStr = new Date(e.startTimeStr).toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
-    const agentObj = TEAM.find(t => t.id === e.agent);
-    const agentName = agentObj ? agentObj.name.toLowerCase() : e.agent.toLowerCase();
-    const durStr = Math.ceil(e.durationSec / 60) + ' min';
-
-    if (agent && e.agent!==agent) return false;
-    if (search && !e.desc.toLowerCase().includes(search)) return false;
-    if (fInb && !(e.inboundTime||'--:--').toLowerCase().includes(fInb)) return false;
-    if (fStart && !startStr.includes(fStart)) return false;
-    if (fSrc && e.source !== fSrc) return false;
-    if (fDesc && !e.desc.toLowerCase().includes(fDesc)) return false;
-    if (fAgt && e.agent !== fAgt) return false;
-    if (fDur && !durStr.includes(fDur)) return false;
-
-    return true;
-  });
-}
-
 function renderAll() {
   const filtered = getFiltered();
-  const entryCountEl = document.getElementById('entry-count');
-  if(entryCountEl) entryCountEl.textContent = filtered.length + ' entrée(s)';
+  const counter = document.getElementById('entry-count');
+  if(counter) counter.textContent = filtered.length + ' entrée(s)';
+  
   renderStats(filtered);
   
   const body = document.getElementById('entries-body');
@@ -976,22 +995,13 @@ function renderAll() {
     let durClass = ''; if (ratio > 1.2) durClass = 'dur-over'; else if (ratio > 1) durClass = 'dur-warn';
     const startStr = new Date(e.startTimeStr).toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
 
-    let sourceBg = '#FBEAF0', sourceCol = '#F3B0C3', icon = '🎫';
-    if(e.source === 'inbound') { sourceBg = '#FBE9E6'; sourceCol = '#C9604F'; icon = '📞↘'; }
-    if(e.source === 'outbound') { sourceBg = '#FCF1D6'; sourceCol = '#DCAE1D'; icon = '📞↗'; }
-    if(e.source === 'chat') { sourceBg = '#E6EDF6'; sourceCol = '#2B4C7E'; icon = '💬'; }
-    if(e.source === 'email') { sourceBg = '#E6EDF6'; sourceCol = '#2B4C7E'; icon = '✉️'; }
-
-    const agentObj = TEAM.find(t => t.id === e.agent);
-    const agentHtml = agentObj ? `<div class="agent-cell"><div class="mini-avatar" style="background:${agentObj.color}20;color:${agentObj.color}">${agentObj.initials}</div>${agentObj.name}</div>` : e.agent;
-
     return `
     <tr>
       <td class="dur-cell" style="font-weight:600">${e.inboundTime || '--:--'}</td>
       <td class="dur-cell">${startStr}</td>
-      <td><span class="source-tag" style="background:${sourceBg}; color:${sourceCol}">${icon} ${e.source}</span></td>
+      <td>${sourceTag(e.source)}</td>
       <td id="desc-${e.id}" style="width:35%">${e.desc}</td>
-      <td>${agentHtml}</td>
+      <td>${agentCell(e.agent)}</td>
       <td class="dur-cell ${durClass}" title="DMT cible : ${fmtDuration(dmt)}">${Math.ceil(e.durationSec/60)} min</td>
       <td><div class="row-actions">
         ${canEdit ? `<button class="icon-btn" onclick="editEntry('${e.id}')" title="Modifier">✎</button>` : ''}
@@ -1001,14 +1011,59 @@ function renderAll() {
   }).join('');
 }
 
-// ===== TIMER LOGIC =====
+function getFiltered() {
+  const source = document.getElementById('filter-source')?.value;
+  let agent = document.getElementById('filter-agent-toolbar')?.value;
+  const treatment = document.getElementById('filter-treatment')?.value || '';
+  const search = document.getElementById('search-input')?.value.toLowerCase() || '';
+  
+  const fInb = document.getElementById('f-inb')?.value?.toLowerCase() || '';
+  const fStart = document.getElementById('f-start')?.value?.toLowerCase() || '';
+  const fSrc = document.getElementById('f-src')?.value || '';
+  const fDesc = document.getElementById('f-desc')?.value?.toLowerCase() || '';
+  const fAgt = document.getElementById('f-agt')?.value || '';
+  const fDur = document.getElementById('f-dur')?.value?.toLowerCase() || '';
+  
+  let list = entries;
+  if (currentUser.role === 'agent') { agent = currentUser.id; }
+
+  const todayStr = new Date().toDateString();
+  if (currentView === 'today') list = list.filter(e=>new Date(e.startTimeStr).toDateString() === todayStr);
+  else if (currentView === 'week') list = list.filter(e=>{
+    const d = new Date(e.startTimeStr), now = new Date();
+    const start = new Date(now); start.setDate(now.getDate() - now.getDay() + 1); start.setHours(0,0,0,0);
+    return d >= start;
+  });
+  
+  return list.filter(e => {
+    const startStr = new Date(e.startTimeStr).toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
+    const agentObj = TEAM.find(t => t.id === e.agent);
+    const agentName = agentObj ? agentObj.name.toLowerCase() : e.agent.toLowerCase();
+    const durStr = Math.ceil(e.durationSec / 60) + ' min';
+
+    if (source && e.source!==source) return false;
+    if (agent && e.agent!==agent) return false;
+    if (treatment && e.treatment!==treatment && !e.desc.includes(treatment)) return false;
+    if (search && !e.desc.toLowerCase().includes(search)) return false;
+
+    // Filtres select & input par colonne
+    if (fInb && !(e.inboundTime||'--:--').toLowerCase().includes(fInb)) return false;
+    if (fStart && !startStr.includes(fStart)) return false;
+    if (fSrc && e.source !== fSrc) return false;
+    if (fDesc && !e.desc.toLowerCase().includes(fDesc)) return false;
+    if (fAgt && e.agent !== fAgt) return false;
+    if (fDur && !durStr.includes(fDur)) return false;
+
+    return true;
+  });
+}
+
+// ===== TIMERS CONTROL =====
 function openModal() {
   document.getElementById('modal-overlay').classList.remove('hidden');
-  document.getElementById('f-desc').value = '';
-  selectSource('inbound');
+  document.getElementById('f-desc').value = ''; selectSource('inbound');
   const d = new Date(); d.setMinutes(d.getMinutes() + 1);
-  pickerHour = String(d.getHours()).padStart(2, '0');
-  pickerMin = String(d.getMinutes()).padStart(2, '0');
+  pickerHour = String(d.getHours()).padStart(2, '0'); pickerMin = String(d.getMinutes()).padStart(2, '0');
   document.getElementById('inbound-time-input').value = `${pickerHour}:${pickerMin}`;
   document.getElementById('f-desc').focus();
 }
@@ -1024,6 +1079,7 @@ function quickStart(source) {
   if (source === 'ticket') { openModal(); return; }
   selectedSource = source; openModal(); selectSource(source);
 }
+
 function startTimer() {
   const desc = document.getElementById('f-desc').value.trim() || selectedSource;
   activeTimer = { source: selectedSource, desc, startTime: Date.now(), inboundTime: `${pickerHour}:${pickerMin}` };
@@ -1033,7 +1089,7 @@ function startTimer() {
   document.getElementById('timer-task').textContent = desc; document.getElementById('timer-task').classList.remove('placeholder');
   document.getElementById('play-btn').classList.add('hidden'); document.getElementById('stop-btn').classList.remove('hidden');
   
-  localStorage.setItem('onspot_active_'+currentUser.id, JSON.stringify(activeTimer));
+  localStorage.setItem('taskin_active_'+currentUser.id, JSON.stringify(activeTimer));
   saveActiveTimerToFirestore();
   timerInterval = setInterval(updateClock, 1000); updateClock();
 }
@@ -1058,7 +1114,7 @@ async function stopTimer() {
   const entry = { id: Date.now().toString(), source: activeTimer.source, desc: activeTimer.desc, agent: currentUser.id, inboundTime: activeTimer.inboundTime || '--:--', startTimeStr: new Date(activeTimer.startTime).toISOString(), durationSec };
   entries.unshift(entry);
 
-  activeTimer = null; localStorage.removeItem('onspot_active_'+currentUser.id);
+  activeTimer = null; localStorage.removeItem('taskin_active_'+currentUser.id);
   document.getElementById('timer-banner').classList.remove('active'); document.getElementById('timer-clock').classList.add('idle'); document.getElementById('timer-clock').classList.remove('active');
   document.getElementById('timer-clock').textContent = '00:00:00'; document.getElementById('timer-task').textContent = 'Aucun timer actif — démarre une tâche ci-dessous'; document.getElementById('timer-task').classList.add('placeholder');
   document.getElementById('play-btn').classList.remove('hidden'); document.getElementById('stop-btn').classList.add('hidden');
@@ -1068,7 +1124,7 @@ async function stopTimer() {
   if (currentUser.role === 'supervisor' || currentUser.role === 'admin') fetchLiveAgents();
 }
 function checkActiveTimer() {
-  const saved = localStorage.getItem('onspot_active_'+currentUser.id);
+  const saved = localStorage.getItem('taskin_active_'+currentUser.id);
   if (saved) {
     activeTimer = JSON.parse(saved); document.getElementById('timer-banner').classList.add('active');
     document.getElementById('timer-clock').classList.remove('idle'); document.getElementById('timer-clock').classList.add('active');
@@ -1078,7 +1134,7 @@ function checkActiveTimer() {
   }
 }
 
-// INBOUND ROULETTE (FIXÉE POUR EVITER L'ECRAN BLANC)
+// INBOUND ROULETTE
 function initTimePickerUI() {
   const hCol = document.getElementById('col-hours'); const mCol = document.getElementById('col-mins');
   if (!hCol || !mCol) return;
@@ -1105,7 +1161,34 @@ function syncPickerScroll() {
 }
 function clickTimeOpt(colId, index) { const col = document.getElementById(colId); const target = col.querySelectorAll('.time-opt')[index]; col.scrollTo({ top: target.offsetTop - col.clientHeight/2 + target.offsetHeight/2, behavior: 'smooth' }); }
 
+// ==========================================
 // DB & EXPORT
+// ==========================================
+async function loadEntries() {
+  try {
+    const res = await fetch(`${BASE_URL}/time_entries?key=${FIREBASE_API_KEY}&pageSize=1000`);
+    const data = await res.json();
+    entries = (data.documents || []).map(docToEntry).sort((a,b)=> new Date(b.startTimeStr)-new Date(a.startTimeStr));
+  } catch(e) { console.error(e); }
+}
+
+function docToEntry(doc) {
+  const f = doc.fields || {};
+  
+  // PARSING ULTRA SECURISE DE LA DATE (POUR EVITER L'INVALID DATE)
+  let stRaw = f.startTime?.stringValue || f.startTime?.integerValue || '';
+  let d = new Date(stRaw);
+  if (isNaN(d.getTime())) { d = new Date(parseInt(stRaw, 10)); }
+  if (isNaN(d.getTime())) { d = new Date(); }
+
+  return {
+    id: doc.name.split('/').pop(), rawId: f.rawId?.stringValue || '', source: f.source?.stringValue || 'ticket',
+    desc: f.desc?.stringValue || '', treatment: f.treatment?.stringValue || '', agent: f.agent?.stringValue || '',
+    inboundTime: f.inboundTime?.stringValue || '--:--',
+    startTimeStr: d.toISOString(), durationSec: parseInt(f.durationSec?.integerValue || 0),
+  };
+}
+
 async function saveEntryToFirestore(entry) {
   const body = { fields: { rawId: { stringValue: entry.rawId || '' }, source: { stringValue: entry.source }, desc: { stringValue: entry.desc }, agent: { stringValue: entry.agent }, inboundTime: { stringValue: entry.inboundTime || '--:--' }, startTime: { stringValue: entry.startTimeStr }, durationSec: { integerValue: String(entry.durationSec) } }};
   await fetch(`${BASE_URL}/time_entries/${entry.id}?key=${FIREBASE_API_KEY}`, { method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
@@ -1121,19 +1204,23 @@ function editEntry(id) {
   input.addEventListener('blur', save); input.addEventListener('keydown', e => { if (e.key === 'Enter') input.blur(); });
 }
 function exportCSV() {
-  const rows = [['Inbound Time','Start Time','Source','Description','Agent','Durée (min)']];
+  const rows = [['Date','Inbound Time','Start Time','Source','Description','Agent','Durée (min)']];
   entries.forEach(e => {
-    const startStr = new Date(e.startTimeStr).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+    const d = new Date(e.startTimeStr);
+    const startStr = d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
     const agentName = (TEAM.find(t=>t.id===e.agent)||{}).name || e.agent;
-    rows.push([e.inboundTime||'--:--', startStr, e.source, e.desc.replace(/,/g,' '), agentName, Math.ceil(e.durationSec/60)]);
+    rows.push([d.toLocaleDateString('fr-FR'), e.inboundTime||'--:--', startStr, e.source, e.desc.replace(/,/g,' '), agentName, Math.ceil(e.durationSec/60)]);
   });
   const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
   const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
   const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = 'taskin-export-' + new Date().toISOString().split('T')[0] + '.csv'; a.click(); URL.revokeObjectURL(url);
 }
+function exportExcel() { exportCSV(); }
 async function syncRingover() { alert('Sync désactivée pour la démo.'); }
 
+// ==========================================
 // ADMIN & MODALS 
+// ==========================================
 async function loadAccountsFromFirestore() {
   try {
     const res = await fetch(`${BASE_URL}/accounts?key=${FIREBASE_API_KEY}`); const data = await res.json();
@@ -1174,7 +1261,7 @@ async function submitCreateAccount() {
   const errEl = document.getElementById('create-account-error'); errEl.textContent = '';
   if (!name) { errEl.textContent = 'Le nom est requis.'; return; } if (!email || !email.includes('@')) { errEl.textContent = 'Email invalide.'; return; }
   const submitBtn = document.getElementById('create-account-submit'); submitBtn.disabled = true; submitBtn.textContent = 'Création...';
-  const adminIdToken = localStorage.getItem('onspot_idToken'); const adminUid = localStorage.getItem('onspot_uid'); const tempPassword = genTempPassword();
+  const adminIdToken = localStorage.getItem('taskin_idToken'); const adminUid = localStorage.getItem('taskin_uid'); const tempPassword = genTempPassword();
   try {
     const res = await fetch(`${AUTH_BASE}/accounts:signUp?key=${FIREBASE_API_KEY}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: tempPassword, returnSecureToken: true }) });
     const data = await res.json();
@@ -1182,8 +1269,9 @@ async function submitCreateAccount() {
     const newUid = data.localId; const initials = name.trim().split(/\s+/).map(w=>w[0]).join('').toUpperCase().slice(0,2) || '??';
     const palette = ['#2B4C7E','#3B8C6E','#DCAE1D','#C9604F','#A8527A']; const color = palette[Math.floor(Math.random()*palette.length)];
     const newAccount = { id: newUid, name, email, color, initials, role: 'agent', photo: '' };
-    await saveAccountToFirestore(newAccount); TEAM.push(newAccount);
-    localStorage.setItem('onspot_idToken', adminIdToken); localStorage.setItem('onspot_uid', adminUid);
+    const body = { fields: { name: { stringValue: newAccount.name }, color: { stringValue: newAccount.color }, initials: { stringValue: newAccount.initials }, role: { stringValue: newAccount.role }, photo: { stringValue: '' } }};
+    await fetch(`${BASE_URL}/accounts/${newAccount.id}?key=${FIREBASE_API_KEY}`, { method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
+    TEAM.push(newAccount); localStorage.setItem('taskin_idToken', adminIdToken); localStorage.setItem('taskin_uid', adminUid);
     document.getElementById('result-email').textContent = email; document.getElementById('result-password').textContent = tempPassword;
     document.getElementById('create-account-form').classList.add('hidden'); document.getElementById('create-account-result').classList.remove('hidden'); document.getElementById('create-account-footer').classList.add('hidden');
     renderTeamList(); populateFilters();
@@ -1216,7 +1304,7 @@ function renderEvolutionChart() {
   const canvas = document.getElementById('evolution-chart'); if(canvas) canvas.innerHTML = `<div class="evo-bars">${barsHtml}</div>`;
 }
 
-// PROFILE
+// PROFILE PERSO
 let pendingProfilePhoto = null;
 function openProfileModal() { pendingProfilePhoto = currentUser.photo || null; document.getElementById('profile-name-input').value = currentUser.name; document.getElementById('profile-password-input').value = ''; document.getElementById('profile-error').textContent = ''; renderProfilePhotoPreview(); document.getElementById('profile-modal-overlay').classList.remove('hidden'); }
 function closeProfileModal() { document.getElementById('profile-modal-overlay').classList.add('hidden'); }
@@ -1227,7 +1315,7 @@ function removeProfilePhoto() { pendingProfilePhoto = ''; renderProfilePhotoPrev
 async function saveProfile() {
   const newName = document.getElementById('profile-name-input').value.trim(); const newPassword = document.getElementById('profile-password-input').value.trim(); const errEl = document.getElementById('profile-error'); errEl.textContent = '';
   if (!newName) { errEl.textContent = 'Le nom ne peut pas être vide.'; return; } if (newPassword && newPassword.length < 6) { errEl.textContent = 'Le mot de passe doit faire au moins 6 caractères.'; return; }
-  if (newPassword) { const idToken = localStorage.getItem('onspot_idToken'); try { const res = await fetch(`${AUTH_BASE}/accounts:update?key=${FIREBASE_API_KEY}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ idToken, password: newPassword, returnSecureToken: true }) }); const data = await res.json(); if (data.error) { errEl.textContent = "Erreur lors du changement de mot de passe."; return; } localStorage.setItem('onspot_idToken', data.idToken); } catch(e) { errEl.textContent = 'Erreur réseau.'; return; } }
+  if (newPassword) { const idToken = localStorage.getItem('taskin_idToken'); try { const res = await fetch(`${AUTH_BASE}/accounts:update?key=${FIREBASE_API_KEY}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ idToken, password: newPassword, returnSecureToken: true }) }); const data = await res.json(); if (data.error) { errEl.textContent = "Erreur lors du changement de mot de passe."; return; } localStorage.setItem('taskin_idToken', data.idToken); } catch(e) { errEl.textContent = 'Erreur réseau.'; return; } }
   currentUser.name = newName; currentUser.photo = pendingProfilePhoto || '';
   const idx = TEAM.findIndex(u => u.id === currentUser.id); if (idx >= 0) TEAM[idx] = currentUser;
   const body = { fields: { name: { stringValue: currentUser.name }, color: { stringValue: currentUser.color }, initials: { stringValue: currentUser.initials }, role: { stringValue: currentUser.role }, photo: { stringValue: currentUser.photo || '' } }};
