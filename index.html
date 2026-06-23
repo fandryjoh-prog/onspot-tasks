@@ -58,22 +58,23 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 /* LOGIN */
 #login-screen{position:fixed;inset:0;background:var(--ocean-deep);display:flex;align-items:center;justify-content:center;z-index:100}
 .login-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:44px;width:360px;text-align:center;}
-.login-logo{width:100px;height:100px;border-radius:16px;margin:0 auto 16px;display:block;object-fit:cover;box-shadow:0 4px 12px rgba(0,0,0,0.1)}
+.login-logo{width:80px;height:80px;border-radius:12px;margin:0 auto 16px;display:block;object-fit:cover;}
 .login-title{font-family:var(--display);font-size:28px;font-weight:600;margin-bottom:6px;letter-spacing:-0.5px;color:var(--ocean)}
 .login-sub{font-size:13px;color:var(--text2);margin-bottom:32px}
-.form-row{text-align:left;margin-bottom:16px}
-.form-label{display:block;font-size:11px;color:var(--text2);margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:.4px}
-.form-input,.form-select{width:100%;padding:10px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:9px;color:var(--text);font-family:var(--font);font-size:13px;outline:none}
-.form-input:focus,.form-select:focus{border-color:var(--ocean)}
+.form-row{margin-bottom:16px;text-align:left;}
+.pin-input{width:100%;padding:11px;background:var(--surface2);border:1px solid var(--border);border-radius:9px;color:var(--text);font-family:var(--font);font-size:14px;text-align:center;outline:none}
+.pin-input:focus{border-color:var(--ocean)}
 .login-btn{width:100%;margin-top:16px;padding:12px;background:var(--ocean);color:#fff;border:none;border-radius:9px;font-family:var(--font);font-size:14px;font-weight:600;cursor:pointer}
 .login-btn:hover{background:var(--ocean-deep)}
 .login-error{font-size:12px;color:var(--red);margin-top:8px;text-align:center;min-height:18px}
 
 /* APP */
 #app{display:none}
-.topbar{height:60px;background:var(--ocean);border-bottom:1px solid var(--ocean-deep);display:flex;align-items:center;padding:0 24px;gap:16px;position:sticky;top:0;z-index:50}
-.topbar-logo{display:flex;align-items:center;gap:12px;font-family:var(--display);font-size:18px;font-weight:700;color:#fff}
-.topbar-logo img{height:34px;border-radius:6px;background:white;}
+.topbar{height:56px;background:var(--ocean);border-bottom:1px solid var(--ocean-deep);display:flex;align-items:center;padding:0 24px;gap:16px;position:sticky;top:0;z-index:50}
+.topbar-logo{display:flex;align-items:center;gap:10px;font-family:var(--display);font-size:16px;font-weight:600;letter-spacing:-0.2px;color:#fff}
+.topbar-logo img{height:28px;border-radius:6px;}
+.topbar-sep{color:#5A7AA8;font-size:18px}
+.topbar-title{font-size:11px;color:#B9CCE6;font-weight:600;text-transform:uppercase;letter-spacing:1px;border-left:1px solid #4A6A99;padding-left:14px}
 .topbar-right{margin-left:auto;display:flex;align-items:center;gap:12px}
 .user-pill{display:flex;align-items:center;gap:8px;padding:6px 12px;border-radius:99px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);font-size:12px;font-weight:500;color:#fff;cursor:pointer;}
 .btn{padding:8px 16px;border-radius:9px;border:none;cursor:pointer;font-family:var(--font);font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:7px;transition:all .15s}
@@ -82,7 +83,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .btn-refresh{background:var(--surface2);color:var(--ocean);border:1px solid var(--border);}
 .btn-refresh:hover{background:var(--ocean-dim);}
 
-/* LIVE DASHBOARD (SUP/ADMIN) */
+/* NOUVEAU: LIVE HEADER (SUPERVISEUR / ADMIN) */
 .live-header-panel{margin:20px 24px 0;background:var(--ocean-deep);border-radius:var(--radius);padding:20px;color:white;}
 .live-header-title{font-family:var(--display);font-size:18px;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:10px;}
 .live-pulse-dot{width:10px;height:10px;background:var(--green);border-radius:50%;box-shadow:0 0 8px var(--green);animation:pulse-green 1.5s infinite;}
@@ -110,6 +111,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .timer-btn-play:hover{transform:scale(1.06)}
 .timer-btn-stop{background:var(--ocean);color:#fff;box-shadow:0 0 0 3px var(--clay-dim)}
 .timer-btn-stop:hover{transform:scale(1.04)}
+.timer-btn-stop::before{content:'';position:absolute;inset:-6px;border-radius:50%;border:2.5px solid var(--clay);border-top-color:transparent;animation:pulse-spin 2.2s linear infinite}
+@keyframes pulse-spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.timer-btn-stop::before{animation:none;border-top-color:var(--clay)}}
 
 /* QUICK START */
 .quickstart{display:flex;gap:8px;margin:14px 24px 0;flex-wrap:wrap}
@@ -122,8 +126,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px}
 .stat-label{font-size:11px;color:var(--text2);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px;font-weight:600}
 .stat-value{font-family:var(--display);font-size:25px;font-weight:600;letter-spacing:-0.3px;color:var(--text)}
+.stat-sub{font-size:11px;color:var(--text2);margin-top:4px}
 
-/* TEAM ACCORDION (SUP/ADMIN) */
+/* NOUVEAU: TEAM ACCORDION (SUP/ADMIN) */
 .team-accordion{margin:20px 24px 0;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
 .team-summary{padding:16px 20px;font-weight:600;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;color:var(--ocean);background:var(--ocean-dim);border-bottom:1px solid var(--border);}
 .team-summary::-webkit-details-marker{display:none;}
@@ -141,12 +146,13 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .filter-select:focus,.search-input:focus{border-color:var(--ocean)}
 .count-badge{font-size:11px;padding:3px 9px;border-radius:99px;background:var(--surface2);color:var(--text2);font-family:var(--mono);margin-left:auto;border:1px solid var(--border)}
 
-/* TABLE & FILTERS */
-.entries-table{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden; overflow-x:auto;}
-.entries-table table{width:100%;border-collapse:collapse}
+/* TABLE & NOUVEAUX FILTRES */
+.entries-table{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow-x:auto}
+.entries-table table{width:100%;border-collapse:collapse;min-width:800px;}
 .entries-table th{font-size:10px;font-weight:700;color:var(--text2);text-align:left;padding:11px 16px;border-bottom:1px solid var(--border);text-transform:uppercase;letter-spacing:.6px;background:var(--surface2)}
 .entries-table td{font-size:13px;padding:12px 16px;border-bottom:1px solid var(--border)}
 .entries-table tr:hover td{background:var(--surface2)}
+
 .filter-row th { padding: 8px 16px; background: var(--surface); border-bottom: 2px solid var(--border); }
 .filter-input-tbl { width: 100%; padding: 6px 8px; border: 1px solid var(--border); border-radius: 4px; font-size: 11px; outline: none; background: var(--surface2); color: var(--text); }
 .filter-input-tbl:focus { border-color: var(--ocean); }
@@ -173,22 +179,25 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .modal-close{background:transparent;border:none;color:var(--text2);cursor:pointer;font-size:20px;padding:4px}
 .modal-body{padding:20px 24px}
 .modal-footer{padding:16px 24px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end}
+.form-label{display:block;font-size:11px;color:var(--text2);margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:.4px}
+.profile-photo-row{display:flex;align-items:center;gap:16px;margin-bottom:20px}
 .profile-photo-preview{width:64px;height:64px;border-radius:50%;background:var(--surface2);background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:600;font-size:20px;color:var(--ocean);flex-shrink:0;border:1px solid var(--border)}
 .btn-primary{background:var(--ocean);color:#fff;border:none}
 .btn-primary:hover{background:var(--ocean-deep)}
 
 /* ADMIN UTILS */
 .admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.admin-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden}
-.admin-card-header{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.admin-card{background:var(--surface,#fff);border:1px solid var(--border,#E2E8F0);border-radius:12px;overflow:hidden}
+.admin-card-header{padding:14px 18px;border-bottom:1px solid var(--border,#E2E8F0);display:flex;align-items:center;justify-content:space-between}
 .admin-card-header h3{font-size:14px;font-weight:600;font-family:var(--display,inherit)}
-.team-row{display:flex;align-items:center;gap:10px;padding:12px 18px;border-bottom:1px solid var(--border)}
+.team-row{display:flex;align-items:center;gap:10px;padding:12px 18px;border-bottom:1px solid var(--border,#EEF2F6)}
 .team-row:last-of-type{border-bottom:none}
 .team-row-name{font-size:13px;font-weight:500}
-.team-row-role{font-size:11px;color:var(--text2)}
-.treatment-add-row{display:flex;gap:8px;padding:14px 18px;border-bottom:1px solid var(--border)}
+.team-row-role{font-size:11px;color:var(--text2,#6B7C93)}
+.admin-note{padding:10px 18px;font-size:11px;color:var(--text3,#A0AAB8);font-style:italic}
+.treatment-add-row{display:flex;gap:8px;padding:14px 18px;border-bottom:1px solid var(--border,#EEF2F6)}
 .treatment-add-row .form-input{flex:1}
-.treatment-row{display:flex;align-items:center;justify-content:space-between;padding:9px 18px;font-size:13px;border-bottom:1px solid var(--border)}
+.treatment-row{display:flex;align-items:center;justify-content:space-between;padding:9px 18px;font-size:13px;border-bottom:1px solid var(--border,#EEF2F6)}
 .dmt-row{display:flex;align-items:center;gap:10px;padding:10px 18px;border-bottom:1px solid var(--border)}
 .dmt-label{flex:1;font-size:13px;color:var(--text)}
 .dmt-input{width:90px;flex:none}
@@ -200,8 +209,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .evo-bar{width:100%;border-radius:4px 4px 0 0;background:var(--ocean);min-height:2px;position:relative}
 .evo-bar-label{font-family:var(--mono);font-size:9px;color:var(--text2)}
 .evo-bar-value{font-family:var(--mono);font-size:9px;color:var(--text2);margin-bottom:2px}
+@media (max-width:900px){.admin-grid{grid-template-columns:1fr}}
 
-/* NOUVELLES SOURCES */
+/* SOURCES & TIME PICKER */
 .source-opt { display: flex; align-items: center; justify-content: center; gap: 6px; padding: 10px 8px; border: 1px solid transparent; border-radius: 9px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all .15s; }
 .opt-inbound { background: #4D2D2D; color: #E58787; } .opt-inbound.selected { border-color: #E58787; background: #663939; }
 .opt-outbound { background: #4A3E1B; color: #D6A848; } .opt-outbound.selected { border-color: #D6A848; background: #635222; }
@@ -209,7 +219,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .opt-email { background: #EAF3FC; color: #2A61A3; } .opt-email.selected { border-color: #2A61A3; background: #FFFFFF; }
 .opt-ticket { background: #1E3B1E; color: #6DB36D; } .opt-ticket.selected { border-color: #6DB36D; background: #274D27; }
 
-/* TIME PICKER ROULETTE */
 .time-dropdown { position: absolute; top: 100%; left: 0; width: 140px; height: 160px; background: var(--surface); border: 1px solid var(--ocean); border-radius: 9px; box-shadow: 0 4px 14px rgba(0,0,0,0.15); z-index: 300; display: flex; margin-top: 6px; overflow: hidden; }
 .time-col { flex: 1; overflow-y: auto; scroll-snap-type: y mandatory; scrollbar-width: none; position: relative; }
 .time-col::-webkit-scrollbar { display: none; }
@@ -230,7 +239,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   <div class="login-card">
     <img src="image_1a1b24.jpg" alt="Task'in Logo" class="login-logo">
     <div class="login-title">Task'in</div>
-    <div class="login-sub">Connecte-toi pour gérer ton temps</div>
+    <div class="login-sub">Connecte-toi avec ton email et ton mot de passe</div>
     <div class="form-row">
       <label class="form-label">Email</label>
       <input class="form-input" type="email" id="login-email" placeholder="prenom@taskin.com" autocomplete="username">
@@ -247,12 +256,13 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 <div id="app">
   <div class="topbar">
     <div class="topbar-logo"><img src="image_1a1b24.jpg" alt="Task'in"> Task'in</div>
+    <div class="topbar-sep">/</div>
+    <div class="topbar-title">Time Tracker</div>
+    <span class="role-badge hidden" id="role-badge"></span>
     <div class="topbar-right">
       <button class="btn btn-refresh" onclick="refreshApp()"><span style="font-size:16px;">↻</span> Actualiser</button>
       <button class="theme-toggle-btn" id="theme-toggle" onclick="toggleTheme()" title="Changer de thème">☾</button>
-      <div class="user-pill" onclick="openProfileModal()">
-        <div class="mini-avatar" id="topbar-avatar"></div><span id="topbar-name"></span>
-      </div>
+      <div class="user-pill" onclick="openProfileModal()" style="cursor:pointer"><div class="mini-avatar" id="topbar-avatar"></div><span id="topbar-name"></span></div>
       <button class="btn btn-ghost" onclick="logout()">Déconnexion</button>
     </div>
   </div>
@@ -282,12 +292,12 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     <button class="qs-btn" onclick="quickStart('chat')"><span class="qs-dot" style="background:#84A9DE"></span>Crisp Chat</button>
     <button class="qs-btn" onclick="quickStart('email')"><span class="qs-dot" style="background:#2A61A3"></span>Crisp Email</button>
     <button class="qs-btn" onclick="quickStart('ticket')"><span class="qs-dot" style="background:#6DB36D"></span>Ticket / Manuel</button>
-    <button class="qs-btn" onclick="syncRingover()" style="margin-left:auto; background:var(--ocean-dim); border-color:var(--ocean); color:var(--ocean);"><span class="qs-dot" style="background:var(--ocean)"></span>Sync RingOver</button>
+    <button class="qs-btn" onclick="syncRingover()" style="margin-left:auto; background:var(--surface2)"><span class="qs-dot" style="background:var(--ocean)"></span>Sync RingOver</button>
   </div>
 
   <div class="stats-grid agent-only" id="stats-grid-agent">
     <div class="stat-card">
-      <div class="stat-label">Temps total (Aujourd'hui)</div>
+      <div class="stat-label">Durée Totale (Jour)</div>
       <div class="stat-value" id="s-total" style="color:var(--ocean)">0h00</div>
     </div>
     <div class="stat-card">
@@ -305,7 +315,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   </div>
 
   <details class="team-accordion hidden" id="team-accordion">
-    <summary class="team-summary">Vue Globale Équipe & KPIs <span>▼</span></summary>
+    <summary class="team-summary">Vue Globale Équipe & KPIs</summary>
     <div style="padding: 20px;">
       <div class="stats-grid" style="margin:0;">
         <div class="stat-card">
@@ -338,9 +348,13 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     
     <div id="table-view-container">
       <div class="toolbar">
+        <select class="filter-select hidden" id="filter-agent" onchange="renderAll()">
+          <option value="">Tous les agents</option>
+        </select>
         <button class="btn btn-ghost hidden" id="btn-export" onclick="exportCSV()">↓ Exporter CSV</button>
         <span class="count-badge" id="entry-count">0 entrées</span>
       </div>
+
       <div class="entries-table">
         <table>
           <thead>
@@ -351,7 +365,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
               <th width="35%">Description / Traitement</th>
               <th width="15%">Agent</th>
               <th width="10%">Durée</th>
-              <th width="5%"></th>
+              <th width="5%" class="col-actions hidden"></th>
             </tr>
             <tr id="filter-row" class="filter-row hidden">
               <th><input type="text" id="f-inb" class="filter-input-tbl" placeholder="Filtrer..." oninput="onSearchInput()"></th>
@@ -360,7 +374,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
               <th><input type="text" id="f-desc" class="filter-input-tbl" placeholder="Filtrer..." oninput="onSearchInput()"></th>
               <th><input type="text" id="f-agt" class="filter-input-tbl" placeholder="Filtrer..." oninput="onSearchInput()"></th>
               <th><input type="text" id="f-dur" class="filter-input-tbl" placeholder="Filtrer..." oninput="onSearchInput()"></th>
-              <th></th>
+              <th class="col-actions hidden"></th>
             </tr>
           </thead>
           <tbody id="entries-body"></tbody>
@@ -375,10 +389,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
             <h3>Comptes équipe</h3>
             <span class="count-badge" id="team-count">0 comptes</span>
           </div>
-          <button class="btn btn-primary" style="width:calc(100% - 36px); margin:18px auto 0; display:block;" onclick="openCreateAccountModal()">+ Ajouter un compte</button>
-          <div id="team-list" style="margin-top:12px;"></div>
+          <div style="padding:14px 18px;"><button class="btn btn-primary" style="width:100%" onclick="openCreateAccountModal()">+ Ajouter un compte</button></div>
+          <div id="team-list"></div>
         </div>
-
+        
         <div class="admin-card">
           <div class="admin-card-header">
             <h3>Types de traitement</h3>
@@ -386,16 +400,18 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
           </div>
           <div class="treatment-add-row" style="position:relative; align-items:center;">
             <button class="btn btn-ghost" onclick="toggleEmojiPicker(event)" title="Ajouter un emoji" style="padding: 8px 10px; font-size: 16px;">😀</button>
-            <input class="form-input" id="new-treatment-input" placeholder="Ex: ✈️ Vols..." onkeydown="if(event.key==='Enter') addTreatmentType()">
+            <input class="form-input" id="new-treatment-input" placeholder="Nouveau type (ex: ✈️ Vols)..." onkeydown="if(event.key==='Enter') addTreatmentType()">
             <button class="btn btn-primary" onclick="addTreatmentType()">Ajouter</button>
             <div class="emoji-picker hidden" id="emoji-picker" onclick="event.stopPropagation()"></div>
           </div>
           <div id="treatment-list"></div>
         </div>
+      </div>
 
+      <div class="admin-grid" style="margin-top:16px">
         <div class="admin-card">
           <div class="admin-card-header">
-            <h3>Objectifs DMT par source</h3>
+            <h3>DMT cibles par source</h3>
           </div>
           <div class="dmt-row">
             <span class="dmt-label">Appels (In/Out)</span>
@@ -420,7 +436,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
             <h3>Courbe d'évolution</h3>
           </div>
           <div class="chart-toolbar">
-            <select class="filter-select" id="chart-scope" onchange="renderEvolutionChart()"><option value="team">Équipe entière</option></select>
+            <select class="filter-select" id="chart-scope" onchange="renderEvolutionChart()">
+              <option value="team">Équipe entière</option>
+            </select>
             <select class="filter-select" id="chart-period" onchange="renderEvolutionChart()">
               <option value="week">Cette semaine</option>
               <option value="month">Ce mois</option>
@@ -430,6 +448,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
         </div>
       </div>
     </div>
+
   </div>
 </div>
 
@@ -447,21 +466,24 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
           <div class="source-opt opt-outbound" id="src-outbound" onclick="selectSource('outbound')"><span>📞↗</span> Appel sortant</div>
           <div class="source-opt opt-chat" id="src-chat" onclick="selectSource('chat')"><span>💬</span> Crisp Chat</div>
           <div class="source-opt opt-email" id="src-email" onclick="selectSource('email')"><span>✉️</span> Crisp Email</div>
-          <div class="source-opt opt-ticket" id="src-ticket" onclick="selectSource('ticket')" style="grid-column: span 2"><span>🎫</span> Ticket/Manuel</div>
+          <div class="source-opt opt-ticket" id="src-ticket" onclick="selectSource('ticket')" style="grid-column: span 2"><span>🎫</span> Traitement ticket</div>
         </div>
       </div>
+      
       <div class="form-row" id="time-picker-container" style="position:relative;">
-        <label class="form-label">Inbound time (Heure d'arrivée pour FRT)</label>
+        <label class="form-label">Inbound time (Heure d'arrivée de la requête)</label>
         <input class="form-input" id="inbound-time-input" readonly onclick="toggleTimePicker(event)" style="cursor:pointer; font-family:var(--mono);" placeholder="--:--">
+        
         <div class="time-dropdown hidden" id="time-dropdown" onclick="event.stopPropagation()">
           <div class="time-col" id="col-hours" onscroll="handleTimeScroll(this, 'h')"></div>
           <div class="time-sep">:</div>
           <div class="time-col" id="col-mins" onscroll="handleTimeScroll(this, 'm')"></div>
         </div>
       </div>
+      
       <div class="form-row">
         <label class="form-label">Description / Référence</label>
-        <input class="form-input" id="f-desc" placeholder="Ex: #68554 ou détails...">
+        <input class="form-input" id="f-desc" placeholder="Ex: Ticket #68554 ou détails...">
       </div>
     </div>
     <div class="modal-footer">
@@ -478,7 +500,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       <button class="modal-close" onclick="closeProfileModal()">×</button>
     </div>
     <div class="modal-body">
-      <div class="profile-photo-row" style="display:flex; gap:16px; margin-bottom:20px;">
+      <div class="profile-photo-row">
         <div class="profile-photo-preview" id="profile-photo-preview"></div>
         <div>
           <input type="file" id="profile-photo-input" accept="image/*" class="hidden" onchange="onProfilePhotoSelected(event)">
@@ -510,6 +532,14 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       <button class="modal-close" onclick="closeAccountEditModal()">×</button>
     </div>
     <div class="modal-body">
+      <div class="profile-photo-row">
+        <div class="profile-photo-preview" id="account-photo-preview"></div>
+        <div>
+          <input type="file" id="account-photo-input" accept="image/*" class="hidden" onchange="onAccountPhotoSelected(event)">
+          <button class="btn btn-ghost" onclick="document.getElementById('account-photo-input').click()">Changer la photo</button>
+          <button class="btn btn-ghost" onclick="removeAccountPhoto()" style="margin-left:6px">Retirer</button>
+        </div>
+      </div>
       <div class="form-row">
         <label class="form-label">Nom affiché</label>
         <input class="form-input" id="account-name-input">
@@ -544,11 +574,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       </div>
       <div class="form-row">
         <label class="form-label">Email</label>
-        <input class="form-input" type="email" id="new-account-email" placeholder="agent@taskin.com">
+        <input class="form-input" type="email" id="new-account-email" placeholder="prenom@taskin.com">
       </div>
       <div class="form-row" id="create-account-error" style="color:var(--red);font-size:12px;min-height:16px"></div>
     </div>
-    
     <div class="modal-body hidden" id="create-account-result">
       <div class="form-row" style="text-align:center">
         <div style="font-size:13px;color:var(--text2);margin-bottom:10px">Compte créé. Transmets ces identifiants à la personne :</div>
@@ -558,9 +587,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
           <div style="font-size:11px;color:var(--text2);margin-bottom:2px">Mot de passe temporaire</div>
           <div style="font-family:var(--mono);font-size:15px;font-weight:600;color:var(--ocean)" id="result-password"></div>
         </div>
+        <button class="btn btn-ghost" style="margin-top:10px" onclick="copyCreatedCredentials()">Copier email + mot de passe</button>
       </div>
     </div>
-
     <div class="modal-footer" id="create-account-footer">
       <button class="btn btn-ghost" onclick="closeCreateAccountModal()">Annuler</button>
       <button class="btn btn-primary" id="create-account-submit" onclick="submitCreateAccount()">Créer le compte</button>
@@ -570,7 +599,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 
 <script>
 // ==========================================
-// CONFIGURATION ET VARIABLES GLOBALES
+// CONFIGURATION FIREBASE & VARS GLOBALES
 // ==========================================
 const FIREBASE_PROJECT_ID = "trackingcallro";
 const FIREBASE_API_KEY = "AIzaSyD1Weyc2zdtdaO7JgrMRskXZaDOGTIbyqc";
@@ -580,7 +609,7 @@ const AUTH_BASE = `https://identitytoolkit.googleapis.com/v1`;
 let TEAM = [];
 const SOURCE_DMT_DEFAULT = { ringover: 300, crisp: 480, manual: 600 };
 let sourceDMT = {...SOURCE_DMT_DEFAULT};
-const TREATMENT_TYPES_DEFAULT = ['Confirmation','Reservations','Conseils/suggestions','Follow-up','Car rental','Train','Health','Activities','Transferts','DMC','Itinerary','Accommodation','Flights'];
+const TREATMENT_TYPES_DEFAULT = ['Confirmation','Reservations','Conseils/suggestions','Follow-up','Lost and found','Car rental','Additionnels services','Train','Health','Activities','Transferts','DMC','Itinerary','Accommodation','Luggage','Flights','Welcome call','Goodbye call'];
 let customTreatmentTypes = [...TREATMENT_TYPES_DEFAULT];
 
 let currentUser = null;
@@ -591,34 +620,30 @@ let liveInterval = null;
 let selectedSource = 'inbound';
 let currentView = 'today';
 let searchTimeout = null;
-let pickerHour = "00", pickerMin = "00", isScrolling = false;
 
 // ==========================================
-// AUTHENTIFICATION ET INIT
+// AUTHENTIFICATION
 // ==========================================
 async function doLogin() {
   const email = document.getElementById('login-email').value.trim();
   const password = document.getElementById('login-password').value;
   const err = document.getElementById('login-error');
   err.textContent = '';
-  if (!email || !password) { err.textContent = 'Entre ton email et mot de passe.'; return; }
+  if (!email || !password) { err.textContent = 'Entre ton email et ton mot de passe.'; return; }
 
-  err.textContent = 'Connexion en cours...';
   try {
     const res = await fetch(`${AUTH_BASE}/accounts:signInWithPassword?key=${FIREBASE_API_KEY}`, {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password, returnSecureToken: true })
     });
     const data = await res.json();
-    if (data.error) { err.textContent = 'Identifiants incorrects.'; return; }
-    
-    localStorage.setItem('taskin_idToken', data.idToken);
-    localStorage.setItem('taskin_uid', data.localId);
-    
+    if (data.error) { err.textContent = 'Email ou mot de passe incorrect.'; return; }
+    localStorage.setItem('onspot_idToken', data.idToken);
+    localStorage.setItem('onspot_uid', data.localId);
     const user = await fetchAccountProfile(data.localId);
-    if (!user) { err.textContent = "Profil introuvable."; return; }
+    if (!user) { err.textContent = "Ce compte n'a pas encore de profil. Contacte un admin."; return; }
     enterApp(user);
-  } catch(e) { err.textContent = 'Erreur réseau.'; }
+  } catch(e) { err.textContent = 'Erreur de connexion. Réessaie.'; }
 }
 
 async function fetchAccountProfile(uid) {
@@ -626,9 +651,10 @@ async function fetchAccountProfile(uid) {
     const res = await fetch(`${BASE_URL}/accounts/${uid}?key=${FIREBASE_API_KEY}`);
     if (!res.ok) return null;
     const doc = await res.json();
-    const f = doc.fields || {};
+    if (!doc.fields) return null;
+    const f = doc.fields;
     return {
-      id: uid, name: f.name?.stringValue || 'Utilisateur', email: f.email?.stringValue || '',
+      id: uid, name: f.name?.stringValue || 'Sans nom', email: f.email?.stringValue || '',
       color: f.color?.stringValue || '#2B4C7E', initials: f.initials?.stringValue || '??',
       role: f.role?.stringValue || 'agent', photo: f.photo?.stringValue || '',
     };
@@ -639,43 +665,11 @@ function enterApp(user) {
   currentUser = user;
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('app').style.display = 'block';
-  
-  applyUserTheme(); renderTopbarIdentity(); applyRoleUI(); checkActiveTimer(); refreshApp();
-}
-
-function logout() {
-  if (activeTimer) { alert('Arrête le timer en cours avant de te déconnecter.'); return; }
-  localStorage.removeItem('taskin_idToken'); localStorage.removeItem('taskin_uid');
-  window.location.reload();
-}
-
-async function tryRestoreSession() {
-  const idToken = localStorage.getItem('taskin_idToken');
-  const uid = localStorage.getItem('taskin_uid');
-  if (!idToken || !uid) return false;
-  const user = await fetchAccountProfile(uid);
-  if (!user) { logout(); return false; }
-  enterApp(user);
-  return true;
-}
-
-document.getElementById('login-password').addEventListener('keydown', e => { if (e.key==='Enter') doLogin(); });
-
-// ==========================================
-// UI, THEME ET ROLES
-// ==========================================
-function applyUserTheme() {
-  const saved = localStorage.getItem('taskin_theme_' + currentUser.id) || 'light';
-  document.documentElement.setAttribute('data-theme', saved);
-  document.getElementById('theme-toggle').textContent = saved === 'dark' ? '☀' : '☾';
-}
-
-function toggleTheme() {
-  const current = document.documentElement.getAttribute('data-theme') || 'light';
-  const next = current === 'light' ? 'dark' : 'light';
-  document.documentElement.setAttribute('data-theme', next);
-  localStorage.setItem('taskin_theme_' + currentUser.id, next);
-  document.getElementById('theme-toggle').textContent = next === 'dark' ? '☀' : '☾';
+  applyUserTheme(); 
+  renderTopbarIdentity(); 
+  applyRoleUI(); 
+  checkActiveTimer(); 
+  refreshApp();
 }
 
 function renderTopbarIdentity() {
@@ -685,83 +679,149 @@ function renderTopbarIdentity() {
     av.style.backgroundPosition = 'center'; av.textContent = '';
   } else {
     av.style.backgroundImage = ''; av.textContent = currentUser.initials;
-    av.style.background = currentUser.color; av.style.color = 'white';
+    av.style.background = currentUser.color+'20'; av.style.color = currentUser.color;
   }
   document.getElementById('topbar-name').textContent = currentUser.name;
 }
 
+function applyUserTheme() {
+  const saved = localStorage.getItem('onspot_theme_' + currentUser.id) || 'light';
+  document.documentElement.setAttribute('data-theme', saved);
+  updateThemeToggleIcon(saved);
+}
+
+function toggleTheme() {
+  if (!currentUser) return;
+  const current = document.documentElement.getAttribute('data-theme') || 'light';
+  const next = current === 'light' ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('onspot_theme_' + currentUser.id, next);
+  updateThemeToggleIcon(next);
+}
+
+function updateThemeToggleIcon(theme) {
+  const btn = document.getElementById('theme-toggle');
+  if (btn) btn.textContent = theme === 'dark' ? '☀' : '☾';
+}
+
+async function tryRestoreSession() {
+  const idToken = localStorage.getItem('onspot_idToken');
+  const uid = localStorage.getItem('onspot_uid');
+  if (!idToken || !uid) return false;
+  const user = await fetchAccountProfile(uid);
+  if (!user) { localStorage.removeItem('onspot_idToken'); localStorage.removeItem('onspot_uid'); return false; }
+  enterApp(user);
+  return true;
+}
+
+document.getElementById('login-password').addEventListener('keydown', e => { if (e.key==='Enter') doLogin(); });
+function logout() {
+  if (activeTimer) { alert('Arrête le timer en cours avant de te déconnecter.'); return; }
+  localStorage.removeItem('onspot_idToken'); localStorage.removeItem('onspot_uid');
+  currentUser = null; entries = [];
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('login-email').value = ''; document.getElementById('login-password').value = '';
+}
+
+// ==========================================
+// ROLES & UI
+// ==========================================
 function applyRoleUI() {
   const role = currentUser.role;
   const isSupAdmin = (role === 'supervisor' || role === 'admin');
-  
+
+  // Affichage selectif
+  document.querySelectorAll('.agent-only').forEach(el => el.classList.toggle('hidden', role !== 'agent'));
   document.getElementById('tab-admin').classList.toggle('hidden', role !== 'admin');
   document.getElementById('tab-week').classList.toggle('hidden', !isSupAdmin);
   
+  // Panneaux Sup/Admin (Live Dash, Accordéon, Filtres)
   document.getElementById('live-header-panel').classList.toggle('hidden', !isSupAdmin);
   document.getElementById('team-accordion').classList.toggle('hidden', !isSupAdmin);
   document.getElementById('filter-row').classList.toggle('hidden', !isSupAdmin);
+  document.getElementById('filter-agent').classList.toggle('hidden', !isSupAdmin);
   document.getElementById('btn-export').classList.toggle('hidden', !isSupAdmin);
   
   if (role === 'admin') {
     document.querySelectorAll('.col-actions').forEach(el => el.classList.remove('hidden'));
   }
 
-  if (isSupAdmin && !liveInterval) {
-    liveInterval = setInterval(fetchLiveAgents, 15000); 
+  // Setup tabs
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  if (role === 'agent') {
+    currentView = 'today';
+    document.querySelector('.tab.agent-only').classList.add('active');
+  } else {
+    currentView = 'today';
+    document.querySelector('.tab[onclick="switchTab(\'today\',this)"]').classList.add('active');
+    if(!liveInterval) liveInterval = setInterval(fetchLiveAgents, 15000);
   }
 }
 
 function switchTab(view, btn) {
+  if (currentUser.role === 'agent' && (view === 'admin' || view === 'week')) return;
   currentView = view;
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   if (btn) btn.classList.add('active');
 
-  const isAdmin = view === 'admin';
-  document.getElementById('table-view-container').classList.toggle('hidden', isAdmin);
-  document.getElementById('admin-panel').classList.toggle('hidden', !isAdmin);
+  const isAdminView = view === 'admin';
+  document.getElementById('table-view-container').classList.toggle('hidden', isAdminView);
+  document.getElementById('admin-panel').classList.toggle('hidden', !isAdminView);
 
-  if (!isAdmin) renderAll();
-  if (isAdmin) renderAdminPanel();
+  if (!isAdminView) renderAll();
+  if (isAdminView) {
+      renderTeamList();
+      renderTreatmentList();
+      renderDMTInputs();
+      populateChartScopeSelect();
+      renderEvolutionChart();
+  }
+}
+
+function populateFilters() {
+  const sel = document.getElementById('filter-agent');
+  sel.innerHTML = '<option value="">Tous les agents</option>' + TEAM.filter(u=>u.role==='agent').map(u=>`<option value="${u.id}">${u.name}</option>`).join('');
 }
 
 // ==========================================
-// MOTEUR DE DONNEES ET ACTUALISATION
+// REFRESH & DATA LOGIC
 // ==========================================
 async function refreshApp() {
   const btn = document.querySelector('.btn-refresh');
-  btn.innerHTML = "Actualisation..."; btn.disabled = true;
+  if(btn) { btn.innerHTML = "Actualisation..."; btn.disabled = true; }
   
   await loadAccountsFromFirestore();
+  populateFilters();
   await loadDMT();
   await loadTreatmentsFromFirestore();
   
   try {
     const res = await fetch(`${BASE_URL}/time_entries?key=${FIREBASE_API_KEY}&pageSize=1000`);
     const data = await res.json();
-    
     entries = (data.documents || []).map(doc => {
       const f = doc.fields || {};
       return {
         id: doc.name.split('/').pop(),
-        source: f.source?.stringValue || 'Inconnu',
+        rawId: f.rawId?.stringValue || '',
+        source: f.source?.stringValue || 'ticket',
         desc: f.desc?.stringValue || '',
-        agent: f.agent?.stringValue || 'Inconnu',
+        agent: f.agent?.stringValue || '',
         inboundTime: f.inboundTime?.stringValue || '--:--',
         startTimeStr: f.startTime?.stringValue || new Date().toISOString(),
         durationSec: parseInt(f.durationSec?.integerValue || 0)
       };
     }).sort((a,b) => new Date(b.startTimeStr) - new Date(a.startTimeStr));
 
-    if(currentView !== 'admin') renderAll();
+    if (currentView !== 'admin') renderAll();
     if (currentUser.role === 'supervisor' || currentUser.role === 'admin') fetchLiveAgents();
-
-  } catch(e) { console.error("Erreur Sync", e); }
+  } catch(e) { console.error(e); }
   
-  btn.innerHTML = "<span style='font-size:16px'>↻</span> Actualiser"; btn.disabled = false;
+  if(btn) { btn.innerHTML = "<span style='font-size:16px'>↻</span> Actualiser"; btn.disabled = false; }
 }
 
 // ==========================================
-// CALCUL KPIs (FRT, DMT)
+// CALCULS KPIs (DMT / FRT)
 // ==========================================
 function renderStats(filteredList) {
   const todayStr = new Date().toDateString();
@@ -809,12 +869,6 @@ function renderStats(filteredList) {
   }
 }
 
-function fmtDuration(sec) {
-  const h = Math.floor(sec/3600), m = Math.floor((sec%3600)/60);
-  if (h>0) return `${h}h${String(m).padStart(2,'0')}`;
-  return `${m}m`;
-}
-
 // ==========================================
 // LIVE DASHBOARD SUPERVISEUR
 // ==========================================
@@ -826,7 +880,7 @@ async function fetchLiveAgents() {
     const grid = document.getElementById('live-agents-grid');
     
     if (docs.length === 0) {
-      grid.innerHTML = '<div style="opacity:0.6; padding:10px;">Aucun agent actif.</div>';
+      grid.innerHTML = '<div style="opacity:0.6; padding:10px;">Aucun agent actif pour le moment.</div>';
       return;
     }
 
@@ -857,7 +911,7 @@ async function fetchLiveAgents() {
 }
 
 // ==========================================
-// TABLEAU ET FILTRES
+// TABLEAU PRINCIPAL & FILTRES
 // ==========================================
 function onSearchInput() {
   clearTimeout(searchTimeout);
@@ -880,7 +934,7 @@ function renderAll() {
   const fStart = document.getElementById('f-start')?.value.toLowerCase();
   const fSrc = document.getElementById('f-src')?.value.toLowerCase();
   const fDesc = document.getElementById('f-desc')?.value.toLowerCase();
-  const fAgt = document.getElementById('f-agt')?.value.toLowerCase();
+  const fAgt = document.getElementById('f-agt')?.value.toLowerCase() || document.getElementById('filter-agent')?.value.toLowerCase();
   const fDur = document.getElementById('f-dur')?.value.toLowerCase();
 
   let filtered = periodData.filter(e => {
@@ -895,22 +949,22 @@ function renderAll() {
     if (fStart && !startStr.includes(fStart)) return false;
     if (fSrc && !e.source.toLowerCase().includes(fSrc)) return false;
     if (fDesc && !e.desc.toLowerCase().includes(fDesc)) return false;
-    if (fAgt && !agentName.includes(fAgt)) return false;
+    if (fAgt && !agentName.includes(fAgt) && e.agent !== fAgt) return false;
     if (fDur && !durStr.includes(fDur)) return false;
 
     return true;
   });
 
-  document.getElementById('entry-count').textContent = filtered.length + ' entrée(s)';
+  document.getElementById('entry-count').textContent = filtered.length + ' entrée' + (filtered.length!==1?'s':'');
   renderStats(filtered);
   
   const tbody = document.getElementById('entries-body');
   if (filtered.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="7"><div class="empty">Aucune entrée trouvée.</div></td></tr>';
+    tbody.innerHTML = '<tr><td colspan="7"><div class="empty">Aucune entrée pour cette période.</div></td></tr>';
     return;
   }
 
-  const isAdmin = currentUser.role === 'admin';
+  const canEdit = currentUser.role === 'admin';
   let html = '';
   filtered.forEach(e => {
     const startStr = new Date(e.startTimeStr).toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
@@ -918,8 +972,9 @@ function renderAll() {
     const agentHtml = agentObj ? `<div class="agent-cell"><div class="mini-avatar" style="background:${agentObj.color}20;color:${agentObj.color}">${agentObj.initials}</div>${agentObj.name}</div>` : e.agent;
 
     let sourceKey = 'manual';
-    if(e.source==='ringover'||e.source==='inbound'||e.source==='outbound') sourceKey = 'ringover';
-    else if(e.source==='crisp'||e.source==='chat'||e.source==='email') sourceKey = 'crisp';
+    if(e.source.includes('ringover')||e.source.includes('inbound')||e.source.includes('outbound')) sourceKey = 'ringover';
+    else if(e.source.includes('crisp')||e.source.includes('chat')||e.source.includes('email')) sourceKey = 'crisp';
+    
     const dmt = sourceDMT[sourceKey] ?? sourceDMT.manual;
     const ratio = dmt ? e.durationSec / dmt : 0;
     let durClass = '';
@@ -928,13 +983,16 @@ function renderAll() {
 
     html += `
     <tr>
-      <td style="font-weight:600; font-family:var(--mono)">${e.inboundTime || '--:--'}</td>
-      <td style="font-family:var(--mono)">${startStr}</td>
+      <td class="dur-cell" style="font-weight:600">${e.inboundTime || '--:--'}</td>
+      <td class="dur-cell">${startStr}</td>
       <td>${sourceTag(e.source)}</td>
-      <td>${e.desc}</td>
+      <td id="desc-${e.id}" style="width:35%">${e.desc}</td>
       <td>${agentHtml}</td>
       <td class="dur-cell ${durClass}" title="DMT cible : ${fmtDuration(dmt)}">${Math.ceil(e.durationSec/60)} min</td>
-      ${isAdmin ? `<td><div class="row-actions"><button class="icon-btn" onclick="deleteEntry('${e.id}')" title="Supprimer">✕</button></div></td>` : '<td class="hidden"></td>'}
+      <td><div class="row-actions">
+        ${canEdit ? `<button class="icon-btn" onclick="editEntry('${e.id}')" title="Modifier">✎</button>` : ''}
+        ${canEdit ? `<button class="icon-btn" onclick="deleteEntry('${e.id}')" title="Supprimer">✕</button>` : ''}
+      </div></td>
     </tr>`;
   });
   tbody.innerHTML = html;
@@ -947,8 +1005,14 @@ function sourceTag(s) {
   return `<span class="source-tag src-ticket">🎫 Ticket/Manuel</span>`;
 }
 
+function fmtDuration(sec) {
+  const h = Math.floor(sec/3600), m = Math.floor((sec%3600)/60);
+  if (h>0) return `${h}h${String(m).padStart(2,'0')}`;
+  return `${m}min`;
+}
+
 // ==========================================
-// GESTION DU TIMER 
+// TIMER LOGIC & QUICK START
 // ==========================================
 function openModal() {
   document.getElementById('modal-overlay').classList.remove('hidden');
@@ -959,6 +1023,7 @@ function openModal() {
   pickerHour = String(d.getHours()).padStart(2, '0');
   pickerMin = String(d.getMinutes()).padStart(2, '0');
   document.getElementById('inbound-time-input').value = `${pickerHour}:${pickerMin}`;
+  
   document.getElementById('f-desc').focus();
 }
 
@@ -971,7 +1036,8 @@ function selectSource(s) {
 }
 
 function quickStart(source) {
-  if (activeTimer) { alert('Un timer est déjà actif.'); return; }
+  if (activeTimer) { alert("Un timer est déjà actif. Arrête-le d'abord."); return; }
+  if (source === 'ticket') { openModal(); return; }
   selectedSource = source;
   openModal();
   selectSource(source);
@@ -981,8 +1047,9 @@ function startTimer() {
   const desc = document.getElementById('f-desc').value.trim() || selectedSource;
   
   activeTimer = { 
-    source: selectedSource, desc, 
-    startTime: Date.now(), 
+    source: selectedSource, 
+    desc, 
+    startTime: Date.now(),
     inboundTime: `${pickerHour}:${pickerMin}`
   };
   closeModal();
@@ -995,17 +1062,32 @@ function startTimer() {
   document.getElementById('play-btn').classList.add('hidden');
   document.getElementById('stop-btn').classList.remove('hidden');
   
-  localStorage.setItem('taskin_active_'+currentUser.id, JSON.stringify(activeTimer));
+  localStorage.setItem('activeTimer_'+currentUser.id, JSON.stringify(activeTimer));
   saveActiveTimerToFirestore();
   timerInterval = setInterval(updateClock, 1000);
   updateClock();
+}
+
+async function saveActiveTimerToFirestore() {
+  const body = { fields: { source: { stringValue: activeTimer.source }, desc: { stringValue: activeTimer.desc }, startTime: { integerValue: String(activeTimer.startTime) } }};
+  try { await fetch(`${BASE_URL}/active_timers/${currentUser.id}?key=${FIREBASE_API_KEY}`, { method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) }); } catch(e) {}
+}
+async function clearActiveTimerFromFirestore() {
+  try { await fetch(`${BASE_URL}/active_timers/${currentUser.id}?key=${FIREBASE_API_KEY}`, { method:'DELETE' }); } catch(e) {}
+}
+function updateClock() {
+  if (!activeTimer) return;
+  const elapsed = Math.floor(Math.abs(Date.now() - activeTimer.startTime) / 1000);
+  const h = String(Math.floor(elapsed/3600)).padStart(2,'0');
+  const m = String(Math.floor((elapsed%3600)/60)).padStart(2,'0');
+  const s = String(elapsed%60).padStart(2,'0');
+  document.getElementById('timer-clock').textContent = `${h}:${m}:${s}`;
 }
 
 async function stopTimer() {
   if (!activeTimer) return;
   clearInterval(timerInterval);
   const durationSec = Math.floor((Date.now() - activeTimer.startTime)/1000);
-  
   const entry = {
     id: Date.now().toString(),
     source: activeTimer.source,
@@ -1018,8 +1100,7 @@ async function stopTimer() {
   entries.unshift(entry);
 
   activeTimer = null;
-  localStorage.removeItem('taskin_active_'+currentUser.id);
-  
+  localStorage.removeItem('activeTimer_'+currentUser.id);
   document.getElementById('timer-banner').classList.remove('active');
   document.getElementById('timer-clock').classList.add('idle'); 
   document.getElementById('timer-clock').classList.remove('active');
@@ -1035,24 +1116,13 @@ async function stopTimer() {
   if (currentUser.role === 'supervisor' || currentUser.role === 'admin') fetchLiveAgents();
 }
 
-function updateClock() {
-  if (!activeTimer) return;
-  const elapsed = Math.floor(Math.abs(Date.now() - activeTimer.startTime) / 1000);
-  const h = String(Math.floor(elapsed/3600)).padStart(2,'0');
-  const m = String(Math.floor((elapsed%3600)/60)).padStart(2,'0');
-  const s = String(elapsed%60).padStart(2,'0');
-  document.getElementById('timer-clock').textContent = `${h}:${m}:${s}`;
-}
-
 function checkActiveTimer() {
-  const saved = localStorage.getItem('taskin_active_'+currentUser.id);
+  const saved = localStorage.getItem('activeTimer_'+currentUser.id);
   if (saved) {
     activeTimer = JSON.parse(saved);
     document.getElementById('timer-banner').classList.add('active');
-    document.getElementById('timer-clock').classList.remove('idle'); 
-    document.getElementById('timer-clock').classList.add('active');
-    document.getElementById('timer-task').textContent = activeTimer.desc; 
-    document.getElementById('timer-task').classList.remove('placeholder');
+    document.getElementById('timer-clock').classList.remove('idle'); document.getElementById('timer-clock').classList.add('active');
+    document.getElementById('timer-task').textContent = activeTimer.desc; document.getElementById('timer-task').classList.remove('placeholder');
     document.getElementById('play-btn').classList.add('hidden');
     document.getElementById('stop-btn').classList.remove('hidden');
     timerInterval = setInterval(updateClock, 1000);
@@ -1060,7 +1130,7 @@ function checkActiveTimer() {
   }
 }
 
-// INBOUND TIME PICKER ROULETTE
+// TIME PICKER ROULETTE
 function initTimePickerUI() {
   const hCol = document.getElementById('col-hours'); const mCol = document.getElementById('col-mins');
   let hHtml = '<div class="time-spacer"></div>', mHtml = '<div class="time-spacer"></div>';
@@ -1105,35 +1175,15 @@ function clickTimeOpt(colId, index) {
   col.scrollTo({ top: target.offsetTop - col.clientHeight/2 + target.offsetHeight/2, behavior: 'smooth' });
 }
 
-// EMOJI PICKER
-const QUICK_EMOJIS = ['✈️','🏨','🚗','🚆','🎫','📞','💬','📧','✅','❌','⚠️','📝','💼','🩺','🔍','💳','💡','🎉'];
-function initEmojiPicker() {
-  const picker = document.getElementById('emoji-picker');
-  if (picker) picker.innerHTML = QUICK_EMOJIS.map(e => `<button class="emoji-btn" type="button" onclick="insertEmoji('${e}')">${e}</button>`).join('');
-}
-function toggleEmojiPicker(e) { e?.stopPropagation(); document.getElementById('emoji-picker').classList.toggle('hidden'); }
-function insertEmoji(emoji) {
-  const input = document.getElementById('new-treatment-input');
-  input.value += emoji; input.focus();
-  document.getElementById('emoji-picker').classList.add('hidden');
+// SYNC RINGOVER & DB
+async function syncRingover() {
+  const token = prompt('Colle ton token RingOver :');
+  if (!token) return;
+  alert('Sync désactivée pour la démo sans API externe. Les appels doivent être saisis via le bouton Inbound/Outbound.');
 }
 
-// ==========================================
-// REQUETES FIRESTORE (DB)
-// ==========================================
-async function saveActiveTimerToFirestore() {
-  const body = { fields: { source: { stringValue: activeTimer.source }, desc: { stringValue: activeTimer.desc }, startTime: { integerValue: String(activeTimer.startTime) } }};
-  try { await fetch(`${BASE_URL}/active_timers/${currentUser.id}?key=${FIREBASE_API_KEY}`, { method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) }); } catch(e) {}
-}
-async function clearActiveTimerFromFirestore() {
-  try { await fetch(`${BASE_URL}/active_timers/${currentUser.id}?key=${FIREBASE_API_KEY}`, { method:'DELETE' }); } catch(e) {}
-}
 async function saveEntryToFirestore(entry) {
-  const body = { fields: { 
-    source: { stringValue: entry.source }, desc: { stringValue: entry.desc }, 
-    agent: { stringValue: entry.agent }, inboundTime: { stringValue: entry.inboundTime },
-    startTime: { stringValue: entry.startTimeStr }, durationSec: { integerValue: String(entry.durationSec) } 
-  }};
+  const body = { fields: { rawId: { stringValue: entry.rawId || '' }, source: { stringValue: entry.source }, desc: { stringValue: entry.desc }, agent: { stringValue: entry.agent }, inboundTime: { stringValue: entry.inboundTime }, startTime: { stringValue: entry.startTimeStr }, durationSec: { integerValue: String(entry.durationSec) } }};
   await fetch(`${BASE_URL}/time_entries/${entry.id}?key=${FIREBASE_API_KEY}`, { method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
 }
 async function deleteEntry(id) {
@@ -1142,18 +1192,35 @@ async function deleteEntry(id) {
   renderAll();
   await fetch(`${BASE_URL}/time_entries/${id}?key=${FIREBASE_API_KEY}`, { method:'DELETE' });
 }
-
-// ==========================================
-// ADMIN PANEL (COMPTES, DMT, TYPES)
-// ==========================================
-function renderAdminPanel() {
-  renderTeamList();
-  renderTreatmentList();
-  renderDMTInputs();
-  populateChartScopeSelect();
-  renderEvolutionChart();
+function editEntry(id) {
+  if (currentUser.role !== 'admin') return;
+  const entry = entries.find(e => e.id === id); if (!entry) return;
+  const cell = document.getElementById('desc-' + id); const current = entry.desc;
+  cell.innerHTML = `<input class="form-input" id="edit-input-${id}" value="${current.replace(/"/g,'&quot;')}" style="padding:5px 8px; font-size:13px; width:100%; box-sizing:border-box;" />`;
+  const input = document.getElementById('edit-input-' + id);
+  input.focus(); input.setSelectionRange(input.value.length, input.value.length);
+  const save = async () => { const newDesc = input.value.trim() || current; entry.desc = newDesc; cell.textContent = newDesc; saveEntryToFirestore(entry); };
+  input.addEventListener('blur', save); input.addEventListener('keydown', e => { if (e.key === 'Enter') input.blur(); });
 }
 
+function exportCSV() {
+  const rows = [['Inbound Time','Start Time','Source','Description','Agent','Durée (min)']];
+  entries.forEach(e => {
+    const startStr = new Date(e.startTimeStr).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+    const agentName = (TEAM.find(t=>t.id===e.agent)||{}).name || e.agent;
+    rows.push([e.inboundTime||'--:--', startStr, e.source, e.desc.replace(/,/g,' '), agentName, Math.ceil(e.durationSec/60)]);
+  });
+  const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob); const a = document.createElement('a');
+  a.href = url; a.download = 'taskin-export-' + new Date().toISOString().split('T')[0] + '.csv';
+  a.click(); URL.revokeObjectURL(url);
+}
+function exportExcel() { exportCSV(); } // Redirection simple
+
+// ==========================================
+// PANNEAU D'ADMINISTRATION
+// ==========================================
 async function loadAccountsFromFirestore() {
   try {
     const res = await fetch(`${BASE_URL}/accounts?key=${FIREBASE_API_KEY}`);
@@ -1170,74 +1237,74 @@ function renderTeamList() {
     <div class="team-row" onclick="openAccountEditModal('${u.id}')" style="cursor:pointer">
       <div class="mini-avatar" style="background:${u.color}20;color:${u.color}${u.photo?`;background-image:url(${u.photo});background-size:cover`:''}">${u.photo?'':u.initials}</div>
       <div class="team-row-info"><div class="team-row-name">${u.name}</div><div class="team-row-role">${u.role}</div></div>
+      <span style="font-size:11px;color:var(--ocean);font-weight:600;margin-left:auto;">Modifier →</span>
     </div>`).join('');
 }
-let editingAccountId = null;
-function openAccountEditModal(id) {
-  editingAccountId = id; const acc = TEAM.find(u => u.id === id);
-  document.getElementById('account-name-input').value = acc.name; document.getElementById('account-role-input').value = acc.role;
-  document.getElementById('account-modal-overlay').classList.remove('hidden');
+let editingAccountId = null; let pendingAccountPhoto = null;
+function openAccountEditModal(accountId) {
+  if (currentUser.role !== 'admin') return;
+  const acc = TEAM.find(u => u.id === accountId); if (!acc) return;
+  editingAccountId = accountId; pendingAccountPhoto = acc.photo || null;
+  document.getElementById('account-modal-title').textContent = 'Modifier · ' + acc.name; document.getElementById('account-name-input').value = acc.name; document.getElementById('account-role-input').value = acc.role; document.getElementById('account-error').textContent = '';
+  renderAccountPhotoPreview(acc); document.getElementById('account-modal-overlay').classList.remove('hidden');
 }
-function closeAccountEditModal() { document.getElementById('account-modal-overlay').classList.add('hidden'); }
+function closeAccountEditModal() { document.getElementById('account-modal-overlay').classList.add('hidden'); editingAccountId = null; }
 function closeAccountModalOutside(e) { if (e.target.id === 'account-modal-overlay') closeAccountEditModal(); }
+function renderAccountPhotoPreview(acc) {
+  const el = document.getElementById('account-photo-preview');
+  if (pendingAccountPhoto) { el.style.backgroundImage = `url(${pendingAccountPhoto})`; el.textContent = ''; } else { el.style.backgroundImage = ''; el.textContent = acc.initials; }
+}
+function onAccountPhotoSelected(event) {
+  const file = event.target.files[0]; if (!file) return;
+  if (file.size > 1.5 * 1024 * 1024) { document.getElementById('account-error').textContent = 'Image trop lourde (max 1.5 Mo).'; return; }
+  const reader = new FileReader(); reader.onload = (e) => { pendingAccountPhoto = e.target.result; document.getElementById('account-photo-preview').style.backgroundImage = `url(${pendingAccountPhoto})`; document.getElementById('account-photo-preview').textContent = ''; }; reader.readAsDataURL(file);
+}
+function removeAccountPhoto() {
+  pendingAccountPhoto = ''; const acc = TEAM.find(u => u.id === editingAccountId);
+  document.getElementById('account-photo-preview').style.backgroundImage = ''; document.getElementById('account-photo-preview').textContent = acc ? acc.initials : '';
+}
 async function saveAccountEdit() {
-  const acc = TEAM.find(u => u.id === editingAccountId);
-  acc.name = document.getElementById('account-name-input').value; acc.role = document.getElementById('account-role-input').value;
+  const acc = TEAM.find(u => u.id === editingAccountId); if (!acc) return;
+  const newName = document.getElementById('account-name-input').value.trim(); const newRole = document.getElementById('account-role-input').value;
+  if (!newName) { document.getElementById('account-error').textContent = 'Le nom ne peut pas être vide.'; return; }
+  acc.name = newName; acc.role = newRole; acc.photo = pendingAccountPhoto || '';
   const body = { fields: { name: { stringValue: acc.name }, color: { stringValue: acc.color }, initials: { stringValue: acc.initials }, role: { stringValue: acc.role }, photo: { stringValue: acc.photo || '' } }};
   await fetch(`${BASE_URL}/accounts/${acc.id}?key=${FIREBASE_API_KEY}`, { method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
-  closeAccountEditModal(); renderTeamList();
+  closeAccountEditModal(); renderTeamList(); populateFilters(); if (currentUser.id === acc.id) { currentUser = acc; renderTopbarIdentity(); }
 }
 
-function openCreateAccountModal() { 
-  document.getElementById('new-account-name').value = '';
-  document.getElementById('new-account-email').value = '';
-  document.getElementById('create-account-error').textContent = '';
-  document.getElementById('create-account-form').classList.remove('hidden');
-  document.getElementById('create-account-result').classList.add('hidden');
-  document.getElementById('create-account-footer').classList.remove('hidden');
-  document.getElementById('create-account-overlay').classList.remove('hidden'); 
+function genTempPassword() { const adjectives = ['Voyage','Ocean','Clay','Bloom','Atlas','Compass']; const word = adjectives[Math.floor(Math.random()*adjectives.length)]; const digits = Math.floor(1000 + Math.random()*9000); return `${word}-${digits}`; }
+function openCreateAccountModal() {
+  document.getElementById('new-account-name').value = ''; document.getElementById('new-account-email').value = ''; document.getElementById('create-account-error').textContent = '';
+  document.getElementById('create-account-form').classList.remove('hidden'); document.getElementById('create-account-result').classList.add('hidden'); document.getElementById('create-account-footer').classList.remove('hidden'); document.getElementById('create-account-overlay').classList.remove('hidden');
 }
 function closeCreateAccountModal() { document.getElementById('create-account-overlay').classList.add('hidden'); }
-function closeCreateAccountModalOutside(e) { if(e.target.id === 'create-account-overlay') closeCreateAccountModal(); }
+function closeCreateAccountModalOutside(e) { if (e.target.id === 'create-account-overlay') closeCreateAccountModal(); }
 async function submitCreateAccount() {
-  const name = document.getElementById('new-account-name').value.trim(); 
-  const email = document.getElementById('new-account-email').value.trim();
-  const err = document.getElementById('create-account-error');
-  if(!name || !email) { err.textContent = "Remplissez tous les champs"; return; }
-  const tempPassword = "Task-" + Math.floor(1000 + Math.random()*9000);
+  const name = document.getElementById('new-account-name').value.trim(); const email = document.getElementById('new-account-email').value.trim();
+  const errEl = document.getElementById('create-account-error'); errEl.textContent = '';
+  if (!name) { errEl.textContent = 'Le nom est requis.'; return; } if (!email || !email.includes('@')) { errEl.textContent = 'Email invalide.'; return; }
+  const submitBtn = document.getElementById('create-account-submit'); submitBtn.disabled = true; submitBtn.textContent = 'Création...';
+  const adminIdToken = localStorage.getItem('taskin_idToken'); const adminUid = localStorage.getItem('taskin_uid'); const tempPassword = genTempPassword();
   try {
     const res = await fetch(`${AUTH_BASE}/accounts:signUp?key=${FIREBASE_API_KEY}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: tempPassword, returnSecureToken: true }) });
     const data = await res.json();
-    if(data.error) { err.textContent = "Erreur ou email existant"; return; }
-    const newAccount = { id: data.localId, name, color: '#2B4C7E', initials: name.substring(0,2).toUpperCase(), role: 'agent', photo: '' };
+    if (data.error) { errEl.textContent = data.error.message === 'EMAIL_EXISTS' ? 'Cet email est déjà utilisé.' : 'Erreur lors de la création.'; submitBtn.disabled = false; submitBtn.textContent = 'Créer le compte'; return; }
+    const newUid = data.localId; const initials = name.trim().split(/\s+/).map(w=>w[0]).join('').toUpperCase().slice(0,2) || '??';
+    const palette = ['#2B4C7E','#3B8C6E','#DCAE1D','#C9604F','#A8527A']; const color = palette[Math.floor(Math.random()*palette.length)];
+    const newAccount = { id: newUid, name, email, color, initials, role: 'agent', photo: '' };
     const body = { fields: { name: { stringValue: newAccount.name }, color: { stringValue: newAccount.color }, initials: { stringValue: newAccount.initials }, role: { stringValue: newAccount.role }, photo: { stringValue: '' } }};
     await fetch(`${BASE_URL}/accounts/${newAccount.id}?key=${FIREBASE_API_KEY}`, { method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
+    TEAM.push(newAccount);
+    localStorage.setItem('taskin_idToken', adminIdToken); localStorage.setItem('taskin_uid', adminUid);
     document.getElementById('result-email').textContent = email; document.getElementById('result-password').textContent = tempPassword;
-    document.getElementById('create-account-form').classList.add('hidden'); 
-    document.getElementById('create-account-footer').classList.add('hidden'); 
-    document.getElementById('create-account-result').classList.remove('hidden');
-    loadAccountsFromFirestore();
-  } catch(e) { err.textContent = "Erreur réseau"; }
+    document.getElementById('create-account-form').classList.add('hidden'); document.getElementById('create-account-result').classList.remove('hidden'); document.getElementById('create-account-footer').classList.add('hidden');
+    renderTeamList(); populateFilters();
+  } catch(e) { errEl.textContent = 'Erreur réseau.'; } finally { submitBtn.disabled = false; submitBtn.textContent = 'Créer le compte'; }
 }
-
-async function loadDMT() {
-  try {
-    const res = await fetch(`${BASE_URL}/settings/dmt?key=${FIREBASE_API_KEY}`);
-    if (res.status === 404) return;
-    const data = await res.json(); const f = data.fields || {};
-    sourceDMT = { ringover: parseInt(f.ringover?.integerValue ?? SOURCE_DMT_DEFAULT.ringover), crisp: parseInt(f.crisp?.integerValue ?? SOURCE_DMT_DEFAULT.crisp), manual: parseInt(f.manual?.integerValue ?? SOURCE_DMT_DEFAULT.manual) };
-  } catch(e) {}
-}
-function renderDMTInputs() {
-  document.getElementById('dmt-ringover').value = sourceDMT.ringover; 
-  document.getElementById('dmt-crisp').value = sourceDMT.crisp; 
-  document.getElementById('dmt-manual').value = sourceDMT.manual;
-}
-async function saveDMT() {
-  sourceDMT = { ringover: parseInt(document.getElementById('dmt-ringover').value) || SOURCE_DMT_DEFAULT.ringover, crisp: parseInt(document.getElementById('dmt-crisp').value) || SOURCE_DMT_DEFAULT.crisp, manual: parseInt(document.getElementById('dmt-manual').value) || SOURCE_DMT_DEFAULT.manual };
-  const body = { fields: { ringover: { integerValue: String(sourceDMT.ringover) }, crisp: { integerValue: String(sourceDMT.crisp) }, manual: { integerValue: String(sourceDMT.manual) } }};
-  await fetch(`${BASE_URL}/settings/dmt?key=${FIREBASE_API_KEY}`, { method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) }); 
-  renderAll();
+function copyCreatedCredentials() {
+  const email = document.getElementById('result-email').textContent; const pass = document.getElementById('result-password').textContent;
+  navigator.clipboard.writeText(`Email : ${email}\nMot de passe temporaire : ${pass}`);
 }
 
 async function loadTreatmentsFromFirestore() {
@@ -1255,27 +1322,37 @@ function renderTreatmentList() {
     <div class="treatment-row"><span>${t}</span><button class="icon-btn" onclick="removeTreatmentType(${i})">✕</button></div>`).join('');
 }
 async function addTreatmentType() {
-  const input = document.getElementById('new-treatment-input');
-  const val = input.value.trim();
-  if (!val) return;
-  customTreatmentTypes.push(val);
-  input.value = '';
-  renderTreatmentList();
-  await saveTreatmentsToFirestore();
+  const input = document.getElementById('new-treatment-input'); const val = input.value.trim();
+  if (!val) return; customTreatmentTypes.push(val); input.value = ''; renderTreatmentList();
+  const values = customTreatmentTypes.map(t => ({ stringValue: t })); const body = { fields: { list: { arrayValue: { values } } } };
+  await fetch(`${BASE_URL}/settings/treatments?key=${FIREBASE_API_KEY}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
 }
 async function removeTreatmentType(i) {
-  if (!confirm('Supprimer ce type ?')) return;
-  customTreatmentTypes.splice(i, 1);
-  renderTreatmentList();
-  await saveTreatmentsToFirestore();
-}
-async function saveTreatmentsToFirestore() {
-  const values = customTreatmentTypes.map(t => ({ stringValue: t }));
-  const body = { fields: { list: { arrayValue: { values } } } };
+  if (!confirm('Voulez-vous vraiment supprimer ce type de traitement ?')) return;
+  customTreatmentTypes.splice(i, 1); renderTreatmentList();
+  const values = customTreatmentTypes.map(t => ({ stringValue: t })); const body = { fields: { list: { arrayValue: { values } } } };
   await fetch(`${BASE_URL}/settings/treatments?key=${FIREBASE_API_KEY}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
 }
 
-// EVOLUTION CHART
+async function loadDMT() {
+  try {
+    const res = await fetch(`${BASE_URL}/settings/dmt?key=${FIREBASE_API_KEY}`);
+    if (res.status === 404) { renderDMTInputs(); return; }
+    const data = await res.json(); const f = data.fields || {};
+    sourceDMT = { ringover: parseInt(f.ringover?.integerValue ?? SOURCE_DMT_DEFAULT.ringover), crisp: parseInt(f.crisp?.integerValue ?? SOURCE_DMT_DEFAULT.crisp), manual: parseInt(f.manual?.integerValue ?? SOURCE_DMT_DEFAULT.manual) };
+  } catch(e) {}
+  renderDMTInputs();
+}
+function renderDMTInputs() {
+  const r = document.getElementById('dmt-ringover'); const c = document.getElementById('dmt-crisp'); const m = document.getElementById('dmt-manual');
+  if (r) r.value = sourceDMT.ringover; if (c) c.value = sourceDMT.crisp; if (m) m.value = sourceDMT.manual;
+}
+async function saveDMT() {
+  sourceDMT = { ringover: parseInt(document.getElementById('dmt-ringover').value) || SOURCE_DMT_DEFAULT.ringover, crisp: parseInt(document.getElementById('dmt-crisp').value) || SOURCE_DMT_DEFAULT.crisp, manual: parseInt(document.getElementById('dmt-manual').value) || SOURCE_DMT_DEFAULT.manual };
+  const body = { fields: { ringover: { integerValue: String(sourceDMT.ringover) }, crisp: { integerValue: String(sourceDMT.crisp) }, manual: { integerValue: String(sourceDMT.manual) } }};
+  await fetch(`${BASE_URL}/settings/dmt?key=${FIREBASE_API_KEY}`, { method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) }); renderAll();
+}
+
 function populateChartScopeSelect() {
   const sel = document.getElementById('chart-scope'); if (!sel) return;
   sel.innerHTML = '<option value="team">Équipe entière</option>' + TEAM.filter(u=>u.role==='agent').map(a => `<option value="${a.id}">${a.name}</option>`).join('');
@@ -1294,75 +1371,64 @@ function renderEvolutionChart() {
   document.getElementById('evolution-chart').innerHTML = `<div class="evo-bars">${barsHtml}</div>`;
 }
 
-// ==========================================
-// PROFIL PERSONNEL
-// ==========================================
+// PROFILE
 let pendingProfilePhoto = null;
 function openProfileModal() {
   pendingProfilePhoto = currentUser.photo || null;
-  document.getElementById('profile-name-input').value = currentUser.name; 
-  document.getElementById('profile-password-input').value = ''; 
-  const el = document.getElementById('profile-photo-preview');
-  if (pendingProfilePhoto) { el.style.backgroundImage = `url(${pendingProfilePhoto})`; el.textContent = ''; } 
-  else { el.style.backgroundImage = ''; el.textContent = currentUser.initials; }
-  document.getElementById('profile-modal-overlay').classList.remove('hidden');
+  document.getElementById('profile-name-input').value = currentUser.name; document.getElementById('profile-password-input').value = ''; document.getElementById('profile-error').textContent = '';
+  renderProfilePhotoPreview(); document.getElementById('profile-modal-overlay').classList.remove('hidden');
 }
 function closeProfileModal() { document.getElementById('profile-modal-overlay').classList.add('hidden'); }
 function closeProfileModalOutside(e) { if (e.target.id === 'profile-modal-overlay') closeProfileModal(); }
+function renderProfilePhotoPreview() {
+  const el = document.getElementById('profile-photo-preview');
+  if (pendingProfilePhoto) { el.style.backgroundImage = `url(${pendingProfilePhoto})`; el.textContent = ''; } else { el.style.backgroundImage = ''; el.textContent = currentUser.initials; }
+}
 function onProfilePhotoSelected(event) {
   const file = event.target.files[0]; if (!file) return;
-  const reader = new FileReader(); reader.onload = (e) => { pendingProfilePhoto = e.target.result; document.getElementById('profile-photo-preview').style.backgroundImage = `url(${pendingProfilePhoto})`; document.getElementById('profile-photo-preview').textContent = ''; }; reader.readAsDataURL(file);
+  if (file.size > 1.5 * 1024 * 1024) { document.getElementById('profile-error').textContent = 'Image trop lourde (max 1.5 Mo).'; return; }
+  const reader = new FileReader(); reader.onload = (e) => { pendingProfilePhoto = e.target.result; renderProfilePhotoPreview(); }; reader.readAsDataURL(file);
 }
-function removeProfilePhoto() { pendingProfilePhoto = ''; document.getElementById('profile-photo-preview').style.backgroundImage = ''; document.getElementById('profile-photo-preview').textContent = currentUser.initials; }
+function removeProfilePhoto() { pendingProfilePhoto = ''; renderProfilePhotoPreview(); }
 async function saveProfile() {
-  currentUser.name = document.getElementById('profile-name-input').value; currentUser.photo = pendingProfilePhoto || '';
-  const body = { fields: { name: { stringValue: currentUser.name }, color: { stringValue: currentUser.color }, initials: { stringValue: currentUser.initials }, role: { stringValue: currentUser.role }, photo: { stringValue: currentUser.photo || '' } }};
-  await fetch(`${BASE_URL}/accounts/${currentUser.id}?key=${FIREBASE_API_KEY}`, { method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
-  
-  const pwd = document.getElementById('profile-password-input').value.trim();
-  if (pwd) {
-      await fetch(`${AUTH_BASE}/accounts:update?key=${FIREBASE_API_KEY}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ idToken: localStorage.getItem('taskin_idToken'), password: pwd, returnSecureToken: true }) });
+  const newName = document.getElementById('profile-name-input').value.trim(); const newPassword = document.getElementById('profile-password-input').value.trim();
+  const errEl = document.getElementById('profile-error'); errEl.textContent = '';
+  if (!newName) { errEl.textContent = 'Le nom ne peut pas être vide.'; return; }
+  if (newPassword && newPassword.length < 6) { errEl.textContent = 'Le mot de passe doit faire au moins 6 caractères.'; return; }
+  if (newPassword) {
+    const idToken = localStorage.getItem('taskin_idToken');
+    try {
+      const res = await fetch(`${AUTH_BASE}/accounts:update?key=${FIREBASE_API_KEY}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ idToken, password: newPassword, returnSecureToken: true }) });
+      const data = await res.json();
+      if (data.error) { errEl.textContent = "Erreur lors du changement de mot de passe."; return; }
+      localStorage.setItem('taskin_idToken', data.idToken);
+    } catch(e) { errEl.textContent = 'Erreur réseau.'; return; }
   }
-  
-  renderTopbarIdentity(); closeProfileModal();
+  currentUser.name = newName; currentUser.photo = pendingProfilePhoto || '';
+  const idx = TEAM.findIndex(u => u.id === currentUser.id); if (idx >= 0) TEAM[idx] = currentUser;
+  const body = { fields: { name: { stringValue: currentUser.name }, color: { stringValue: currentUser.color }, initials: { stringValue: currentUser.initials }, role: { stringValue: currentUser.role }, photo: { stringValue: currentUser.photo || '' } }};
+  await fetch(`${BASE_URL}/accounts/${currentUser.id}?key=${FIREBASE_API_KEY}`, { method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) }); 
+  renderTopbarIdentity(); document.getElementById('profile-password-input').value = ''; closeProfileModal();
 }
 
-// ==========================================
-// SYNC RINGOVER & EXPORT
-// ==========================================
-async function syncRingover() {
-  alert('Synchronisation non configurée pour ce module (API externe nécessaire).');
+// EMOJI PICKER
+const QUICK_EMOJIS = ['✈️','🏨','🚗','🚆','🎫','📞','💬','📧','✅','❌','⚠️','📝','💼','🩺','🔍','💳','💡','🎉'];
+function initEmojiPicker() {
+  const picker = document.getElementById('emoji-picker');
+  if (!picker) return;
+  picker.innerHTML = QUICK_EMOJIS.map(e => `<button class="emoji-btn" type="button" onclick="insertEmoji('${e}')">${e}</button>`).join('');
+}
+function toggleEmojiPicker(e) { e?.stopPropagation(); document.getElementById('emoji-picker').classList.toggle('hidden'); }
+function insertEmoji(emoji) {
+  const input = document.getElementById('new-treatment-input');
+  input.value += emoji; input.focus(); document.getElementById('emoji-picker').classList.add('hidden');
 }
 
-function exportCSV() {
-  const rows = [["Inbound Time", "Start Time", "Source", "Description", "Agent", "Durée (min)"]];
-  entries.forEach(e => {
-      const startStr = new Date(e.startTimeStr).toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
-      const agentObj = TEAM.find(t => t.id === e.agent);
-      const agentName = agentObj ? agentObj.name : e.agent;
-      rows.push([e.inboundTime||'--:--', startStr, e.source, e.desc.replace(/,/g, ' '), agentName, Math.ceil(e.durationSec/60)]);
-  });
-  const csvContent = "data:text/csv;charset=utf-8," + rows.map(e => e.join(",")).join("\n");
-  const encodedUri = encodeURI(csvContent);
-  const link = document.createElement("a");
-  link.setAttribute("href", encodedUri);
-  link.setAttribute("download", `Taskin_Export_${new Date().toISOString().slice(0,10)}.csv`);
-  document.body.appendChild(link);
-  link.click();
-}
-
-// ==========================================
-// EVENTS INIT
-// ==========================================
 document.addEventListener('click', (e) => {
   const timeDrop = document.getElementById('time-dropdown');
-  if (timeDrop && !timeDrop.classList.contains('hidden') && !e.target.closest('#time-picker-container')) {
-    timeDrop.classList.add('hidden');
-  }
+  if (timeDrop && !timeDrop.classList.contains('hidden') && !e.target.closest('#time-picker-container')) { timeDrop.classList.add('hidden'); }
   const emojiDrop = document.getElementById('emoji-picker');
-  if (emojiDrop && !emojiDrop.classList.contains('hidden') && !e.target.closest('.treatment-add-row')) {
-    emojiDrop.classList.add('hidden');
-  }
+  if (emojiDrop && !emojiDrop.classList.contains('hidden') && !e.target.closest('.treatment-add-row')) { emojiDrop.classList.add('hidden'); }
 });
 
 initTimePickerUI();
@@ -1371,6 +1437,8 @@ initEmojiPicker();
 window.onload = async () => {
   if (await tryRestoreSession()) {
     refreshApp();
+  } else {
+    document.getElementById('login-screen').style.display = 'flex';
   }
 };
 </script>
