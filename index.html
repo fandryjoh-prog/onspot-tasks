@@ -134,6 +134,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .team-summary::after{content:'▼';font-size:10px;}
 .team-accordion[open] .team-summary::after{content:'▲';}
 
+/* Boutons période accordéon Vue Globale */
+.sup-period-btn{padding:5px 12px;border-radius:7px;border:none;background:transparent;color:var(--text2);font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;transition:all .15s}
+.sup-period-btn.active{background:var(--ocean);color:#fff}
+
 /* TABS + TOOLBAR */
 .tabs{display:flex;gap:2px;padding:24px 24px 0;border-bottom:1px solid var(--border)}
 .tab{padding:9px 16px;border-radius:9px 9px 0 0;font-size:13px;font-weight:600;cursor:pointer;color:var(--text2);border:1px solid transparent;border-bottom:none;background:transparent;font-family:var(--font)}
@@ -446,24 +450,38 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     </div>
   </div>
 
-  <!-- Point 8 : retiré la classe hidden codée en dur sur stats-grid-supervisor -->
+  <!-- P1 : Vue Globale Équipe & KPIs — filtres temporels + analyse individuelle -->
   <details class="team-accordion hidden" id="team-accordion" style="margin-top:20px;">
     <summary class="team-summary">Vue Globale Équipe & KPIs</summary>
+
+    <!-- Contrôles : période + agent -->
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 18px;border-bottom:1px solid var(--border);background:var(--surface2)">
+      <div style="display:flex;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:3px">
+        <button class="sup-period-btn active" data-p="day"   onclick="setSupPeriod('day',this)">Jour</button>
+        <button class="sup-period-btn"        data-p="week"  onclick="setSupPeriod('week',this)">Semaine</button>
+        <button class="sup-period-btn"        data-p="month" onclick="setSupPeriod('month',this)">Mois</button>
+      </div>
+      <select class="filter-select" id="sup-agent-filter" onchange="renderSupKpis()" style="font-size:12px;padding:6px 10px">
+        <option value="">Équipe entière</option>
+      </select>
+      <span class="count-badge" id="sup-period-label" style="margin-left:auto"></span>
+    </div>
+
     <div class="stats-grid" id="stats-grid-supervisor" style="grid-template-columns:repeat(4,1fr); padding-bottom:20px; border-bottom:1px solid var(--border);">
       <div class="stat-card">
-        <div class="stat-label">Total Équipe (Jour)</div>
+        <div class="stat-label" id="sup-s-total-label">Total (Jour)</div>
         <div class="stat-value" id="sup-s-total" style="color:var(--ocean)">0h00</div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">DMT Global</div>
+        <div class="stat-label">DMT</div>
         <div class="stat-value" id="sup-s-dmt" style="color:var(--ocean)">0min</div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">FRT Global</div>
+        <div class="stat-label">FRT</div>
         <div class="stat-value" id="sup-s-frt" style="color:var(--clay)">0min</div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">Total Tâches</div>
+        <div class="stat-label">Tâches</div>
         <div class="stat-value" id="sup-s-count" style="color:var(--text2)">0</div>
       </div>
     </div>
@@ -1085,6 +1103,12 @@ function populateFilters() {
   const sel = document.getElementById('filter-agent');
   sel.innerHTML = '<option value="">Tous les agents</option>' + agentsOnly().map(u=>`<option value="${u.id}">${u.name}</option>`).join('');
 
+  // Sélecteur agent de l'accordéon Vue Globale
+  const supSel = document.getElementById('sup-agent-filter');
+  if (supSel) {
+    supSel.innerHTML = '<option value="">Équipe entière</option>' + agentsOnly().map(u=>`<option value="${u.id}">${u.name}</option>`).join('');
+  }
+
   // Point 3 : remplissage dynamique du select Agent dans les filtres du tableau
   const fAgt = document.getElementById('f-agt');
   if (fAgt) {
@@ -1415,48 +1439,99 @@ function renderAll() {
   renderTable(filtered);
 }
 
+// ===== VUE GLOBALE : période + agent individuel =====
+let supPeriod = 'day';
+
+function setSupPeriod(p, btn) {
+  supPeriod = p;
+  document.querySelectorAll('.sup-period-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderSupKpis();
+  // P2 : synchroniser le leaderboard sur la même période
+  lbPeriod = p;
+  document.querySelectorAll('.lb-period-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.lbp === p);
+  });
+  renderLeaderboard();
+}
+
+function getSupEntries() {
+  const now = new Date();
+  const agentId = document.getElementById('sup-agent-filter')?.value || '';
+  let pool = entries;
+  if (agentId) pool = pool.filter(e => e.agent === agentId);
+  if (supPeriod === 'day')   return pool.filter(e => isToday(e.startTimeStr));
+  if (supPeriod === 'week')  return pool.filter(e => isThisWeek(e.startTimeStr));
+  if (supPeriod === 'month') return pool.filter(e => {
+    const d = new Date(e.startTimeStr);
+    return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth();
+  });
+  return pool;
+}
+
+function renderSupKpis() {
+  const pool = getSupEntries();
+  const agentId = document.getElementById('sup-agent-filter')?.value || '';
+  const agentObj = agentId ? TEAM.find(u => u.id === agentId) : null;
+
+  // Label contextuel
+  const periodLabels = { day: 'Aujourd\'hui', week: 'Cette semaine', month: 'Ce mois' };
+  const scopeLabel = agentObj ? agentObj.name : 'Équipe';
+  const el = document.getElementById('sup-period-label');
+  if (el) el.textContent = `${scopeLabel} · ${periodLabels[supPeriod] || ''}`;
+
+  // Label du stat-card total
+  const totalLabel = document.getElementById('sup-s-total-label');
+  if (totalLabel) totalLabel.textContent = `Total (${periodLabels[supPeriod] || ''})`;
+
+  const kpi = calcKpiSet(pool);
+  document.getElementById('sup-s-total').textContent = kpi.total;
+  document.getElementById('sup-s-dmt').textContent   = kpi.dmt;
+  document.getElementById('sup-s-frt').textContent   = kpi.frt;
+  document.getElementById('sup-s-count').textContent = kpi.count;
+}
+
+// Fonction calcKpiSet extraite — partagée avec renderStats et renderLeaderboard
+function calcKpiSet(list) {
+  if (!list.length) return { total: '0h00', dmt: '0min', frt: '--', count: 0 };
+  let totalSec = 0, validFrtSec = 0, frtCount = 0;
+  list.forEach(e => {
+    totalSec += e.durationSec;
+    if (e.inboundTime && e.inboundTime !== '--:--') {
+      const [inH, inM] = e.inboundTime.split(':').map(Number);
+      if (!isNaN(inH) && !isNaN(inM)) {
+        const startDt = new Date(e.startTimeStr);
+        const inDt = new Date(startDt);
+        inDt.setHours(inH, inM, 0, 0);
+        const diff = Math.floor((startDt - inDt) / 1000);
+        if (diff >= 0 && diff < 86400) { validFrtSec += diff; frtCount++; }
+      }
+    }
+  });
+  return {
+    total: fmtDuration(totalSec),
+    dmt: Math.floor((totalSec / list.length) / 60) + 'min',
+    frt: frtCount > 0 ? Math.floor((validFrtSec / frtCount) / 60) + 'min' : '--',
+    count: list.length
+  };
+}
+
 function renderStats(filtered) {
   let baseEntries = entries;
   if (currentUser.role === 'agent') {
     baseEntries = entries.filter(e => e.agent === currentUser.id);
   }
-  const todayEntries = baseEntries.filter(e=>isToday(e.startTimeStr));
-  const calcSet = (list) => {
-    if (list.length === 0) return { total: '0h00', dmt: '0min', frt: '0min', count: 0 };
-    let totalSec = 0; let validFrtSec = 0; let frtCount = 0;
-    list.forEach(e => {
-      totalSec += e.durationSec;
-      if (e.inboundTime && e.inboundTime !== '--:--') {
-        const [inH, inM] = e.inboundTime.split(':').map(Number);
-        if(!isNaN(inH) && !isNaN(inM)) {
-          const startDt = new Date(e.startTimeStr); const inDt = new Date(startDt);
-          inDt.setHours(inH, inM, 0, 0);
-          let diff = Math.floor((startDt - inDt)/1000);
-          if (diff >= 0 && diff < 86400) { validFrtSec += diff; frtCount++; }
-        }
-      }
-    });
-    return {
-      total: fmtDuration(totalSec),
-      dmt: Math.floor((totalSec / list.length)/60) + 'min',
-      frt: frtCount > 0 ? Math.floor((validFrtSec / frtCount)/60) + 'min' : '--',
-      count: list.length
-    };
-  };
+  const todayEntries = baseEntries.filter(e => isToday(e.startTimeStr));
 
-  const myKpi = calcSet(todayEntries);
+  const myKpi = calcKpiSet(todayEntries);
   document.getElementById('s-total').textContent = myKpi.total;
-  document.getElementById('s-dmt').textContent = myKpi.dmt;
-  document.getElementById('s-frt').textContent = myKpi.frt;
+  document.getElementById('s-dmt').textContent   = myKpi.dmt;
+  document.getElementById('s-frt').textContent   = myKpi.frt;
   document.getElementById('s-count').textContent = myKpi.count;
 
+  // Accordéon Sup/Admin — délégué à renderSupKpis()
   if (currentUser.role === 'supervisor' || currentUser.role === 'admin') {
-    const teamToday = entries.filter(e => isToday(e.startTimeStr));
-    const teamKpi = calcSet(teamToday);
-    document.getElementById('sup-s-total').textContent = teamKpi.total;
-    document.getElementById('sup-s-dmt').textContent = teamKpi.dmt;
-    document.getElementById('sup-s-frt').textContent = teamKpi.frt;
-    document.getElementById('sup-s-count').textContent = teamKpi.count;
+    renderSupKpis();
   }
 }
 
@@ -2050,8 +2125,12 @@ let lbSortAsc = false;
 
 function setLbPeriod(p, btn) {
   lbPeriod = p;
-  document.querySelectorAll('.lb-period-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
+  // Synchroniser aussi l'accordéon Vue Globale
+  supPeriod = p;
+  document.querySelectorAll('.sup-period-btn').forEach(b => b.classList.toggle('active', b.dataset.p === p));
+  renderSupKpis();
+  document.querySelectorAll('.lb-period-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
   renderLeaderboard();
 }
 
@@ -2086,28 +2165,27 @@ function renderLeaderboard() {
   const agents = agentsOnly();
   const rows = agents.map(a => {
     const ae = pool.filter(e => e.agent === a.id);
-    const volume = ae.length;
-    let totalSec = 0, frtSec = 0, frtCount = 0;
-    ae.forEach(e => {
-      totalSec += e.durationSec;
+    const kpi = calcKpiSet(ae);
+    const frtMin = ae.reduce((acc, e) => {
       if (e.inboundTime && e.inboundTime !== '--:--') {
         const [ih, im] = e.inboundTime.split(':').map(Number);
         if (!isNaN(ih) && !isNaN(im)) {
           const sd = new Date(e.startTimeStr); const ind = new Date(sd);
           ind.setHours(ih, im, 0, 0);
           const diff = Math.floor((sd - ind) / 1000);
-          if (diff >= 0 && diff < 86400) { frtSec += diff; frtCount++; }
+          if (diff >= 0 && diff < 86400) acc.push(diff);
         }
       }
-    });
-    const dmt = volume ? Math.floor(totalSec / volume / 60) : 0;
-    const frt = frtCount ? Math.floor(frtSec / frtCount / 60) : null;
-    return { agent: a, volume, dmt, frt };
+      return acc;
+    }, []);
+    const frtAvgMin = frtMin.length ? Math.floor(frtMin.reduce((s,v)=>s+v,0)/frtMin.length/60) : null;
+    const dmtMin = ae.length ? Math.floor(ae.reduce((s,e)=>s+e.durationSec,0)/ae.length/60) : 0;
+    return { agent: a, volume: ae.length, dmt: dmtMin, frt: frtAvgMin };
   });
 
   rows.sort((a, b) => {
     let va, vb;
-    if (lbSortKey === 'name') { va = a.agent.name; vb = b.agent.name; return lbSortAsc ? va.localeCompare(vb) : vb.localeCompare(va); }
+    if (lbSortKey === 'name') return lbSortAsc ? a.agent.name.localeCompare(b.agent.name) : b.agent.name.localeCompare(a.agent.name);
     if (lbSortKey === 'volume') { va = a.volume; vb = b.volume; }
     else if (lbSortKey === 'dmt') { va = a.dmt; vb = b.dmt; }
     else if (lbSortKey === 'frt') { va = a.frt ?? 9999; vb = b.frt ?? 9999; }
@@ -2121,18 +2199,16 @@ function renderLeaderboard() {
   if (!body) return;
   if (!rows.length) { body.innerHTML = '<tr><td colspan="5"><div class="empty">Aucun agent.</div></td></tr>'; return; }
 
+  const medals = ['🥇','🥈','🥉'];
   body.innerHTML = rows.map((r, i) => {
     const rank = i + 1;
-    const rankClass = rank <= 3 ? `r${rank}` : '';
-    const medals = ['🥇','🥈','🥉'];
     const rankDisplay = rank <= 3 ? `<span class="lb-medal">${medals[rank-1]}</span>` : `<span class="lb-rank">${rank}</span>`;
     const dmtClass = r.dmt === 0 ? '' : r.dmt <= avgDmt * 0.9 ? 'good' : r.dmt > avgDmt * 1.2 ? 'bad' : 'warn';
-    const frtStr = r.frt !== null ? r.frt + 'min' : '—';
     return `<tr>
       <td>${rankDisplay}</td>
       <td><div class="agent-cell"><div class="mini-avatar" style="background:${r.agent.color}20;color:${r.agent.color}">${r.agent.initials}</div>${r.agent.name}</div></td>
       <td><span class="lb-val">${r.volume}</span></td>
-      <td><span class="lb-val">${frtStr}</span></td>
+      <td><span class="lb-val">${r.frt !== null ? r.frt + 'min' : '—'}</span></td>
       <td><span class="lb-val ${dmtClass}">${r.dmt ? r.dmt + 'min' : '—'}</span></td>
     </tr>`;
   }).join('');
