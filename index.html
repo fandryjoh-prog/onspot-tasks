@@ -284,6 +284,65 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   display: flex; align-items: center; justify-content: center;
 }
 .emoji-btn:hover { background: var(--surface2); transform: scale(1.1); }
+
+/* ===== P1 : FILTRES DATE ===== */
+.date-filter-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px;padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius)}
+.date-filter-bar label{font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.4px}
+.date-input{padding:7px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none;cursor:pointer}
+.date-input:focus{border-color:var(--ocean)}
+.date-reset-btn{padding:6px 12px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--text2);font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer}
+.date-reset-btn:hover{border-color:var(--ocean);color:var(--ocean)}
+.date-sep{color:var(--text3);font-size:13px}
+
+/* ===== P2 : LEADERBOARD ===== */
+#tab-leaderboard{display:inline-flex}
+#leaderboard-panel{display:none}
+.lb-header{display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.lb-period-btn{padding:6px 14px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text2);font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;transition:all .15s}
+.lb-period-btn.active{background:var(--ocean);color:#fff;border-color:var(--ocean)}
+.lb-table{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.lb-table table{width:100%;border-collapse:collapse}
+.lb-table th{font-size:10px;font-weight:700;color:var(--text2);text-align:left;padding:11px 16px;border-bottom:1px solid var(--border);text-transform:uppercase;letter-spacing:.6px;background:var(--surface2);cursor:pointer;user-select:none;white-space:nowrap}
+.lb-table th:hover{color:var(--ocean)}
+.lb-table th .sort-arrow{margin-left:4px;opacity:.4;font-size:10px}
+.lb-table th.sorted .sort-arrow{opacity:1;color:var(--ocean)}
+.lb-table td{font-size:13px;padding:12px 16px;border-bottom:1px solid var(--border)}
+.lb-table tr:last-child td{border-bottom:none}
+.lb-table tr:hover td{background:var(--surface2)}
+.lb-rank{font-family:var(--mono);font-weight:700;color:var(--text3);font-size:13px}
+.lb-rank.r1{color:#DCAE1D}.lb-rank.r2{color:#9AA6B8}.lb-rank.r3{color:#C9604F}
+.lb-medal{font-size:16px}
+.lb-val{font-family:var(--mono);font-size:13px;color:var(--text)}
+.lb-val.good{color:var(--green)}.lb-val.warn{color:#B8860B}.lb-val.bad{color:var(--red)}
+
+/* ===== P3 : MATRICE CANAUX ===== */
+#channel-matrix-panel{display:none;margin-bottom:16px}
+.matrix-controls{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center}
+.matrix-toggle-group{display:flex;gap:4px;background:var(--surface2);border:1px solid var(--border);border-radius:9px;padding:3px}
+.matrix-toggle{padding:5px 12px;border-radius:7px;border:none;background:transparent;color:var(--text2);font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;transition:all .15s}
+.matrix-toggle.active{background:var(--ocean);color:#fff}
+.channel-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;margin-bottom:12px}
+.channel-card-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.channel-card-title{font-weight:700;font-size:14px;color:var(--text)}
+.channel-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.channel-kpi{background:var(--surface2);border-radius:8px;padding:10px 12px;text-align:center}
+.channel-kpi-val{font-family:var(--display);font-size:20px;font-weight:600;color:var(--ocean)}
+.channel-kpi-label{font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:.4px;margin-top:2px}
+.channel-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:800px){.channel-grid{grid-template-columns:1fr}}
+.channel-filter-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.channel-filter-btn{padding:6px 12px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text2);font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;transition:all .15s}
+.channel-filter-btn.active{background:var(--ocean);color:#fff;border-color:var(--ocean)}
+
+/* ===== P4 : DRAG & DROP TRAITEMENTS ===== */
+.treatment-row{cursor:grab;transition:background .15s,box-shadow .15s}
+.treatment-row.dragging{opacity:.4;cursor:grabbing}
+.treatment-row.drag-over{background:var(--ocean-dim);box-shadow:0 0 0 2px var(--ocean) inset}
+.treat-drag-handle{color:var(--text3);font-size:14px;cursor:grab;padding:0 6px;user-select:none}
+.treat-order-btn{width:22px;height:22px;border-radius:5px;border:1px solid var(--border);background:var(--surface2);color:var(--text2);font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1}
+.treat-order-btn:hover{border-color:var(--ocean);color:var(--ocean)}
+.treat-order-btns{display:flex;flex-direction:column;gap:2px;margin-right:6px}
+.treat-priority-badge{font-size:9px;padding:2px 6px;border-radius:99px;background:var(--ocean-dim);color:var(--ocean);font-weight:700;letter-spacing:.3px;margin-left:6px}
 </style>
 </head>
 <body>
@@ -433,10 +492,42 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     <button class="tab hidden" id="tab-home" onclick="switchTab('home',this)">Vue d'ensemble</button>
     <button class="tab hidden" id="tab-week-role" onclick="switchTab('week',this)">Cette semaine</button>
     <button class="tab" id="tab-team" onclick="switchTab('team',this)">Équipe</button>
+    <button class="tab hidden" id="tab-leaderboard" onclick="switchTab('leaderboard',this)">🏆 Classement</button>
     <button class="tab" id="tab-admin" onclick="switchTab('admin',this)">Administration</button>
   </div>
 
   <div class="content">
+    <!-- P1 : Filtres dates — visibles sur tous les onglets (Sup/Admin) ou agent -->
+    <div class="date-filter-bar" id="date-filter-bar">
+      <label>De</label>
+      <input type="date" class="date-input" id="filter-date-from" onchange="renderAll()">
+      <span class="date-sep">→</span>
+      <label>À</label>
+      <input type="date" class="date-input" id="filter-date-to" onchange="renderAll()">
+      <button class="date-reset-btn" onclick="resetDateFilters()">✕ Réinitialiser</button>
+      <span class="count-badge" id="date-range-label" style="margin-left:auto"></span>
+    </div>
+
+    <!-- P3 : Matrice canaux -->
+    <div id="channel-matrix-panel">
+      <div class="matrix-controls">
+        <div class="channel-filter-row" id="channel-filter-row">
+          <button class="channel-filter-btn active" data-ch="all" onclick="setChannelFilter('all',this)">Tous les canaux</button>
+          <button class="channel-filter-btn" data-ch="inbound" onclick="setChannelFilter('inbound',this)">📞↘ Entrant</button>
+          <button class="channel-filter-btn" data-ch="outbound" onclick="setChannelFilter('outbound',this)">📞↗ Sortant</button>
+          <button class="channel-filter-btn" data-ch="chat" onclick="setChannelFilter('chat',this)">💬 Chat</button>
+          <button class="channel-filter-btn" data-ch="email" onclick="setChannelFilter('email',this)">✉️ Email</button>
+          <button class="channel-filter-btn" data-ch="ticket" onclick="setChannelFilter('ticket',this)">🎫 Ticket</button>
+        </div>
+        <div class="matrix-toggle-group" style="margin-left:auto">
+          <button class="matrix-toggle active" data-period="day" onclick="setMatrixPeriod('day',this)">Jour</button>
+          <button class="matrix-toggle" data-period="week" onclick="setMatrixPeriod('week',this)">Semaine</button>
+          <button class="matrix-toggle" data-period="month" onclick="setMatrixPeriod('month',this)">Mois</button>
+        </div>
+      </div>
+      <div id="channel-matrix-grid" class="channel-grid"></div>
+    </div>
+
     <div class="toolbar">
       <select class="filter-select" id="filter-source" onchange="renderAll()">
         <option value="">Toutes sources</option>
@@ -533,6 +624,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
         <div style="padding:14px 18px;display:flex;gap:8px">
           <button class="btn btn-ghost" onclick="exportCSV()">↓ Export CSV</button>
           <button class="btn btn-ghost" onclick="exportExcel()">↓ Export Excel</button>
+          <button class="btn btn-ghost" style="background:var(--green-dim);color:var(--green);border-color:var(--green)" onclick="showGASModal()">📊 Script Google Sheets</button>
         </div>
       </div>
     </div>
@@ -603,6 +695,32 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       </div>
     </div>
   </div>
+
+    <!-- P2 : Leaderboard panel -->
+    <div id="leaderboard-panel" class="hidden" style="padding:0">
+      <div class="lb-header">
+        <span style="font-family:var(--display);font-size:16px;font-weight:600;color:var(--text)">🏆 Classement des agents</span>
+        <button class="lb-period-btn active" data-lbp="day" onclick="setLbPeriod('day',this)">Aujourd'hui</button>
+        <button class="lb-period-btn" data-lbp="week" onclick="setLbPeriod('week',this)">Cette semaine</button>
+        <button class="lb-period-btn" data-lbp="month" onclick="setLbPeriod('month',this)">Ce mois</button>
+        <button class="lb-period-btn" data-lbp="all" onclick="setLbPeriod('all',this)">Tout</button>
+      </div>
+      <div class="lb-table">
+        <table>
+          <thead>
+            <tr>
+              <th id="lbth-rank" onclick="sortLeaderboard('rank')"># <span class="sort-arrow">↕</span></th>
+              <th id="lbth-name" onclick="sortLeaderboard('name')">Agent <span class="sort-arrow">↕</span></th>
+              <th id="lbth-volume" onclick="sortLeaderboard('volume')">Volume <span class="sort-arrow">↕</span></th>
+              <th id="lbth-frt" onclick="sortLeaderboard('frt')">FRT moy. <span class="sort-arrow">↕</span></th>
+              <th id="lbth-dmt" onclick="sortLeaderboard('dmt')">DMT moy. <span class="sort-arrow">↕</span></th>
+            </tr>
+          </thead>
+          <tbody id="leaderboard-body"></tbody>
+        </table>
+      </div>
+    </div>
+
 </div>
 
 <!-- MODALES INCHANGÉES -->
@@ -897,6 +1015,7 @@ function applyRoleUI() {
   document.getElementById('tab-admin').classList.toggle('hidden', role !== 'admin');
   document.getElementById('tab-home').classList.toggle('hidden', role === 'agent');
   document.getElementById('tab-week-role').classList.toggle('hidden', role === 'agent');
+  document.getElementById('tab-leaderboard').classList.toggle('hidden', role === 'agent');
   document.querySelector('.tab.agent-only').classList.toggle('hidden', role !== 'agent');
 
   // Point 6 : Timer et Quickstart stritement réservés aux agents
@@ -919,6 +1038,8 @@ function applyRoleUI() {
   if (role !== 'admin') {
     document.getElementById('admin-panel').classList.add('hidden');
   }
+  document.getElementById('leaderboard-panel').classList.add('hidden');
+  document.getElementById('channel-matrix-panel').classList.add('hidden');
 
   // Ligne de filtres tableau (Sup/Admin seulement)
   document.getElementById('table-filters').classList.toggle('hidden', role === 'agent');
@@ -1224,13 +1345,35 @@ function onSearchInput() {
   searchTimeout = setTimeout(renderAll, 300);
 }
 
+function resetDateFilters() {
+  document.getElementById('filter-date-from').value = '';
+  document.getElementById('filter-date-to').value = '';
+  document.getElementById('date-range-label').textContent = '';
+  renderAll();
+}
+
+function updateDateRangeLabel() {
+  const from = document.getElementById('filter-date-from').value;
+  const to = document.getElementById('filter-date-to').value;
+  const el = document.getElementById('date-range-label');
+  if (from || to) {
+    el.textContent = (from || '…') + ' → ' + (to || '…');
+  } else {
+    el.textContent = '';
+  }
+}
+
 function getFiltered() {
   const source = document.getElementById('filter-source').value;
   let agent = document.getElementById('filter-agent').value;
   const treatment = document.getElementById('filter-treatment')?.value || '';
   const search = document.getElementById('search-input').value.toLowerCase();
+  const fromVal = document.getElementById('filter-date-from')?.value;
+  const toVal = document.getElementById('filter-date-to')?.value;
+  const fromDate = fromVal ? new Date(fromVal + 'T00:00:00') : null;
+  const toDate = toVal ? new Date(toVal + 'T23:59:59') : null;
+  updateDateRangeLabel();
 
-  // Point 3 : lecture depuis les nouveaux selects du tableau
   const fInb = document.getElementById('f-inb')?.value.toLowerCase() || '';
   const fStart = document.getElementById('f-start')?.value.toLowerCase() || '';
   const fSrc = document.getElementById('f-src')?.value || '';
@@ -1245,21 +1388,22 @@ function getFiltered() {
   else if (currentView === 'week') list = list.filter(e=>isThisWeek(e.startTimeStr));
 
   return list.filter(e => {
-    const startStr = new Date(e.startTimeStr).toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
+    const dt = new Date(e.startTimeStr);
+    const startStr = dt.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
     const durStr = Math.ceil(e.durationSec / 60) + ' min';
 
+    if (fromDate && dt < fromDate) return false;
+    if (toDate && dt > toDate) return false;
     if (source && e.source!==source) return false;
     if (agent && e.agent!==agent) return false;
     if (treatment && e.treatment!==treatment && !e.desc.includes(treatment)) return false;
     if (search && !e.desc.toLowerCase().includes(search)) return false;
-
     if (fInb && !(e.inboundTime||'--:--').toLowerCase().includes(fInb)) return false;
     if (fStart && !startStr.includes(fStart)) return false;
     if (fSrc && e.source !== fSrc) return false;
     if (fDescTbl && !e.desc.toLowerCase().includes(fDescTbl)) return false;
     if (fAgt && e.agent !== fAgt) return false;
     if (fDur && !durStr.includes(fDur)) return false;
-
     return true;
   });
 }
@@ -1370,7 +1514,7 @@ function editEntry(id) {
 
 // Point 5 : switchTab renforcé — guards stricts pour agent et non-admin
 function switchTab(view, btn) {
-  if (currentUser.role === 'agent' && (view === 'admin' || view === 'team' || view === 'home')) return;
+  if (currentUser.role === 'agent' && (view === 'admin' || view === 'team' || view === 'home' || view === 'leaderboard')) return;
   if (currentUser.role !== 'admin' && view === 'admin') return;
 
   currentView = view;
@@ -1380,15 +1524,20 @@ function switchTab(view, btn) {
   const isAdminView = view === 'admin';
   const isHomeView = view === 'home';
   const isTeamView = view === 'team';
-  const showTable = !isAdminView && !isHomeView;
+  const isLeaderboard = view === 'leaderboard';
+  const isChannelView = isTeamView || isAdminView;
+  const showTable = !isAdminView && !isHomeView && !isLeaderboard;
 
   document.querySelector('.toolbar').classList.toggle('hidden', !showTable);
   document.querySelector('.entries-table').classList.toggle('hidden', !showTable);
   document.getElementById('admin-panel').classList.toggle('hidden', !isAdminView);
   document.getElementById('team-live-panel').classList.toggle('hidden', !isHomeView && !isTeamView);
+  document.getElementById('leaderboard-panel').classList.toggle('hidden', !isLeaderboard);
+  document.getElementById('channel-matrix-panel').classList.toggle('hidden', !isChannelView);
 
-  if (isAdminView) { renderAdminPanel(); return; }
-  if (isHomeView || isTeamView) { renderRoleHome(); return; }
+  if (isAdminView) { renderAdminPanel(); renderChannelMatrix(); return; }
+  if (isHomeView || isTeamView) { renderRoleHome(); if(isTeamView) renderChannelMatrix(); return; }
+  if (isLeaderboard) { renderLeaderboard(); return; }
   renderAll();
 }
 
@@ -1396,7 +1545,7 @@ function switchTab(view, btn) {
 let customTreatmentTypes = [...TREATMENT_TYPES_DEFAULT];
 
 function renderAdminPanel() {
-  renderTeamList(); renderTreatmentList(); renderAdminStats(); populateChartScopeSelect(); renderEvolutionChart();
+  renderTeamList(); renderTreatmentList(); renderAdminStats(); populateChartScopeSelect(); renderEvolutionChart(); renderChannelMatrix();
 }
 
 function renderTeamList() {
@@ -1892,6 +2041,352 @@ async function saveProfile() {
   }
   renderTopbarIdentity();
   closeProfileModal();
+}
+
+// ===== P2 : LEADERBOARD =====
+let lbPeriod = 'day';
+let lbSortKey = 'volume';
+let lbSortAsc = false;
+
+function setLbPeriod(p, btn) {
+  lbPeriod = p;
+  document.querySelectorAll('.lb-period-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderLeaderboard();
+}
+
+function sortLeaderboard(key) {
+  if (lbSortKey === key) lbSortAsc = !lbSortAsc;
+  else { lbSortKey = key; lbSortAsc = key === 'name'; }
+  document.querySelectorAll('.lb-table th').forEach(th => {
+    th.classList.remove('sorted');
+    const arrow = th.querySelector('.sort-arrow');
+    if (arrow) arrow.textContent = '↕';
+  });
+  const th = document.getElementById('lbth-' + key);
+  if (th) { th.classList.add('sorted'); const a = th.querySelector('.sort-arrow'); if(a) a.textContent = lbSortAsc ? '↑' : '↓'; }
+  renderLeaderboard();
+}
+
+function getLbEntries() {
+  const now = new Date();
+  return entries.filter(e => {
+    const d = new Date(e.startTimeStr);
+    if (lbPeriod === 'day') return isToday(e.startTimeStr);
+    if (lbPeriod === 'week') return isThisWeek(e.startTimeStr);
+    if (lbPeriod === 'month') {
+      return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth();
+    }
+    return true;
+  });
+}
+
+function renderLeaderboard() {
+  const pool = getLbEntries();
+  const agents = agentsOnly();
+  const rows = agents.map(a => {
+    const ae = pool.filter(e => e.agent === a.id);
+    const volume = ae.length;
+    let totalSec = 0, frtSec = 0, frtCount = 0;
+    ae.forEach(e => {
+      totalSec += e.durationSec;
+      if (e.inboundTime && e.inboundTime !== '--:--') {
+        const [ih, im] = e.inboundTime.split(':').map(Number);
+        if (!isNaN(ih) && !isNaN(im)) {
+          const sd = new Date(e.startTimeStr); const ind = new Date(sd);
+          ind.setHours(ih, im, 0, 0);
+          const diff = Math.floor((sd - ind) / 1000);
+          if (diff >= 0 && diff < 86400) { frtSec += diff; frtCount++; }
+        }
+      }
+    });
+    const dmt = volume ? Math.floor(totalSec / volume / 60) : 0;
+    const frt = frtCount ? Math.floor(frtSec / frtCount / 60) : null;
+    return { agent: a, volume, dmt, frt };
+  });
+
+  rows.sort((a, b) => {
+    let va, vb;
+    if (lbSortKey === 'name') { va = a.agent.name; vb = b.agent.name; return lbSortAsc ? va.localeCompare(vb) : vb.localeCompare(va); }
+    if (lbSortKey === 'volume') { va = a.volume; vb = b.volume; }
+    else if (lbSortKey === 'dmt') { va = a.dmt; vb = b.dmt; }
+    else if (lbSortKey === 'frt') { va = a.frt ?? 9999; vb = b.frt ?? 9999; }
+    else { va = a.volume; vb = b.volume; }
+    return lbSortAsc ? va - vb : vb - va;
+  });
+
+  const avgDmt = rows.filter(r=>r.volume>0).reduce((s,r)=>s+r.dmt,0) / (rows.filter(r=>r.volume>0).length || 1);
+
+  const body = document.getElementById('leaderboard-body');
+  if (!body) return;
+  if (!rows.length) { body.innerHTML = '<tr><td colspan="5"><div class="empty">Aucun agent.</div></td></tr>'; return; }
+
+  body.innerHTML = rows.map((r, i) => {
+    const rank = i + 1;
+    const rankClass = rank <= 3 ? `r${rank}` : '';
+    const medals = ['🥇','🥈','🥉'];
+    const rankDisplay = rank <= 3 ? `<span class="lb-medal">${medals[rank-1]}</span>` : `<span class="lb-rank">${rank}</span>`;
+    const dmtClass = r.dmt === 0 ? '' : r.dmt <= avgDmt * 0.9 ? 'good' : r.dmt > avgDmt * 1.2 ? 'bad' : 'warn';
+    const frtStr = r.frt !== null ? r.frt + 'min' : '—';
+    return `<tr>
+      <td>${rankDisplay}</td>
+      <td><div class="agent-cell"><div class="mini-avatar" style="background:${r.agent.color}20;color:${r.agent.color}">${r.agent.initials}</div>${r.agent.name}</div></td>
+      <td><span class="lb-val">${r.volume}</span></td>
+      <td><span class="lb-val">${frtStr}</span></td>
+      <td><span class="lb-val ${dmtClass}">${r.dmt ? r.dmt + 'min' : '—'}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+// ===== P3 : MATRICE CANAUX =====
+let matrixPeriod = 'day';
+let matrixChannel = 'all';
+
+function setMatrixPeriod(p, btn) {
+  matrixPeriod = p;
+  document.querySelectorAll('.matrix-toggle').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderChannelMatrix();
+}
+
+function setChannelFilter(ch, btn) {
+  matrixChannel = ch;
+  document.querySelectorAll('.channel-filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderChannelMatrix();
+}
+
+function getMatrixEntries() {
+  const now = new Date();
+  return entries.filter(e => {
+    const d = new Date(e.startTimeStr);
+    if (matrixPeriod === 'day') return isToday(e.startTimeStr);
+    if (matrixPeriod === 'week') return isThisWeek(e.startTimeStr);
+    if (matrixPeriod === 'month') return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth();
+    return true;
+  });
+}
+
+const CHANNEL_META = {
+  inbound:  { label: 'Appel entrant',  icon: '📞↘', color: 'var(--ocean)' },
+  outbound: { label: 'Appel sortant',  icon: '📞↗', color: '#D6A848' },
+  chat:     { label: 'Crisp Chat',     icon: '💬',  color: '#84A9DE' },
+  email:    { label: 'Crisp Email',    icon: '✉️',  color: '#2A61A3' },
+  ticket:   { label: 'Ticket / Manuel',icon: '🎫',  color: 'var(--green)' },
+};
+
+function calcChannelKpi(pool) {
+  const volume = pool.length;
+  let totalSec = 0, frtSec = 0, frtCount = 0;
+  pool.forEach(e => {
+    totalSec += e.durationSec;
+    if (e.inboundTime && e.inboundTime !== '--:--') {
+      const [ih, im] = e.inboundTime.split(':').map(Number);
+      if (!isNaN(ih) && !isNaN(im)) {
+        const sd = new Date(e.startTimeStr); const ind = new Date(sd);
+        ind.setHours(ih, im, 0, 0);
+        const diff = Math.floor((sd - ind) / 1000);
+        if (diff >= 0 && diff < 86400) { frtSec += diff; frtCount++; }
+      }
+    }
+  });
+  return {
+    volume,
+    dmt: volume ? Math.floor(totalSec / volume / 60) : 0,
+    frt: frtCount ? Math.floor(frtSec / frtCount / 60) : null
+  };
+}
+
+function renderChannelMatrix() {
+  const grid = document.getElementById('channel-matrix-grid');
+  if (!grid) return;
+  const pool = getMatrixEntries();
+  const channels = matrixChannel === 'all' ? Object.keys(CHANNEL_META) : [matrixChannel];
+
+  grid.innerHTML = channels.map(ch => {
+    const meta = CHANNEL_META[ch];
+    const chPool = pool.filter(e => {
+      if (ch === 'inbound') return e.source === 'inbound' || e.source === 'ringover';
+      if (ch === 'outbound') return e.source === 'outbound';
+      if (ch === 'chat') return e.source === 'chat' || e.source === 'crisp';
+      if (ch === 'email') return e.source === 'email';
+      return e.source === 'ticket' || e.source === 'manual';
+    });
+    const kpi = calcChannelKpi(chPool);
+    return `<div class="channel-card">
+      <div class="channel-card-header">
+        <span style="font-size:20px">${meta.icon}</span>
+        <span class="channel-card-title" style="color:${meta.color}">${meta.label}</span>
+      </div>
+      <div class="channel-kpis">
+        <div class="channel-kpi">
+          <div class="channel-kpi-val" style="color:${meta.color}">${kpi.volume}</div>
+          <div class="channel-kpi-label">Volume</div>
+        </div>
+        <div class="channel-kpi">
+          <div class="channel-kpi-val">${kpi.frt !== null ? kpi.frt + 'min' : '—'}</div>
+          <div class="channel-kpi-label">FRT</div>
+        </div>
+        <div class="channel-kpi">
+          <div class="channel-kpi-val">${kpi.dmt ? kpi.dmt + 'min' : '—'}</div>
+          <div class="channel-kpi-label">DMT</div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Pleine largeur si 1 canal
+  grid.style.gridTemplateColumns = channels.length === 1 ? '1fr' : '1fr 1fr';
+}
+
+// ===== P4 : TRI TRAITEMENTS (flèches + drag & drop) =====
+function renderTreatmentList() {
+  document.getElementById('treatment-count').textContent = customTreatmentTypes.length + ' types';
+  const MAX_QUICK = 5; // Les X premiers = accès rapide agents
+  document.getElementById('treatment-list').innerHTML = customTreatmentTypes.map((t, i) => {
+    const isQuick = i < MAX_QUICK;
+    return `<div class="treatment-row" draggable="true" data-index="${i}"
+      ondragstart="onTreatDragStart(event,${i})"
+      ondragover="onTreatDragOver(event,${i})"
+      ondragleave="onTreatDragLeave(event)"
+      ondrop="onTreatDrop(event,${i})">
+      <span class="treat-drag-handle" title="Glisser pour réordonner">⠿</span>
+      <div class="treat-order-btns">
+        <button class="treat-order-btn" onclick="moveTreatment(${i},-1)" ${i===0?'disabled':''} title="Monter">▲</button>
+        <button class="treat-order-btn" onclick="moveTreatment(${i},1)" ${i===customTreatmentTypes.length-1?'disabled':''} title="Descendre">▼</button>
+      </div>
+      <span style="flex:1">${t}</span>
+      ${isQuick ? `<span class="treat-priority-badge">Accès rapide</span>` : ''}
+      <button class="icon-btn" onclick="removeTreatmentType(${i})" title="Supprimer">✕</button>
+    </div>`;
+  }).join('');
+}
+
+let dragSrcIndex = null;
+
+function onTreatDragStart(e, i) {
+  dragSrcIndex = i;
+  e.target.classList.add('dragging');
+  e.dataTransfer.effectAllowed = 'move';
+}
+
+function onTreatDragOver(e, i) {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+  document.querySelectorAll('.treatment-row').forEach(r => r.classList.remove('drag-over'));
+  e.currentTarget.classList.add('drag-over');
+}
+
+function onTreatDragLeave(e) {
+  e.currentTarget.classList.remove('drag-over');
+}
+
+async function onTreatDrop(e, targetIndex) {
+  e.preventDefault();
+  document.querySelectorAll('.treatment-row').forEach(r => { r.classList.remove('drag-over'); r.classList.remove('dragging'); });
+  if (dragSrcIndex === null || dragSrcIndex === targetIndex) return;
+  const item = customTreatmentTypes.splice(dragSrcIndex, 1)[0];
+  customTreatmentTypes.splice(targetIndex, 0, item);
+  dragSrcIndex = null;
+  renderTreatmentList();
+  populateFilters();
+  await saveTreatmentsToFirestore();
+}
+
+async function moveTreatment(i, dir) {
+  const newIndex = i + dir;
+  if (newIndex < 0 || newIndex >= customTreatmentTypes.length) return;
+  const tmp = customTreatmentTypes[i];
+  customTreatmentTypes[i] = customTreatmentTypes[newIndex];
+  customTreatmentTypes[newIndex] = tmp;
+  renderTreatmentList();
+  populateFilters();
+  await saveTreatmentsToFirestore();
+}
+
+// ===== P5 : SNIPPET GOOGLE APPS SCRIPT =====
+// Ce bloc génère et affiche le script GAS à copier dans Google Sheets
+function showGASModal() {
+  const script = `// ============================================================
+// Task'in → Google Sheets — Script de synchronisation nocturne
+// Coller dans : Extensions > Apps Script > Code.gs
+// Déclencher : Déclencheurs > Quotidien (ex: 06:00–07:00)
+// ============================================================
+const FIREBASE_PROJECT_ID = "${typeof FIREBASE_PROJECT_ID !== 'undefined' ? FIREBASE_PROJECT_ID : 'trackingcallro'}";
+const FIREBASE_API_KEY    = "${typeof FIREBASE_API_KEY !== 'undefined' ? FIREBASE_API_KEY : ''}";
+const BASE_URL = \`https://firestore.googleapis.com/v1/projects/\${FIREBASE_PROJECT_ID}/databases/(default)/documents\`;
+
+function syncTaskinToSheets() {
+  const ss     = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet  = ss.getSheetByName("Données brutes") || ss.insertSheet("Données brutes");
+  
+  // En-têtes (première fois uniquement)
+  if (sheet.getLastRow() === 0) {
+    sheet.appendRow(["Date","Inbound Time","Start Time","Source","Description","Agent","Durée (min)"]);
+    sheet.getRange(1,1,1,7).setFontWeight("bold").setBackground("#2B4C7E").setFontColor("#FFFFFF");
+  }
+  
+  // Calcul de la plage : hier (00:00 → 23:59)
+  const yesterday = new Date(); yesterday.setDate(yesterday.getDate()-1);
+  const dayStart  = new Date(yesterday); dayStart.setHours(0,0,0,0);
+  const dayEnd    = new Date(yesterday); dayEnd.setHours(23,59,59,999);
+  
+  // Récupération Firestore
+  const url = \`\${BASE_URL}/time_entries?key=\${FIREBASE_API_KEY}&pageSize=1000\`;
+  const res  = UrlFetchApp.fetch(url);
+  const data = JSON.parse(res.getContentText());
+  const docs  = data.documents || [];
+  
+  let newRows = 0;
+  docs.forEach(doc => {
+    const f       = doc.fields || {};
+    const rawTime = f.startTime?.stringValue || "";
+    if (!rawTime) return;
+    const dt = new Date(rawTime);
+    if (dt < dayStart || dt > dayEnd) return;
+    
+    const d       = dt;
+    const start   = Utilities.formatDate(d, "Indian/Antananarivo", "HH:mm");
+    const source  = f.source?.stringValue   || "";
+    const desc    = f.desc?.stringValue     || "";
+    const agent   = f.agent?.stringValue    || "";
+    const dur     = Math.ceil(parseInt(f.durationSec?.integerValue||0)/60);
+    const inbound = f.inboundTime?.stringValue || "--:--";
+    
+    sheet.appendRow([
+      Utilities.formatDate(d,"Indian/Antananarivo","dd/MM/yyyy"),
+      inbound, start, source, desc, agent, dur
+    ]);
+    newRows++;
+  });
+  
+  // Log dans une feuille dédiée
+  const logSheet = ss.getSheetByName("Sync Log") || ss.insertSheet("Sync Log");
+  logSheet.appendRow([new Date(), \`\${newRows} ligne(s) ajoutée(s) pour \${Utilities.formatDate(yesterday,"Indian/Antananarivo","dd/MM/yyyy")}\`]);
+}`;
+
+  // Créer une modale dynamique
+  const overlay = document.createElement('div');
+  overlay.className = 'modal-overlay';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(30,42,58,.6);z-index:999;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(2px)';
+  overlay.innerHTML = `
+    <div class="modal" style="max-width:640px;max-height:85vh;overflow-y:auto">
+      <div class="modal-header">
+        <div class="modal-title">📊 Script Google Apps Script</div>
+        <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">×</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:13px;color:var(--text2);margin-bottom:12px">
+          Copie ce script dans <strong>Extensions → Apps Script</strong> de ton Google Sheets, puis configure un déclencheur quotidien (ex: 06h00).
+        </p>
+        <textarea readonly style="width:100%;height:340px;font-family:var(--mono);font-size:11px;padding:12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text);resize:vertical;outline:none">${script}</textarea>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="this.closest('.modal-overlay').remove()">Fermer</button>
+        <button class="btn btn-primary" onclick="navigator.clipboard.writeText(this.closest('.modal').querySelector('textarea').value).then(()=>{this.textContent='✓ Copié !';setTimeout(()=>this.textContent='Copier le script',2000)})">Copier le script</button>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
 }
 
 // ===== INIT =====
