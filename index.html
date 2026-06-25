@@ -294,8 +294,11 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .date-filter-bar label{font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.4px}
 .date-input{padding:7px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none;cursor:pointer}
 .date-input:focus{border-color:var(--ocean)}
-.date-reset-btn{padding:6px 12px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--text2);font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer}
-.date-reset-btn:hover{border-color:var(--ocean);color:var(--ocean)}
+.date-action-btn{padding:6px 14px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--text2);font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;transition:all .15s}
+.date-action-btn.pending{border-color:var(--ocean);background:var(--ocean);color:#fff}
+.date-action-btn.pending:hover{background:var(--ocean-deep)}
+.date-action-btn.applied{border-color:var(--red);color:var(--red)}
+.date-action-btn.applied:hover{background:var(--red-dim)}
 .date-sep{color:var(--text3);font-size:13px}
 
 /* ===== P2 : LEADERBOARD ===== */
@@ -347,6 +350,26 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .treat-order-btn:hover{border-color:var(--ocean);color:var(--ocean)}
 .treat-order-btns{display:flex;flex-direction:column;gap:2px;margin-right:6px}
 .treat-priority-badge{font-size:9px;padding:2px 6px;border-radius:99px;background:var(--ocean-dim);color:var(--ocean);font-weight:700;letter-spacing:.3px;margin-left:6px}
+/* ===== P3 : MOSAÏQUE KPI AGENTS ===== */
+.mosaic-header{display:flex;align-items:center;justify-content:space-between;margin:20px 0 12px;flex-wrap:wrap;gap:10px}
+.mosaic-header h3{font-family:var(--display);font-size:15px;font-weight:600;color:var(--text)}
+.mosaic-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-bottom:20px}
+.mosaic-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;cursor:pointer;transition:box-shadow .15s,border-color .15s}
+.mosaic-card:hover{border-color:var(--ocean);box-shadow:0 4px 16px rgba(43,76,126,.1)}
+.mosaic-card-top{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.mosaic-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;font-family:var(--font);background-size:cover;background-position:center;position:relative}
+.mosaic-status-dot{position:absolute;bottom:0;right:0;width:10px;height:10px;border-radius:50%;border:2px solid var(--surface)}
+.mosaic-status-dot.active{background:var(--green)}
+.mosaic-status-dot.idle{background:var(--text3)}
+.mosaic-agent-name{font-size:13px;font-weight:600;color:var(--text)}
+.mosaic-agent-task{font-size:11px;color:var(--text2);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:130px}
+.mosaic-kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mosaic-kpi{background:var(--surface2);border-radius:8px;padding:8px 10px;text-align:center}
+.mosaic-kpi-val{font-family:var(--display);font-size:17px;font-weight:600;color:var(--ocean)}
+.mosaic-kpi-label{font-size:9px;color:var(--text2);text-transform:uppercase;letter-spacing:.4px;margin-top:2px}
+.mosaic-timer{font-family:var(--mono);font-size:10px;color:var(--text3);margin-left:auto;flex-shrink:0}
+.mosaic-period-btn{padding:4px 10px;border-radius:6px;border:none;background:transparent;color:var(--text2);font-family:var(--font);font-size:11px;font-weight:600;cursor:pointer;transition:all .15s}
+.mosaic-period-btn.active{background:var(--ocean);color:#fff}
 </style>
 </head>
 <body>
@@ -518,11 +541,11 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     <!-- P1 : Filtres dates — visibles sur tous les onglets (Sup/Admin) ou agent -->
     <div class="date-filter-bar" id="date-filter-bar">
       <label>De</label>
-      <input type="date" class="date-input" id="filter-date-from" onchange="renderAll()">
+      <input type="date" class="date-input" id="filter-date-from" onchange="onDateInputChange()">
       <span class="date-sep">→</span>
       <label>À</label>
-      <input type="date" class="date-input" id="filter-date-to" onchange="renderAll()">
-      <button class="date-reset-btn" onclick="resetDateFilters()">✕ Réinitialiser</button>
+      <input type="date" class="date-input" id="filter-date-to" onchange="onDateInputChange()">
+      <button class="date-action-btn pending" id="date-action-btn" onclick="onDateActionBtn()">Appliquer</button>
       <span class="count-badge" id="date-range-label" style="margin-left:auto"></span>
     </div>
 
@@ -629,9 +652,25 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
         <div style="padding:12px 18px"><button class="btn btn-primary" onclick="saveDMT()">Enregistrer les DMT</button></div>
       </div>
 
+      <!-- Vue mosaïque KPI -->
+      <div id="mosaic-section" style="margin-bottom:16px">
+        <div class="mosaic-header">
+          <h3>Vue mosaïque — KPI individuels</h3>
+          <div style="display:flex;gap:6px;align-items:center">
+            <span style="font-size:11px;color:var(--text2);font-weight:600">Période :</span>
+            <div style="display:flex;gap:3px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:2px">
+              <button class="mosaic-period-btn active" data-mp="day"   onclick="setMosaicPeriod('day',this)">Jour</button>
+              <button class="mosaic-period-btn"        data-mp="week"  onclick="setMosaicPeriod('week',this)">Sem.</button>
+              <button class="mosaic-period-btn"        data-mp="month" onclick="setMosaicPeriod('month',this)">Mois</button>
+            </div>
+          </div>
+        </div>
+        <div class="mosaic-grid" id="mosaic-grid"></div>
+      </div>
+
       <div class="admin-card" style="margin-bottom:16px">
         <div class="admin-card-header">
-          <h3>Équipe en direct (Historique Sup)</h3>
+          <h3>Équipe en direct (liste)</h3>
           <span class="count-badge" id="team-live-count"></span>
         </div>
         <div id="team-live-list"></div>
@@ -1369,19 +1408,68 @@ function onSearchInput() {
   searchTimeout = setTimeout(renderAll, 300);
 }
 
+// ===== P1+P2 : BOUTON TOGGLE APPLIQUER / RÉINITIALISER =====
+let dateFilterApplied = false;
+
+function onDateInputChange() {
+  // Dès que l'utilisateur modifie une date, passer en état "Appliquer"
+  dateFilterApplied = false;
+  const btn = document.getElementById('date-action-btn');
+  if (btn) { btn.textContent = 'Appliquer'; btn.className = 'date-action-btn pending'; }
+  const from = document.getElementById('filter-date-from').value;
+  const to   = document.getElementById('filter-date-to').value;
+  const el   = document.getElementById('date-range-label');
+  if (el) el.textContent = (from || '…') + (from || to ? ' → ' : '') + (to || (from ? '…' : ''));
+}
+
+function onDateActionBtn() {
+  if (!dateFilterApplied) {
+    // État 1 → Appliquer
+    dateFilterApplied = true;
+    const btn = document.getElementById('date-action-btn');
+    if (btn) { btn.textContent = '✕ Réinitialiser'; btn.className = 'date-action-btn applied'; }
+    applyDateFilter();
+  } else {
+    // État 2 → Réinitialiser
+    resetDateFilters();
+  }
+}
+
+function applyDateFilter() {
+  updateDateRangeLabel();
+  renderAll();
+  // Recalculer leaderboard et vue globale sur la plage sélectionnée
+  if (currentUser && (currentUser.role === 'supervisor' || currentUser.role === 'admin')) {
+    renderSupKpis();
+    renderLeaderboard();
+    if (document.getElementById('mosaic-grid')) renderMosaicKpis();
+  }
+}
+
 function resetDateFilters() {
+  dateFilterApplied = false;
   document.getElementById('filter-date-from').value = '';
   document.getElementById('filter-date-to').value = '';
-  document.getElementById('date-range-label').textContent = '';
+  const el = document.getElementById('date-range-label');
+  if (el) el.textContent = '';
+  const btn = document.getElementById('date-action-btn');
+  if (btn) { btn.textContent = 'Appliquer'; btn.className = 'date-action-btn pending'; }
   renderAll();
+  if (currentUser && (currentUser.role === 'supervisor' || currentUser.role === 'admin')) {
+    renderSupKpis();
+    renderLeaderboard();
+    if (document.getElementById('mosaic-grid')) renderMosaicKpis();
+  }
 }
 
 function updateDateRangeLabel() {
   const from = document.getElementById('filter-date-from').value;
-  const to = document.getElementById('filter-date-to').value;
-  const el = document.getElementById('date-range-label');
+  const to   = document.getElementById('filter-date-to').value;
+  const el   = document.getElementById('date-range-label');
+  if (!el) return;
   if (from || to) {
-    el.textContent = (from || '…') + ' → ' + (to || '…');
+    const fmt = v => v ? new Date(v+'T00:00:00').toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit'}) : '…';
+    el.textContent = fmt(from) + ' → ' + fmt(to);
   } else {
     el.textContent = '';
   }
@@ -1460,6 +1548,19 @@ function getSupEntries() {
   const agentId = document.getElementById('sup-agent-filter')?.value || '';
   let pool = entries;
   if (agentId) pool = pool.filter(e => e.agent === agentId);
+  // Si filtre date appliqué, il prime
+  const fromVal = document.getElementById('filter-date-from')?.value;
+  const toVal   = document.getElementById('filter-date-to')?.value;
+  if (dateFilterApplied && (fromVal || toVal)) {
+    const fromDate = fromVal ? new Date(fromVal + 'T00:00:00') : null;
+    const toDate   = toVal   ? new Date(toVal   + 'T23:59:59') : null;
+    return pool.filter(e => {
+      const d = new Date(e.startTimeStr);
+      if (fromDate && d < fromDate) return false;
+      if (toDate   && d > toDate)   return false;
+      return true;
+    });
+  }
   if (supPeriod === 'day')   return pool.filter(e => isToday(e.startTimeStr));
   if (supPeriod === 'week')  return pool.filter(e => isThisWeek(e.startTimeStr));
   if (supPeriod === 'month') return pool.filter(e => {
@@ -1712,6 +1813,8 @@ async function renderRoleHome() {
   if (currentUser.role === 'supervisor') { renderSupervisorBanner(activeTimers); }
   if (currentUser.role === 'admin') { renderAdminBanner(); renderAdminHomeStats(); }
   renderTeamLiveList(activeTimers);
+  // P3 : mosaïque — passe les timers actifs pour les pastilles live
+  renderMosaicKpis(activeTimers);
 }
 
 function agentsOnly() { return TEAM.filter(u => u.role === 'agent'); }
@@ -2118,6 +2221,105 @@ async function saveProfile() {
   closeProfileModal();
 }
 
+
+// ===== P3 : MOSAÏQUE KPI AGENTS =====
+let mosaicPeriod = 'day';
+
+function setMosaicPeriod(p, btn) {
+  mosaicPeriod = p;
+  document.querySelectorAll('.mosaic-period-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderMosaicKpis();
+}
+
+function getMosaicEntries(agentId) {
+  const now = new Date();
+  // Priorité aux filtres dates si appliqués
+  const fromVal = document.getElementById('filter-date-from')?.value;
+  const toVal   = document.getElementById('filter-date-to')?.value;
+  let pool = agentId ? entries.filter(e => e.agent === agentId) : entries;
+  if (dateFilterApplied && (fromVal || toVal)) {
+    const fromDate = fromVal ? new Date(fromVal + 'T00:00:00') : null;
+    const toDate   = toVal   ? new Date(toVal   + 'T23:59:59') : null;
+    return pool.filter(e => {
+      const d = new Date(e.startTimeStr);
+      if (fromDate && d < fromDate) return false;
+      if (toDate   && d > toDate)   return false;
+      return true;
+    });
+  }
+  if (mosaicPeriod === 'day')   return pool.filter(e => isToday(e.startTimeStr));
+  if (mosaicPeriod === 'week')  return pool.filter(e => isThisWeek(e.startTimeStr));
+  if (mosaicPeriod === 'month') return pool.filter(e => {
+    const d = new Date(e.startTimeStr);
+    return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth();
+  });
+  return pool;
+}
+
+function renderMosaicKpis(activeTimers) {
+  const grid = document.getElementById('mosaic-grid');
+  if (!grid) return;
+  const agents = agentsOnly();
+  if (!agents.length) { grid.innerHTML = '<div class="empty">Aucun agent.</div>'; return; }
+
+  // activeTimers optionnel : si non fourni, utiliser les données Firestore live
+  const timerByAgent = {};
+  if (activeTimers) activeTimers.forEach(t => timerByAgent[t.agentId] = t);
+
+  grid.innerHTML = agents.map(a => {
+    const pool = getMosaicEntries(a.id);
+    const kpi  = calcKpiSet(pool);
+    const t    = timerByAgent[a.id];
+    const isActive = !!t;
+
+    // Timer live si actif
+    let timerStr = '';
+    if (isActive) {
+      const elapsed = Math.floor((Date.now() - t.startTime) / 1000);
+      const m = Math.floor(elapsed / 60), s = elapsed % 60;
+      timerStr = m + ':' + String(s).padStart(2, '0');
+    }
+
+    const avatarStyle = a.photo
+      ? `background-image:url(${a.photo});background-size:cover;background-color:transparent`
+      : `background:${a.color}20;color:${a.color}`;
+    const avatarContent = a.photo ? '' : a.initials;
+
+    return `<div class="mosaic-card" onclick="viewAgentDetail('${a.id}')">
+      <div class="mosaic-card-top">
+        <div class="mosaic-avatar" style="${avatarStyle}">
+          ${avatarContent}
+          <span class="mosaic-status-dot ${isActive ? 'active' : 'idle'}"></span>
+        </div>
+        <div style="flex:1;min-width:0">
+          <div class="mosaic-agent-name">${a.name}</div>
+          <div class="mosaic-agent-task">${isActive ? (t.desc || t.source) : 'Inactif'}</div>
+        </div>
+        ${isActive ? `<span class="mosaic-timer">${timerStr}</span>` : ''}
+      </div>
+      <div class="mosaic-kpis">
+        <div class="mosaic-kpi">
+          <div class="mosaic-kpi-val">${kpi.total}</div>
+          <div class="mosaic-kpi-label">Total</div>
+        </div>
+        <div class="mosaic-kpi">
+          <div class="mosaic-kpi-val">${kpi.count}</div>
+          <div class="mosaic-kpi-label">Tâches</div>
+        </div>
+        <div class="mosaic-kpi">
+          <div class="mosaic-kpi-val">${kpi.dmt}</div>
+          <div class="mosaic-kpi-label">DMT moy.</div>
+        </div>
+        <div class="mosaic-kpi">
+          <div class="mosaic-kpi-val">${kpi.frt}</div>
+          <div class="mosaic-kpi-label">FRT</div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
 // ===== P2 : LEADERBOARD =====
 let lbPeriod = 'day';
 let lbSortKey = 'volume';
@@ -2148,14 +2350,26 @@ function sortLeaderboard(key) {
 }
 
 function getLbEntries() {
+  // P1 : Si un filtre date est appliqué, il prime sur la période du leaderboard
+  const fromVal = document.getElementById('filter-date-from')?.value;
+  const toVal   = document.getElementById('filter-date-to')?.value;
+  if (dateFilterApplied && (fromVal || toVal)) {
+    const fromDate = fromVal ? new Date(fromVal + 'T00:00:00') : null;
+    const toDate   = toVal   ? new Date(toVal   + 'T23:59:59') : null;
+    return entries.filter(e => {
+      const d = new Date(e.startTimeStr);
+      if (fromDate && d < fromDate) return false;
+      if (toDate   && d > toDate)   return false;
+      return true;
+    });
+  }
+  // Sinon : filtre par période standard (défaut = jour)
   const now = new Date();
   return entries.filter(e => {
     const d = new Date(e.startTimeStr);
-    if (lbPeriod === 'day') return isToday(e.startTimeStr);
-    if (lbPeriod === 'week') return isThisWeek(e.startTimeStr);
-    if (lbPeriod === 'month') {
-      return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth();
-    }
+    if (lbPeriod === 'day')   return isToday(e.startTimeStr);
+    if (lbPeriod === 'week')  return isThisWeek(e.startTimeStr);
+    if (lbPeriod === 'month') return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth();
     return true;
   });
 }
