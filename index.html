@@ -350,6 +350,64 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .treat-order-btn:hover{border-color:var(--ocean);color:var(--ocean)}
 .treat-order-btns{display:flex;flex-direction:column;gap:2px;margin-right:6px}
 .treat-priority-badge{font-size:9px;padding:2px 6px;border-radius:99px;background:var(--ocean-dim);color:var(--ocean);font-weight:700;letter-spacing:.3px;margin-left:6px}
+
+/* ===== FEAT 1 : PDF PRINT ===== */
+@media print {
+  body * { visibility: hidden !important; }
+  #lb-print-zone, #lb-print-zone * { visibility: visible !important; }
+  #lb-print-zone { position: fixed; inset: 0; padding: 32px; background: #fff; }
+  .lb-print-header { margin-bottom: 20px; }
+  .lb-print-title { font-family: serif; font-size: 22px; font-weight: 700; color: #2B4C7E; }
+  .lb-print-sub { font-size: 12px; color: #6B7C93; margin-top: 4px; }
+  .lb-table table { width: 100%; border-collapse: collapse; }
+  .lb-table th, .lb-table td { border: 1px solid #E2E8F0; padding: 8px 12px; font-size: 12px; }
+  .lb-table th { background: #2B4C7E; color: #fff; }
+}
+
+/* ===== FEAT 2 : HISTOGRAMME 7J AGENT ===== */
+.agent-history-bar { margin: 20px 24px 0; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 18px; }
+.agent-history-title { font-size: 11px; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 12px; }
+.agent-history-bars { display: flex; align-items: flex-end; gap: 6px; height: 60px; }
+.agent-hbar-col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 4px; height: 100%; }
+.agent-hbar { width: 100%; border-radius: 3px 3px 0 0; min-height: 2px; background: var(--border2); transition: background .15s; cursor: default; position: relative; }
+.agent-hbar.today { background: var(--ocean); }
+.agent-hbar.has-data:hover { opacity: .8; }
+.agent-hbar-label { font-family: var(--mono); font-size: 9px; color: var(--text3); }
+.agent-hbar-val { font-family: var(--mono); font-size: 9px; color: var(--text2); }
+
+/* ===== FEAT 3 : BARRES KPI OBJECTIF ===== */
+.kpi-progress-bar { height: 4px; border-radius: 2px; background: var(--border); margin-top: 8px; overflow: hidden; }
+.kpi-progress-fill { height: 100%; border-radius: 2px; transition: width .4s ease; }
+.kpi-progress-fill.good { background: var(--green); }
+.kpi-progress-fill.warn { background: #DCAE1D; }
+.kpi-progress-fill.bad { background: var(--red); }
+.kpi-goal-label { font-size: 10px; color: var(--text3); margin-top: 3px; }
+.goals-section { padding: 14px 18px; border-top: 1px solid var(--border); }
+.goals-section h4 { font-size: 12px; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: .4px; margin-bottom: 12px; }
+.goal-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.goal-row label { font-size: 12px; color: var(--text); flex: 1; }
+.goal-input { width: 70px; padding: 5px 8px; border: 1px solid var(--border); border-radius: 6px; font-size: 12px; font-family: var(--mono); background: var(--surface2); color: var(--text); outline: none; }
+.goal-input:focus { border-color: var(--ocean); }
+.goal-unit { font-size: 11px; color: var(--text2); width: 40px; }
+
+/* ===== FEAT 5 : TABLE SCROLLABLE ===== */
+.entries-table-wrap { max-height: 520px; overflow-y: auto; border-radius: var(--radius); border: 1px solid var(--border); background: var(--surface); }
+.entries-table-wrap table { width: 100%; border-collapse: collapse; min-width: 800px; }
+.entries-table-wrap thead th { position: sticky; top: 0; z-index: 2; font-size: 10px; font-weight: 700; color: var(--text2); text-align: left; padding: 11px 16px; border-bottom: 1px solid var(--border); text-transform: uppercase; letter-spacing: .6px; background: var(--surface2); }
+.entries-table-wrap td { font-size: 13px; padding: 12px 16px; border-bottom: 1px solid var(--border); }
+.entries-table-wrap tr:last-child td { border-bottom: none; }
+.entries-table-wrap tr:hover td { background: var(--surface2); }
+.entries-table-wrap tr:hover .row-actions { opacity: 1; }
+
+/* ===== FEAT 8 : DONUT CHART ===== */
+.donut-section { padding: 20px 18px; border-top: 1px solid var(--border); }
+.donut-section-title { font-size: 11px; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 16px; }
+.donut-layout { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+.donut-legend { flex: 1; min-width: 160px; }
+.donut-legend-item { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-size: 12px; color: var(--text); }
+.donut-legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.donut-legend-pct { font-family: var(--mono); font-size: 11px; color: var(--text2); margin-left: auto; }
+
 /* ===== P3 : MOSAÏQUE KPI AGENTS ===== */
 .mosaic-header{display:flex;align-items:center;justify-content:space-between;margin:20px 0 12px;flex-wrap:wrap;gap:10px}
 .mosaic-header h3{font-family:var(--display);font-size:15px;font-weight:600;color:var(--text)}
@@ -458,19 +516,33 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     <div class="stat-card">
       <div class="stat-label">Durée totale (Jour)</div>
       <div class="stat-value" id="s-total">0h00</div>
+      <div class="kpi-progress-bar"><div class="kpi-progress-fill good" id="pb-total" style="width:0%"></div></div>
+      <div class="kpi-goal-label" id="gl-total"></div>
     </div>
     <div class="stat-card">
       <div class="stat-label">DMT Moyenne</div>
       <div class="stat-value" id="s-dmt" style="color:var(--ocean)">0min</div>
+      <div class="kpi-progress-bar"><div class="kpi-progress-fill good" id="pb-dmt" style="width:0%"></div></div>
+      <div class="kpi-goal-label" id="gl-dmt"></div>
     </div>
     <div class="stat-card">
       <div class="stat-label">First Reply Time</div>
       <div class="stat-value" id="s-frt" style="color:var(--clay)">0min</div>
+      <div class="kpi-progress-bar"><div class="kpi-progress-fill good" id="pb-frt" style="width:0%"></div></div>
+      <div class="kpi-goal-label" id="gl-frt"></div>
     </div>
     <div class="stat-card">
       <div class="stat-label">Tâches traitées</div>
       <div class="stat-value" id="s-count" style="color:var(--text2)">0</div>
+      <div class="kpi-progress-bar"><div class="kpi-progress-fill good" id="pb-count" style="width:0%"></div></div>
+      <div class="kpi-goal-label" id="gl-count"></div>
     </div>
+  </div>
+
+  <!-- FEAT 2 : Historique 7 jours agent -->
+  <div class="agent-history-bar agent-only" id="agent-history-bar">
+    <div class="agent-history-title">Mes 7 derniers jours</div>
+    <div class="agent-history-bars" id="agent-history-bars"></div>
   </div>
 
   <!-- P1 : Vue Globale Équipe & KPIs — filtres temporels + analyse individuelle -->
@@ -588,7 +660,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       <span class="count-badge" id="entry-count">0 entrées</span>
     </div>
 
-    <div class="entries-table">
+    <div class="entries-table-wrap">
       <table>
         <thead>
           <tr>
@@ -600,11 +672,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
             <th>Durée</th>
             <th></th>
           </tr>
-          <!-- Point 3 : colonne Source et Agent remplacées par des <select> -->
           <tr class="filter-row hidden" id="table-filters">
-            <th><input type="text" class="filter-input-tbl" id="f-inb" placeholder="Filtrer..." oninput="onSearchInput()"></th>
-            <th><input type="text" class="filter-input-tbl" id="f-start" placeholder="Filtrer..." oninput="onSearchInput()"></th>
-            <th>
+            <th style="background:var(--surface);border-bottom:2px solid var(--border)"><input type="text" class="filter-input-tbl" id="f-inb" placeholder="Filtrer..." oninput="onSearchInput()"></th>
+            <th style="background:var(--surface);border-bottom:2px solid var(--border)"><input type="text" class="filter-input-tbl" id="f-start" placeholder="Filtrer..." oninput="onSearchInput()"></th>
+            <th style="background:var(--surface);border-bottom:2px solid var(--border)">
               <select class="filter-select-tbl" id="f-src" onchange="onSearchInput()">
                 <option value="">Toutes</option>
                 <option value="inbound">Entrant</option>
@@ -614,14 +685,14 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
                 <option value="ticket">Ticket</option>
               </select>
             </th>
-            <th><input type="text" class="filter-input-tbl" id="f-desc-tbl" placeholder="Filtrer..." oninput="onSearchInput()"></th>
-            <th>
+            <th style="background:var(--surface);border-bottom:2px solid var(--border)"><input type="text" class="filter-input-tbl" id="f-desc-tbl" placeholder="Filtrer..." oninput="onSearchInput()"></th>
+            <th style="background:var(--surface);border-bottom:2px solid var(--border)">
               <select class="filter-select-tbl" id="f-agt" onchange="onSearchInput()">
                 <option value="">Tous</option>
               </select>
             </th>
-            <th><input type="text" class="filter-input-tbl" id="f-dur" placeholder="Filtrer..." oninput="onSearchInput()"></th>
-            <th></th>
+            <th style="background:var(--surface);border-bottom:2px solid var(--border)"><input type="text" class="filter-input-tbl" id="f-dur" placeholder="Filtrer..." oninput="onSearchInput()"></th>
+            <th style="background:var(--surface);border-bottom:2px solid var(--border)"></th>
           </tr>
         </thead>
         <tbody id="entries-body"></tbody>
@@ -668,12 +739,44 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
         <div class="mosaic-grid" id="mosaic-grid"></div>
       </div>
 
-      <div class="admin-card" style="margin-bottom:16px">
-        <div class="admin-card-header">
-          <h3>Équipe en direct (liste)</h3>
-          <span class="count-badge" id="team-live-count"></span>
-        </div>
+      <details class="team-accordion" id="team-live-accordion" style="margin-bottom:16px;border-radius:var(--radius);overflow:hidden;border:1px solid var(--border)">
+        <summary class="team-summary" style="background:var(--surface2)">
+          <span>Équipe en direct (liste)</span>
+          <span class="count-badge" id="team-live-count" style="margin-left:8px"></span>
+        </summary>
         <div id="team-live-list"></div>
+      </details>
+
+      <!-- FEAT 3 : Objectifs journaliers visibles Sup -->
+      <div class="admin-card" id="goals-sup-card" style="margin-bottom:16px">
+        <div class="admin-card-header">
+          <h3>Objectifs journaliers</h3>
+          <span class="count-badge">Modifiable par Admin &amp; Sup</span>
+        </div>
+        <div class="goals-section">
+          <h4>Seuils cibles pour les agents</h4>
+          <div class="goal-row">
+            <label>Tâches / jour</label>
+            <input class="goal-input" type="number" id="goal-count-sup" min="1" placeholder="20">
+            <span class="goal-unit">tâches</span>
+          </div>
+          <div class="goal-row">
+            <label>Durée totale / jour</label>
+            <input class="goal-input" type="number" id="goal-total-sup" min="1" placeholder="360">
+            <span class="goal-unit">minutes</span>
+          </div>
+          <div class="goal-row">
+            <label>DMT cible max.</label>
+            <input class="goal-input" type="number" id="goal-dmt-sup" min="1" placeholder="8">
+            <span class="goal-unit">minutes</span>
+          </div>
+          <div class="goal-row">
+            <label>FRT cible max.</label>
+            <input class="goal-input" type="number" id="goal-frt-sup" min="1" placeholder="3">
+            <span class="goal-unit">minutes</span>
+          </div>
+          <button class="btn btn-primary" style="margin-top:8px" onclick="saveGoalsSup()">Enregistrer les objectifs</button>
+        </div>
       </div>
 
       <div class="admin-card">
@@ -688,14 +791,21 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 
     <div id="admin-panel" class="hidden">
       <div class="admin-grid">
+        <!-- FEAT 6 : Comptes équipe en accordéon -->
         <div class="admin-card">
           <div class="admin-card-header">
             <h3>Comptes équipe</h3>
             <span class="count-badge" id="team-count">0 comptes</span>
           </div>
-          <button class="btn btn-primary" style="width:100%;margin-bottom:12px" onclick="openCreateAccountModal()">+ Ajouter un compte</button>
-          <div id="team-list"></div>
+          <button class="btn btn-primary" style="width:calc(100% - 36px);margin:12px 18px 0" onclick="openCreateAccountModal()">+ Ajouter un compte</button>
+          <details class="team-accordion" id="team-list-accordion" style="margin:8px 0 0;border-radius:0;border:none;border-top:1px solid var(--border)">
+            <summary class="team-summary" style="background:var(--surface2);font-size:12px;padding:10px 18px">
+              Voir la liste des comptes
+            </summary>
+            <div id="team-list"></div>
+          </details>
         </div>
+        <!-- FEAT 7 : Types de traitement en accordéon -->
         <div class="admin-card">
           <div class="admin-card-header">
             <h3>Types de traitement</h3>
@@ -707,7 +817,12 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
             <button class="btn btn-primary" onclick="addTreatmentType()">Ajouter</button>
             <div class="emoji-picker hidden" id="emoji-picker" onclick="event.stopPropagation()"></div>
           </div>
-          <div id="treatment-list"></div>
+          <details class="team-accordion" id="treatment-list-accordion" style="border-radius:0;border:none;border-top:1px solid var(--border)">
+            <summary class="team-summary" style="background:var(--surface2);font-size:12px;padding:10px 18px">
+              Voir la liste des types
+            </summary>
+            <div id="treatment-list"></div>
+          </details>
         </div>
       </div>
       <div class="admin-card" style="margin-top:16px">
@@ -749,18 +864,63 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
           </select>
         </div>
         <div id="evolution-chart" class="evolution-chart"></div>
+        <!-- FEAT 8 : Donut répartition types de traitement -->
+        <div class="donut-section">
+          <div class="donut-section-title">Répartition des types de traitement</div>
+          <div class="donut-layout">
+            <svg id="donut-svg" width="140" height="140" viewBox="0 0 140 140"></svg>
+            <div class="donut-legend" id="donut-legend"></div>
+          </div>
+        </div>
+      </div>
+      <!-- FEAT 3 : Section objectifs journaliers (Admin + Sup) -->
+      <div class="admin-card" style="margin-top:16px" id="goals-admin-card">
+        <div class="admin-card-header">
+          <h3>Objectifs journaliers</h3>
+          <span class="count-badge">Admin &amp; Superviseur</span>
+        </div>
+        <div class="goals-section">
+          <h4>Seuils cibles pour les agents</h4>
+          <div class="goal-row">
+            <label>Tâches / jour</label>
+            <input class="goal-input" type="number" id="goal-count" min="1" placeholder="20">
+            <span class="goal-unit">tâches</span>
+          </div>
+          <div class="goal-row">
+            <label>Durée totale / jour</label>
+            <input class="goal-input" type="number" id="goal-total" min="1" placeholder="360">
+            <span class="goal-unit">minutes</span>
+          </div>
+          <div class="goal-row">
+            <label>DMT cible max.</label>
+            <input class="goal-input" type="number" id="goal-dmt" min="1" placeholder="8">
+            <span class="goal-unit">minutes</span>
+          </div>
+          <div class="goal-row">
+            <label>FRT cible max.</label>
+            <input class="goal-input" type="number" id="goal-frt" min="1" placeholder="3">
+            <span class="goal-unit">minutes</span>
+          </div>
+          <button class="btn btn-primary" style="margin-top:8px" onclick="saveGoals()">Enregistrer les objectifs</button>
+        </div>
       </div>
     </div>
   </div>
 
     <!-- P2 : Leaderboard panel -->
     <div id="leaderboard-panel" class="hidden" style="padding:0">
+      <div id="lb-print-zone">
+        <div class="lb-print-header" style="display:none" id="lb-print-header">
+          <div class="lb-print-title">🏆 Task'in — Classement des agents</div>
+          <div class="lb-print-sub" id="lb-print-sub"></div>
+        </div>
       <div class="lb-header">
         <span style="font-family:var(--display);font-size:16px;font-weight:600;color:var(--text)">🏆 Classement des agents</span>
         <button class="lb-period-btn active" data-lbp="day" onclick="setLbPeriod('day',this)">Aujourd'hui</button>
         <button class="lb-period-btn" data-lbp="week" onclick="setLbPeriod('week',this)">Cette semaine</button>
         <button class="lb-period-btn" data-lbp="month" onclick="setLbPeriod('month',this)">Ce mois</button>
         <button class="lb-period-btn" data-lbp="all" onclick="setLbPeriod('all',this)">Tout</button>
+        <button class="btn btn-ghost" onclick="exportLeaderboardPDF()" style="margin-left:auto;background:var(--surface);color:var(--text2);border-color:var(--border)">↓ PDF</button>
       </div>
       <div class="lb-table">
         <table>
@@ -776,6 +936,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
           <tbody id="leaderboard-body"></tbody>
         </table>
       </div>
+      </div><!-- /lb-print-zone -->
     </div>
 
 </div>
@@ -1087,6 +1248,14 @@ function applyRoleUI() {
   document.getElementById('stats-grid-agent').classList.toggle('hidden', role !== 'agent');
   document.getElementById('team-accordion').classList.toggle('hidden', role === 'agent');
   document.getElementById('stats-grid-admin-home').classList.toggle('hidden', role !== 'admin');
+  // C4 : agent-history-bar uniquement pour agent
+  const histBar = document.getElementById('agent-history-bar');
+  if (histBar) histBar.classList.toggle('hidden', role !== 'agent');
+  // C5 : objectifs — goals-admin-card visible Admin seulement, goals-sup-card visible Sup+Admin
+  const goalsAdmin = document.getElementById('goals-admin-card');
+  if (goalsAdmin) goalsAdmin.classList.toggle('hidden', role !== 'admin');
+  const goalsSup = document.getElementById('goals-sup-card');
+  if (goalsSup) goalsSup.classList.toggle('hidden', role === 'agent');
 
   // Dashboard live permanent (Sup/Admin)
   document.getElementById('permanent-live-panel').classList.toggle('hidden', role === 'agent');
@@ -1120,7 +1289,7 @@ function applyRoleUI() {
     const homeTab = document.getElementById('tab-home');
     if (homeTab) homeTab.classList.add('active');
     document.querySelector('.toolbar').classList.add('hidden');
-    document.querySelector('.entries-table').classList.add('hidden');
+    document.querySelector('.entries-table-wrap').classList.add('hidden');
 
     setInterval(fetchPermanentLiveAgents, 15000);
     fetchPermanentLiveAgents();
@@ -1164,6 +1333,7 @@ async function refreshApp() {
   populateFilters();
   await loadTreatmentsFromFirestore();
   await loadDMT();
+  await loadGoals();
   await loadEntries();
 }
 
@@ -1630,6 +1800,27 @@ function renderStats(filtered) {
   document.getElementById('s-frt').textContent   = myKpi.frt;
   document.getElementById('s-count').textContent = myKpi.count;
 
+  // FEAT 2+3 : barres de progression + historique 7j
+  if (currentUser.role === 'agent') {
+    // C6 : passer les valeurs numériques brutes pour que parseMinVal fonctionne correctement
+    const totalMin = Math.round(todayEntries.reduce((s,e)=>s+e.durationSec,0) / 60);
+    const dmtMin   = todayEntries.length ? Math.floor(todayEntries.reduce((s,e)=>s+e.durationSec,0) / todayEntries.length / 60) : 0;
+    const frtVals  = todayEntries.reduce((acc,e) => {
+      if (e.inboundTime && e.inboundTime !== '--:--') {
+        const [ih,im] = e.inboundTime.split(':').map(Number);
+        if (!isNaN(ih)&&!isNaN(im)) {
+          const sd=new Date(e.startTimeStr); const ind=new Date(sd); ind.setHours(ih,im,0,0);
+          const diff=Math.floor((sd-ind)/1000);
+          if (diff>=0&&diff<86400) acc.push(Math.floor(diff/60));
+        }
+      }
+      return acc;
+    }, []);
+    const frtMin = frtVals.length ? Math.round(frtVals.reduce((s,v)=>s+v,0)/frtVals.length) : null;
+    renderKpiProgressBars(totalMin, dmtMin, frtMin, todayEntries.length);
+    renderAgentHistory();
+  }
+
   // Accordéon Sup/Admin — délégué à renderSupKpis()
   if (currentUser.role === 'supervisor' || currentUser.role === 'admin') {
     renderSupKpis();
@@ -1705,7 +1896,7 @@ function switchTab(view, btn) {
   const showTable = !isAdminView && !isHomeView && !isLeaderboard;
 
   document.querySelector('.toolbar').classList.toggle('hidden', !showTable);
-  document.querySelector('.entries-table').classList.toggle('hidden', !showTable);
+  document.querySelector('.entries-table-wrap').classList.toggle('hidden', !showTable);
   document.getElementById('admin-panel').classList.toggle('hidden', !isAdminView);
   document.getElementById('team-live-panel').classList.toggle('hidden', !isHomeView && !isTeamView);
   document.getElementById('leaderboard-panel').classList.toggle('hidden', !isLeaderboard);
@@ -1721,7 +1912,7 @@ function switchTab(view, btn) {
 let customTreatmentTypes = [...TREATMENT_TYPES_DEFAULT];
 
 function renderAdminPanel() {
-  renderTeamList(); renderTreatmentList(); renderAdminStats(); populateChartScopeSelect(); renderEvolutionChart(); renderChannelMatrix();
+  renderTeamList(); renderTreatmentList(); renderAdminStats(); populateChartScopeSelect(); renderEvolutionChart(); renderChannelMatrix(); renderGoalInputs();
 }
 
 function renderTeamList() {
@@ -1815,6 +2006,8 @@ async function renderRoleHome() {
   renderTeamLiveList(activeTimers);
   // P3 : mosaïque — passe les timers actifs pour les pastilles live
   renderMosaicKpis(activeTimers);
+  // FEAT 3 : objectifs lisibles par Sup aussi
+  renderGoalInputs();
 }
 
 function agentsOnly() { return TEAM.filter(u => u.role === 'agent'); }
@@ -1884,7 +2077,7 @@ function viewAgentDetail(agentId) {
   document.getElementById('team-live-panel').classList.add('hidden');
   document.getElementById('admin-panel').classList.add('hidden');
   document.querySelector('.toolbar').classList.remove('hidden');
-  document.querySelector('.entries-table').classList.remove('hidden');
+  document.querySelector('.entries-table-wrap').classList.remove('hidden');
   document.getElementById('filter-agent').value = agentId;
   renderAll();
 }
@@ -1956,6 +2149,8 @@ function renderEvolutionChart() {
     return `<div class="evo-bar-col"><span class="evo-bar-value">${b.totalSec>0?fmtDuration(b.totalSec):''}</span><div class="evo-bar" style="height:${heightPct}%"></div><span class="evo-bar-label">${label}</span></div>`;
   }).join('');
   document.getElementById('evolution-chart').innerHTML = `<div class="evo-bars">${barsHtml}</div>`;
+  // FEAT 8 : Donut synchronisé avec la même période
+  renderDonutChart();
 }
 
 // ===== TIME PICKER =====
@@ -2316,6 +2511,228 @@ function renderMosaicKpis(activeTimers) {
           <div class="mosaic-kpi-label">FRT</div>
         </div>
       </div>
+    </div>`;
+  }).join('');
+}
+
+
+// ===== FEAT 1 : EXPORT PDF LEADERBOARD =====
+function exportLeaderboardPDF() {
+  const periodLabels = { day: "Aujourd'hui", week: "Cette semaine", month: "Ce mois", all: "Tout" };
+  const sub = document.getElementById('lb-print-sub');
+  if (sub) sub.textContent = `Période : ${periodLabels[lbPeriod] || lbPeriod} — Généré le ${new Date().toLocaleDateString('fr-FR')}`;
+  const header = document.getElementById('lb-print-header');
+  if (header) header.style.display = 'block';
+  window.print();
+  setTimeout(() => { if (header) header.style.display = 'none'; }, 1000);
+}
+
+// ===== FEAT 2 : HISTOGRAMME 7 JOURS AGENT =====
+function renderAgentHistory() {
+  const container = document.getElementById('agent-history-bars');
+  if (!container || currentUser.role !== 'agent') return;
+  const today = new Date();
+  const buckets = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(today);
+    d.setDate(today.getDate() - i);
+    d.setHours(0, 0, 0, 0);
+    buckets.push({ date: d, count: 0 });
+  }
+  entries.filter(e => e.agent === currentUser.id).forEach(e => {
+    const d = new Date(e.startTimeStr);
+    const bucket = buckets.find(b => b.date.toDateString() === d.toDateString());
+    if (bucket) bucket.count++;
+  });
+  const max = Math.max(...buckets.map(b => b.count), 1);
+  container.innerHTML = buckets.map((b, i) => {
+    const isToday = i === 6;
+    const pct = Math.max((b.count / max) * 100, b.count > 0 ? 8 : 2);
+    const label = b.date.toLocaleDateString('fr-FR', { weekday: 'short' }).slice(0, 2);
+    return `<div class="agent-hbar-col" title="${b.date.toLocaleDateString('fr-FR')} — ${b.count} tâche(s)">
+      <span class="agent-hbar-val">${b.count > 0 ? b.count : ''}</span>
+      <div class="agent-hbar ${isToday ? 'today' : ''} ${b.count > 0 ? 'has-data' : ''}" style="height:${pct}%"></div>
+      <span class="agent-hbar-label">${label}</span>
+    </div>`;
+  }).join('');
+}
+
+// ===== FEAT 3 : BARRES KPI OBJECTIF =====
+let agentGoals = { count: 20, total: 360, dmt: 8, frt: 3 };
+
+async function loadGoals() {
+  try {
+    const res = await fetch(`${BASE_URL}/settings/goals?key=${FIREBASE_API_KEY}`);
+    if (res.status === 404) return;
+    const data = await res.json();
+    const f = data.fields || {};
+    agentGoals = {
+      count: parseInt(f.count?.integerValue || 20),
+      total: parseInt(f.total?.integerValue || 360),
+      dmt:   parseInt(f.dmt?.integerValue   || 8),
+      frt:   parseInt(f.frt?.integerValue   || 3),
+    };
+    renderGoalInputs();
+  } catch(e) { console.error('loadGoals:', e); }
+}
+
+function renderGoalInputs() {
+  const gi = (id, val) => { const el = document.getElementById(id); if (el) el.value = val; };
+  // Admin inputs
+  gi('goal-count', agentGoals.count);
+  gi('goal-total', agentGoals.total);
+  gi('goal-dmt',   agentGoals.dmt);
+  gi('goal-frt',   agentGoals.frt);
+  // Sup inputs (même données)
+  gi('goal-count-sup', agentGoals.count);
+  gi('goal-total-sup', agentGoals.total);
+  gi('goal-dmt-sup',   agentGoals.dmt);
+  gi('goal-frt-sup',   agentGoals.frt);
+}
+
+// saveGoals pour le superviseur — lit les inputs -sup
+async function saveGoalsSup() {
+  agentGoals = {
+    count: parseInt(document.getElementById('goal-count-sup')?.value || 20),
+    total: parseInt(document.getElementById('goal-total-sup')?.value || 360),
+    dmt:   parseInt(document.getElementById('goal-dmt-sup')?.value   || 8),
+    frt:   parseInt(document.getElementById('goal-frt-sup')?.value   || 3),
+  };
+  const body = { fields: {
+    count: { integerValue: String(agentGoals.count) },
+    total: { integerValue: String(agentGoals.total) },
+    dmt:   { integerValue: String(agentGoals.dmt)   },
+    frt:   { integerValue: String(agentGoals.frt)   },
+  }};
+  try {
+    await fetch(`${BASE_URL}/settings/goals?key=${FIREBASE_API_KEY}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+    renderGoalInputs();
+    alert('Objectifs enregistrés ✓');
+  } catch(e) { console.error(e); }
+}
+
+async function saveGoals() {
+  agentGoals = {
+    count: parseInt(document.getElementById('goal-count')?.value || 20),
+    total: parseInt(document.getElementById('goal-total')?.value || 360),
+    dmt:   parseInt(document.getElementById('goal-dmt')?.value   || 8),
+    frt:   parseInt(document.getElementById('goal-frt')?.value   || 3),
+  };
+  const body = { fields: {
+    count: { integerValue: String(agentGoals.count) },
+    total: { integerValue: String(agentGoals.total) },
+    dmt:   { integerValue: String(agentGoals.dmt)   },
+    frt:   { integerValue: String(agentGoals.frt)   },
+  }};
+  try {
+    await fetch(`${BASE_URL}/settings/goals?key=${FIREBASE_API_KEY}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+    alert('Objectifs enregistrés ✓');
+    renderStats([]); // force refresh des barres
+  } catch(e) { console.error(e); }
+}
+
+function parseMinVal(str) {
+  // Convertit "0h00" ou "Xmin" en minutes
+  if (!str || str === '--') return null;
+  if (str.includes('h')) {
+    const [h, m] = str.split('h');
+    return parseInt(h) * 60 + (parseInt(m) || 0);
+  }
+  return parseInt(str) || null;
+}
+
+function renderKpiProgressBars(totalMin, dmtMin, frtMin, countVal) {
+  if (currentUser.role !== 'agent') return;
+  // C6 : valeurs numériques reçues directement (minutes/entiers)
+  totalMin = totalMin !== null && totalMin !== undefined ? Number(totalMin) : null;
+  dmtMin   = dmtMin   !== null && dmtMin   !== undefined ? Number(dmtMin)   : null;
+  frtMin   = frtMin   !== null && frtMin   !== undefined ? Number(frtMin)   : null;
+  countVal = countVal !== null && countVal !== undefined ? Number(countVal) : 0;
+
+  const setBar = (id, val, goal, invert, labelId, unit) => {
+    const bar = document.getElementById(id);
+    const lbl = document.getElementById(labelId);
+    if (!bar || val === null || !goal) return;
+    const ratio = val / goal;
+    const pct = Math.min(ratio * 100, 100);
+    let cls = 'good';
+    if (invert) { cls = ratio <= 1 ? 'good' : ratio <= 1.3 ? 'warn' : 'bad'; }
+    else        { cls = ratio >= 1 ? 'good' : ratio >= 0.6 ? 'warn' : 'bad'; }
+    bar.style.width = pct + '%';
+    bar.className = 'kpi-progress-fill ' + cls;
+    if (lbl) lbl.textContent = `${val}${unit} / objectif ${goal}${unit}`;
+  };
+
+  setBar('pb-total', totalMin, agentGoals.total, false, 'gl-total', 'min');
+  setBar('pb-count', countVal, agentGoals.count, false, 'gl-count', '');
+  setBar('pb-dmt',   dmtMin,   agentGoals.dmt,   true,  'gl-dmt',   'min');
+  setBar('pb-frt',   frtMin,   agentGoals.frt,   true,  'gl-frt',   'min');
+}
+
+// ===== FEAT 8 : DONUT CHART TYPES DE TRAITEMENT =====
+const DONUT_COLORS = ['#2B4C7E','#E98A7D','#3B8C6E','#DCAE1D','#7B68EE','#FF7F50','#20B2AA','#9370DB','#4169E1','#CD853F'];
+
+function renderDonutChart() {
+  const svg = document.getElementById('donut-svg');
+  const legend = document.getElementById('donut-legend');
+  if (!svg || !legend) return;
+
+  const period = document.getElementById('chart-period')?.value || 'week';
+  const now = new Date();
+  let pool = entries;
+  if (period === 'week')  pool = pool.filter(e => isThisWeek(e.startTimeStr));
+  else if (period === 'month') pool = pool.filter(e => {
+    const d = new Date(e.startTimeStr);
+    return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth();
+  });
+  else pool = pool.filter(e => isToday(e.startTimeStr));
+
+  // Compter par type (extrait du début de desc ou treatment)
+  const counts = {};
+  pool.forEach(e => {
+    const key = e.treatment || (e.desc ? e.desc.split(' - ')[0].trim() : 'Autre');
+    const label = key.length > 20 ? key.slice(0, 18) + '…' : key;
+    counts[label] = (counts[label] || 0) + 1;
+  });
+
+  let sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+  const total = sorted.reduce((s, [, v]) => s + v, 0);
+  if (total === 0) { svg.innerHTML = ''; legend.innerHTML = '<div style="color:var(--text3);font-size:12px">Aucune donnée</div>'; return; }
+
+  // Regrouper les < 3% en "Autres"
+  const main = sorted.filter(([, v]) => v / total >= 0.03);
+  const others = sorted.filter(([, v]) => v / total < 0.03);
+  if (others.length) {
+    const othersTotal = others.reduce((s, [, v]) => s + v, 0);
+    main.push(['Autres', othersTotal]);
+  }
+
+  // Dessiner le donut SVG
+  const cx = 70, cy = 70, r = 54, innerR = 30;
+  let angle = -Math.PI / 2;
+  let paths = '';
+  main.forEach(([label, val], i) => {
+    const slice = (val / total) * 2 * Math.PI;
+    const x1 = cx + r * Math.cos(angle), y1 = cy + r * Math.sin(angle);
+    const x2 = cx + r * Math.cos(angle + slice), y2 = cy + r * Math.sin(angle + slice);
+    const xi1 = cx + innerR * Math.cos(angle), yi1 = cy + innerR * Math.sin(angle);
+    const xi2 = cx + innerR * Math.cos(angle + slice), yi2 = cy + innerR * Math.sin(angle + slice);
+    const large = slice > Math.PI ? 1 : 0;
+    const color = DONUT_COLORS[i % DONUT_COLORS.length];
+    paths += `<path d="M${xi1},${yi1} L${x1},${y1} A${r},${r} 0 ${large},1 ${x2},${y2} L${xi2},${yi2} A${innerR},${innerR} 0 ${large},0 ${xi1},${yi1}" fill="${color}" stroke="var(--surface)" stroke-width="2" />`;
+    angle += slice;
+  });
+  // Total au centre
+  paths += `<text x="${cx}" y="${cy}" text-anchor="middle" dy="0.35em" font-size="14" font-weight="700" fill="var(--text)" font-family="var(--display)">${total}</text>`;
+  svg.innerHTML = paths;
+
+  // Légende
+  legend.innerHTML = main.map(([label, val], i) => {
+    const pct = Math.round((val / total) * 100);
+    return `<div class="donut-legend-item">
+      <div class="donut-legend-dot" style="background:${DONUT_COLORS[i % DONUT_COLORS.length]}"></div>
+      <span>${label}</span>
+      <span class="donut-legend-pct">${val} · ${pct}%</span>
     </div>`;
   }).join('');
 }
