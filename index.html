@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Task'in - Time Tracker</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&family=Spline+Sans+Mono:wght@500;600&display=swap');
 
@@ -428,6 +429,40 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .mosaic-timer{font-family:var(--mono);font-size:10px;color:var(--text3);margin-left:auto;flex-shrink:0}
 .mosaic-period-btn{padding:4px 10px;border-radius:6px;border:none;background:transparent;color:var(--text2);font-family:var(--font);font-size:11px;font-weight:600;cursor:pointer;transition:all .15s}
 .mosaic-period-btn.active{background:var(--ocean);color:#fff}
+
+/* ===== DOCUMENTATION ===== */
+.doc-toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.doc-card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.doc-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;cursor:pointer;transition:border-color .15s}
+.doc-card:hover{border-color:var(--ocean)}
+.doc-card-title{font-family:var(--display);font-size:15px;font-weight:600;color:var(--text);margin-bottom:6px}
+.doc-card-desc{font-size:12px;color:var(--text2);margin-bottom:10px;line-height:1.4}
+.doc-tag{font-size:10px;background:var(--surface2);color:var(--text2);padding:3px 8px;border-radius:99px;margin-right:4px;border:1px solid var(--border)}
+.doc-format-badge{font-size:10px;padding:3px 9px;border-radius:99px;font-weight:600;display:inline-block;margin-top:8px}
+.doc-fmt-narrative{background:var(--ocean-dim);color:var(--ocean)}
+.doc-fmt-action_table{background:var(--green-dim);color:var(--green)}
+.doc-fmt-supplier_guide{background:var(--amber-dim);color:var(--amber)}
+.doc-fmt-role_guide{background:var(--bloom-dim);color:#A34C68}
+.doc-fmt-hybrid{background:var(--clay-dim);color:var(--clay)}
+.doc-empty{color:var(--text3);font-style:italic;padding:40px;text-align:center;grid-column:1/-1}
+.doc-import-banner{background:var(--amber-dim);border:1px solid var(--amber);color:#8A6A0E;border-radius:9px;padding:10px 14px;font-size:12px;margin-bottom:14px}
+.doc-dropzone{border:2px dashed var(--border);border-radius:10px;padding:26px;text-align:center;color:var(--text2);font-size:13px;cursor:pointer;margin:10px 0}
+.doc-dropzone:hover{border-color:var(--ocean)}
+.doc-dropzone.dragover{border-color:var(--ocean);background:var(--ocean-dim)}
+.doc-block{border:1px solid var(--border);border-radius:9px;padding:10px;margin-bottom:8px;background:var(--surface2)}
+.doc-block-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.doc-block-head select{font-size:12px;padding:3px 6px;width:auto}
+.doc-block-actions{display:flex;gap:4px}
+.doc-block-actions button{font-size:11px;padding:3px 7px}
+.doc-table-row{display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr auto;gap:6px;margin-bottom:6px}
+.doc-table-row input,.doc-table-row textarea{font-size:12px;padding:6px}
+.doc-list-row{display:flex;gap:6px;margin-bottom:6px}
+.doc-list-row input{flex:1}
+.doc-read-block{margin-bottom:14px;font-size:13px;line-height:1.5}
+.doc-read-callout{background:var(--ocean-dim);border-radius:9px;padding:10px 14px}
+.doc-read-table{width:100%;border-collapse:collapse;font-size:12px}
+.doc-read-table th{background:var(--ocean);color:#fff;text-align:left;padding:8px}
+.doc-read-table td{border-bottom:1px solid var(--border);padding:8px;vertical-align:top}
 </style>
 </head>
 <body>
@@ -616,6 +651,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     <button class="tab hidden" id="tab-week-role" onclick="switchTab('week',this)">Cette semaine</button>
     <button class="tab" id="tab-team" onclick="switchTab('team',this)">Équipe</button>
     <button class="tab hidden" id="tab-leaderboard" onclick="switchTab('leaderboard',this)">🏆 Classement</button>
+    <button class="tab" id="tab-documentation" onclick="switchTab('documentation',this)">📄 Documentation</button>
     <button class="tab" id="tab-admin" onclick="switchTab('admin',this)">Administration</button>
   </div>
 
@@ -959,6 +995,27 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       </div><!-- /lb-print-zone -->
     </div>
 
+    <!-- DOCUMENTATION -->
+    <div id="documentation-panel" class="hidden" style="padding:0">
+      <div class="doc-toolbar">
+        <div class="search-box-doc">
+          <input type="text" class="search-input" id="doc-search-input" placeholder="Rechercher une procédure..." oninput="docRenderList()" style="width:260px">
+        </div>
+        <select class="filter-select" id="doc-format-filter" onchange="docRenderList()">
+          <option value="__all">Tous les formats</option>
+          <option value="narrative">Narrative</option>
+          <option value="action_table">Tableau d'action</option>
+          <option value="supplier_guide">Fiche fournisseur</option>
+          <option value="role_guide">Rôle / Organisation</option>
+          <option value="hybrid">Hybride</option>
+        </select>
+        <span class="count-badge" id="doc-count-badge" style="margin-left:auto">…</span>
+        <button class="btn btn-ghost doc-edit-only hidden" onclick="docOpenImportModal()">⬆ Importer un fichier</button>
+        <button class="btn btn-primary doc-edit-only hidden" onclick="docOpenEditor(null)">+ Nouvelle procédure</button>
+      </div>
+      <div class="doc-card-grid" id="doc-card-grid"></div>
+    </div>
+
 </div>
 
 <!-- MODALES INCHANGÉES -->
@@ -986,6 +1043,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
         <select class="form-select" id="account-role-input">
           <option value="agent">Agent</option>
           <option value="supervisor">Superviseur</option>
+          <option value="formateur">Formateur</option>
           <option value="admin">Admin</option>
         </select>
       </div>
@@ -1030,6 +1088,93 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     <div class="modal-footer" id="create-account-footer">
       <button class="btn btn-ghost" onclick="closeCreateAccountModal()">Annuler</button>
       <button class="btn btn-primary" id="create-account-submit" onclick="submitCreateAccount()">Créer le compte</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay hidden" id="doc-editor-overlay" onclick="docCloseModalOutside(event)">
+  <div class="modal" style="max-width:720px">
+    <div class="modal-header">
+      <div class="modal-title" id="doc-editor-title">Nouvelle procédure</div>
+      <button class="modal-close" onclick="docCloseEditor()">×</button>
+    </div>
+    <div class="modal-body" style="max-height:60vh;overflow-y:auto">
+      <div class="doc-import-banner hidden" id="doc-import-banner">
+        📄 Contenu importé automatiquement — vérifie et corrige avant d'enregistrer.
+      </div>
+      <div class="form-row"><label class="form-label">Titre</label><input class="form-input" id="doc-f-title"></div>
+      <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div><label class="form-label">Catégorie</label><input class="form-input" id="doc-f-category"></div>
+        <div><label class="form-label">Format</label>
+          <select class="form-select" id="doc-f-format">
+            <option value="narrative">Narrative</option>
+            <option value="action_table">Tableau d'action</option>
+            <option value="supplier_guide">Fiche fournisseur</option>
+            <option value="role_guide">Rôle / Organisation</option>
+            <option value="hybrid">Hybride</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row"><label class="form-label">Description courte</label><textarea class="form-input" id="doc-f-description" rows="2" style="resize:vertical"></textarea></div>
+      <div class="form-row"><label class="form-label">Tags (séparés par virgule)</label><input class="form-input" id="doc-f-tags"></div>
+      <div class="form-row">
+        <label class="form-label">Visible pour</label>
+        <div style="display:flex;gap:14px;flex-wrap:wrap;font-size:13px">
+          <label style="display:flex;align-items:center;gap:6px"><input type="checkbox" class="doc-visibleTo" value="agent" checked> Agent</label>
+          <label style="display:flex;align-items:center;gap:6px"><input type="checkbox" class="doc-visibleTo" value="supervisor" checked> Superviseur</label>
+          <label style="display:flex;align-items:center;gap:6px"><input type="checkbox" class="doc-visibleTo" value="formateur" checked> Formateur</label>
+          <label style="display:flex;align-items:center;gap:6px"><input type="checkbox" class="doc-visibleTo" value="admin" checked> Admin</label>
+        </div>
+      </div>
+      <div class="form-row">
+        <label class="form-label">Contenu</label>
+        <div id="doc-blocks-container"></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+          <button class="btn btn-ghost" onclick="docAddBlock('text')">+ Texte</button>
+          <button class="btn btn-ghost" onclick="docAddBlock('list')">+ Liste</button>
+          <button class="btn btn-ghost" onclick="docAddBlock('table')">+ Tableau d'action</button>
+          <button class="btn btn-ghost" onclick="docAddBlock('callout')">+ Callout</button>
+          <button class="btn btn-ghost" onclick="docAddBlock('contact')">+ Contact</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" id="doc-delete-btn" style="display:none;margin-right:auto;color:var(--red)" onclick="docDeleteProcedure()">Supprimer</button>
+      <button class="btn btn-ghost" onclick="docCloseEditor()">Annuler</button>
+      <button class="btn btn-primary" onclick="docSaveProcedure()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay hidden" id="doc-import-overlay" onclick="docCloseImportModalOutside(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Importer un fichier</div>
+      <button class="modal-close" onclick="docCloseImportModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:12px;color:var(--text2);margin-bottom:12px">PDF ou fichier texte (.txt, .md). Découpage automatique par règles (titres, listes, paragraphes) — aucune IA utilisée. Relecture obligatoire avant enregistrement.</p>
+      <div class="doc-dropzone" id="doc-dropzone" onclick="document.getElementById('doc-file-input').click()">
+        Clique ici ou dépose un fichier PDF / texte
+      </div>
+      <input type="file" id="doc-file-input" accept=".pdf,.txt,.md" class="hidden">
+      <div id="doc-import-status" style="font-size:12px;color:var(--text2);min-height:16px;margin-top:8px"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="docCloseImportModal()">Annuler</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay hidden" id="doc-read-overlay" onclick="docCloseReadModalOutside(event)">
+  <div class="modal" style="max-width:680px">
+    <div class="modal-header">
+      <div class="modal-title" id="doc-read-title">Procédure</div>
+      <button class="modal-close" onclick="docCloseReadModal()">×</button>
+    </div>
+    <div class="modal-body" style="max-height:70vh;overflow-y:auto" id="doc-read-content"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="docCloseReadModal()">Fermer</button>
     </div>
   </div>
 </div>
@@ -1912,19 +2057,23 @@ function switchTab(view, btn) {
   const isHomeView = view === 'home';
   const isTeamView = view === 'team';
   const isLeaderboard = view === 'leaderboard';
+  const isDocView = view === 'documentation';
   const isChannelView = isTeamView || isAdminView;
-  const showTable = !isAdminView && !isHomeView && !isLeaderboard;
+  const showTable = !isAdminView && !isHomeView && !isLeaderboard && !isDocView;
 
   document.querySelector('.toolbar').classList.toggle('hidden', !showTable);
   document.querySelector('.entries-table-wrap').classList.toggle('hidden', !showTable);
   document.getElementById('admin-panel').classList.toggle('hidden', !isAdminView);
   document.getElementById('team-live-panel').classList.toggle('hidden', !isHomeView && !isTeamView);
   document.getElementById('leaderboard-panel').classList.toggle('hidden', !isLeaderboard);
+  document.getElementById('documentation-panel').classList.toggle('hidden', !isDocView);
   document.getElementById('channel-matrix-panel').classList.toggle('hidden', !isChannelView);
+  document.getElementById('date-filter-bar').classList.toggle('hidden', isDocView);
 
   if (isAdminView) { renderAdminPanel(); renderChannelMatrix(); return; }
   if (isHomeView || isTeamView) { renderRoleHome(); if(isTeamView) renderChannelMatrix(); return; }
   if (isLeaderboard) { renderLeaderboard(); return; }
+  if (isDocView) { docRenderList(); return; }
   renderAll();
 }
 
@@ -1948,6 +2097,7 @@ function renderTeamList() {
 function roleLabel(role) {
   if (role === 'admin') return 'Admin';
   if (role === 'supervisor') return 'Superviseur';
+  if (role === 'formateur') return 'Formateur';
   return 'Agent';
 }
 
@@ -3121,6 +3271,292 @@ function syncTaskinToSheets() {
     </div>`;
   document.body.appendChild(overlay);
 }
+
+// ===== DOCUMENTATION =====
+pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
+let docProcedures = [];
+let docCurrentEditingId = null;
+let docBlocks = [];
+
+// -- Conversion générique JS <-> format REST Firestore (fields/mapValue/arrayValue) --
+function docToFirestoreValue(v) {
+  if (v === null || v === undefined) return { nullValue: null };
+  if (Array.isArray(v)) return { arrayValue: { values: v.map(docToFirestoreValue) } };
+  if (v instanceof Date) return { timestampValue: v.toISOString() };
+  if (typeof v === 'object') return { mapValue: { fields: docToFirestoreFields(v) } };
+  if (typeof v === 'number') return Number.isInteger(v) ? { integerValue: v } : { doubleValue: v };
+  if (typeof v === 'boolean') return { booleanValue: v };
+  return { stringValue: String(v) };
+}
+function docToFirestoreFields(obj) {
+  const fields = {};
+  Object.entries(obj).forEach(([k, v]) => { fields[k] = docToFirestoreValue(v); });
+  return fields;
+}
+function docFromFirestoreValue(v) {
+  if (!v) return null;
+  if ('stringValue' in v) return v.stringValue;
+  if ('integerValue' in v) return parseInt(v.integerValue);
+  if ('doubleValue' in v) return v.doubleValue;
+  if ('booleanValue' in v) return v.booleanValue;
+  if ('timestampValue' in v) return v.timestampValue;
+  if ('nullValue' in v) return null;
+  if ('arrayValue' in v) return (v.arrayValue.values || []).map(docFromFirestoreValue);
+  if ('mapValue' in v) return docFromFirestoreFields(v.mapValue.fields || {});
+  return null;
+}
+function docFromFirestoreFields(fields) {
+  const obj = {};
+  Object.entries(fields || {}).forEach(([k, v]) => { obj[k] = docFromFirestoreValue(v); });
+  return obj;
+}
+
+function docCanEdit() {
+  return currentUser && ['admin', 'supervisor', 'formateur'].includes(currentUser.role);
+}
+
+async function docLoadProcedures() {
+  try {
+    const res = await fetch(`${BASE_URL}/procedures?key=${FIREBASE_API_KEY}&pageSize=300`);
+    const data = await res.json();
+    docProcedures = (data.documents || []).map(d => ({
+      id: d.name.split('/').pop(),
+      ...docFromFirestoreFields(d.fields)
+    }));
+  } catch (e) { console.error('docLoadProcedures', e); docProcedures = []; }
+}
+
+async function docRenderList() {
+  document.querySelectorAll('.doc-edit-only').forEach(el => el.classList.toggle('hidden', !docCanEdit()));
+  await docLoadProcedures();
+  const search = (document.getElementById('doc-search-input').value || '').toLowerCase();
+  const fmt = document.getElementById('doc-format-filter').value;
+  const filtered = docProcedures.filter(p => {
+    if (fmt !== '__all' && p.format !== fmt) return false;
+    if (search && !(p.title || '').toLowerCase().includes(search) && !(p.description || '').toLowerCase().includes(search)) return false;
+    if (currentUser.role === 'agent' && p.visibleTo && !p.visibleTo.includes('agent')) return false;
+    return true;
+  });
+  document.getElementById('doc-count-badge').textContent = `${filtered.length} procédure(s)`;
+  const grid = document.getElementById('doc-card-grid');
+  if (filtered.length === 0) { grid.innerHTML = `<div class="doc-empty">Aucune procédure trouvée.</div>`; return; }
+  grid.innerHTML = filtered.map(p => `
+    <div class="doc-card" onclick="docCardClick('${p.id}')">
+      <div class="doc-card-title">${docEsc(p.title || 'Sans titre')}</div>
+      <div class="doc-card-desc">${docEsc(p.description || '')}</div>
+      <div>${(p.tags || []).map(t => `<span class="doc-tag">${docEsc(t)}</span>`).join('')}</div>
+      <div class="doc-format-badge doc-fmt-${p.format || 'narrative'}">${docFormatLabel(p.format)}</div>
+    </div>`).join('');
+}
+function docFormatLabel(f) {
+  return { narrative: "Narrative", action_table: "Tableau d'action", supplier_guide: "Fiche fournisseur", role_guide: "Rôle / Organisation", hybrid: "Hybride" }[f] || f || "—";
+}
+function docCardClick(id) {
+  const p = docProcedures.find(x => x.id === id);
+  if (!p) return;
+  if (docCanEdit()) docOpenEditor(p); else docOpenReadModal(p);
+}
+
+// -- Vue lecture seule (agents) --
+function docOpenReadModal(p) {
+  document.getElementById('doc-read-title').textContent = p.title || '';
+  document.getElementById('doc-read-content').innerHTML = (p.sections || []).map(docRenderReadBlock).join('');
+  document.getElementById('doc-read-overlay').classList.remove('hidden');
+}
+function docCloseReadModal() { document.getElementById('doc-read-overlay').classList.add('hidden'); }
+function docCloseReadModalOutside(e) { if (e.target.id === 'doc-read-overlay') docCloseReadModal(); }
+function docRenderReadBlock(b) {
+  if (b.type === 'text') return `<p class="doc-read-block">${docEsc(b.content || '').replace(/\n/g, '<br>')}</p>`;
+  if (b.type === 'list') return `<ul class="doc-read-block">${(b.items || []).map(i => `<li>${docEsc(i)}</li>`).join('')}</ul>`;
+  if (b.type === 'callout') return `<div class="doc-read-block doc-read-callout">${docEsc(b.content || '').replace(/\n/g, '<br>')}</div>`;
+  if (b.type === 'contact') return `<div class="doc-read-block">${(b.entries || []).map(e => `<div><strong>${docEsc(e.label)}:</strong> ${docEsc(e.value)}</div>`).join('')}</div>`;
+  if (b.type === 'table') return `<table class="doc-read-table doc-read-block"><thead><tr><th>Type</th><th>Sujet</th><th>Impact</th><th>Actions</th><th>Notes</th></tr></thead><tbody>${(b.rows || []).map(r => `<tr><td>${docEsc(r.type)}</td><td>${docEsc(r.subject)}</td><td>${docEsc(r.impact)}</td><td>${docEsc(r.actionSteps).replace(/\n/g, '<br>')}</td><td>${docEsc(r.notes).replace(/\n/g, '<br>')}</td></tr>`).join('')}</tbody></table>`;
+  return '';
+}
+
+// -- Éditeur --
+function docOpenEditor(existing) {
+  docCurrentEditingId = existing ? existing.id : null;
+  document.getElementById('doc-editor-title').textContent = existing ? 'Modifier : ' + existing.title : 'Nouvelle procédure';
+  document.getElementById('doc-delete-btn').style.display = existing ? 'inline-flex' : 'none';
+  document.getElementById('doc-import-banner').classList.add('hidden');
+
+  document.getElementById('doc-f-title').value = existing?.title || '';
+  document.getElementById('doc-f-category').value = existing?.category || '';
+  document.getElementById('doc-f-format').value = existing?.format || 'narrative';
+  document.getElementById('doc-f-description').value = existing?.description || '';
+  document.getElementById('doc-f-tags').value = (existing?.tags || []).join(', ');
+
+  const visibleTo = existing?.visibleTo || ['agent', 'supervisor', 'formateur', 'admin'];
+  document.querySelectorAll('.doc-visibleTo').forEach(cb => cb.checked = visibleTo.includes(cb.value));
+
+  docBlocks = existing?.sections ? JSON.parse(JSON.stringify(existing.sections)) : [];
+  docRenderBlocks();
+  document.getElementById('doc-editor-overlay').classList.remove('hidden');
+}
+function docCloseEditor() { document.getElementById('doc-editor-overlay').classList.add('hidden'); }
+function docCloseModalOutside(e) { if (e.target.id === 'doc-editor-overlay') docCloseEditor(); }
+
+function docNewId() { return 'b' + Date.now() + Math.random().toString(36).slice(2, 7); }
+function docAddBlock(type) {
+  const base = { type, id: docNewId() };
+  if (type === 'text') base.content = '';
+  if (type === 'list') base.items = [''];
+  if (type === 'callout') { base.style = 'info'; base.content = ''; }
+  if (type === 'contact') base.entries = [{ label: '', value: '' }];
+  if (type === 'table') base.rows = [{ type: '', subject: '', impact: '', actionSteps: '', notes: '' }];
+  docBlocks.push(base);
+  docRenderBlocks();
+}
+function docRemoveBlock(id) { docBlocks = docBlocks.filter(b => b.id !== id); docRenderBlocks(); }
+function docMoveBlock(id, dir) {
+  const idx = docBlocks.findIndex(b => b.id === id); const n = idx + dir;
+  if (n < 0 || n >= docBlocks.length) return;
+  [docBlocks[idx], docBlocks[n]] = [docBlocks[n], docBlocks[idx]];
+  docRenderBlocks();
+}
+function docRenderBlocks() {
+  const c = document.getElementById('doc-blocks-container');
+  if (docBlocks.length === 0) { c.innerHTML = `<div class="doc-empty" style="padding:16px">Aucun bloc — importe un fichier ou ajoute du contenu.</div>`; return; }
+  c.innerHTML = docBlocks.map(b => docBlockHtml(b)).join('');
+}
+function docBlockHtml(b) {
+  let inner = '';
+  if (b.type === 'text') inner = `<textarea class="form-input" rows="4" oninput="docUpdateField('${b.id}','content',this.value)">${docEsc(b.content || '')}</textarea>`;
+  if (b.type === 'list') inner = b.items.map((it, i) => `<div class="doc-list-row"><input class="form-input" value="${docEscAttr(it)}" oninput="docUpdateListItem('${b.id}',${i},this.value)"><button class="icon-btn" onclick="docRemoveListItem('${b.id}',${i})">✕</button></div>`).join('') + `<button class="btn btn-ghost" onclick="docAddListItem('${b.id}')">+ élément</button>`;
+  if (b.type === 'callout') inner = `<select class="form-select" onchange="docUpdateField('${b.id}','style',this.value)"><option value="info" ${b.style === 'info' ? 'selected' : ''}>Info</option><option value="warning" ${b.style === 'warning' ? 'selected' : ''}>Attention</option><option value="important" ${b.style === 'important' ? 'selected' : ''}>Important</option></select><textarea class="form-input" rows="3" oninput="docUpdateField('${b.id}','content',this.value)">${docEsc(b.content || '')}</textarea>`;
+  if (b.type === 'contact') inner = b.entries.map((e, i) => `<div class="doc-list-row"><input class="form-input" placeholder="Label" value="${docEscAttr(e.label)}" oninput="docUpdateContact('${b.id}',${i},'label',this.value)"><input class="form-input" placeholder="Valeur" value="${docEscAttr(e.value)}" oninput="docUpdateContact('${b.id}',${i},'value',this.value)"><button class="icon-btn" onclick="docRemoveContact('${b.id}',${i})">✕</button></div>`).join('') + `<button class="btn btn-ghost" onclick="docAddContact('${b.id}')">+ contact</button>`;
+  if (b.type === 'table') inner = `<div class="doc-table-row" style="font-weight:600;font-size:11px;color:var(--text2)"><div>Type</div><div>Sujet</div><div>Impact</div><div>Actions</div><div>Notes</div><div></div></div>` + b.rows.map((r, i) => `<div class="doc-table-row"><input class="form-input" value="${docEscAttr(r.type)}" oninput="docUpdateTable('${b.id}',${i},'type',this.value)"><input class="form-input" value="${docEscAttr(r.subject)}" oninput="docUpdateTable('${b.id}',${i},'subject',this.value)"><input class="form-input" value="${docEscAttr(r.impact)}" oninput="docUpdateTable('${b.id}',${i},'impact',this.value)"><textarea class="form-input" rows="2" oninput="docUpdateTable('${b.id}',${i},'actionSteps',this.value)">${docEsc(r.actionSteps)}</textarea><textarea class="form-input" rows="2" oninput="docUpdateTable('${b.id}',${i},'notes',this.value)">${docEsc(r.notes)}</textarea><button class="icon-btn" onclick="docRemoveTableRow('${b.id}',${i})">✕</button></div>`).join('') + `<button class="btn btn-ghost" onclick="docAddTableRow('${b.id}')">+ ligne</button>`;
+  return `<div class="doc-block"><div class="doc-block-head"><strong style="font-size:11px;color:var(--ocean)">${({ text: 'Texte', list: 'Liste', table: "Tableau d'action", callout: 'Callout', contact: 'Contact' })[b.type]}</strong><div class="doc-block-actions"><button class="icon-btn" onclick="docMoveBlock('${b.id}',-1)">↑</button><button class="icon-btn" onclick="docMoveBlock('${b.id}',1)">↓</button><button class="icon-btn" onclick="docRemoveBlock('${b.id}')" style="color:var(--red)">✕</button></div></div>${inner}</div>`;
+}
+function docUpdateField(id, f, v) { const b = docBlocks.find(x => x.id === id); if (b) b[f] = v; }
+function docUpdateListItem(id, i, v) { docBlocks.find(b => b.id === id).items[i] = v; }
+function docAddListItem(id) { docBlocks.find(b => b.id === id).items.push(''); docRenderBlocks(); }
+function docRemoveListItem(id, i) { docBlocks.find(b => b.id === id).items.splice(i, 1); docRenderBlocks(); }
+function docUpdateContact(id, i, f, v) { docBlocks.find(b => b.id === id).entries[i][f] = v; }
+function docAddContact(id) { docBlocks.find(b => b.id === id).entries.push({ label: '', value: '' }); docRenderBlocks(); }
+function docRemoveContact(id, i) { docBlocks.find(b => b.id === id).entries.splice(i, 1); docRenderBlocks(); }
+function docUpdateTable(id, i, f, v) { docBlocks.find(b => b.id === id).rows[i][f] = v; }
+function docAddTableRow(id) { docBlocks.find(b => b.id === id).rows.push({ type: '', subject: '', impact: '', actionSteps: '', notes: '' }); docRenderBlocks(); }
+function docRemoveTableRow(id, i) { docBlocks.find(b => b.id === id).rows.splice(i, 1); docRenderBlocks(); }
+
+async function docSaveProcedure() {
+  const title = document.getElementById('doc-f-title').value.trim();
+  if (!title) { alert('Le titre est obligatoire.'); return; }
+  const visibleTo = [...document.querySelectorAll('.doc-visibleTo:checked')].map(cb => cb.value);
+  const data = {
+    title,
+    slug: docSlugify(title),
+    category: document.getElementById('doc-f-category').value.trim(),
+    format: document.getElementById('doc-f-format').value,
+    description: document.getElementById('doc-f-description').value.trim(),
+    tags: document.getElementById('doc-f-tags').value.split(',').map(t => t.trim()).filter(Boolean),
+    visibleTo,
+    sections: docBlocks,
+    updatedAt: new Date(),
+    updatedBy: currentUser.id
+  };
+  try {
+    if (docCurrentEditingId) {
+      await fetch(`${BASE_URL}/procedures/${docCurrentEditingId}?key=${FIREBASE_API_KEY}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ fields: docToFirestoreFields(data) }) });
+    } else {
+      data.createdAt = new Date();
+      data.createdBy = currentUser.id;
+      await fetch(`${BASE_URL}/procedures?key=${FIREBASE_API_KEY}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ fields: docToFirestoreFields(data) }) });
+    }
+    docCloseEditor();
+    docRenderList();
+  } catch (e) { alert('Erreur : ' + e.message); }
+}
+async function docDeleteProcedure() {
+  if (!docCurrentEditingId) return;
+  if (!confirm('Supprimer définitivement cette procédure ?')) return;
+  try {
+    await fetch(`${BASE_URL}/procedures/${docCurrentEditingId}?key=${FIREBASE_API_KEY}`, { method: 'DELETE' });
+    docCloseEditor();
+    docRenderList();
+  } catch (e) { alert('Erreur : ' + e.message); }
+}
+
+// -- Import PDF / texte (sans IA, découpage par règles) --
+function docOpenImportModal() { document.getElementById('doc-import-overlay').classList.remove('hidden'); document.getElementById('doc-import-status').textContent = ''; }
+function docCloseImportModal() { document.getElementById('doc-import-overlay').classList.add('hidden'); document.getElementById('doc-file-input').value = ''; }
+function docCloseImportModalOutside(e) { if (e.target.id === 'doc-import-overlay') docCloseImportModal(); }
+
+(function initDocDropzone() {
+  document.addEventListener('DOMContentLoaded', () => {
+    const dz = document.getElementById('doc-dropzone');
+    if (!dz) return;
+    dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('dragover'); });
+    dz.addEventListener('dragleave', () => dz.classList.remove('dragover'));
+    dz.addEventListener('drop', e => { e.preventDefault(); dz.classList.remove('dragover'); if (e.dataTransfer.files.length) docHandleImportFile(e.dataTransfer.files[0]); });
+    document.getElementById('doc-file-input').addEventListener('change', e => { if (e.target.files.length) docHandleImportFile(e.target.files[0]); });
+  });
+})();
+
+async function docHandleImportFile(file) {
+  const status = document.getElementById('doc-import-status');
+  status.textContent = 'Lecture du fichier…';
+  try {
+    let rawText = '';
+    if (file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf')) {
+      rawText = await docExtractPdfText(file);
+    } else {
+      rawText = await file.text();
+    }
+    status.textContent = 'Découpage automatique en cours…';
+    const parsed = docParseTextToBlocks(rawText);
+    docCloseImportModal();
+    docOpenEditor(null);
+    document.getElementById('doc-f-title').value = docGuessTitle(rawText, file.name);
+    docBlocks = parsed;
+    docRenderBlocks();
+    document.getElementById('doc-import-banner').classList.remove('hidden');
+  } catch (e) { status.textContent = "Erreur d'import : " + e.message; }
+}
+async function docExtractPdfText(file) {
+  const buf = await file.arrayBuffer();
+  const pdf = await pdfjsLib.getDocument({ data: buf }).promise;
+  let text = '';
+  for (let i = 1; i <= pdf.numPages; i++) {
+    const page = await pdf.getPage(i);
+    const content = await page.getTextContent();
+    text += content.items.map(it => it.str).join(' ') + '\n\n';
+  }
+  return text;
+}
+function docGuessTitle(text, filename) {
+  const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+  const firstShort = lines.find(l => l.length > 2 && l.length < 70);
+  return firstShort || filename.replace(/\.[^/.]+$/, '');
+}
+function docParseTextToBlocks(text) {
+  text = text.replace(/\r/g, '').replace(/[ \t]+\n/g, '\n');
+  const lines = text.split('\n').map(l => l.trim());
+  const result = [];
+  let list = null, para = [];
+  const bulletRe = /^[•\-\*◦]\s+/;
+  const numRe = /^\d+[\.\)]\s+/;
+  const calloutRe = /^(important|attention|note|tip|astuce|conseil|warning)\s*[:\-]/i;
+  const flushPara = () => { if (para.length) { result.push({ id: docNewId(), type: 'text', content: para.join(' ').trim() }); para = []; } };
+  const flushList = () => { if (list && list.items.length) result.push(list); list = null; };
+  for (const line of lines) {
+    if (!line) { flushPara(); continue; }
+    if (calloutRe.test(line)) { flushPara(); flushList(); result.push({ id: docNewId(), type: 'callout', style: 'info', content: line }); continue; }
+    if (bulletRe.test(line) || numRe.test(line)) { flushPara(); const cleaned = line.replace(bulletRe, '').replace(numRe, ''); if (!list) list = { id: docNewId(), type: 'list', items: [] }; list.items.push(cleaned); continue; }
+    flushList();
+    if (line.length < 70 && !/[.,;:]$/.test(line)) { flushPara(); result.push({ id: docNewId(), type: 'text', content: '**' + line + '**' }); }
+    else { para.push(line); }
+  }
+  flushPara(); flushList();
+  if (result.length === 0) result.push({ id: docNewId(), type: 'text', content: text.slice(0, 2000) });
+  return result;
+}
+
+function docSlugify(s) { return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''); }
+function docEsc(s) { if (!s) return ''; return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+function docEscAttr(s) { return docEsc(s).replace(/"/g, '&quot;'); }
 
 // ===== INIT =====
 initTimePickerUI();
