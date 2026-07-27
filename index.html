@@ -463,6 +463,29 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .doc-read-table{width:100%;border-collapse:collapse;font-size:12px}
 .doc-read-table th{background:var(--ocean);color:#fff;text-align:left;padding:8px}
 .doc-read-table td{border-bottom:1px solid var(--border);padding:8px;vertical-align:top}
+
+.doc-read-callout-info{background:var(--ocean-dim);color:var(--ocean)}
+.doc-read-callout-warning{background:var(--amber-dim);color:#8A6A0E}
+.doc-read-callout-important{background:var(--clay-dim);color:var(--clay)}
+
+.doc-read-group-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;color:var(--text2);margin:14px 0 8px}
+.doc-read-group-urgent{color:var(--clay)}
+.doc-read-urgent-list{display:flex;flex-direction:column;gap:8px;margin-bottom:8px}
+.doc-urgent-card{border-left:3px solid var(--clay);background:var(--clay-dim);border-radius:0 9px 9px 0;padding:12px 14px}
+.doc-urgent-card-head{display:flex;justify-content:space-between;align-items:flex-start}
+.doc-urgent-card-title{font-size:13.5px;font-weight:600;color:var(--text)}
+.doc-urgent-badge{font-size:10px;background:var(--clay);color:#fff;padding:2px 8px;border-radius:20px;flex-shrink:0}
+.doc-urgent-card-subject{font-size:12px;color:var(--text2);margin-top:2px}
+.doc-urgent-card-actions{margin-top:8px;font-size:12.5px;color:var(--text);line-height:1.5}
+.doc-urgent-card-notes{margin-top:6px;font-size:12px;color:#8A6A0E;background:var(--amber-dim);border-radius:6px;padding:6px 10px}
+
+.doc-read-other-list{display:flex;flex-direction:column;gap:6px}
+.doc-collapsed-row{border:1px solid var(--border);border-radius:8px}
+.doc-collapsed-row-head{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;cursor:pointer}
+.doc-collapsed-row-title{font-size:13px;color:var(--text)}
+.doc-collapsed-chevron{font-size:12px;color:var(--text2)}
+.doc-collapsed-row-detail{padding:0 12px 12px;font-size:12.5px;color:var(--text);line-height:1.5}
+.doc-collapsed-notes{color:#8A6A0E;background:var(--amber-dim);border-radius:6px;padding:6px 10px}
 </style>
 </head>
 <body>
@@ -3367,14 +3390,73 @@ function docOpenReadModal(p) {
 }
 function docCloseReadModal() { document.getElementById('doc-read-overlay').classList.add('hidden'); }
 function docCloseReadModalOutside(e) { if (e.target.id === 'doc-read-overlay') docCloseReadModal(); }
+function docFormatInline(s) {
+  return docEsc(s || '').replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+}
+function docIsUrgentRow(r) {
+  const hay = ((r.type || '') + ' ' + (r.subject || '')).toLowerCase();
+  const keywords = ['retard', 'manqu', 'urgence', 'urgent', 'sécurit', 'securit', 'annul', 'panne', 'accident', 'perdu', 'sinistre', 'grève', 'greve', 'force majeure'];
+  return keywords.some(k => hay.includes(k));
+}
 function docRenderReadBlock(b) {
-  if (b.type === 'text') return `<p class="doc-read-block">${docEsc(b.content || '').replace(/\n/g, '<br>')}</p>`;
-  if (b.type === 'list') return `<ul class="doc-read-block">${(b.items || []).map(i => `<li>${docEsc(i)}</li>`).join('')}</ul>`;
-  if (b.type === 'callout') return `<div class="doc-read-block doc-read-callout">${docEsc(b.content || '').replace(/\n/g, '<br>')}</div>`;
+  if (b.type === 'text') return `<p class="doc-read-block">${docFormatInline(b.content).replace(/\n/g, '<br>')}</p>`;
+  if (b.type === 'list') return `<ul class="doc-read-block">${(b.items || []).map(i => `<li>${docFormatInline(i)}</li>`).join('')}</ul>`;
+  if (b.type === 'callout') {
+    const style = b.style || 'info';
+    return `<div class="doc-read-block doc-read-callout doc-read-callout-${style}">${docFormatInline(b.content).replace(/\n/g, '<br>')}</div>`;
+  }
   if (b.type === 'contact') return `<div class="doc-read-block">${(b.entries || []).map(e => `<div><strong>${docEsc(e.label)}:</strong> ${docEsc(e.value)}</div>`).join('')}</div>`;
-  if (b.type === 'table') return `<table class="doc-read-table doc-read-block"><thead><tr><th>Type</th><th>Sujet</th><th>Impact</th><th>Actions</th><th>Notes</th></tr></thead><tbody>${(b.rows || []).map(r => `<tr><td>${docEsc(r.type)}</td><td>${docEsc(r.subject)}</td><td>${docEsc(r.impact)}</td><td>${docEsc(r.actionSteps).replace(/\n/g, '<br>')}</td><td>${docEsc(r.notes).replace(/\n/g, '<br>')}</td></tr>`).join('')}</tbody></table>`;
+  if (b.type === 'table') return docRenderReadTable(b);
   return '';
 }
+function docRenderReadTable(b) {
+  const rows = b.rows || [];
+  const urgent = rows.filter(docIsUrgentRow);
+  const other = rows.filter(r => !docIsUrgentRow(r));
+  let html = '';
+  if (urgent.length) {
+    html += `<div class="doc-read-group-label doc-read-group-urgent">⚠ Situations urgentes</div>`;
+    html += `<div class="doc-read-urgent-list">` + urgent.map(r => docRenderUrgentCard(r)).join('') + `</div>`;
+  }
+  if (other.length) {
+    html += `<div class="doc-read-group-label">Autres situations</div>`;
+    html += `<div class="doc-read-other-list">` + other.map((r, i) => docRenderCollapsedRow(r, b.id + '-' + i)).join('') + `</div>`;
+  }
+  return `<div class="doc-read-block">${html}</div>`;
+}
+function docRenderUrgentCard(r) {
+  return `<div class="doc-urgent-card">
+    <div class="doc-urgent-card-head">
+      <div class="doc-urgent-card-title">${docEsc(r.type)}</div>
+      <span class="doc-urgent-badge">urgent</span>
+    </div>
+    <div class="doc-urgent-card-subject">${docFormatInline(r.subject)}</div>
+    <div class="doc-urgent-card-actions"><strong>Actions :</strong> ${docFormatInline(r.actionSteps).replace(/\n/g, '<br>')}</div>
+    ${r.notes ? `<div class="doc-urgent-card-notes">${docFormatInline(r.notes).replace(/\n/g, '<br>')}</div>` : ''}
+  </div>`;
+}
+function docRenderCollapsedRow(r, uid) {
+  return `<div class="doc-collapsed-row" id="doc-row-${uid}">
+    <div class="doc-collapsed-row-head" onclick="docToggleRow('${uid}')">
+      <div class="doc-collapsed-row-title">${docEsc(r.type)} — ${docEsc(r.subject)}</div>
+      <span class="doc-collapsed-chevron">▸</span>
+    </div>
+    <div class="doc-collapsed-row-detail hidden">
+      <div><strong>Impact :</strong> ${docFormatInline(r.impact).replace(/\n/g, '<br>')}</div>
+      <div style="margin-top:6px">${docFormatInline(r.actionSteps).replace(/\n/g, '<br>')}</div>
+      ${r.notes ? `<div style="margin-top:6px" class="doc-collapsed-notes">${docFormatInline(r.notes).replace(/\n/g, '<br>')}</div>` : ''}
+    </div>
+  </div>`;
+}
+function docToggleRow(uid) {
+  const row = document.getElementById('doc-row-' + uid);
+  if (!row) return;
+  const detail = row.querySelector('.doc-collapsed-row-detail');
+  const chevron = row.querySelector('.doc-collapsed-chevron');
+  detail.classList.toggle('hidden');
+  chevron.textContent = detail.classList.contains('hidden') ? '▸' : '▾';
+}
+
 
 // -- Éditeur --
 function docOpenEditor(existing) {
