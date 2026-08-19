@@ -1177,7 +1177,14 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       <button class="modal-close" onclick="docCloseImportModal()">×</button>
     </div>
     <div class="modal-body">
-      <p style="font-size:12px;color:var(--text2);margin-bottom:12px">PDF ou fichier texte (.txt, .md). Découpage automatique par règles (titres, listes, paragraphes) — aucune IA utilisée. Relecture obligatoire avant enregistrement.</p>
+      <p style="font-size:12px;color:var(--text2);margin-bottom:12px">PDF ou fichier texte (.txt, .md). Relecture obligatoire avant enregistrement — rien n'est publié automatiquement.</p>
+      <label class="doc-ai-toggle" style="display:flex;align-items:flex-start;gap:10px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:12px;cursor:pointer">
+        <input type="checkbox" id="doc-import-ai-toggle" checked style="margin-top:2px">
+        <span>
+          <span style="font-weight:600;font-size:13px;color:var(--text)">✨ Structurer avec l'IA</span><br>
+          <span style="font-size:11.5px;color:var(--text2)">L'IA lit le document et propose titre, catégorie, tags, format et blocs de contenu prêts à publier. Si désactivé, découpage automatique par simples règles de mise en forme (sans IA).</span>
+        </span>
+      </label>
       <div class="doc-dropzone" id="doc-dropzone" onclick="document.getElementById('doc-file-input').click()">
         Clique ici ou dépose un fichier PDF / texte
       </div>
@@ -3580,6 +3587,7 @@ function docCloseImportModalOutside(e) { if (e.target.id === 'doc-import-overlay
 
 async function docHandleImportFile(file) {
   const status = document.getElementById('doc-import-status');
+  const useAI = document.getElementById('doc-import-ai-toggle')?.checked;
   status.textContent = 'Lecture du fichier…';
   try {
     let rawText = '';
@@ -3588,6 +3596,29 @@ async function docHandleImportFile(file) {
     } else {
       rawText = await file.text();
     }
+
+    if (useAI) {
+      status.textContent = "✨ L'IA structure le document…";
+      try {
+        const aiResult = await docAIStructure(rawText, file.name);
+        docCloseImportModal();
+        docOpenEditor(null);
+        document.getElementById('doc-f-title').value = aiResult.title || docGuessTitle(rawText, file.name);
+        document.getElementById('doc-f-category').value = aiResult.category || '';
+        document.getElementById('doc-f-format').value = aiResult.format || 'narrative';
+        document.getElementById('doc-f-description').value = aiResult.description || '';
+        document.getElementById('doc-f-tags').value = (aiResult.tags || []).join(', ');
+        docBlocks = aiResult.sections && aiResult.sections.length ? aiResult.sections.map(b => ({ ...b, id: docNewId() })) : docParseTextToBlocks(rawText);
+        docRenderBlocks();
+        document.getElementById('doc-import-banner').classList.remove('hidden');
+        return;
+      } catch (aiErr) {
+        console.error('AI structuring failed, falling back to rule-based parsing', aiErr);
+        status.textContent = "L'IA n'a pas pu structurer le document (" + aiErr.message + "). Découpage automatique par règles à la place…";
+        await new Promise(r => setTimeout(r, 1400));
+      }
+    }
+
     status.textContent = 'Découpage automatique en cours…';
     const parsed = docParseTextToBlocks(rawText);
     docCloseImportModal();
@@ -3597,6 +3628,18 @@ async function docHandleImportFile(file) {
     docRenderBlocks();
     document.getElementById('doc-import-banner').classList.remove('hidden');
   } catch (e) { status.textContent = "Erreur d'import : " + e.message; }
+}
+async function docAIStructure(rawText, filename) {
+  const res = await fetch('/api/ai-structure', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ text: rawText, filename }),
+  });
+  const data = await res.json().catch(() => null);
+  if (!res.ok || !data || !data.procedure) {
+    throw new Error((data && data.error) || `Erreur serveur (${res.status})`);
+  }
+  return data.procedure;
 }
 async function docExtractPdfText(file) {
   const buf = await file.arrayBuffer();
