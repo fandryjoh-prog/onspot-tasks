@@ -44,14 +44,14 @@ module.exports = async (req, res) => {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Méthode non autorisée' });
 
   try {
-    const { text, filename } = req.body || {};
+    const { text, filename, apiKey: clientApiKey } = req.body || {};
     if (!text || typeof text !== 'string' || text.trim().length < 20) {
       return res.status(400).json({ error: 'Texte manquant ou trop court.' });
     }
 
-    const apiKey = process.env.ANTHROPIC_API_KEY;
+    const apiKey = (typeof clientApiKey === 'string' && clientApiKey.trim()) || process.env.ANTHROPIC_API_KEY;
     if (!apiKey) {
-      return res.status(500).json({ error: "Clé API non configurée côté serveur (ANTHROPIC_API_KEY)." });
+      return res.status(500).json({ error: "Aucune clé API configurée. Ajoute-la depuis Documentation → 🔑 Clé API IA (admin), ou définis ANTHROPIC_API_KEY côté serveur." });
     }
 
     // Limite raisonnable pour éviter d'envoyer des documents démesurés

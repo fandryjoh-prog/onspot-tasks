@@ -1033,6 +1033,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
           <option value="hybrid">Hybride</option>
         </select>
         <span class="count-badge" id="doc-count-badge" style="margin-left:auto">…</span>
+        <button class="btn btn-ghost doc-admin-only hidden" onclick="docOpenApiKeyModal()">🔑 Clé API IA</button>
         <button class="btn btn-ghost doc-edit-only hidden" onclick="docSeedInitialProcedures()">⬇ Importer les procédures OnSpot (initial)</button>
         <button class="btn btn-ghost doc-edit-only hidden" onclick="docOpenImportModal()">⬆ Importer un fichier</button>
         <button class="btn btn-primary doc-edit-only hidden" onclick="docOpenEditor(null)">+ Nouvelle procédure</button>
@@ -1193,6 +1194,28 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     </div>
     <div class="modal-footer">
       <button class="btn btn-ghost" onclick="docCloseImportModal()">Annuler</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay hidden" id="doc-apikey-overlay" onclick="docCloseApiKeyModalOutside(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">🔑 Clé API IA (Anthropic)</div>
+      <button class="modal-close" onclick="docCloseApiKeyModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:12px;color:var(--text2);margin-bottom:12px">Cette clé permet à Task'in de transformer automatiquement les documents importés en procédures (option "Structurer avec l'IA"). Elle est stockée dans Firestore, accessible aux administrateurs uniquement, et envoyée uniquement au moment de l'import.</p>
+      <div class="form-row">
+        <label class="form-label">Clé API (commence par sk-ant-)</label>
+        <input class="form-input" id="doc-apikey-input" type="password" placeholder="sk-ant-…" autocomplete="off">
+      </div>
+      <div id="doc-apikey-status" style="font-size:12px;color:var(--text2);min-height:16px;margin-top:6px"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="docClearApiKey()">Supprimer la clé</button>
+      <button class="btn btn-ghost" onclick="docCloseApiKeyModal()">Annuler</button>
+      <button class="btn btn-primary" onclick="docSaveApiKey()">Enregistrer</button>
     </div>
   </div>
 </div>
@@ -3346,6 +3369,9 @@ function docFromFirestoreFields(fields) {
 function docCanEdit() {
   return currentUser && ['admin', 'supervisor', 'formateur'].includes(currentUser.role);
 }
+function docIsAdmin() {
+  return currentUser && currentUser.role === 'admin';
+}
 
 async function docLoadProcedures() {
   try {
@@ -3360,6 +3386,7 @@ async function docLoadProcedures() {
 
 async function docRenderList() {
   document.querySelectorAll('.doc-edit-only').forEach(el => el.classList.toggle('hidden', !docCanEdit()));
+  document.querySelectorAll('.doc-admin-only').forEach(el => el.classList.toggle('hidden', !docIsAdmin()));
   await docLoadProcedures();
   const search = (document.getElementById('doc-search-input').value || '').toLowerCase();
   const fmt = document.getElementById('doc-format-filter').value;
@@ -3630,16 +3657,72 @@ async function docHandleImportFile(file) {
   } catch (e) { status.textContent = "Erreur d'import : " + e.message; }
 }
 async function docAIStructure(rawText, filename) {
+  const apiKey = await docGetStoredApiKey();
   const res = await fetch('/api/ai-structure', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ text: rawText, filename }),
+    body: JSON.stringify({ text: rawText, filename, apiKey: apiKey || undefined }),
   });
   const data = await res.json().catch(() => null);
   if (!res.ok || !data || !data.procedure) {
     throw new Error((data && data.error) || `Erreur serveur (${res.status})`);
   }
   return data.procedure;
+}
+
+// ---- Gestion de la clé API IA (stockée dans Firestore, réservé aux admins) ----
+let _docApiKeyCache = null;
+async function docGetStoredApiKey() {
+  if (_docApiKeyCache !== null) return _docApiKeyCache;
+  try {
+    const res = await fetch(`${BASE_URL}/settings/aiIntegration?key=${FIREBASE_API_KEY}`);
+    if (res.status === 404) { _docApiKeyCache = ''; return ''; }
+    const data = await res.json();
+    _docApiKeyCache = data.fields?.anthropicApiKey?.stringValue || '';
+    return _docApiKeyCache;
+  } catch (e) { console.error('docGetStoredApiKey', e); return ''; }
+}
+function docOpenApiKeyModal() {
+  document.getElementById('doc-apikey-overlay').classList.remove('hidden');
+  document.getElementById('doc-apikey-status').textContent = 'Chargement…';
+  document.getElementById('doc-apikey-input').value = '';
+  docGetStoredApiKey().then(key => {
+    document.getElementById('doc-apikey-status').textContent = key
+      ? `Clé enregistrée : sk-ant-…${key.slice(-4)}`
+      : 'Aucune clé enregistrée pour le moment.';
+  });
+}
+function docCloseApiKeyModal() { document.getElementById('doc-apikey-overlay').classList.add('hidden'); }
+function docCloseApiKeyModalOutside(e) { if (e.target.id === 'doc-apikey-overlay') docCloseApiKeyModal(); }
+async function docSaveApiKey() {
+  const input = document.getElementById('doc-apikey-input');
+  const status = document.getElementById('doc-apikey-status');
+  const value = input.value.trim();
+  if (!value) { status.textContent = 'Entre une clé avant d\u2019enregistrer.'; return; }
+  if (!value.startsWith('sk-ant-')) { status.textContent = 'Cette clé ne ressemble pas à une clé Anthropic (sk-ant-…). Vérifie avant d\u2019enregistrer.'; }
+  status.textContent = 'Enregistrement…';
+  try {
+    const body = { fields: { anthropicApiKey: { stringValue: value } } };
+    await fetch(`${BASE_URL}/settings/aiIntegration?key=${FIREBASE_API_KEY}&updateMask.fieldPaths=anthropicApiKey`, {
+      method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body),
+    });
+    _docApiKeyCache = value;
+    status.textContent = 'Clé enregistrée ✓';
+    setTimeout(docCloseApiKeyModal, 900);
+  } catch (e) { status.textContent = "Erreur d'enregistrement : " + e.message; }
+}
+async function docClearApiKey() {
+  const status = document.getElementById('doc-apikey-status');
+  status.textContent = 'Suppression…';
+  try {
+    const body = { fields: { anthropicApiKey: { stringValue: '' } } };
+    await fetch(`${BASE_URL}/settings/aiIntegration?key=${FIREBASE_API_KEY}&updateMask.fieldPaths=anthropicApiKey`, {
+      method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body),
+    });
+    _docApiKeyCache = '';
+    document.getElementById('doc-apikey-input').value = '';
+    status.textContent = 'Clé supprimée.';
+  } catch (e) { status.textContent = 'Erreur : ' + e.message; }
 }
 async function docExtractPdfText(file) {
   const buf = await file.arrayBuffer();
