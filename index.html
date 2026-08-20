@@ -413,7 +413,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .mosaic-header{display:flex;align-items:center;justify-content:space-between;margin:20px 0 12px;flex-wrap:wrap;gap:10px}
 .mosaic-header h3{font-family:var(--display);font-size:15px;font-weight:600;color:var(--text)}
 .mosaic-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-bottom:20px}
-.mosaic-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;cursor:pointer;transition:box-shadow .15s,border-color .15s}
+.mosaic-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;cursor:pointer;transition:box-shadow .15s,border-color .15s;position:relative}
 .mosaic-card:hover{border-color:var(--ocean);box-shadow:0 4px 16px rgba(43,76,126,.1)}
 .mosaic-card-top{display:flex;align-items:center;gap:10px;margin-bottom:14px}
 .mosaic-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;font-family:var(--font);background-size:cover;background-position:center;position:relative}
@@ -1073,8 +1073,17 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
         </select>
       </div>
       <div class="form-row" id="account-error" style="color:var(--red);font-size:12px;min-height:16px"></div>
+      <div class="form-row" style="border-top:1px solid var(--border);padding-top:14px;margin-top:4px">
+        <label class="form-label">Mot de passe</label>
+        <div style="display:flex;gap:8px">
+          <input class="form-input" id="account-password-input" type="text" placeholder="Laisser vide pour ne pas changer" style="flex:1">
+          <button class="btn btn-ghost" type="button" onclick="generateAccountPassword()" title="Générer un mot de passe">🎲</button>
+        </div>
+        <div id="account-password-status" style="font-size:11.5px;color:var(--text2);margin-top:6px;min-height:14px"></div>
+      </div>
     </div>
     <div class="modal-footer">
+      <button class="btn btn-ghost" style="color:var(--red);margin-right:auto" onclick="deleteAccountFromModal()">Supprimer le compte</button>
       <button class="btn btn-ghost" onclick="closeAccountEditModal()">Annuler</button>
       <button class="btn btn-primary" onclick="saveAccountEdit()">Enregistrer</button>
     </div>
@@ -2491,11 +2500,18 @@ function openAccountEditModal(uid) {
   document.getElementById('account-modal-title').textContent = `Modifier — ${u.name}`;
   document.getElementById('account-name-input').value = u.name;
   document.getElementById('account-role-input').value = u.role;
+  document.getElementById('account-password-input').value = '';
+  document.getElementById('account-password-status').textContent = '';
   const prev = document.getElementById('account-photo-preview');
   if (u.photo) { prev.style.backgroundImage = `url(${u.photo})`; prev.textContent = ''; }
   else { prev.style.backgroundImage = ''; prev.textContent = u.initials; }
   document.getElementById('account-error').textContent = '';
   document.getElementById('account-modal-overlay').classList.remove('hidden');
+}
+
+function generateAccountPassword() {
+  const pwd = 'Taskin' + Math.floor(1000 + Math.random() * 9000);
+  document.getElementById('account-password-input').value = pwd;
 }
 
 function closeAccountEditModal() { document.getElementById('account-modal-overlay').classList.add('hidden'); }
@@ -2523,17 +2539,67 @@ function removeAccountPhoto() {
 async function saveAccountEdit() {
   const name = document.getElementById('account-name-input').value.trim();
   const role = document.getElementById('account-role-input').value;
-  if (!name) { document.getElementById('account-error').textContent = 'Le nom est requis.'; return; }
+  const newPassword = document.getElementById('account-password-input').value.trim();
+  const errEl = document.getElementById('account-error');
+  const pwdStatus = document.getElementById('account-password-status');
+  if (!name) { errEl.textContent = 'Le nom est requis.'; return; }
   const u = TEAM.find(t => t.id === editingAccountId);
   if (!u) return;
+  errEl.textContent = '';
   u.name = name; u.role = role;
   u.initials = name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
   if (editingAccountPhotoData !== null) u.photo = editingAccountPhotoData;
   await saveAccountToFirestore(u);
   if (u.id === currentUser.id) { currentUser = {...currentUser, name: u.name, role: u.role, initials: u.initials, photo: u.photo}; renderTopbarIdentity(); }
+
+  if (newPassword) {
+    pwdStatus.textContent = 'Mise à jour du mot de passe…';
+    try {
+      const result = await adminSetPassword(u.id, newPassword);
+      if (result.ok) { pwdStatus.textContent = 'Mot de passe mis à jour ✓'; document.getElementById('account-password-input').value = ''; }
+      else { pwdStatus.textContent = 'Erreur mot de passe : ' + result.error; return; }
+    } catch (e) { pwdStatus.textContent = 'Erreur réseau lors du changement de mot de passe.'; return; }
+  }
+
   closeAccountEditModal();
   renderTeamList();
   populateFilters();
+}
+
+async function adminSetPassword(uid, newPassword) {
+  try {
+    const idToken = localStorage.getItem('onspot_idToken');
+    const res = await fetch('/api/admin-manage-account', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'setPassword', requesterIdToken: idToken, uid, newPassword }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) return { ok: false, error: data.error || `Erreur (${res.status})` };
+    return { ok: true };
+  } catch (e) { return { ok: false, error: e.message }; }
+}
+
+async function deleteAccountFromModal() {
+  const u = TEAM.find(t => t.id === editingAccountId);
+  if (!u) return;
+  if (u.id === currentUser.id) { document.getElementById('account-error').textContent = 'Tu ne peux pas supprimer ton propre compte.'; return; }
+  if (!confirm(`Supprimer définitivement le compte de ${u.name} ? Cette action est irréversible.`)) return;
+  const errEl = document.getElementById('account-error');
+  errEl.textContent = 'Suppression…';
+  try {
+    const idToken = localStorage.getItem('onspot_idToken');
+    const res = await fetch('/api/admin-manage-account', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'delete', requesterIdToken: idToken, uid: u.id }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) { errEl.textContent = 'Erreur : ' + (data.error || res.status); return; }
+    await fetch(`${BASE_URL}/accounts/${u.id}?key=${FIREBASE_API_KEY}`, { method: 'DELETE' });
+    TEAM = TEAM.filter(t => t.id !== u.id);
+    closeAccountEditModal();
+    renderTeamList();
+    populateFilters();
+  } catch (e) { errEl.textContent = 'Erreur réseau lors de la suppression.'; }
 }
 
 let createdEmail = '', createdPassword = '';
@@ -2711,6 +2777,7 @@ function renderMosaicKpis(activeTimers) {
     const avatarContent = a.photo ? '' : a.initials;
 
     return `<div class="mosaic-card" onclick="viewAgentDetail('${a.id}')">
+      ${currentUser.role === 'admin' ? `<button class="icon-btn" title="Gérer ce compte" onclick="event.stopPropagation();openAccountEditModal('${a.id}')" style="position:absolute;top:10px;right:10px;background:var(--surface2);border-radius:6px;width:26px;height:26px;font-size:13px">⚙</button>` : ''}
       <div class="mosaic-card-top">
         <div class="mosaic-avatar" style="${avatarStyle}">
           ${avatarContent}
