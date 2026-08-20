@@ -3691,6 +3691,11 @@ async function docHandleImportFile(file) {
       rawText = await file.text();
     }
 
+    if (rawText.trim().length < 30) {
+      status.innerHTML = "⚠️ Ce fichier ne contient pas (ou très peu) de texte extractible.<br>Si c'est un PDF, il s'agit probablement d'un <strong>scan/image</strong> (sans couche de texte) — pdf.js ne peut lire que du texte réel, pas une image de texte.<br>Essaie un export PDF « natif » (Word → Exporter en PDF, par ex.), ou copie-colle le contenu dans un fichier .txt.";
+      return;
+    }
+
     if (useAI) {
       status.textContent = "✨ L'IA structure le document…";
       try {
@@ -3730,6 +3735,9 @@ async function docAIStructure(rawText, filename) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ text: rawText, filename, apiKey: apiKey || undefined }),
   });
+  if (res.status === 404) {
+    throw new Error("le endpoint /api/ai-structure n'est pas déployé sur Vercel (vérifie que api/ai-structure.js et package.json sont bien poussés sur GitHub, et que le déploiement a réussi)");
+  }
   const data = await res.json().catch(() => null);
   if (!res.ok || !data || !data.procedure) {
     throw new Error((data && data.error) || `Erreur serveur (${res.status})`);
