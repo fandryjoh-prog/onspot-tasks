@@ -82,12 +82,11 @@ module.exports = async (req, res) => {
     }
 
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`,
+      `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${encodeURIComponent(apiKey)}`,
       {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'x-goog-api-key': apiKey,
         },
         body: JSON.stringify({
           system_instruction: { parts: [{ text: SYSTEM_PROMPT }] },
@@ -103,7 +102,9 @@ module.exports = async (req, res) => {
     if (!response.ok) {
       const errText = await response.text();
       console.error('Gemini API error', response.status, errText);
-      return res.status(502).json({ error: `Erreur API IA (${response.status}).` });
+      let detail = errText;
+      try { detail = JSON.parse(errText)?.error?.message || errText; } catch (_) {}
+      return res.status(502).json({ error: `Erreur API IA (${response.status}) : ${String(detail).slice(0, 300)}` });
     }
 
     const data = await response.json();
