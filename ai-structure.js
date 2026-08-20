@@ -1,14 +1,19 @@
 // /api/ai-structure.js
-// Proxy serveur vers l'API Anthropic — transforme un texte brut (extrait de PDF/txt)
-// en procédure Task'in structurée (schéma de blocs). La clé API reste côté serveur.
+// Proxy serveur vers l'API Anthropic — transforme un document (texte brut, PDF natif/scanné,
+// ou image JPEG/PNG/WEBP/GIF) en procédure Task'in structurée (schéma de blocs).
+// La clé API reste côté serveur. Claude lit nativement les PDF et images (OCR/vision inclus),
+// donc les scans/photos sont supportés sans extraction de texte préalable.
 //
 // Variable d'environnement requise sur Vercel : ANTHROPIC_API_KEY
 
 const ALLOWED_FORMATS = ['narrative', 'action_table', 'supplier_guide', 'role_guide', 'hybrid'];
 const ALLOWED_BLOCK_TYPES = ['text', 'list', 'callout', 'contact', 'table'];
 const ALLOWED_CALLOUT_STYLES = ['info', 'warning', 'important'];
+const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
 
-const SYSTEM_PROMPT = `Tu es un assistant qui transforme des documents internes bruts (procédures d'agence de voyage) en fiches structurées pour l'outil interne "Task'in" d'OnSpot Travel Solutions.
+const SYSTEM_PROMPT = `Tu es un assistant qui transforme des documents internes (procédures d'agence de voyage) en fiches structurées pour l'outil interne "Task'in" d'OnSpot Travel Solutions.
+
+Le document fourni peut être : du texte brut, un PDF (avec ou sans couche de texte — dans ce cas lis-le comme une image/scan), ou une photo/capture d'écran. Lis attentivement tout le contenu visible, y compris les tableaux, en-têtes, notes manuscrites lisibles et légendes.
 
 Tu dois répondre UNIQUEMENT avec un objet JSON valide, sans aucun texte avant ou après, sans balises markdown \`\`\`, respectant EXACTEMENT ce schéma :
 
@@ -30,9 +35,10 @@ Un Block est un des objets suivants (le champ "type" détermine sa forme) :
 
 Règles :
 - Ne perds AUCUNE information factuelle du document source (numéros, horaires, seuils, conditions).
+- Si l'image/le scan est illisible ou trop flou pour être exploité, indique-le clairement dans "description" et fais de ton mieux avec ce qui est lisible.
 - Choisis "action_table" comme format si le document liste des situations avec des actions à effectuer (utilise alors des blocs "table").
 - Choisis "supplier_guide" pour une fiche fournisseur/prestataire, "role_guide" pour une organisation d'équipe/rôles, "hybrid" si plusieurs types de contenu se mélangent, sinon "narrative".
-- N'invente jamais de contact ou de chiffre absent du texte source.
+- N'invente jamais de contact ou de chiffre absent du document source.
 - Le JSON doit être strictement valide (pas de virgule finale, guillemets doubles partout).`;
 
 module.exports = async (req, res) => {
@@ -44,20 +50,39 @@ module.exports = async (req, res) => {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Méthode non autorisée' });
 
   try {
-    const { text, filename, apiKey: clientApiKey } = req.body || {};
-    if (!text || typeof text !== 'string' || text.trim().length < 20) {
-      return res.status(400).json({ error: 'Texte manquant ou trop court.' });
+    const { text, fileBase64, mediaType, filename, apiKey: clientApiKey } = req.body || {};
+
+    let userContent;
+    if (fileBase64) {
+      if (typeof fileBase64 !== 'string' || fileBase64.length < 100) {
+        return res.status(400).json({ error: 'Fichier manquant ou invalide.' });
+      }
+      const introText = `Nom du fichier source : ${filename || 'inconnu'}\n\nTransforme le document ci-joint en procédure structurée selon le schéma demandé.`;
+      if (mediaType === 'application/pdf') {
+        userContent = [
+          { type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: fileBase64 } },
+          { type: 'text', text: introText },
+        ];
+      } else if (ALLOWED_IMAGE_TYPES.includes(mediaType)) {
+        userContent = [
+          { type: 'image', source: { type: 'base64', media_type: mediaType, data: fileBase64 } },
+          { type: 'text', text: introText },
+        ];
+      } else {
+        return res.status(400).json({ error: `Type de fichier non supporté : ${mediaType}` });
+      }
+    } else {
+      if (!text || typeof text !== 'string' || text.trim().length < 20) {
+        return res.status(400).json({ error: 'Texte manquant ou trop court.' });
+      }
+      const truncated = text.length > 60000 ? text.slice(0, 60000) : text;
+      userContent = `Nom du fichier source : ${filename || 'inconnu'}\n\nTexte brut extrait du document :\n"""\n${truncated}\n"""`;
     }
 
     const apiKey = (typeof clientApiKey === 'string' && clientApiKey.trim()) || process.env.ANTHROPIC_API_KEY;
     if (!apiKey) {
       return res.status(500).json({ error: "Aucune clé API configurée. Ajoute-la depuis Documentation → 🔑 Clé API IA (admin), ou définis ANTHROPIC_API_KEY côté serveur." });
     }
-
-    // Limite raisonnable pour éviter d'envoyer des documents démesurés
-    const truncated = text.length > 60000 ? text.slice(0, 60000) : text;
-
-    const userPrompt = `Nom du fichier source : ${filename || 'inconnu'}\n\nTexte brut extrait du document :\n"""\n${truncated}\n"""`;
 
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -70,7 +95,7 @@ module.exports = async (req, res) => {
         model: 'claude-sonnet-5',
         max_tokens: 8000,
         system: SYSTEM_PROMPT,
-        messages: [{ role: 'user', content: userPrompt }],
+        messages: [{ role: 'user', content: userContent }],
       }),
     });
 

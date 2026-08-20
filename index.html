@@ -1187,19 +1187,20 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       <button class="modal-close" onclick="docCloseImportModal()">×</button>
     </div>
     <div class="modal-body">
-      <p style="font-size:12px;color:var(--text2);margin-bottom:12px">PDF ou fichier texte (.txt, .md). Relecture obligatoire avant enregistrement — rien n'est publié automatiquement.</p>
+      <p style="font-size:12px;color:var(--text2);margin-bottom:12px">PDF (texte ou scanné), image (JPEG/PNG/WEBP) ou fichier texte (.txt, .md). Relecture obligatoire avant enregistrement — rien n'est publié automatiquement.</p>
       <label class="doc-ai-toggle" style="display:flex;align-items:flex-start;gap:10px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:12px;cursor:pointer">
         <input type="checkbox" id="doc-import-ai-toggle" checked style="margin-top:2px">
         <span>
           <span style="font-weight:600;font-size:13px;color:var(--text)">✨ Structurer avec l'IA</span><br>
-          <span style="font-size:11.5px;color:var(--text2)">L'IA lit le document et propose titre, catégorie, tags, format et blocs de contenu prêts à publier. Si désactivé, découpage automatique par simples règles de mise en forme (sans IA).</span>
+          <span style="font-size:11.5px;color:var(--text2)">L'IA lit le document (même une photo ou un scan) et propose titre, catégorie, tags, format et blocs de contenu prêts à publier. Obligatoire pour les images et PDF scannés. Pour un .txt/.md/PDF texte, tu peux désactiver pour un simple découpage par règles (sans IA).</span>
         </span>
       </label>
       <div class="doc-dropzone" id="doc-dropzone" onclick="document.getElementById('doc-file-input').click()">
-        Clique ici ou dépose un fichier PDF / texte
+        Clique ici ou dépose un PDF, une image ou un fichier texte
       </div>
-      <input type="file" id="doc-file-input" accept=".pdf,.txt,.md" class="hidden">
+      <input type="file" id="doc-file-input" accept=".pdf,.txt,.md,.png,.jpg,.jpeg,.webp,.gif" class="hidden">
       <div id="doc-import-status" style="font-size:12px;color:var(--text2);min-height:16px;margin-top:8px"></div>
+      <p style="font-size:11px;color:var(--text2);opacity:.75;margin-top:6px">Taille max ~4 Mo par fichier.</p>
     </div>
     <div class="modal-footer">
       <button class="btn btn-ghost" onclick="docCloseImportModal()">Annuler</button>
@@ -3682,58 +3683,98 @@ function docCloseImportModalOutside(e) { if (e.target.id === 'doc-import-overlay
 async function docHandleImportFile(file) {
   const status = document.getElementById('doc-import-status');
   const useAI = document.getElementById('doc-import-ai-toggle')?.checked;
+  const nameLower = file.name.toLowerCase();
+  const isText = file.type === 'text/plain' || nameLower.endsWith('.txt') || nameLower.endsWith('.md');
+  const isPdf = file.type === 'application/pdf' || nameLower.endsWith('.pdf');
+  const isImage = file.type.startsWith('image/') || /\.(png|jpe?g|webp|gif)$/i.test(nameLower);
+
+  if (!isText && !isPdf && !isImage) {
+    status.textContent = 'Format non supporté. Utilise un PDF, une image (JPEG/PNG/WEBP/GIF) ou un fichier .txt/.md.';
+    return;
+  }
+  if (file.size > 4.3 * 1024 * 1024) {
+    status.textContent = `Fichier trop volumineux (${(file.size/1024/1024).toFixed(1)} Mo). Limite ~4 Mo.`;
+    return;
+  }
+
   status.textContent = 'Lecture du fichier…';
   try {
-    let rawText = '';
-    if (file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf')) {
-      rawText = await docExtractPdfText(file);
-    } else {
-      rawText = await file.text();
-    }
-
-    if (rawText.trim().length < 30) {
-      status.innerHTML = "⚠️ Ce fichier ne contient pas (ou très peu) de texte extractible.<br>Si c'est un PDF, il s'agit probablement d'un <strong>scan/image</strong> (sans couche de texte) — pdf.js ne peut lire que du texte réel, pas une image de texte.<br>Essaie un export PDF « natif » (Word → Exporter en PDF, par ex.), ou copie-colle le contenu dans un fichier .txt.";
+    if (isText) {
+      const rawText = await file.text();
+      if (rawText.trim().length < 30) {
+        status.textContent = 'Ce fichier texte est vide ou trop court.';
+        return;
+      }
+      if (useAI) {
+        status.textContent = "✨ L'IA structure le document…";
+        try {
+          const aiResult = await docAIStructure({ text: rawText }, file.name);
+          docApplyImportedProcedure(aiResult, () => docParseTextToBlocks(rawText), docGuessTitle(rawText, file.name));
+          return;
+        } catch (aiErr) {
+          console.error('AI structuring failed, falling back to rule-based parsing', aiErr);
+          status.textContent = "L'IA n'a pas pu structurer le document (" + aiErr.message + "). Découpage automatique par règles à la place…";
+          await new Promise(r => setTimeout(r, 1400));
+        }
+      }
+      status.textContent = 'Découpage automatique en cours…';
+      docApplyImportedProcedure(null, () => docParseTextToBlocks(rawText), docGuessTitle(rawText, file.name));
       return;
     }
 
-    if (useAI) {
-      status.textContent = "✨ L'IA structure le document…";
-      try {
-        const aiResult = await docAIStructure(rawText, file.name);
-        docCloseImportModal();
-        docOpenEditor(null);
-        document.getElementById('doc-f-title').value = aiResult.title || docGuessTitle(rawText, file.name);
-        document.getElementById('doc-f-category').value = aiResult.category || '';
-        document.getElementById('doc-f-format').value = aiResult.format || 'narrative';
-        document.getElementById('doc-f-description').value = aiResult.description || '';
-        document.getElementById('doc-f-tags').value = (aiResult.tags || []).join(', ');
-        docBlocks = aiResult.sections && aiResult.sections.length ? aiResult.sections.map(b => ({ ...b, id: docNewId() })) : docParseTextToBlocks(rawText);
-        docRenderBlocks();
-        document.getElementById('doc-import-banner').classList.remove('hidden');
-        return;
-      } catch (aiErr) {
-        console.error('AI structuring failed, falling back to rule-based parsing', aiErr);
-        status.textContent = "L'IA n'a pas pu structurer le document (" + aiErr.message + "). Découpage automatique par règles à la place…";
-        await new Promise(r => setTimeout(r, 1400));
-      }
+    // PDF ou image : nécessite l'IA (lecture native, gère aussi les scans/photos)
+    if (!useAI) {
+      status.textContent = "Les PDF scannés et les images nécessitent l'option “Structurer avec l'IA” — active-la puis réessaie.";
+      return;
     }
-
-    status.textContent = 'Découpage automatique en cours…';
-    const parsed = docParseTextToBlocks(rawText);
-    docCloseImportModal();
-    docOpenEditor(null);
-    document.getElementById('doc-f-title').value = docGuessTitle(rawText, file.name);
-    docBlocks = parsed;
-    docRenderBlocks();
-    document.getElementById('doc-import-banner').classList.remove('hidden');
+    status.textContent = "✨ L'IA lit le document…";
+    const base64 = await docFileToBase64(file);
+    const mediaType = isPdf ? 'application/pdf' : (file.type || docGuessImageMime(nameLower));
+    try {
+      const aiResult = await docAIStructure({ fileBase64: base64, mediaType }, file.name);
+      docApplyImportedProcedure(aiResult, () => [{ id: docNewId(), type: 'text', content: '' }], file.name.replace(/\.[^/.]+$/, ''));
+    } catch (aiErr) {
+      status.textContent = "L'IA n'a pas pu lire ce fichier : " + aiErr.message;
+    }
   } catch (e) { status.textContent = "Erreur d'import : " + e.message; }
 }
-async function docAIStructure(rawText, filename) {
+
+function docApplyImportedProcedure(aiResult, fallbackBlocksFn, fallbackTitle) {
+  docCloseImportModal();
+  docOpenEditor(null);
+  document.getElementById('doc-f-title').value = (aiResult && aiResult.title) || fallbackTitle;
+  document.getElementById('doc-f-category').value = (aiResult && aiResult.category) || '';
+  document.getElementById('doc-f-format').value = (aiResult && aiResult.format) || 'narrative';
+  document.getElementById('doc-f-description').value = (aiResult && aiResult.description) || '';
+  document.getElementById('doc-f-tags').value = (aiResult && aiResult.tags || []).join(', ');
+  docBlocks = (aiResult && aiResult.sections && aiResult.sections.length)
+    ? aiResult.sections.map(b => ({ ...b, id: docNewId() }))
+    : fallbackBlocksFn();
+  docRenderBlocks();
+  document.getElementById('doc-import-banner').classList.remove('hidden');
+}
+
+function docFileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result.split(',')[1]);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+function docGuessImageMime(nameLower) {
+  if (nameLower.endsWith('.png')) return 'image/png';
+  if (nameLower.endsWith('.webp')) return 'image/webp';
+  if (nameLower.endsWith('.gif')) return 'image/gif';
+  return 'image/jpeg';
+}
+
+async function docAIStructure(payload, filename) {
   const apiKey = await docGetStoredApiKey();
   const res = await fetch('/api/ai-structure', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ text: rawText, filename, apiKey: apiKey || undefined }),
+    body: JSON.stringify({ ...payload, filename, apiKey: apiKey || undefined }),
   });
   if (res.status === 404) {
     throw new Error("le endpoint /api/ai-structure n'est pas déployé sur Vercel (vérifie que api/ai-structure.js et package.json sont bien poussés sur GitHub, et que le déploiement a réussi)");
