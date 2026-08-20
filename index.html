@@ -1211,15 +1211,16 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 <div class="modal-overlay hidden" id="doc-apikey-overlay" onclick="docCloseApiKeyModalOutside(event)">
   <div class="modal">
     <div class="modal-header">
-      <div class="modal-title">🔑 Clé API IA (Anthropic)</div>
+      <div class="modal-title">🔑 Clé API IA (Gemini)</div>
       <button class="modal-close" onclick="docCloseApiKeyModal()">×</button>
     </div>
     <div class="modal-body">
       <p style="font-size:12px;color:var(--text2);margin-bottom:12px">Cette clé permet à Task'in de transformer automatiquement les documents importés en procédures (option "Structurer avec l'IA"). Elle est stockée dans Firestore, accessible aux administrateurs uniquement, et envoyée uniquement au moment de l'import.</p>
       <div class="form-row">
-        <label class="form-label">Clé API (commence par sk-ant-)</label>
-        <input class="form-input" id="doc-apikey-input" type="password" placeholder="sk-ant-…" autocomplete="off">
+        <label class="form-label">Clé API Gemini (commence par AIza)</label>
+        <input class="form-input" id="doc-apikey-input" type="password" placeholder="AIza…" autocomplete="off">
       </div>
+      <p style="font-size:11px;color:var(--text2);opacity:.8;margin-top:-2px">Récupérable gratuitement sur <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a>.</p>
       <div id="doc-apikey-status" style="font-size:12px;color:var(--text2);min-height:16px;margin-top:6px"></div>
     </div>
     <div class="modal-footer">
@@ -3794,7 +3795,7 @@ async function docGetStoredApiKey() {
     const res = await fetch(`${BASE_URL}/settings/aiIntegration?key=${FIREBASE_API_KEY}`);
     if (res.status === 404) { _docApiKeyCache = ''; return ''; }
     const data = await res.json();
-    _docApiKeyCache = data.fields?.anthropicApiKey?.stringValue || '';
+    _docApiKeyCache = data.fields?.geminiApiKey?.stringValue || '';
     return _docApiKeyCache;
   } catch (e) { console.error('docGetStoredApiKey', e); return ''; }
 }
@@ -3804,7 +3805,7 @@ function docOpenApiKeyModal() {
   document.getElementById('doc-apikey-input').value = '';
   docGetStoredApiKey().then(key => {
     document.getElementById('doc-apikey-status').textContent = key
-      ? `Clé enregistrée : sk-ant-…${key.slice(-4)}`
+      ? `Clé enregistrée : ${key.slice(0,4)}…${key.slice(-4)}`
       : 'Aucune clé enregistrée pour le moment.';
   });
 }
@@ -3815,11 +3816,11 @@ async function docSaveApiKey() {
   const status = document.getElementById('doc-apikey-status');
   const value = input.value.trim();
   if (!value) { status.textContent = 'Entre une clé avant d\u2019enregistrer.'; return; }
-  if (!value.startsWith('sk-ant-')) { status.textContent = 'Cette clé ne ressemble pas à une clé Anthropic (sk-ant-…). Vérifie avant d\u2019enregistrer.'; }
+  if (!value.startsWith('AIza')) { status.textContent = 'Cette clé ne ressemble pas à une clé Gemini (AIza…). Vérifie avant d\u2019enregistrer.'; }
   status.textContent = 'Enregistrement…';
   try {
-    const body = { fields: { anthropicApiKey: { stringValue: value } } };
-    await fetch(`${BASE_URL}/settings/aiIntegration?key=${FIREBASE_API_KEY}&updateMask.fieldPaths=anthropicApiKey`, {
+    const body = { fields: { geminiApiKey: { stringValue: value } } };
+    await fetch(`${BASE_URL}/settings/aiIntegration?key=${FIREBASE_API_KEY}&updateMask.fieldPaths=geminiApiKey`, {
       method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body),
     });
     _docApiKeyCache = value;
@@ -3831,8 +3832,8 @@ async function docClearApiKey() {
   const status = document.getElementById('doc-apikey-status');
   status.textContent = 'Suppression…';
   try {
-    const body = { fields: { anthropicApiKey: { stringValue: '' } } };
-    await fetch(`${BASE_URL}/settings/aiIntegration?key=${FIREBASE_API_KEY}&updateMask.fieldPaths=anthropicApiKey`, {
+    const body = { fields: { geminiApiKey: { stringValue: '' } } };
+    await fetch(`${BASE_URL}/settings/aiIntegration?key=${FIREBASE_API_KEY}&updateMask.fieldPaths=geminiApiKey`, {
       method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body),
     });
     _docApiKeyCache = '';

@@ -1,11 +1,13 @@
 // /api/ai-structure.js
-// Proxy serveur vers l'API Anthropic — transforme un document (texte brut, PDF natif/scanné,
+// Proxy serveur vers l'API Gemini (Google) — transforme un document (texte brut, PDF natif/scanné,
 // ou image JPEG/PNG/WEBP/GIF) en procédure Task'in structurée (schéma de blocs).
-// La clé API reste côté serveur. Claude lit nativement les PDF et images (OCR/vision inclus),
+// La clé API reste côté serveur. Gemini lit nativement les PDF et images (OCR/vision inclus),
 // donc les scans/photos sont supportés sans extraction de texte préalable.
 //
-// Variable d'environnement requise sur Vercel : ANTHROPIC_API_KEY
+// Variable d'environnement optionnelle sur Vercel : GEMINI_API_KEY (sinon la clé stockée
+// dans Firestore par l'admin, transmise par le front, est utilisée).
 
+const GEMINI_MODEL = 'gemini-2.5-flash';
 const ALLOWED_FORMATS = ['narrative', 'action_table', 'supplier_guide', 'role_guide', 'hybrid'];
 const ALLOWED_BLOCK_TYPES = ['text', 'list', 'callout', 'contact', 'table'];
 const ALLOWED_CALLOUT_STYLES = ['info', 'warning', 'important'];
@@ -15,7 +17,7 @@ const SYSTEM_PROMPT = `Tu es un assistant qui transforme des documents internes 
 
 Le document fourni peut être : du texte brut, un PDF (avec ou sans couche de texte — dans ce cas lis-le comme une image/scan), ou une photo/capture d'écran. Lis attentivement tout le contenu visible, y compris les tableaux, en-têtes, notes manuscrites lisibles et légendes.
 
-Tu dois répondre UNIQUEMENT avec un objet JSON valide, sans aucun texte avant ou après, sans balises markdown \`\`\`, respectant EXACTEMENT ce schéma :
+Tu dois répondre UNIQUEMENT avec un objet JSON valide, sans aucun texte avant ou après, sans balises markdown, respectant EXACTEMENT ce schéma :
 
 {
   "title": string (titre court et clair de la procédure),
@@ -52,21 +54,16 @@ module.exports = async (req, res) => {
   try {
     const { text, fileBase64, mediaType, filename, apiKey: clientApiKey } = req.body || {};
 
-    let userContent;
+    let userParts;
     if (fileBase64) {
       if (typeof fileBase64 !== 'string' || fileBase64.length < 100) {
         return res.status(400).json({ error: 'Fichier manquant ou invalide.' });
       }
       const introText = `Nom du fichier source : ${filename || 'inconnu'}\n\nTransforme le document ci-joint en procédure structurée selon le schéma demandé.`;
-      if (mediaType === 'application/pdf') {
-        userContent = [
-          { type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: fileBase64 } },
-          { type: 'text', text: introText },
-        ];
-      } else if (ALLOWED_IMAGE_TYPES.includes(mediaType)) {
-        userContent = [
-          { type: 'image', source: { type: 'base64', media_type: mediaType, data: fileBase64 } },
-          { type: 'text', text: introText },
+      if (mediaType === 'application/pdf' || ALLOWED_IMAGE_TYPES.includes(mediaType)) {
+        userParts = [
+          { inline_data: { mime_type: mediaType, data: fileBase64 } },
+          { text: introText },
         ];
       } else {
         return res.status(400).json({ error: `Type de fichier non supporté : ${mediaType}` });
@@ -76,40 +73,48 @@ module.exports = async (req, res) => {
         return res.status(400).json({ error: 'Texte manquant ou trop court.' });
       }
       const truncated = text.length > 60000 ? text.slice(0, 60000) : text;
-      userContent = `Nom du fichier source : ${filename || 'inconnu'}\n\nTexte brut extrait du document :\n"""\n${truncated}\n"""`;
+      userParts = [{ text: `Nom du fichier source : ${filename || 'inconnu'}\n\nTexte brut extrait du document :\n"""\n${truncated}\n"""` }];
     }
 
-    const apiKey = (typeof clientApiKey === 'string' && clientApiKey.trim()) || process.env.ANTHROPIC_API_KEY;
+    const apiKey = (typeof clientApiKey === 'string' && clientApiKey.trim()) || process.env.GEMINI_API_KEY;
     if (!apiKey) {
-      return res.status(500).json({ error: "Aucune clé API configurée. Ajoute-la depuis Documentation → 🔑 Clé API IA (admin), ou définis ANTHROPIC_API_KEY côté serveur." });
+      return res.status(500).json({ error: "Aucune clé API configurée. Ajoute-la depuis Documentation → 🔑 Clé API IA (admin), ou définis GEMINI_API_KEY côté serveur." });
     }
 
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-5',
-        max_tokens: 8000,
-        system: SYSTEM_PROMPT,
-        messages: [{ role: 'user', content: userContent }],
-      }),
-    });
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-goog-api-key': apiKey,
+        },
+        body: JSON.stringify({
+          system_instruction: { parts: [{ text: SYSTEM_PROMPT }] },
+          contents: [{ role: 'user', parts: userParts }],
+          generationConfig: {
+            response_mime_type: 'application/json',
+            max_output_tokens: 8000,
+          },
+        }),
+      }
+    );
 
     if (!response.ok) {
       const errText = await response.text();
-      console.error('Anthropic API error', response.status, errText);
+      console.error('Gemini API error', response.status, errText);
       return res.status(502).json({ error: `Erreur API IA (${response.status}).` });
     }
 
     const data = await response.json();
-    const textBlock = (data.content || []).find(b => b.type === 'text');
-    if (!textBlock) return res.status(502).json({ error: 'Réponse IA vide.' });
+    const candidate = (data.candidates || [])[0];
+    const textPart = candidate?.content?.parts?.find(p => typeof p.text === 'string');
+    if (!textPart) {
+      console.error('Gemini response missing text part', JSON.stringify(data).slice(0, 500));
+      return res.status(502).json({ error: candidate?.finishReason === 'SAFETY' ? "L'IA a refusé de traiter ce document (filtre de sécurité)." : 'Réponse IA vide.' });
+    }
 
-    let raw = textBlock.text.trim();
+    let raw = textPart.text.trim();
     // Sécurité : au cas où le modèle encapsule quand même dans des balises markdown
     raw = raw.replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/```\s*$/i, '').trim();
 
