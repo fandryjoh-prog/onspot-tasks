@@ -7,7 +7,7 @@
 // Variable d'environnement optionnelle sur Vercel : GEMINI_API_KEY (sinon la clé stockée
 // dans Firestore par l'admin, transmise par le front, est utilisée).
 
-const GEMINI_MODEL = 'gemini-2.5-flash';
+const GEMINI_MODEL = 'gemini-3.6-flash';
 const ALLOWED_FORMATS = ['narrative', 'action_table', 'supplier_guide', 'role_guide', 'hybrid'];
 const ALLOWED_BLOCK_TYPES = ['text', 'list', 'callout', 'contact', 'table'];
 const ALLOWED_CALLOUT_STYLES = ['info', 'warning', 'important'];
